@@ -27,8 +27,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <PGTS/PGTSAbstractDescription.h>
-#import <PGTS/PGTSAbstractObjectDescription.h>
+#import "PGTSAbstractDescription.h"
+#import "PGTSAbstractObjectDescription.h"
 
 
 @interface PGTSRoleDescriptionProxy : PGTSAbstractObjectDescriptionProxy

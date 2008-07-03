@@ -29,7 +29,7 @@
 @class PGTSRoleDescription;
 
 #import <Foundation/Foundation.h>
-#import <PGTS/PGTSConstants.h>
+#import "PGTSConstants.h"
 
 @interface PGTSACLItem : NSObject 
 {

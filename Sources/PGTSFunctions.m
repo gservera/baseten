@@ -31,10 +31,10 @@
 #import <openssl/x509.h>
 #import <openssl/ssl.h>
 #import <Security/Security.h>
-#import "postgresql/libpq-fe.h"
+#import <BaseTen/postgresql/libpq-fe.h>
 #import "PGTSFunctions.h"
 #import "PGTSConstants.h"
-#import "PGTSConnectionDelegate.h"
+#import "PGTSConnection.h"
 
 
 /**
@@ -46,4 +46,43 @@ PGTSOidAsObject (Oid o)
 {
     //Methods inherited from NSValue seem to return an NSValue instead of an NSNumber
     return [NSNumber numberWithUnsignedInt: o];
+}
+
+
+enum PGTSDeleteRule
+PGTSDeleteRule (const unichar rule)
+{
+	enum PGTSDeleteRule deleteRule = kPGTSDeleteRuleUnknown;
+	switch (rule)
+	{
+		case ' ':
+			deleteRule = kPGTSDeleteRuleNone;
+			break;
+			
+		case 'c':
+			deleteRule = kPGTSDeleteRuleCascade;
+			break;
+			
+		case 'n':
+			deleteRule = kPGTSDeleteRuleSetNull;
+			break;
+			
+		case 'd':
+			deleteRule = kPGTSDeleteRuleSetDefault;
+			break;
+			
+		case 'r':
+			deleteRule = kPGTSDeleteRuleRestrict;
+			break;
+			
+		case 'a':
+			deleteRule = kPGTSDeleteRuleNone;
+			break;
+			
+		default:
+			deleteRule = kPGTSDeleteRuleUnknown;
+			break;
+	}	
+	
+	return deleteRule;
 }

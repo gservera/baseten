@@ -26,7 +26,7 @@
 // $Id$
 //
 
-#import <PGTS/postgresql/libpq-fe.h> 
+#import <BaseTen/postgresql/libpq-fe.h>
 #import "PGTSRoleDescription.h"
 #import "PGTSFunctions.h"
 #import "PGTSResultSet.h"

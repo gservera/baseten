@@ -30,15 +30,21 @@
 #import "PGTSFoundationObjects.h"
 #import "PGTSConnection.h"
 #import "PGTSConnectionPrivate.h"
+#import "PGTSProbes.h"
+#import "PGTSHOM.h"
 
 
 @implementation PGTSQuery
-
 - (int) sendQuery: (PGTSConnection *) connection
 {
 	return 0;
 }
 
+- (NSString *) query
+{
+	[self doesNotRecognizeSelector: _cmd];
+	return nil;
+}
 @end
 
 
@@ -80,10 +86,64 @@
 	}
 }
 
-- (int) sendQuery: (PGTSConnection *) connection
+#if 0
+static void
+RemoveChars (char* str, const char* removed)
 {
-    NSLog (@"sendquery: %@ %@", mQuery, mParameters);
-    
+	BOOL copy = NO;
+	while (1)
+	{
+		if ('\0' == *str)
+			break;
+		
+		if (strchr (removed, *str))
+		{
+			copy = YES;
+			break;
+		}
+		
+		str++;
+	}
+	
+	if (copy)
+	{
+		char* str2 = str;
+		while (1)
+		{
+			*str = *str2;
+			
+			str2++;
+			if (! strchr (removed, *str))
+				str++;
+			
+			if ('\0' == *str)
+				break;
+		}
+	}
+}
+#endif
+
+
+static const char*
+ParameterString (int nParams, const char** values, int* formats)
+{
+	NSMutableString* desc = [NSMutableString string];
+	for (int i = 0; i < nParams; i++)
+	{
+		if (1 == formats [i])
+			[desc appendString: @"<binary parameter>"];
+		else
+			[desc appendFormat: @"%s", values [i]];
+		
+		if (! (i == nParams - 1))
+			[desc appendString: @", "];
+	}
+	return [desc UTF8String];
+}
+
+
+- (int) sendQuery: (PGTSConnection *) connection
+{    
     int retval = 0;
 	int nParams = [self parameterCount];
     const char** paramValues  = calloc (nParams, sizeof (char *));
@@ -103,9 +163,20 @@
         paramFormats [i] = [parameter PGTSIsBinaryParameter];
     }
 
+	//NSLog (@"sendquery: %@ %@", mQuery, mParameters);
+	if (PGTS_SEND_QUERY_ENABLED ())
+	{
+		const char* params = ParameterString (nParams, paramValues, paramFormats);
+		char* query_s = strdup ([mQuery UTF8String] ?: "");
+		char* params_s = strdup (params ?: "");
+		PGTS_SEND_QUERY (connection, retval, query_s, params_s);
+		free (query_s);
+		free (params_s);
+	}
+	
     retval = PQsendQueryParams ([connection pgConnection], [mQuery UTF8String], nParams, paramTypes,
                             	paramValues, paramLengths, paramFormats, 0);
-
+	
     free (paramTypes);
     free (paramValues);
     free (paramLengths);

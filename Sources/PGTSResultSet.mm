@@ -29,7 +29,7 @@
 #import <stdlib.h>
 #import <limits.h>
 #import <tr1/unordered_map>
-#import <PGTS/postgresql/libpq-fe.h> 
+#import <BaseTen/postgresql/libpq-fe.h>
 #import "PGTSConnection.h"
 #import "PGTSResultSet.h"
 #import "PGTSConstants.h"
@@ -39,18 +39,26 @@
 #import "PGTSTypeDescription.h"
 #import "PGTSFoundationObjects.h"
 #import "PGTSAdditions.h"
+#import "PGTSScannedMemoryAllocator.h"
 
 //FIXME: enable (some of) these.
 #if 0
-#import <Log4Cocoa/Log4Cocoa.h>
 #import "PGTSResultSetPrivate.h"
 #import "PGTSResultRow.h"
 #import "PGTSFunctions.h"
 #endif
 
 
-typedef std::tr1::unordered_map <NSString*, int, ObjectHash, ObjectCompare <NSString *> > FieldIndexMap;
-typedef std::tr1::unordered_map <int, Class> FieldClassMap;
+typedef std::tr1::unordered_map <NSString*, int, 
+	ObjectHash, 
+	ObjectCompare <NSString *>, 
+	PGTS::scanned_memory_allocator <std::pair <NSString * const, int> > > 
+	FieldIndexMap;
+typedef std::tr1::unordered_map <int, Class, 
+	std::tr1::hash <int>, 
+	std::equal_to <int>, 
+	PGTS::scanned_memory_allocator <std::pair <const int, Class> > > 
+	FieldClassMap;
 
 
 static NSString*
@@ -114,6 +122,14 @@ ErrorUserInfoKey (char fieldCode)
 }
 
 
+
+@interface PGTSResultError : NSError
+{
+}
+@end
+
+
+
 @interface PGTSConcreteResultSet : PGTSResultSet
 {
     PGTSConnection* mConnection; //Weak
@@ -125,12 +141,22 @@ ErrorUserInfoKey (char fieldCode)
     FieldIndexMap* mFieldIndices;
     FieldClassMap* mFieldClasses;
     Class mRowClass;
+	id mUserInfo;
     
     BOOL mKnowsFieldClasses;
     BOOL mDeterminesFieldClassesFromDB;
 }
 + (id) resultWithPGresult: (PGresult *) aResult connection: (PGTSConnection *) aConnection;
 - (id) initWithPGResult: (PGresult *) aResult connection: (PGTSConnection *) aConnection;
+@end
+
+
+
+@implementation PGTSResultError
+- (NSString *) description
+{
+	return [[self userInfo] objectForKey: kPGTSErrorMessage];
+}
 @end
 
 
@@ -152,7 +178,7 @@ ErrorUserInfoKey (char fieldCode)
     FieldIndexMap::iterator iterator = mFieldIndices->begin ();
     while (mFieldIndices->end () != iterator)
     {
-        [iterator->first autorelease];
+		[iterator->first autorelease];
         iterator++;
     }
     delete mFieldIndices;
@@ -216,8 +242,8 @@ ErrorUserInfoKey (char fieldCode)
                 mFields = i;
                 break;
             }
-            NSString* stringName = [[NSString alloc] initWithCString: fname encoding: NSUTF8StringEncoding];
-            (* mFieldIndices) [stringName] = i;
+			NSString* stringName = [NSString stringWithUTF8String: fname];
+            (* mFieldIndices) [[stringName retain]] = i;
         }
         mDeterminesFieldClassesFromDB = YES;
     }        
@@ -249,8 +275,32 @@ ErrorUserInfoKey (char fieldCode)
     {
         PGTSTypeDescription* type = [db typeWithOid: PQftype (mResult, i)];
         NSString* name = [type name];
-        [self setClass: [deserializationDictionary objectForKey: name] forFieldAtIndex: i];
-    }	
+		Class aClass = [deserializationDictionary objectForKey: name];
+		
+		if (! aClass)
+		{
+			//Come up with some reasonable defaults. Maybe a delegate could be asked, too?
+			switch ([type kind]) 
+			{
+				case 'e':
+					aClass = [NSString class];
+					break;
+					
+				case 'c':
+					//FIXME: handle composite types.
+				case 'd':
+					//FIXME: handle domains.
+				case 'p':
+					//FIXME: handle pseudo-types.
+				case 'b':
+				default:
+					aClass = [NSData class];					
+					break;
+			}			
+		}
+		
+		[self setClass: aClass forFieldAtIndex: i];
+	}
 }
 
 - (int) numberOfFields
@@ -260,17 +310,13 @@ ErrorUserInfoKey (char fieldCode)
 
 - (NSArray *) resultAsArray
 {
-    //FIXME: make this work.
-#if 0
-    if (NO == deserializedFields && YES == determinesFieldClassesAutomatically)
-        [self fetchFieldDescriptions];
-    
-    NSMutableArray* rval = [NSMutableArray arrayWithCapacity: mTuples];
-    for (int i = 0; i < mTuples; i++)
-        [rval addObject: [self objectInRowsAtIndex: i]];
-    return rval;
-#endif
-    return nil;
+	NSMutableArray* retval = [NSMutableArray arrayWithCapacity: [self count]];
+	[self goBeforeFirstRow];
+	while ([self advanceRow]) 
+	{
+		[retval addObject: [self currentRowAsDictionary]];
+	}
+	return retval;
 }
 
 - (int) identifier
@@ -290,69 +336,13 @@ ErrorUserInfoKey (char fieldCode)
 
 - (NSError *) error
 {
-    char fields [] = {
-        PG_DIAG_SEVERITY,
-        PG_DIAG_SQLSTATE,
-        PG_DIAG_MESSAGE_PRIMARY,
-        PG_DIAG_MESSAGE_DETAIL,
-        PG_DIAG_MESSAGE_HINT,
-        PG_DIAG_STATEMENT_POSITION,
-        PG_DIAG_INTERNAL_POSITION,
-        PG_DIAG_INTERNAL_QUERY,
-        PG_DIAG_CONTEXT,
-        PG_DIAG_SOURCE_FILE,
-        PG_DIAG_SOURCE_LINE,
-        PG_DIAG_SOURCE_FUNCTION,
-        '\0'
-    };
-    
-    NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithCapacity: (sizeof (fields) - 1) / sizeof (char)];
-    
-    for (int i = 0; '\0' != fields [i]; i++)
-    {
-        char* value = PQresultErrorField (mResult, fields [i]);
-        if (! value) continue;
-        
-        id objectValue = nil;
-        switch (fields [i])
-        {
-            case PG_DIAG_SEVERITY: //FIXME: perhaps add the severity as a constant number?
-            case PG_DIAG_SQLSTATE:
-            case PG_DIAG_MESSAGE_PRIMARY:
-            case PG_DIAG_MESSAGE_DETAIL:
-            case PG_DIAG_MESSAGE_HINT:
-            case PG_DIAG_INTERNAL_QUERY:
-            case PG_DIAG_CONTEXT:
-            case PG_DIAG_SOURCE_FILE:
-            case PG_DIAG_SOURCE_FUNCTION:
-            {
-                objectValue = [NSString stringWithUTF8String: value];
-                break;
-            }
-                
-            case PG_DIAG_STATEMENT_POSITION:
-            case PG_DIAG_INTERNAL_POSITION:
-            case PG_DIAG_SOURCE_LINE:
-            {
-                long longValue = strtol (value, NULL, 10);
-                objectValue = [NSNumber numberWithLong: longValue];
-                break;
-            }
-                
-            default:
-                continue;
-        }
-        NSString* key = ErrorUserInfoKey (fields [i]);
-        if (objectValue && key) [userInfo setObject: objectValue forKey: key];
-    }
-    return [NSError errorWithDomain: kPGTSErrorDomain code: kPGTSUnsuccessfulQueryError userInfo: userInfo];
+	return [[self class] errorForPGresult: mResult];
 }
-
+	
 - (PGresult *) PGresult
 {
 	return mResult;
 }
-
 @end
 
 
@@ -368,11 +358,15 @@ ErrorUserInfoKey (char fieldCode)
     return mCurrentRow;
 }
 
-- (id) currentRowAsObject
+- (id <PGTSResultRowProtocol>) currentRowAsObject
 {
-    //FIXME: make this work.
-    return nil;
-    //return [self objectInRowsAtIndex: mCurrentRow];
+    id retval = [[[mRowClass alloc] init] autorelease];
+	
+    if (retval)
+        [retval PGTSSetRow: mCurrentRow resultSet: self];
+    
+    //We are too simple to cache and reuse these.
+    return retval;
 }
 
 - (void) setRowClass: (Class) aClass
@@ -463,6 +457,19 @@ ErrorUserInfoKey (char fieldCode)
 	return retval;
 }
 
+- (void) setUserInfo: (id) userInfo
+{
+	if (mUserInfo != userInfo)
+	{
+		[mUserInfo release];
+		mUserInfo = [userInfo retain];
+	}
+}
+
+- (id) userInfo
+{
+	return mUserInfo;
+}
 @end
 
 
@@ -541,5 +548,82 @@ ErrorUserInfoKey (char fieldCode)
 + (id) resultWithPGresult: (PGresult *) aResult connection: (PGTSConnection *) aConnection
 {
     return [[[PGTSConcreteResultSet alloc] initWithPGResult: aResult connection: aConnection] autorelease];
+}
+
++ (NSError *) errorForPGresult: (PGresult *) result
+{
+	NSError* retval = nil;
+	ExecStatusType status = PQresultStatus (result);
+	if (PGRES_FATAL_ERROR == status || PGRES_NONFATAL_ERROR == status)
+	{
+		char fields [] = {
+			PG_DIAG_SEVERITY,
+			PG_DIAG_SQLSTATE,
+			PG_DIAG_MESSAGE_PRIMARY,
+			PG_DIAG_MESSAGE_DETAIL,
+			PG_DIAG_MESSAGE_HINT,
+			PG_DIAG_STATEMENT_POSITION,
+			PG_DIAG_INTERNAL_POSITION,
+			PG_DIAG_INTERNAL_QUERY,
+			PG_DIAG_CONTEXT,
+			PG_DIAG_SOURCE_FILE,
+			PG_DIAG_SOURCE_LINE,
+			PG_DIAG_SOURCE_FUNCTION,
+			'\0'
+		};
+		
+		NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithCapacity: (sizeof (fields)) / sizeof (char)];
+		
+		for (int i = 0; '\0' != fields [i]; i++)
+		{
+			char* value = PQresultErrorField (result, fields [i]);
+			if (! value) continue;
+			
+			id objectValue = nil;
+			switch (fields [i])
+			{
+				case PG_DIAG_SEVERITY: //FIXME: perhaps add the severity as a constant number?
+				case PG_DIAG_SQLSTATE:
+				case PG_DIAG_MESSAGE_PRIMARY:
+				case PG_DIAG_MESSAGE_DETAIL:
+				case PG_DIAG_MESSAGE_HINT:
+				case PG_DIAG_INTERNAL_QUERY:
+				case PG_DIAG_CONTEXT:
+				case PG_DIAG_SOURCE_FILE:
+				case PG_DIAG_SOURCE_FUNCTION:
+				{
+					objectValue = [NSString stringWithUTF8String: value];
+					break;
+				}
+					
+				case PG_DIAG_STATEMENT_POSITION:
+				case PG_DIAG_INTERNAL_POSITION:
+				case PG_DIAG_SOURCE_LINE:
+				{
+					long longValue = strtol (value, NULL, 10);
+					objectValue = [NSNumber numberWithLong: longValue];
+					break;
+				}
+					
+				default:
+					continue;
+			}
+			NSString* key = ErrorUserInfoKey (fields [i]);
+			if (objectValue && key) [userInfo setObject: objectValue forKey: key];
+		}
+		
+		{
+			//Human-readable error message.
+			NSString* message = [NSString stringWithUTF8String: PQresultErrorMessage (result)];
+			[userInfo setObject: message forKey: kPGTSErrorMessage];
+			//FIXME: I'm not quite sure which key should have the human-readable message and what should be made the exception name.
+			[userInfo setObject: message forKey: NSLocalizedFailureReasonErrorKey];
+			[userInfo setObject: message forKey: NSLocalizedRecoverySuggestionErrorKey];
+		}
+		
+		retval = [[PGTSResultError alloc] initWithDomain: kPGTSErrorDomain code: kPGTSUnsuccessfulQueryError userInfo: userInfo];
+		[retval autorelease];
+	}
+	return retval;
 }
 @end

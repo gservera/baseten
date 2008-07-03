@@ -32,43 +32,8 @@
 #import "PGTSFunctions.h"
 
 
-static enum PGTSDeleteRule
-PGTSDeleteRule (const unichar rule)
-{
-	enum PGTSDeleteRule deleteRule = kPGTSDeleteRuleUnknown;
-	switch (rule)
-	{
-		case ' ':
-			deleteRule = kPGTSDeleteRuleNone;
-			break;
-			
-		case 'c':
-			deleteRule = kPGTSDeleteRuleCascade;
-			break;
-			
-		case 'n':
-			deleteRule = kPGTSDeleteRuleSetNull;
-			break;
-			
-		case 'd':
-			deleteRule = kPGTSDeleteRuleSetDefault;
-			break;
-			
-		case 'r':
-			deleteRule = kPGTSDeleteRuleRestrict;
-			break;
-			
-		case 'a':
-			deleteRule = kPGTSDeleteRuleNone;
-			break;
-			
-		default:
-			deleteRule = kPGTSDeleteRuleUnknown;
-			break;
-	}	
-	
-	return deleteRule;
-}
+@implementation PGTSForeignKeyDescriptionProxy
+@end
 
 
 @implementation PGTSForeignKeyDescription
@@ -83,6 +48,7 @@ PGTSDeleteRule (const unichar rule)
     return mReferenceFields;
 }
 
+#if 0
 - (PGTSTableDescription *) sourceTable
 {
     return [[mSourceFields objectAtIndex: 0] table];
@@ -92,6 +58,7 @@ PGTSDeleteRule (const unichar rule)
 {
     return [[mReferenceFields objectAtIndex: 0] table];
 }
+#endif
 
 - (id) initWithName: (NSString *) aName 
 	   sourceFields: (NSArray *) sFields 

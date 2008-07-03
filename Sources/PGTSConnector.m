@@ -26,15 +26,11 @@
 // $Id$
 //
 
-//FIXME: enable these.
-#define log4AssertValueReturn(...) 
-#define log4AssertLog(...)
-#define log4Debug(...)
-#define log4Info(...)
 
 #import "PGTSConnector.h"
 #import "PGTSConnection.h"
 #import "PGTSCertificateVerificationDelegateProtocol.h"
+#import "BXLogger.h"
 #import <sys/select.h>
 
 #ifdef USE_SSL
@@ -86,6 +82,17 @@ VerifySSLCertificate (int preverify_ok, X509_STORE_CTX *x509_ctx)
 
 - (void) cancel
 {
+}
+
+- (BOOL) start: (const char *) connectionString
+{
+	mConnection = PQconnectStart (connectionString);
+	return (mConnection ? YES : NO);
+}
+
+- (void) setConnection: (PGconn *) connection
+{
+	mConnection = connection;
 }
 @end
 
@@ -165,7 +172,7 @@ SocketReady (CFSocketRef s, CFSocketCallBackType callbackType, CFDataRef address
 	{
 		mSSLSetUp = YES;
 		SSL* ssl = PQgetssl (mConnection);
-		log4AssertValueReturn (ssl, NO, @"Expected ssl struct not to be NULL.");
+		BXAssertVoidReturn (ssl, @"Expected ssl struct not to be NULL.");
 		SSL_set_verify (ssl, SSL_VERIFY_PEER, &VerifySSLCertificate);
 		SSL_set_ex_data (ssl, SSLConnectionExIndex (), mConnection);
 	}
@@ -220,10 +227,10 @@ SocketReady (CFSocketRef s, CFSocketCallBackType callbackType, CFDataRef address
 			CFSocketSetSocketFlags (mSocket, flags);
 			mSocketSource = CFSocketCreateRunLoopSource (NULL, mSocket, 0);
 			
-			log4AssertLog (mSocket, @"Expected source to have been created.");
-			log4AssertLog (CFSocketIsValid (mSocket), @"Expected socket to be valid.");
-			log4AssertLog (mSocketSource, @"Expected socketSource to have been created.");
-			log4AssertLog (CFRunLoopSourceIsValid (mSocketSource), @"Expected socketSource to be valid.");
+			BXAssertLog (mSocket, @"Expected source to have been created.");
+			BXAssertLog (CFSocketIsValid (mSocket), @"Expected socket to be valid.");
+			BXAssertLog (mSocketSource, @"Expected socketSource to have been created.");
+			BXAssertLog (CFRunLoopSourceIsValid (mSocketSource), @"Expected socketSource to be valid.");
 			
 			CFRunLoopRef runloop = mRunLoop ?: CFRunLoopGetCurrent ();
 			CFStringRef mode = kCFRunLoopCommonModes;
@@ -232,6 +239,10 @@ SocketReady (CFSocketRef s, CFSocketCallBackType callbackType, CFDataRef address
 			CFRunLoopAddSource (runloop, mSocketSource, mode);
             
             retval = YES;
+		}
+		else
+		{
+			[self finishedConnecting: NO];
 		}
 	}
 	return retval;
@@ -244,21 +255,23 @@ SocketReady (CFSocketRef s, CFSocketCallBackType callbackType, CFDataRef address
 - (BOOL) connect: (const char *) conninfo
 {
     BOOL retval = NO;
-	PGconn* connection = NULL;
-	if ((connection = PQconnectStart (conninfo)) && CONNECTION_BAD != PQstatus (connection))
+	if ([self start: conninfo] && CONNECTION_BAD != PQstatus (mConnection))
 	{
 		fd_set mask = {};
 		struct timeval timeout = {.tv_sec = 15, .tv_usec = 0};
 		PostgresPollingStatusType pollingStatus = PGRES_POLLING_WRITING; //Start with this
 		int selectStatus = 0;
-		int bsdSocket = PQsocket (connection);
+		int bsdSocket = PQsocket (mConnection);
 		BOOL stop = NO;
 		
+		//FIXME: this is rather an an error than information.
 		if (bsdSocket < 0)
-			log4Info (@"Unable to get connection socket from libpq");
+			BXLogInfo (@"Unable to get connection socket from libpq");
 		else
 		{
+#ifdef USE_SSL
 			BOOL sslSetUp = NO;
+#endif
 			
 			//Polling loop
 			while (1)
@@ -267,15 +280,15 @@ SocketReady (CFSocketRef s, CFSocketCallBackType callbackType, CFDataRef address
 				FD_ZERO (&mask);
 				FD_SET (bsdSocket, &mask);
 				selectStatus = 0;
-				pollingStatus = mPollFunction (connection);
+				pollingStatus = mPollFunction (mConnection);
 				
-				log4Debug (@"Polling status: %d connection status: %d", pollingStatus, PQstatus (connection));
+				BXLogDebug (@"Polling status: %d connection status: %d", pollingStatus, PQstatus (mConnection));
 #ifdef USE_SSL
-				if (NO == sslSetUp && CONNECTION_SSL_CONTINUE == PQstatus (connection))
+				if (NO == sslSetUp && CONNECTION_SSL_CONTINUE == PQstatus (mConnection))
 				{
 					sslSetUp = YES;
-					SSL* ssl = PQgetssl (connection);
-					log4AssertValueReturn (NULL != ssl, NO, @"Expected ssl struct not to be NULL.");
+					SSL* ssl = PQgetssl (mConnection);
+					BXAssertValueReturn (NULL != ssl, NO, @"Expected ssl struct not to be NULL.");
 					SSL_set_verify (ssl, SSL_VERIFY_PEER, &VerifySSLCertificate);
 					SSL_set_ex_data (ssl, SSLConnectionExIndex (), self);
 				}
@@ -317,7 +330,7 @@ SocketReady (CFSocketRef s, CFSocketCallBackType callbackType, CFDataRef address
 			}			
 		}		
 	}	
-	[mDelegate connector: self gotConnection: connection succeeded: (retval && CONNECTION_OK == PQstatus (connection))];
+	[mDelegate connector: self gotConnection: mConnection succeeded: (retval && CONNECTION_OK == PQstatus (mConnection))];
 	return retval;
 }
 @end
@@ -332,6 +345,11 @@ SocketReady (CFSocketRef s, CFSocketCallBackType callbackType, CFDataRef address
     }
     return self;
 }
+
+- (BOOL) start: (const char *) connectionString
+{
+	return (BOOL) PQresetStart (mConnection);
+}
 @end
 
 
@@ -343,5 +361,10 @@ SocketReady (CFSocketRef s, CFSocketCallBackType callbackType, CFDataRef address
         mPollFunction = &PQresetPoll;
     }
     return self;
+}
+
+- (BOOL) start: (const char *) connectionString
+{
+	return (BOOL) PQresetStart (mConnection);
 }
 @end

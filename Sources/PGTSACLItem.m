@@ -32,9 +32,7 @@
 #import "PGTSTypeDescription.h"
 #import "PGTSConnection.h"
 #import "PGTSDatabaseDescription.h"
-
-//FIXME: enable logging.
-#define log4AssertValueReturn(...)
+#import "BXLogger.h"
 
 
 @implementation PGTSACLItem
@@ -102,7 +100,7 @@
     char* privileges = strsep (&grantingRole, "/");
     
     //Zero-length but not NULL
-    log4AssertValueReturn (NULL != privileges && NULL != role && NULL != grantingRole, nil, @"Unable to parse privileges (%s).", value);
+    BXAssertValueReturn (NULL != privileges && NULL != role && NULL != grantingRole, nil, @"Unable to parse privileges (%s).", value);
     
     //Role is zero-length if the privileges are for PUBLIC
     retval = [[[PGTSACLItem alloc] init] autorelease];

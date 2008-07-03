@@ -27,7 +27,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <PGTS/PGTSAbstractClassDescription.h>
+#import "PGTSAbstractClassDescription.h"
 
 @class PGTSTableDescription;
 
@@ -40,6 +40,7 @@
 
 @interface PGTSIndexDescriptionProxy : PGTSAbstractClassDescriptionProxy <PGTSIndexDescription>
 {
+	NSSet* mFields;
 }
 @end
 

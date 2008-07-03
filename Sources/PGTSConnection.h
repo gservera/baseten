@@ -28,14 +28,14 @@
 
 #import <CoreFoundation/CoreFoundation.h>
 #import <Foundation/Foundation.h>
-#import <PGTS/postgresql/libpq-fe.h>
-#import <PGTS/PGTSConnector.h>
-#import <PGTS/PGTSCertificateVerificationDelegate.h>
+#import <BaseTen/postgresql/libpq-fe.h>
+#import "PGTSCertificateVerificationDelegate.h"
 @class PGTSConnection;
 @class PGTSResultSet;
 @class PGTSConnector;
 @class PGTSQueryDescription;
 @class PGTSDatabaseDescription;
+@class PGTSNotification;
 @protocol PGTSConnectorDelegate;
 
 
@@ -43,6 +43,8 @@
 - (void) PGTSConnectionFailed: (PGTSConnection *) connection;
 - (void) PGTSConnectionEstablished: (PGTSConnection *) connection;
 - (void) PGTSConnectionLost: (PGTSConnection *) connection error: (NSError *) error;
+- (void) PGTSConnection: (PGTSConnection *) connection gotNotification: (PGTSNotification *) notification;
+- (void) PGTSConnection: (PGTSConnection *) connection receivedNotice: (NSError *) notice;
 @end
 
 
@@ -51,7 +53,6 @@
 	PGconn* mConnection;
 	NSMutableArray* mQueue;
 	id mConnector;
-    NSNotificationCenter* mNotificationCenter;
     PGTSDatabaseDescription* mDatabase;
     NSMutableDictionary* mPGTypes;
 	id <PGTSCertificateVerificationDelegate> mCertificateVerificationDelegate;
@@ -63,25 +64,27 @@
     id mDelegate;
 	
 	BOOL mDidDisconnectOnSleep;
+	BOOL mProcessingNotifications;
 }
 - (id) init;
 - (void) dealloc;
-- (BOOL) connectAsync: (NSString *) connectionString;
+- (void) connectAsync: (NSString *) connectionString;
 - (BOOL) connectSync: (NSString *) connectionString;
+- (void) resetAsync;
+- (BOOL) resetSync;
 - (void) disconnect;
 - (void) setDelegate: (id <PGTSConnectionDelegate>) anObject;
 - (PGTSDatabaseDescription *) databaseDescription;
 - (void) setDatabaseDescription: (PGTSDatabaseDescription *) aDesc;
 - (id) deserializationDictionary;
 - (NSString *) errorString;
+- (ConnStatusType) connectionStatus;
+- (PGTransactionStatusType) transactionStatus;
+- (PGconn *) pgConnection;
+- (int) backendPID;
 
 - (id <PGTSCertificateVerificationDelegate>) certificateVerificationDelegate;
 - (void) setCertificateVerificationDelegate: (id <PGTSCertificateVerificationDelegate>) anObject;
-@end
-
-
-@interface PGTSConnection (PGTSConnectorDelegate) <PGTSConnectorDelegate>
-- (void) connector: (PGTSConnector*) connector gotConnection: (PGconn *) connection succeeded: (BOOL) succeeded;
 @end
 
 
@@ -92,4 +95,6 @@
 - (int) sendQuery: (NSString *) queryString delegate: (id) delegate callback: (SEL) callback;
 - (int) sendQuery: (NSString *) queryString delegate: (id) delegate callback: (SEL) callback parameters: (id) p1, ...;
 - (int) sendQuery: (NSString *) queryString delegate: (id) delegate callback: (SEL) callback parameterArray: (NSArray *) parameters;
+- (int) sendQuery: (NSString *) queryString delegate: (id) delegate callback: (SEL) callback 
+   parameterArray: (NSArray *) parameters userInfo: (id) userInfo;
 @end

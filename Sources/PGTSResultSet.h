@@ -27,18 +27,19 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <PGTS/postgresql/libpq-fe.h> 
+#import <BaseTen/postgresql/libpq-fe.h>
 
 
 @interface PGTSResultSet : NSObject
 {
 }
-+ (id) resultWithPGresult: (PGresult *) aResult connection: (PGTSConnection *) aConnection;
++ (id) resultWithPGresult: (const PGresult *) aResult connection: (PGTSConnection *) aConnection;
++ (NSError *) errorForPGresult: (const PGresult *) result;
 @end
 
 
 @interface PGTSResultSet (Implementation)
-- (id) initWithPGResult: (PGresult *) aResult connection: (PGTSConnection *) aConnection;
+- (id) initWithPGResult: (const PGresult *) aResult connection: (PGTSConnection *) aConnection;
 - (PGTSConnection *) connection;
 - (BOOL) querySucceeded;
 - (ExecStatusType) status;
@@ -49,6 +50,7 @@
 - (BOOL) setClass: (Class) aClass forKey: (NSString *) aName;
 - (BOOL) setClass: (Class) aClass forFieldAtIndex: (int) fieldIndex;
 - (PGresult *) PGresult;
+- (NSArray *) resultAsArray;
 
 - (BOOL) isAtEnd;
 - (int) currentRow;
@@ -65,6 +67,8 @@
 - (void) setIdentifier: (int) anIdentifier;
 - (NSError *) error;
 - (NSString *) errorString;
+- (void) setUserInfo: (id) userInfo;
+- (id) userInfo;
 
 - (void) setDeterminesFieldClassesAutomatically: (BOOL) aBool;
 @end

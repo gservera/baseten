@@ -60,15 +60,6 @@ PrimaryKey (NSArray* uIndexes)
 	[super dealloc];
 }
 
-- (id) performSynchronizedAndReturnProxies
-{
-	id concreteObjects = [self performSynchronizedAndReturnObject];
-	[[concreteObjects PGTSDo] setConnection: mConnection];
-	id retval = [[concreteObjects PGTSCollect] proxy];
-	[[concreteObjects PGTSDo] setConnection: nil];
-	return retval;
-}
-
 - (NSDictionary *) fields
 {
 	if (! mFields)
@@ -129,9 +120,6 @@ PrimaryKey (NSArray* uIndexes)
 
 - (void) dealloc
 {
-    [[mFields allValues] makeObjectsPerformSelector: @selector (setTable:) withObject: nil];
-    [mUniqueIndexes makeObjectsPerformSelector: @selector (setTable:) withObject: nil];
-
     [mFields release];
 	[mFieldIndexes release];
     [mUniqueIndexes release];
@@ -206,11 +194,14 @@ PrimaryKey (NSArray* uIndexes)
 {
 	if (! mFields)
 	{
-		NSString* query = @"SELECT attname, attnum, atttypid, attnotnull FROM pg_attribute WHERE attisdropped = false AND attrelid = $1";
+		NSString* query = 
+		@"SELECT a.attname, a.attnum, a.atttypid, a.attnotnull, pg_get_expr (d.adbin, d.adrelid, false) AS default "
+		@" FROM pg_attribute a LEFT JOIN pg_attrdef d ON a.attrelid = d.adrelid "
+		@" WHERE a.attisdropped = false AND a.attrelid = $1"; 
 		PGTSResultSet* res = [mConnection executeQuery: query parameters: PGTSOidAsObject (mOid)];
 		
-		mFields = [NSMutableDictionary dictionaryWithCapacity: [res count]];
-		mFieldIndexes = [NSMutableDictionary dictionaryWithCapacity: [res count]];
+		mFields = [[NSMutableDictionary alloc] initWithCapacity: [res count]];
+		mFieldIndexes = [[NSMutableDictionary alloc] initWithCapacity: [res count]];
 		while ([res advanceRow])
 		{
 			NSString* name = [res valueForKey: @"attname"];
@@ -220,7 +211,8 @@ PrimaryKey (NSArray* uIndexes)
 			[field setName: name];
 			[field setIndex: [index intValue]];
 			[field setTypeOid: [[res valueForKey: @"atttypid"] PGTSOidValue]];
-			[field setNotNull: [[res valueForKey: @"attnotnull"] boolValue]];
+			[field setNotNull: [[res valueForKey: @"attnotnull"] boolValue]];			
+			[field setDefaultValue: [res valueForKey: @"default"]];
 			
 			[mFields setObject: field forKey: [field name]];
 			[mFieldIndexes setObject: name forKey: index];
@@ -306,6 +298,7 @@ PrimaryKey (NSArray* uIndexes)
                     [index setFields: indexFields];
                     [index setTable: self];
                     [self setUniqueIndexes: [NSArray arrayWithObject: index]];
+                    [index release];
                 }
             }
             default:

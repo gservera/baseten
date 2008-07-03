@@ -27,8 +27,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <PGTS/PGTSAbstractDescription.h>
-#import <PGTS/postgresql/libpq-fe.h> 
+#import <BaseTen/postgresql/libpq-fe.h>
+#import "PGTSAbstractDescription.h"
 
 
 @class PGTSTableDescription;
@@ -49,6 +49,7 @@
 @interface PGTSFieldDescription : PGTSAbstractDescription <PGTSFieldDescription>
 {
     int mIndex;
+	NSString* mDefaultValue;
     Oid mTypeOid;
 	BOOL mIsNotNull;
 }
@@ -57,9 +58,11 @@
 - (Oid) typeOid;
 - (NSString *) qualifiedName;
 - (NSComparisonResult) indexCompare: (PGTSFieldDescription *) aField;
+- (id) defaultValue;
 - (BOOL) isNotNull;
 
 - (void) setIndex: (int) anIndex;
 - (void) setTypeOid: (Oid) anOid;
 - (void) setNotNull: (BOOL) aBool;
+- (void) setDefaultValue: (id) anObject;
 @end

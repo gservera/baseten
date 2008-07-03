@@ -27,7 +27,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <PGTS/PGTSAbstractClassDescription.h>
+#import "PGTSAbstractClassDescription.h"
 
 
 @class PGTSFieldDescription;

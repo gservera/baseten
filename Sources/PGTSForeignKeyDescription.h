@@ -26,8 +26,8 @@
 // $Id$
 //
 
-#import <PGTS/PGTSAbstractDescription.h>
-#import <PGTS/PGTSConstants.h>
+#import "PGTSAbstractDescription.h"
+#import "PGTSConstants.h"
 
 @class PGTSConnection;
 @class PGTSTableDescription;
@@ -36,8 +36,10 @@
 @protocol PGTSForeignKeyDescription
 - (NSArray *) sourceFields;
 - (NSArray *) referenceFields;
+#if 0
 - (PGTSTableDescription *) sourceTable;
 - (PGTSTableDescription *) referenceTable;
+#endif
 @end
 
 

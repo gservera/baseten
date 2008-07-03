@@ -48,20 +48,29 @@
 
 @interface NSSet (PGTSHOM)
 - (id) PGTSAny;
-- (id) PGTSCollect;
 - (id) PGTSDo;
+- (id) PGTSCollect;
+- (id) PGTSCollectReturning: (Class) aClass;
+- (id) PGTSSelectFunction: (int (*)(id)) fptr;
+- (id) PGTSSelectFunction: (int (*)(id, void*)) fptr argument: (void *) arg;
 @end
 
 
 @interface NSArray (PGTSHOM)
 - (id) PGTSAny;
-- (id) PGTSCollect;
 - (id) PGTSDo;
+- (id) PGTSCollect;
+- (id) PGTSCollectReturning: (Class) aClass;
+- (id) PGTSSelectFunction: (int (*)(id)) fptr;
+- (id) PGTSSelectFunction: (int (*)(id, void*)) fptr argument: (void *) arg;
+- (id) PGTSVisit: (id) visitor;
 @end
 
 
 @interface NSDictionary (PGTSHOM)
 - (id) PGTSAny;
-- (id) PGTSCollect;
 - (id) PGTSDo;
+- (id) PGTSCollect;
+- (id) PGTSKeyCollect;
+- (id) PGTSVisit: (id) visitor;
 @end

@@ -27,11 +27,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <PGTS/PGTSConstants.h>
+#import "PGTSConstants.h"
 
 
-NSDictionary* kPGTSDefaultConnectionDictionary    = nil;
-NSArray* kPGTSConnectionDictionaryKeys            = nil;
+__strong NSDictionary* kPGTSDefaultConnectionDictionary    = nil;
+__strong NSArray* kPGTSConnectionDictionaryKeys            = nil;
 
 NSString* const kPGTSHostKey                      = @"host";
 NSString* const kPGTSHostAddressKey               = @"hostaddr";
@@ -45,6 +45,7 @@ NSString* const kPGTSSSLModeKey                   = @"sslmode";
 NSString* const kPGTSServiceNameKey               = @"service"; 
 
 NSString* const kPGTSRetrievedResultNotification  = @"kPGTSRetrievedResultNotification";
+NSString* const kPGTSNotificationNameKey		  = @"kPGTSNotificationNameKey";
 NSString* const kPGTSBackendPIDKey    = @"Backend PID";
 NSString* const kPGTSNotificationExtraKey         = @"Extra parameters";
 NSString* const kPGTSWillDisconnectNotification   = @"kPGTSWillDisconnectNotification";
@@ -106,6 +107,7 @@ NSString* const kPGTSErrorSourceFunction          = @"kPGTSErrorSourceFunction";
 NSString* const kPGTSErrorStatementPosition       = @"kPGTSErrorStatementPosition";
 NSString* const kPGTSErrorInternalPosition        = @"kPGTSErrorInternalPosition";
 NSString* const kPGTSErrorSourceLine              = @"kPGTSErrorSourceLine";
+NSString* const kPGTSErrorMessage				  = @"kPGTSErrorMessage";
 
 
 /** Declared in PGTSConnectionDelegate.h */

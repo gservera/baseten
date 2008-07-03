@@ -28,10 +28,11 @@
 
 #import "NSPredicate+PGTSAdditions.h"
 #import "NSExpression+PGTSAdditions.h"
+#import "BXLogger.h"
 
-#import <PGTS/PGTSFunctions.h>
-#import <PGTS/PGTSConstants.h>
-#import <Log4Cocoa/Log4Cocoa.h>
+#import "PGTSFunctions.h"
+#import "PGTSConstants.h"
+
 
 static void
 RequireClass (id object, Class aClass)
@@ -104,7 +105,7 @@ RequireClass (id object, Class aClass)
 
 - (NSString *) PGTSExpressionWithObject: (id) anObject context: (NSMutableDictionary *) context
 {
-    log4AssertValueReturn (nil != [context objectForKey: kPGTSConnectionKey], nil, 
+    BXAssertValueReturn (nil != [context objectForKey: kPGTSConnectionKey], nil, 
 						   @"Did you remember to set connection to %@ in context?", kPGTSConnectionKey);
     NSString* retval = nil;
     NSArray* subpredicates = [self subpredicates];

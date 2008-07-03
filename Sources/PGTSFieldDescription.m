@@ -26,13 +26,13 @@
 // $Id$
 //
 
-#import <PGTS/PGTSFieldDescription.h>
-#import <PGTS/PGTSResultSet.h>
-#import <PGTS/PGTSConnection.h>
-#import <PGTS/PGTSTableDescription.h>
-#import <PGTS/PGTSFunctions.h>
-#import <PGTS/PGTSDatabaseDescription.h>
-#import <PGTS/PGTSAdditions.h>
+#import "PGTSFieldDescription.h"
+#import "PGTSResultSet.h"
+#import "PGTSConnection.h"
+#import "PGTSTableDescription.h"
+#import "PGTSFunctions.h"
+#import "PGTSDatabaseDescription.h"
+#import "PGTSAdditions.h"
 
 
 @implementation PGTSFieldDescriptionProxy
@@ -53,7 +53,6 @@
     if ((self = [super init]))
     {
         mIndex = 0;
-        //mIndexInResultSet = NSNotFound;
     }
     return self;
 }
@@ -89,6 +88,12 @@
     return mIndex;
 }
 
+- (id) defaultValue
+{
+	//Potential thread-unsafety.
+	return [[mDefaultValue copy] autorelease];
+}
+
 - (Oid) typeOid
 {
     return mTypeOid;
@@ -97,7 +102,7 @@
 - (PGTSTypeDescription *) type
 {
 	//This is only supposed to be called via the proxy.
-	[[NSException exceptionWithName: NSInternalInconsistencyException reason: @"-[PGTSFieldDescription type] called." userInfo: nil] raise];
+	[self doesNotRecognizeSelector: _cmd];
 	return nil;
 }
 
@@ -130,5 +135,14 @@
 - (void) setNotNull: (BOOL) aBool
 {
 	mIsNotNull = aBool;
+}
+
+- (void) setDefaultValue: (id) anObject
+{
+	if (mDefaultValue != anObject)
+	{
+		[mDefaultValue release];
+		mDefaultValue = [anObject retain];
+	}
 }
 @end

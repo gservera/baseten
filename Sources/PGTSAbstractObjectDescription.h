@@ -27,8 +27,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <PGTS/PGTSAbstractDescription.h>
-#import <PGTS/postgresql/libpq-fe.h> 
+#import <BaseTen/postgresql/libpq-fe.h>
+#import "PGTSAbstractDescription.h"
 
 
 @interface PGTSAbstractObjectDescriptionProxy : PGTSAbstractDescriptionProxy

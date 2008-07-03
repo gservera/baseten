@@ -31,7 +31,8 @@
 #import "PGTSResultSet.h"
 #import "PGTSQuery.h"
 #import "PGTSConnectionPrivate.h"
-#import <PGTS/postgresql/libpq-fe.h>
+#import "PGTSProbes.h"
+#import <BaseTen/postgresql/libpq-fe.h>
 
 
 static int gIdentifier = 0;
@@ -101,6 +102,9 @@ NextIdentifier ()
     return nil;
 }
 
+- (void) setUserInfo: (id) userInfo
+{
+}
 @end
 
 
@@ -169,7 +173,10 @@ NextIdentifier ()
 
 - (int) sendForConnection: (PGTSConnection *) connection
 {
-    return [mQuery sendQuery: connection];
+    int retval = [mQuery sendQuery: connection];
+	//FIXME: check retval?
+	mSent = YES;
+	return retval;
 }
 
 - (PGTSResultSet *) receiveForConnection: (PGTSConnection *) connection
@@ -177,8 +184,6 @@ NextIdentifier ()
     PGTSResultSet* retval = nil;
     PGconn* pgConn = [connection pgConnection];
     PGresult* result = PQgetResult (pgConn);
-	if (CONNECTION_BAD != PQstatus (pgConn))
-		mSent = YES;
 	
     if (result)
     {
@@ -189,6 +194,13 @@ NextIdentifier ()
     else
     {
         mFinished = YES;
+		
+		if (PGTS_FINISHED_QUERY_ENABLED ())
+		{
+			char* query_s = strdup ([[mQuery query] UTF8String]);
+			PGTS_FINISHED_QUERY (connection, query_s);
+			free (query_s);
+		}
     }
     return retval;
 }
@@ -204,7 +216,16 @@ NextIdentifier ()
         retval = [self receiveForConnection: connection] ?: retval;
         [connection processNotifications];
     }
+	[retval setUserInfo: mUserInfo];
     return retval;
 }
 
+- (void) setUserInfo: (id) userInfo
+{
+	if (mUserInfo != userInfo)
+	{
+		[mUserInfo release];
+		mUserInfo = [userInfo retain];
+	}
+}
 @end
