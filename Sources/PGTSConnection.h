@@ -92,8 +92,7 @@ enum PGTSConnectionError
     id <PGTSConnectionDelegate> mDelegate; //Weak
 	
 	BOOL mDidDisconnectOnSleep;
-	BOOL mProcessingNotifications;
-	BOOL mLogsQueries;
+	volatile BOOL mLogsQueries;
 }
 - (id) init;
 - (void) dealloc;
@@ -117,6 +116,7 @@ enum PGTSConnectionError
 - (int) socket;
 - (SSL *) SSLStruct;
 - (BOOL) canSend;
+- (BXSocketDescriptor *) socketDescriptor;
 
 - (id <PGTSCertificateVerificationDelegate>) certificateVerificationDelegate;
 - (void) setCertificateVerificationDelegate: (id <PGTSCertificateVerificationDelegate>) anObject;
@@ -124,7 +124,8 @@ enum PGTSConnectionError
 - (BOOL) logsQueries;
 - (void) setLogsQueries: (BOOL) flag;
 
-- (void) logIfNeeded: (PGTSResultSet *) res;
+- (void) logQueryIfNeeded: (PGTSQuery *) query;
+- (void) logResultIfNeeded: (PGTSResultSet *) res;
 @end
 
 

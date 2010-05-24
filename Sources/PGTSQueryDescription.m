@@ -32,6 +32,8 @@
 #import "PGTSQuery.h"
 #import "PGTSConnectionPrivate.h"
 #import "PGTSProbes.h"
+#import "BXLogger.h"
+#import "BXSocketDescriptor.h"
 #import <BaseTen/libpq-fe.h>
 #import <libkern/OSAtomic.h>
 
@@ -264,29 +266,33 @@ NextIdentifier ()
 
 - (PGTSResultSet *) receiveForConnection: (PGTSConnection *) connection
 {	
-    PGTSResultSet* retval = nil;
+	Expect ([[connection socketDescriptor] isLocked]);
+	
+    PGTSResultSet* retval = nil;	
     PGconn* pgConn = [connection pgConnection];
     PGresult* result = PQgetResult (pgConn);
 	
-	@synchronized (self)
+	if (result)
 	{
-		if (result)
-		{
-			retval = [PGTSResultSet resultWithPGresult: result connection: connection];
-			[retval setIdentifier: mIdentifier];
-			[retval setUserInfo: mUserInfo];
-			
-			[connection logIfNeeded: retval];
-			[mDelegate performSelector: mCallback withObject: retval];
-		}
-		else
+		retval = [PGTSResultSet resultWithPGresult: result connection: connection];
+		[retval setIdentifier: mIdentifier];
+		[retval setUserInfo: mUserInfo];
+		[mDelegate performSelector: mCallback withObject: retval];
+	}
+	else
+	{
+		@synchronized (self)
 		{
 			mFinished = YES;
-			
-			if (BASETEN_POSTGRESQL_FINISH_QUERY_ENABLED ())
-				BASETEN_POSTGRESQL_FINISH_QUERY ();
 		}
+		
+		if (BASETEN_POSTGRESQL_FINISH_QUERY_ENABLED ())
+			BASETEN_POSTGRESQL_FINISH_QUERY ();
 	}
+	
+	if (result)
+		[connection logResultIfNeeded: retval];
+	
     return retval;
 }
 

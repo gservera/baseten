@@ -32,6 +32,8 @@
 #import "PGTSConnectionPrivate.h"
 #import "PGTSProbes.h"
 #import "BXHOM.h"
+#import "BXLogger.h"
+#import "BXSocketDescriptor.h"
 
 
 @implementation PGTSQuery
@@ -191,7 +193,7 @@ CopyParameterString (int nParams, char const * const * const values, int const *
 		if (! (i == nParams - 1))
 			[desc appendString: @", "];
 	}
-	char* retval = strdup ([desc UTF8String] ?: "");
+	char *retval = strdup ([desc UTF8String] ?: "");
 	
 	//For GC.
 	[desc self];
@@ -200,20 +202,21 @@ CopyParameterString (int nParams, char const * const * const values, int const *
 
 
 - (int) sendQuery: (PGTSConnection *) connection
-{    
+{
     int retval = 0;
 	//For some reason, libpq doesn't receive signal or EPIPE from send if network is down. Hence we check it here.
-	@synchronized (self)
+	if ([connection canSend])
 	{
-		if ([connection canSend])
+		ExpectR ([[connection socketDescriptor] isLocked], retval);
+		@synchronized (self)
 		{
 			NSUInteger nParams = [self parameterCount];
 			NSArray* parameterObjects = [[mParameters BX_Collect] PGTSParameter: connection];
 			
-			const char** paramValues  = calloc (nParams, sizeof (char *));
-			Oid*   paramTypes   = calloc (nParams, sizeof (Oid));
-			int*   paramLengths = calloc (nParams, sizeof (int));
-			int*   paramFormats = calloc (nParams, sizeof (int));
+			char const **paramValues = calloc (nParams, sizeof (char *));
+			Oid *paramTypes   = calloc (nParams, sizeof (Oid));
+			int *paramLengths = calloc (nParams, sizeof (int));
+			int *paramFormats = calloc (nParams, sizeof (int));
 			
 			for (int i = 0; i < nParams; i++)
 			{
@@ -230,8 +233,8 @@ CopyParameterString (int nParams, char const * const * const values, int const *
 			
 			if (BASETEN_POSTGRESQL_SEND_QUERY_ENABLED ())
 			{
-				char* params = CopyParameterString (nParams, paramValues, paramFormats);
-				char* query = strdup ([mQuery UTF8String] ?: "");
+				char *params = CopyParameterString (nParams, paramValues, paramFormats);
+				char *query = strdup ([mQuery UTF8String] ?: "");
 				BASETEN_POSTGRESQL_SEND_QUERY (connection, retval, query, params);
 				free (query);
 				free (params);
@@ -247,9 +250,6 @@ CopyParameterString (int nParams, char const * const * const values, int const *
 				retval = PQsendQuery ([connection pgConnection], [mQuery UTF8String]);
 			}
 			
-			if ([connection logsQueries])
-				[(id) [connection delegate] PGTSConnection: connection sentQuery: self];
-			
 			free (paramTypes);
 			free (paramValues);
 			free (paramLengths);
@@ -258,6 +258,8 @@ CopyParameterString (int nParams, char const * const * const values, int const *
 			//For GC.
 			[parameterObjects self];
 		}
+		
+		[connection logQueryIfNeeded: self];
 	}
     return retval;
 }

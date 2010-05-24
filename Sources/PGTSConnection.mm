@@ -367,6 +367,17 @@ NoticeReceiver (void *connectionPtr, PGresult const *notice)
 }
 
 
+- (BXSocketDescriptor *) socketDescriptor
+{
+	id retval = nil;
+	@synchronized (self)
+	{
+		retval = [[mSocketDescriptor retain] autorelease];
+	}
+	return retval;
+}
+
+
 - (PGresult *) execQuery: (const char *) query
 {
 	PGresult *res = NULL;
@@ -377,9 +388,6 @@ NoticeReceiver (void *connectionPtr, PGresult const *notice)
 
 		if ([self canSend])
 		{
-			if (mLogsQueries)
-				[mDelegate PGTSConnection: self sentQueryString: query];
-			
 			res = PQexec (mConnection, query);
 			if (BASETEN_POSTGRESQL_SEND_QUERY_ENABLED ())
 			{
@@ -389,6 +397,10 @@ NoticeReceiver (void *connectionPtr, PGresult const *notice)
 			}
 		}
 	}
+	
+	if (res && mLogsQueries)
+		[mDelegate PGTSConnection: self sentQueryString: query];
+	
 	return res;
 }
 
@@ -424,13 +436,17 @@ NoticeReceiver (void *connectionPtr, PGresult const *notice)
 }
 
 
-- (void) logIfNeeded: (PGTSResultSet *) res
+- (void) logQueryIfNeeded: (PGTSQuery *) query
 {
-	@synchronized (self)
-	{
-		if (mLogsQueries)
-			[mDelegate PGTSConnection: self receivedResultSet: res];
-	}
+	if (mLogsQueries)
+		[mDelegate PGTSConnection: self sentQuery: query];
+}
+
+
+- (void) logResultIfNeeded: (PGTSResultSet *) res
+{
+	if (mLogsQueries)
+		[mDelegate PGTSConnection: self receivedResultSet: res];
 }
 
 
@@ -498,38 +514,40 @@ NoticeReceiver (void *connectionPtr, PGresult const *notice)
 
 - (void) _processNotifications
 {
+	NSMutableArray *notifications = nil;
+	
 	@synchronized (self)
 	{
-		//Notifications may cause methods to be called. They might require a specific order
-		//(e.g. self-updating collections in BaseTen), which breaks if this is called recursively.
-		//Hence we prevent it.
-		if (! mProcessingNotifications)
+		PGnotify* pgNotification = NULL;
+		while ((pgNotification = PQnotifies (mConnection)))
 		{
-			mProcessingNotifications = YES;
-			PGnotify* pgNotification = NULL;
-			while ((pgNotification = PQnotifies (mConnection)))
-			{
-				NSString* name = [NSString stringWithUTF8String: pgNotification->relname];
-				PGTSNotification* notification = [[[PGTSNotification alloc] init] autorelease];
-				[notification setBackendPID: pgNotification->be_pid];
-				[notification setNotificationName: name];
-				BASETEN_POSTGRESQL_RECEIVED_NOTIFICATION (self, pgNotification->be_pid, pgNotification->relname, pgNotification->extra);		
-				PQfreeNotify (pgNotification);
-				[mDelegate PGTSConnection: self gotNotification: notification];
-			}    
-			mProcessingNotifications = NO;
-		}
+			if (! notifications)
+				notifications = [NSMutableArray array];
+			
+			NSString* name = [NSString stringWithUTF8String: pgNotification->relname];
+			PGTSNotification* notification = [[PGTSNotification alloc] init];
+			[notification setBackendPID: pgNotification->be_pid];
+			[notification setNotificationName: name];
+			BASETEN_POSTGRESQL_RECEIVED_NOTIFICATION (self, pgNotification->be_pid, pgNotification->relname, pgNotification->extra);		
+			PQfreeNotify (pgNotification);
+			
+			[notifications addObject: notification];
+			[notification release];
+		}    
 	}
+	
+	for (PGTSNotification *notification in notifications)
+		[mDelegate PGTSConnection: self gotNotification: notification];
 }
 
 
 - (int) _sendNextQuery
 {
 	int retval = -1;
+	ExpectR ([mSocketDescriptor isLocked], retval);
+
 	@synchronized (self)
 	{
-		ExpectR ([mSocketDescriptor isLocked], retval);
-
 		PGTSQueryDescription* desc = [mQueue objectAtIndex: 0];
 		if (nil != desc)
 		{

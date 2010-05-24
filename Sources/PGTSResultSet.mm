@@ -128,14 +128,14 @@ ErrorUserInfoKey (char fieldCode)
 
 @interface PGTSConcreteResultSet : PGTSResultSet
 {
-    PGTSConnection* mConnection; //Weak
-	PGresult* mResult;
+    PGTSConnection *mConnection;
+	PGresult *mResult;
 	int mCurrentRow;
     int mFields;
     int mTuples;
     NSInteger mIdentifier;
-    FieldIndexMap* mFieldIndices;
-    FieldClassMap* mFieldClasses;
+    FieldIndexMap *mFieldIndices;
+    FieldClassMap *mFieldClasses;
     Class mRowClass;
 	id mUserInfo;
     
@@ -167,8 +167,14 @@ ErrorUserInfoKey (char fieldCode)
 
 - (PGTSConnection *) connection
 {
-    return mConnection;
+	id retval = nil;
+	@synchronized (self)
+	{
+		retval = [[mConnection retain] autorelease];
+	}
+    return retval;
 }
+
 
 - (void) dealloc
 {
@@ -185,6 +191,7 @@ ErrorUserInfoKey (char fieldCode)
     [super dealloc];
 }
 
+
 - (void) finalize
 {
 	PQclear (mResult);
@@ -193,16 +200,24 @@ ErrorUserInfoKey (char fieldCode)
     [super finalize];
 }
 
+
 - (NSString *) description
 {
     return [NSString stringWithFormat: @"<%@ (%p) cr: %d t: %d f: %d kc: %d ok: %d>",
         [self class], self, mCurrentRow, mTuples, mFields, mKnowsFieldClasses, [self querySucceeded]];
 }
 
+
 - (ExecStatusType) status
 {
-	return PQresultStatus (mResult);
+	ExecStatusType retval = PGRES_EMPTY_QUERY;
+	@synchronized (self)
+	{
+		retval = PQresultStatus (mResult);
+	}
+	return retval;
 }
+
 
 - (BOOL) querySucceeded
 {
@@ -210,10 +225,12 @@ ErrorUserInfoKey (char fieldCode)
     return (PGRES_FATAL_ERROR != s && PGRES_BAD_RESPONSE != s);
 }
 
+
 + (id) resultWithPGresult: (PGresult *) aResult connection: (PGTSConnection *) aConnection
 {
 	return [[[self alloc] initWithPGResult: aResult connection: aConnection] autorelease];
 }
+
 
 - (id) initWithPGResult: (PGresult *) result connection: (PGTSConnection *) aConnection;
 {
@@ -244,126 +261,170 @@ ErrorUserInfoKey (char fieldCode)
 	return self;
 }
 
+
 - (void) setDeterminesFieldClassesAutomatically: (BOOL) aBool
 {
-    mDeterminesFieldClassesFromDB = aBool;
-}
-
-- (void) fetchFieldDescriptions
-{
-	mKnowsFieldClasses = YES;
-    
-#if 0
-	Oid* oidVector = (Oid *) calloc (mFields + 1, sizeof (Oid));
-	for (int i = 0; i < mFields; i++)
-		oidVector [i] = PQftype (mResult, i);
-	oidVector [mFields] = InvalidOid;
-#endif
-
-	PGTSDatabaseDescription* db = [mConnection databaseDescription];
-#if 0
-	//Warm-up the cache.
-	[db typesWithOids: oidVector];
-	free (oidVector);
-	oidVector = NULL;
-#endif
-	
-    NSDictionary* deserializationDictionary = [mConnection deserializationDictionary];
-    for (int i = 0; i < mFields; i++)
-    {
-        PGTSTypeDescription* type = [db typeWithOid: PQftype (mResult, i)];
-        NSString* name = [type name];
-		Class aClass = [deserializationDictionary objectForKey: name];
-		
-		if (! aClass)
-		{
-			//Check for arrays. Other types that satisfy the condition (like int2vector and oidvector) 
-			//should have an entry in deserializationDictionary, if they are used.
-			if (-1 == [type length] && InvalidOid != [type elementOid])
-			{
-				aClass = [NSArray class];
-			}
-			else
-			{
-				//Handle other types by kind.
-				switch ([type kind]) 
-				{
-					case 'e':
-						aClass = [NSString class];
-						break;
-						
-					case 'c':
-						//FIXME: handle composite types.
-					case 'd':
-						//FIXME: handle domains.
-					case 'p':
-						//FIXME: handle pseudo-types. (On the other hand, this shouldn't get reached.)
-					case 'b':
-					default:
-						aClass = [NSData class];					
-						break;
-				}				
-			}
-		}
-		
-		[self setClass: aClass forFieldAtIndex: i];
+	@synchronized (self)
+	{
+	    mDeterminesFieldClassesFromDB = aBool;
 	}
 }
 
-- (int) numberOfFields
+
+- (void) fetchFieldDescriptions
 {
-	return mFields;
+	PGTSDatabaseDescription* db = [mConnection databaseDescription];
+	NSDictionary* deserializationDictionary = [mConnection deserializationDictionary];
+	
+	@synchronized (self)
+	{
+		mKnowsFieldClasses = YES;
+		for (int i = 0; i < mFields; i++)
+		{
+			PGTSTypeDescription* type = [db typeWithOid: PQftype (mResult, i)];
+			NSString* name = [type name];
+			Class aClass = [deserializationDictionary objectForKey: name];
+			
+			if (! aClass)
+			{
+				//Check for arrays. Other types that satisfy the condition (like int2vector and oidvector) 
+				//should have an entry in deserializationDictionary, if they are used.
+				if (-1 == [type length] && InvalidOid != [type elementOid])
+				{
+					aClass = [NSArray class];
+				}
+				else
+				{
+					//Handle other types by kind.
+					switch ([type kind]) 
+					{
+						case 'e':
+							aClass = [NSString class];
+							break;
+							
+						case 'c':
+							//FIXME: handle composite types.
+						case 'd':
+							//FIXME: handle domains.
+						case 'p':
+							//FIXME: handle pseudo-types. (On the other hand, this shouldn't get reached.)
+						case 'b':
+						default:
+							aClass = [NSData class];					
+							break;
+					}				
+				}
+			}
+			
+			[self setClass: aClass forFieldAtIndex: i];
+		}
+	}
 }
 
-- (NSArray *) resultAsArray
+
+- (int) numberOfFields
 {
-	NSMutableArray* retval = [NSMutableArray arrayWithCapacity: [self count]];
-	[self goBeforeFirstRow];
-	while ([self advanceRow]) 
+	int retval = 0;
+	@synchronized (self)
 	{
-		[retval addObject: [self currentRowAsDictionary]];
+		retval = mFields;
 	}
 	return retval;
 }
 
+
+- (NSArray *) resultAsArray
+{
+	NSMutableArray* retval = [NSMutableArray arrayWithCapacity: [self count]];
+	@synchronized (self)
+	{
+		[self goBeforeFirstRow];
+		while ([self advanceRow]) 
+		{
+			[retval addObject: [self currentRowAsDictionary]];
+		}
+	}
+	return retval;
+}
+
+
 - (NSInteger) identifier
 {
-    return mIdentifier;
+	NSInteger retval = 0;
+	@synchronized (self)
+	{
+		retval = mIdentifier;
+	}
+    return retval;
 }
+
 
 - (void) setIdentifier: (NSInteger) anIdentifier
 {
-    mIdentifier = anIdentifier;
+	@synchronized (self)
+	{
+	    mIdentifier = anIdentifier;
+	}
 }
+
 
 - (NSString *) errorString
 {
-	return [NSString stringWithUTF8String: PQresultErrorMessage (mResult)];
+	NSString *retval = nil;
+	@synchronized (self)
+	{
+		retval = [NSString stringWithUTF8String: PQresultErrorMessage (mResult)];
+	}
+	return retval;
 }
+
 
 - (NSError *) error
 {
-	return [[self class] errorForPGresult: mResult];
+	NSError *retval = nil;
+	@synchronized (self)
+	{
+		[[self class] errorForPGresult: mResult];
+	}
+	return retval;
 }
+
 	
 - (PGresult *) PGresult
 {
-	return mResult;
+	PGresult *retval = NULL;
+	@synchronized (self)
+	{
+		retval = mResult;
+	}
+	return retval;
 }
 @end
 
 
-@implementation PGTSConcreteResultSet (RowAccessors)
 
+@implementation PGTSConcreteResultSet (RowAccessors)
 - (BOOL) isAtEnd
 {
-    return (mCurrentRow == mTuples - 1);
+	BOOL retval = NO;
+	@synchronized (self)
+	{
+		retval = (mCurrentRow == mTuples - 1);
+	}
+    return retval;
 }
+
 
 - (int) currentRow
 {
-    return mCurrentRow;
+	int retval = 0;
+	@synchronized (self)
+	{
+		retval = mCurrentRow;
+	}
+    return retval;
 }
+
 
 - (id <PGTSResultRowProtocol>) currentRowAsObject
 {
@@ -376,10 +437,16 @@ ErrorUserInfoKey (char fieldCode)
     return retval;
 }
 
+
 - (void) setRowClass: (Class) aClass
 {
     if ([aClass conformsToProtocol: @protocol (PGTSResultRowProtocol)])
-        mRowClass = aClass;
+	{
+		@synchronized (self)
+		{
+	        mRowClass = aClass;
+		}
+	}
     else
     {
         //FIXME: localize me.
@@ -389,25 +456,29 @@ ErrorUserInfoKey (char fieldCode)
     }
 }
 
+
 - (void) setValuesFromRow: (int) rowIndex target: (id) targetObject nullPlaceholder: (id) nullPlaceholder
 {
-    FieldIndexMap::const_iterator iterator = mFieldIndices->begin ();
-    while (mFieldIndices->end () != iterator)
-    {
-        NSString* fieldname = iterator->first;
-		int index = iterator->second;
-		id value = [self valueForFieldAtIndex: index row: rowIndex];
-        if (! value)
-            value = nullPlaceholder;
-        @try
-        {
-            [targetObject setValue: value forKey: fieldname];
-        }
-        @catch (id e)
-        {
-        }
-        iterator++;
-    }
+	@synchronized (self)
+	{
+		FieldIndexMap::const_iterator iterator = mFieldIndices->begin ();
+		while (mFieldIndices->end () != iterator)
+		{
+			NSString* fieldname = iterator->first;
+			int index = iterator->second;
+			id value = [self valueForFieldAtIndex: index row: rowIndex];
+			if (! value)
+				value = nullPlaceholder;
+			@try
+			{
+				[targetObject setValue: value forKey: fieldname];
+			}
+			@catch (id e)
+			{
+			}
+			iterator++;
+		}
+	}
 }
 
 /**
@@ -417,10 +488,15 @@ ErrorUserInfoKey (char fieldCode)
  */
 - (NSDictionary *) currentRowAsDictionary
 {
-    NSMutableDictionary* retval = [NSMutableDictionary dictionaryWithCapacity: mFields];
-    [self setValuesFromRow: mCurrentRow target: retval nullPlaceholder: [NSNull null]];
+    NSMutableDictionary* retval = nil;
+	@synchronized (self)
+	{
+		retval = [NSMutableDictionary dictionaryWithCapacity: mFields];
+		[self setValuesFromRow: mCurrentRow target: retval nullPlaceholder: [NSNull null]];
+	}
     return retval;
 }
+
 
 /** \brief Move to the beginning of the result set */
 - (void) goBeforeFirstRow
@@ -428,16 +504,21 @@ ErrorUserInfoKey (char fieldCode)
     [self goToRow: -1];
 }
 
+
 - (BOOL) goToRow: (int) aRow
 {
     BOOL retval = NO;
-	if (-1 <= aRow && aRow < mTuples)
+	@synchronized (self)
 	{
-		mCurrentRow = aRow;
-		retval = YES;
+		if (-1 <= aRow && aRow < mTuples)
+		{
+			mCurrentRow = aRow;
+			retval = YES;
+		}
 	}
 	return retval;
 }
+
 
 - (void) goBeforeFirstRowUsingFunction: (NSComparisonResult (*)(PGTSResultSet*, void*)) comparator context: (void *) context
 								   low: (const int) low high: (const int) high
@@ -471,12 +552,15 @@ ErrorUserInfoKey (char fieldCode)
 
 - (void) goBeforeFirstRowUsingFunction: (NSComparisonResult (*)(PGTSResultSet*, void*)) comparator context: (void *) context
 {
-	if (! mKnowsFieldClasses && mDeterminesFieldClassesFromDB)
-        [self fetchFieldDescriptions];
-	
-	//low is -1 because the first row might apply and -advanceRow will probably will be called after this method.
-	//high is mTuples (instead of mTuples - 1) in case even the last row doesn't apply and we set it to current.
-	[self goBeforeFirstRowUsingFunction: comparator context: context low: -1 high: mTuples];
+	@synchronized (self)
+	{
+		if (! mKnowsFieldClasses && mDeterminesFieldClassesFromDB)
+			[self fetchFieldDescriptions];
+		
+		//low is -1 because the first row might apply and -advanceRow will probably will be called after this method.
+		//high is mTuples (instead of mTuples - 1) in case even the last row doesn't apply and we set it to current.
+		[self goBeforeFirstRowUsingFunction: comparator context: context low: -1 high: mTuples];
+	}
 }
 
 
@@ -501,49 +585,78 @@ KVCompare (PGTSResultSet* res, void* ctx)
 {
 	struct kv_compare_st ctx = {columnName, value};
 	[self goBeforeFirstRowUsingFunction: &KVCompare context: &ctx];
-	ExpectV (mCurrentRow == -1 || NSOrderedAscending == [[self valueForKey: columnName row: mCurrentRow] compare: value]);
-	ExpectV (mCurrentRow == mTuples - 1 || NSOrderedAscending != [[self valueForKey: columnName row: mCurrentRow + 1] compare: value]);
+	@synchronized (self)
+	{
+		ExpectV (mCurrentRow == -1 || NSOrderedAscending == [[self valueForKey: columnName row: mCurrentRow] compare: value]);
+		ExpectV (mCurrentRow == mTuples - 1 || NSOrderedAscending != [[self valueForKey: columnName row: mCurrentRow + 1] compare: value]);
+	}
 }
+
 
 - (int) count
 {
-	return mTuples;
-}
-
-- (unsigned long long) numberOfRowsAffectedByCommand
-{
-	return strtoull (PQcmdTuples (mResult), NULL, 10);
-}
-
-- (BOOL) advanceRow
-{
-    BOOL retval = NO;
-    
-    if (! mKnowsFieldClasses && mDeterminesFieldClassesFromDB)
-        [self fetchFieldDescriptions];
-    
-    //Row numbering is zero-based.
-    //The number is initially -1. 
-	if (mCurrentRow < mTuples - 1)
+	int retval = 0;
+	@synchronized (self)
 	{
-        mCurrentRow++;
-		retval = YES;
+		retval = mTuples;
 	}
 	return retval;
 }
 
+
+- (unsigned long long) numberOfRowsAffectedByCommand
+{
+	unsigned long long retval = 0;
+	@synchronized (self)
+	{
+		retval = strtoull (PQcmdTuples (mResult), NULL, 10);
+	}
+	return retval;
+}
+
+
+- (BOOL) advanceRow
+{
+    BOOL retval = NO;
+	
+	@synchronized (self)
+	{
+		if (! mKnowsFieldClasses && mDeterminesFieldClassesFromDB)
+			[self fetchFieldDescriptions];
+		
+		//Row numbering is zero-based.
+		//The number is initially -1. 
+		if (mCurrentRow < mTuples - 1)
+		{
+			mCurrentRow++;
+			retval = YES;
+		}
+	}
+	return retval;
+}
+
+
 - (void) setUserInfo: (id) userInfo
 {
-	if (mUserInfo != userInfo)
+	@synchronized (self)
 	{
-		[mUserInfo release];
-		mUserInfo = [userInfo retain];
+		if (mUserInfo != userInfo)
+		{
+			[mUserInfo release];
+			mUserInfo = [userInfo retain];
+		}
 	}
 }
 
+
 - (id) userInfo
 {
-	return mUserInfo;
+	id retval = nil;
+	@synchronized (self)
+	{
+		retval = [[mUserInfo retain] autorelease];
+	}
+	return retval;
 }
 @end
 
@@ -556,18 +669,26 @@ KVCompare (PGTSResultSet* res, void* ctx)
  */
 - (BOOL) setClass: (Class) aClass forKey: (NSString *) aName
 {
-    return [self setClass: aClass forFieldAtIndex: (* mFieldIndices) [aName]];
+    BOOL retval = NO;
+	@synchronized (self)
+	{
+		retval = [self setClass: aClass forFieldAtIndex: (* mFieldIndices) [aName]];
+	}
+	return retval;
 }
 
 
 - (BOOL) setClass: (Class) aClass forFieldAtIndex: (int) fieldIndex
 {
     BOOL retval = NO;
-    if (fieldIndex < mFields)
-    {
-        (* mFieldClasses) [fieldIndex] = aClass;
-        retval = YES;
-    }
+	@synchronized (self)
+	{
+		if (fieldIndex < mFields)
+		{
+			(* mFieldClasses) [fieldIndex] = aClass;
+			retval = YES;
+		}
+	}
     return retval;
 }
 /** @} */
@@ -576,49 +697,70 @@ KVCompare (PGTSResultSet* res, void* ctx)
 - (id) valueForFieldAtIndex: (int) columnIndex row: (int) rowIndex
 {
     id retval = nil;
-    if (! ((columnIndex < mFields) && (-1 < rowIndex) && (rowIndex < mTuples)))
-    {
-		[NSException raise: kPGTSFieldNotFoundException format: @"No field for index %d.", columnIndex];
-    }
-    
-    if (! PQgetisnull (mResult, rowIndex, columnIndex))
-    {
-        Class objectClass = (* mFieldClasses) [columnIndex];
-        if (! objectClass)
-            objectClass = [NSData class];
-        char* value = PQgetvalue (mResult, rowIndex, columnIndex);
-        PGTSTypeDescription* type = [[mConnection databaseDescription] typeWithOid: PQftype (mResult, columnIndex)];
-        retval = [[objectClass copyForPGTSResultSet: self withCharacters: value type: type columnIndex: columnIndex] autorelease];
-    }
+	PGTSDatabaseDescription *db = [mConnection databaseDescription];
+	@synchronized (self)
+	{
+		if (! ((columnIndex < mFields) && (-1 < rowIndex) && (rowIndex < mTuples)))
+		{
+			[NSException raise: kPGTSFieldNotFoundException format: @"No field for index %d.", columnIndex];
+		}
+		
+		if (! PQgetisnull (mResult, rowIndex, columnIndex))
+		{
+			Class objectClass = (* mFieldClasses) [columnIndex];
+			if (! objectClass)
+				objectClass = [NSData class];
+			char* value = PQgetvalue (mResult, rowIndex, columnIndex);
+			PGTSTypeDescription* typeDesc = [db typeWithOid: PQftype (mResult, columnIndex)];
+			retval = [[objectClass copyForPGTSResultSet: self withCharacters: value type: typeDesc columnIndex: columnIndex] autorelease];
+		}
+	}
     return retval;
 }
 
+
 - (id) valueForFieldAtIndex: (int) columnIndex
 {
-    return [self valueForFieldAtIndex: columnIndex row: mCurrentRow];
+	id retval = nil;
+	@synchronized (self)
+	{
+		retval = [self valueForFieldAtIndex: columnIndex row: mCurrentRow];
+	}
+    return retval;
 }
+
 
 - (id) valueForKey: (NSString *) aName row: (int) rowIndex
 {
-    FieldIndexMap::const_iterator iter = mFieldIndices->find (aName);
-    if (mFieldIndices->end () == iter)
-    {
-        @throw [NSException exceptionWithName: kPGTSFieldNotFoundException reason: nil 
-                                     userInfo: [NSDictionary dictionaryWithObjectsAndKeys:
-                                         aName, kPGTSFieldnameKey,
-                                         self,  kPGTSResultSetKey,
-                                         nil]];
-    }
-    int columnIndex = iter->second;
-    return [self valueForFieldAtIndex: columnIndex row: rowIndex];
+	id retval = nil;
+	@synchronized (self)
+	{
+		FieldIndexMap::const_iterator iter = mFieldIndices->find (aName);
+		if (mFieldIndices->end () == iter)
+		{
+			@throw [NSException exceptionWithName: kPGTSFieldNotFoundException reason: nil 
+										 userInfo: [NSDictionary dictionaryWithObjectsAndKeys:
+													aName, kPGTSFieldnameKey,
+													self,  kPGTSResultSetKey,
+													nil]];
+		}
+		int columnIndex = iter->second;
+		retval = [self valueForFieldAtIndex: columnIndex row: rowIndex];
+	}
+    return retval;
 }
 
 - (id) valueForKey: (NSString *) aName
 {
-    return [self valueForKey: aName row: mCurrentRow];
+	id retval = nil;
+	@synchronized (self)
+	{
+		retval = [self valueForKey: aName row: mCurrentRow];
+	}
+    return retval;
 }
-
 @end
+
 
 
 @implementation PGTSResultSet
@@ -626,6 +768,7 @@ KVCompare (PGTSResultSet* res, void* ctx)
 {
     return [[[PGTSConcreteResultSet alloc] initWithPGResult: aResult connection: aConnection] autorelease];
 }
+
 
 + (NSError *) errorForPGresult: (PGresult *) result
 {
