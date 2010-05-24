@@ -181,7 +181,7 @@ NextIdentifier ()
 	id retval = nil;
 	@synchronized (self)
 	{
-		retval = mDelegate;
+		retval = [[mDelegate retain] autorelease];
 	}
 	return retval;
 }
@@ -208,7 +208,7 @@ NextIdentifier ()
 	PGTSQuery *retval = nil;
 	@synchronized (self)
 	{
-		retval = mQuery;
+		retval = [[mQuery retain] autorelease];
 	}
 	return retval;
 }

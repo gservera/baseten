@@ -125,7 +125,7 @@
 	id <BXSocketDescriptorDelegate> retval = nil;
 	@synchronized (self)
 	{
-		retval = mDelegate;
+		retval = [[mDelegate retain] autorelease];
 	}
 	return retval;
 }

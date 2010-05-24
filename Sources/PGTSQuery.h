@@ -29,15 +29,18 @@
 #import <Foundation/Foundation.h>
 #import <BaseTen/libpq-fe.h>
 
+
 @class PGTSConnection;
 @class PGTSQuery;
 @class PGTSAbstractParameterQuery;
+
 
 
 @protocol PGTSQueryVisitor <NSObject>
 - (id) visitQuery: (PGTSQuery *) query;
 - (id) visitParameterQuery: (PGTSAbstractParameterQuery *) query;
 @end
+
 
 
 @interface PGTSQuery : NSObject
@@ -49,6 +52,7 @@
 @end
 
 
+
 @interface PGTSAbstractParameterQuery : PGTSQuery
 {
 	NSArray* mParameters;
@@ -57,6 +61,7 @@
 - (void) setParameters: (NSArray *) anArray;
 - (NSUInteger) parameterCount;
 @end
+
 
 
 @interface PGTSParameterQuery : PGTSAbstractParameterQuery

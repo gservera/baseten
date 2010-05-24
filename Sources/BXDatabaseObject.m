@@ -514,7 +514,7 @@ DatabaseError (NSInteger errorCode, NSString* localizedTitle, NSString* localize
     id retval = nil;
     @synchronized (mValues)
     {
-        retval = [mValues valueForKey: aKey];
+        retval = [[[mValues valueForKey: aKey] retain] autorelease];
     }
     return retval;
 }
@@ -793,9 +793,9 @@ DatabaseError (NSInteger errorCode, NSString* localizedTitle, NSString* localize
     id retval = nil;
     @synchronized (mValues)
     {
-        retval = [mValues copy];
+        retval = [[mValues copy] autorelease];
     }
-    return [retval autorelease];
+    return retval;
 }
 
 /**

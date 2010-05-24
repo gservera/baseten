@@ -69,7 +69,7 @@
 	NSArray *retval = nil;
 	@synchronized (self)
 	{
-		retval = mParameters;
+		retval = [[mParameters copy] autorelease];
 	}
 	return retval;
 }
@@ -120,7 +120,7 @@
 	NSString *retval = nil;
 	@synchronized (self)
 	{
-		retval = mQuery;
+		retval = [[mQuery retain] autorelease];
 	}
 	return retval;
 }
