@@ -27,7 +27,7 @@
 //
 
 #import "PGTS.h"
-#import "PGTSHOM.h"
+#import "BXHOM.h"
 #import "PGTSDeleteRule.h"
 #import "PGTSConstants.h"
 #import "PGTSOids.h"
@@ -157,7 +157,7 @@ ReturnedFieldsByCallback (BXPGQueryBuilder* queryBuilder, int (* filterFunction)
 	BXPGFromItem* fromItem = [queryBuilder primaryRelation];
 	BXEntityDescription* entity = [fromItem entity];
 	NSDictionary* attrs = [entity attributesByName];
-	NSArray* filteredAttrs = [attrs PGTSValueSelectFunction: filterFunction];
+	NSArray* filteredAttrs = [attrs BX_ValueSelectFunction: filterFunction];
 	return ReturnedFields (queryBuilder, filteredAttrs, prependAlias);
 }
 
@@ -763,7 +763,7 @@ error:
 		[mTransactionHandler checkSuperEntities: entity];
 		
 		NSArray* objectIDs = ObjectIDs (entity, res);
-		NSDictionary* values = (id) [[valueDict PGTSKeyCollectD] name];
+		NSDictionary* values = (id) [[valueDict BX_KeyCollectD] name];
 		BXEnumerate (currentID, e, [objectIDs objectEnumerator])
 		{
 			BXDatabaseObject* object = [mContext registeredObjectWithID: currentID];

@@ -31,7 +31,7 @@
 #import "PGTSConnection.h"
 #import "PGTSConnectionPrivate.h"
 #import "PGTSProbes.h"
-#import "PGTSHOM.h"
+#import "BXHOM.h"
 
 
 @implementation PGTSQuery
@@ -208,7 +208,7 @@ CopyParameterString (int nParams, char const * const * const values, int const *
 		if ([connection canSend])
 		{
 			NSUInteger nParams = [self parameterCount];
-			NSArray* parameterObjects = [[mParameters PGTSCollect] PGTSParameter: connection];
+			NSArray* parameterObjects = [[mParameters BX_Collect] PGTSParameter: connection];
 			
 			const char** paramValues  = calloc (nParams, sizeof (char *));
 			Oid*   paramTypes   = calloc (nParams, sizeof (Oid));

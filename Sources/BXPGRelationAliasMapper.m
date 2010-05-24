@@ -30,7 +30,7 @@
 #import "BXEntityDescription.h"
 #import "BXPGFromItem.h"
 #import "BXRelationshipDescription.h"
-#import "PGTSHOM.h"
+#import "BXHOM.h"
 #import "BXManyToManyRelationshipDescription.h"
 #import "BXRelationshipDescriptionPrivate.h"
 #import "BXForeignKey.h"
@@ -154,7 +154,7 @@ BXPGConditions (NSString* alias1, NSString* alias2, id <BXForeignKey> fkey, BOOL
 	NSString* retval = nil;
 
 	mIsFirstInUpdate = YES;
-	NSArray* components = (id) [[mFromItems PGTSCollect] BXPGVisitFromItem: self];
+	NSArray* components = (id) [[mFromItems BX_Collect] BXPGVisitFromItem: self];
 	if (0 < [components count])
 		retval = [components componentsJoinedByString: @" "];
 	mIsFirstInUpdate = NO;

@@ -29,7 +29,7 @@
 #import "BXPGFunctionExpressionEvaluator.h"
 #import "BXPGExpressionValueType.h"
 #import "NSExpression+PGTSAdditions.h"
-#import "PGTSHOM.h"
+#import "BXHOM.h"
 #import "BXPGPredefinedFunctionExpressionValueType.h"
 #import "BXEnumerate.h"
 #import <map>
@@ -158,7 +158,7 @@ end:
 	if (function->fc_variable_argument_count)
 	{
 		NSArray* arguments = [valueType arguments];
-		arguments = (id) [[arguments PGTSCollect] expressionSQL: visitor];
+		arguments = (id) [[arguments BX_Collect] expressionSQL: visitor];
 		[invocation setArgument: &arguments atIndex: 2];
 	}
 	else if (0 < function->fc_arguments)

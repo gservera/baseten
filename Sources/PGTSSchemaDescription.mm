@@ -27,7 +27,7 @@
 //
 
 #import "PGTSSchemaDescription.h"
-#import "PGTSHOM.h"
+#import "BXHOM.h"
 #import "PGTSTableDescription.h"
 #import "PGTSCollections.h"
 #import "BXLogger.h"

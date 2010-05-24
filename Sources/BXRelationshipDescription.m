@@ -36,7 +36,7 @@
 #import "BXSetRelationProxy.h"
 #import "BXDatabaseObjectPrivate.h"
 #import "BXLogger.h"
-#import "PGTSHOM.h"
+#import "BXHOM.h"
 #import "BXPropertyDescriptionPrivate.h"
 #import "BXProbes.h"
 #import "BXAttributeDescriptionPrivate.h"
@@ -391,7 +391,7 @@ AddRelToAttribute (NSString* srcKey, NSString* dstKey, void* context)
 		if ([self isToMany])
 			retval = res;
 		else
-			retval = [res PGTSAny];
+			retval = [res BX_Any];
 	}
 	
 	if (! retval)

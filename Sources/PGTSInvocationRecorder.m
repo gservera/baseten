@@ -27,7 +27,7 @@
 //
 
 #import "PGTSInvocationRecorder.h"
-#import "PGTSHOM.h"
+#import "BXHOM.h"
 
 @class PGTSInvocationRecorder;
 
@@ -268,6 +268,6 @@ pgts_unrecognized_selector ()
 {
 	[self setCallback: callback];
 	[self setCallbackTarget: target];
-	[self setTarget: [mCallbackTarget PGTSAny]];
+	[self setTarget: [mCallbackTarget BX_Any]];
 }
 @end

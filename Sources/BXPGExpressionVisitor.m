@@ -26,7 +26,7 @@
 // $Id$
 //
 
-#import "PGTSHOM.h"
+#import "BXHOM.h"
 #import "BXAttributeDescription.h"
 #import "BXPGFromItem.h"
 #import "BXManyToManyRelationshipDescription.h"

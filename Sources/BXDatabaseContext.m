@@ -33,7 +33,7 @@
 
 #import "PGTSCFScannedMemoryAllocator.h"
 #import "PGTSCollections.h"
-#import "PGTSHOM.h"
+#import "BXHOM.h"
 
 #import "BXDatabaseContext.h"
 #import "BXDatabaseContextPrivate.h"
@@ -1821,7 +1821,7 @@ ModTypeToObject (enum BXModificationType value)
 	{
 		if ([NSNull null] != currentObject)
 		{
-			id targets = [[rels PGTSCollectDK] registeredTargetFor: currentObject fireFault: shouldFire]; 
+			id targets = [[rels BX_CollectDK] registeredTargetFor: currentObject fireFault: shouldFire]; 
 			if (targets)
 				[targetsByObject setObject: targets forKey: currentObject];
 		}
@@ -2297,7 +2297,7 @@ ModTypeToObject (enum BXModificationType value)
 			if (nil != excludedFields)
 			{
 				excludedFields = [entity attributes: excludedFields];
-				[[excludedFields PGTSDo] setExcluded: YES];
+				[[excludedFields BX_Do] setExcluded: YES];
 			}
 			
 			if (BASETEN_BEGIN_FETCH_ENABLED ())
@@ -2754,7 +2754,7 @@ bail:
 	NSMutableDictionary* relsByEntity = [NSMutableDictionary dictionary];
 	NSMutableDictionary* oldTargetsByObject = [NSMutableDictionary dictionary];
 	NSMutableDictionary* newTargetsByObject = [NSMutableDictionary dictionary];
-	NSArray* objectIDs = (id) [[givenObjects PGTSCollect] objectID];
+	NSArray* objectIDs = (id) [[givenObjects BX_Collect] objectID];
 	NSMutableDictionary* idsByEntity = ObjectsByEntity (objectIDs);
 	AddObjectIDsForInheritance (idsByEntity);
 	
@@ -2779,13 +2779,13 @@ bail:
 			[relsByEntity setObject: rels forKey: entity];
 			BXEnumerate (currentObject, e, [objects objectEnumerator])
 			{
-				oldTargets = [[rels PGTSCollectDK] registeredTargetFor: currentObject fireFault: NO] ?: [NSDictionary dictionary];
+				oldTargets = [[rels BX_CollectDK] registeredTargetFor: currentObject fireFault: NO] ?: [NSDictionary dictionary];
 				
 				//FIXME: this seems really bad.
 				NSDictionary* oldValues = [[[currentObject cachedValues] copy] autorelease];
 				[currentObject setCachedValuesForKeysWithDictionary: newValues];
 				
-				newTargets = [[rels PGTSCollectDK] registeredTargetFor: currentObject fireFault: NO] ?: [NSDictionary dictionary];
+				newTargets = [[rels BX_CollectDK] registeredTargetFor: currentObject fireFault: NO] ?: [NSDictionary dictionary];
 				[currentObject setCachedValuesForKeysWithDictionary: oldValues];
 				
 				[currentObject willChangeInverseToOneRelationships: rels from: oldTargets to: newTargets];
@@ -2821,7 +2821,7 @@ bail:
 		BXEnumerate (currentEntity, e, [objectsByEntity keyEnumerator])
 		{
 			NSArray* objects = [objectsByEntity objectForKey: currentEntity];
-			NSArray* objectIDs = (id) [[objects PGTSCollect] objectID];
+			NSArray* objectIDs = (id) [[objects BX_Collect] objectID];
 			NSDictionary* userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
 									  objectIDs, kBXObjectIDsKey,
 									  objects, kBXObjectsKey,
@@ -2852,7 +2852,7 @@ bail:
 		BXEnumerate (currentEntity, e, [objectsByEntity keyEnumerator])
 		{
 			NSArray* objects = [objectsByEntity objectForKey: currentEntity];
-			NSArray* objectIDs = (id) [[objects PGTSCollect] objectID];
+			NSArray* objectIDs = (id) [[objects BX_Collect] objectID];
 			NSDictionary* userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
 									  objectIDs, kBXObjectIDsKey,
 									  objects, kBXObjectsKey,

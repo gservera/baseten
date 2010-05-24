@@ -38,7 +38,7 @@
 #import "BXConstantsPrivate.h"
 #import "BXLogger.h"
 #import "BXWeakNotification.h"
-#import "PGTSHOM.h"
+#import "BXHOM.h"
 #import "PGTSCollections.h"
 #import "BXEnumerate.h"
 #import "NSURL+BaseTenAdditions.h"
@@ -239,7 +239,7 @@ FilterPkeyAttributes (id attribute, void* arg)
  */
 - (NSArray *) primaryKeyFields
 {
-	return [mAttributes PGTSValueSelectFunction: &FilterPkeyAttributes argument: (void *) 1L] ?: nil;
+	return [mAttributes BX_ValueSelectFunction: &FilterPkeyAttributes argument: (void *) 1L] ?: nil;
 }
 	
 + (NSSet *) keyPathsForValuesAffectingFields
@@ -254,7 +254,7 @@ FilterPkeyAttributes (id attribute, void* arg)
  */
 - (NSArray *) fields
 {
-	return [mAttributes PGTSValueSelectFunction: &FilterPkeyAttributes argument: (void *) 0L] ?: nil;
+	return [mAttributes BX_ValueSelectFunction: &FilterPkeyAttributes argument: (void *) 0L] ?: nil;
 }
 
 /** 
@@ -516,7 +516,7 @@ FilterPkeyAttributes (id attribute, void* arg)
 
 - (void) resetAttributeExclusion
 {
-	[[mAttributes PGTSDo] resetAttributeExclusion];
+	[[mAttributes BX_Do] resetAttributeExclusion];
 }
 
 - (NSArray *) attributes: (NSArray *) strings
@@ -579,7 +579,7 @@ InverseToOneRelationships (id arg)
 
 - (id) inverseToOneRelationships;
 {
-	return [mRelationships PGTSValueSelectFunction: &InverseToOneRelationships];
+	return [mRelationships BX_ValueSelectFunction: &InverseToOneRelationships];
 }
 
 - (BOOL) beginValidation

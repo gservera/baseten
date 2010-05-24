@@ -32,7 +32,7 @@
 #import <sys/types.h>
 #import <unistd.h>
 
-#import "PGTSHOM.h"
+#import "BXHOM.h"
 
 #import "BXDatabaseObject.h"
 #import "BXDatabaseObjectPrivate.h"
@@ -636,9 +636,9 @@ DatabaseError (NSInteger errorCode, NSString* localizedTitle, NSString* localize
 				id newTargets = nil;
 				if (0 < [rels count])
 				{
-					oldTargets = [[rels PGTSCollectDK] registeredTargetFor: self fireFault: NO];
+					oldTargets = [[rels BX_CollectDK] registeredTargetFor: self fireFault: NO];
 					[self setCachedValue: aVal forKey: aKey];
-					newTargets = [[rels PGTSCollectDK] registeredTargetFor: self fireFault: NO];
+					newTargets = [[rels BX_CollectDK] registeredTargetFor: self fireFault: NO];
 					[self willChangeInverseToOneRelationships: rels from: oldTargets to: newTargets];
 				}
 				
@@ -716,9 +716,9 @@ DatabaseError (NSInteger errorCode, NSString* localizedTitle, NSString* localize
 	id newTargets = nil;
 	if (0 < [rels count])
 	{
-		oldTargets = [[rels PGTSCollectDK] registeredTargetFor: self fireFault: NO];
+		oldTargets = [[rels BX_CollectDK] registeredTargetFor: self fireFault: NO];
 		[self setCachedValuesForKeysWithDictionary: aDict];
-		newTargets = [[rels PGTSCollectDK] registeredTargetFor: self fireFault: NO];
+		newTargets = [[rels BX_CollectDK] registeredTargetFor: self fireFault: NO];
 		[self willChangeInverseToOneRelationships: rels from: oldTargets to: newTargets];
 	}
 		
@@ -953,7 +953,7 @@ DatabaseError (NSInteger errorCode, NSString* localizedTitle, NSString* localize
         entity = [mObjectID entity];
 	
     //Object ID
-    NSArray* pkeyFNames = (id) [[[entity primaryKeyFields] PGTSCollect] name];
+    NSArray* pkeyFNames = (id) [[[entity primaryKeyFields] BX_Collect] name];
     NSArray* pkeyFValues = nil;
     
     @synchronized (mValues)

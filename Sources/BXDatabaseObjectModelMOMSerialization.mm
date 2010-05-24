@@ -38,7 +38,7 @@
 #import "BXRelationshipDescriptionPrivate.h"
 #import "BXLogger.h"
 #import "BXForeignKey.h"
-#import "PGTSHOM.h"
+#import "BXHOM.h"
 
 
 typedef std::tr1::unordered_map <id, NSAttributeType,
@@ -190,10 +190,10 @@ static NSInteger CompareAttrIndices (id lhs, id rhs, void* ctx)
 			NSEntityDescription* currentEntity = [[[NSEntityDescription alloc] init] autorelease];
 			[currentEntity setName: [bxEntity name]];
 			
-			NSMutableArray* attrs = (id) [[bxEntity attributesByName] PGTSValueSelectFunction: &FilterVisibleAttrs];
+			NSMutableArray* attrs = (id) [[bxEntity attributesByName] BX_ValueSelectFunction: &FilterVisibleAttrs];
 			[attrs sortUsingFunction: &CompareAttrIndices context: NULL];
 			NSMutableArray* sanitizedNames = [NSMutableArray arrayWithCapacity: [attrs count]];
-			[[attrs PGTSVisit: self] sanitizeAttrName: nil target: sanitizedNames];
+			[[attrs BX_Visit: self] sanitizeAttrName: nil target: sanitizedNames];
 			
 			[currentEntity setUserInfo: [NSDictionary dictionaryWithObject: sanitizedNames forKey: @"Sorted Attribute Names"]];
 			

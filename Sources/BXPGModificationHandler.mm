@@ -30,7 +30,7 @@
 #import "BXEntityDescriptionPrivate.h"
 #import "BXDatabaseObjectIDPrivate.h"
 #import "PGTSScannedMemoryAllocator.h"
-#import "PGTSHOM.h"
+#import "BXHOM.h"
 #import "BXEnumerate.h"
 #import <tr1/unordered_map>
 
@@ -76,7 +76,7 @@ typedef std::tr1::unordered_map <unichar, NSMutableArray*,
 	BXPGTableDescription* rel = [mInterface tableForEntity: mEntity];
 	PGTSIndexDescription* pkey = [rel primaryKey];
 	NSArray* columns = [[[pkey columns] allObjects] sortedArrayUsingSelector: @selector (indexCompare:)];
-	NSString* pkeyString = [(id) [[columns PGTSCollect] columnDefinition] componentsJoinedByString: @", "];
+	NSString* pkeyString = [(id) [[columns BX_Collect] columnDefinition] componentsJoinedByString: @", "];
 	
 	NSString* queryFormat = 
 	@"SELECT * FROM \"baseten\".modification ($1, $2, $3, $4) "

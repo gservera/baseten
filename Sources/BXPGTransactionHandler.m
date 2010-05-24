@@ -28,7 +28,7 @@
 
 #import "PGTS.h"
 #import "PGTSAdditions.h"
-#import "PGTSHOM.h"
+#import "BXHOM.h"
 #import "PGTSOids.h"
 
 #import "BXInterface.h"
@@ -252,7 +252,7 @@ SSLMode (enum BXSSLMode mode)
 		//Get and sort the primary key fields.
 		NSArray* pkeyFields = [[[[table primaryKey] columns] allObjects] sortedArrayUsingSelector: @selector (indexCompare:)];
 		BXAssertVoidReturn (nil != pkeyFields, @"Expected to know the primary key.");
-		NSArray* pkeyNames = (id) [[pkeyFields PGTSCollect] name];
+		NSArray* pkeyNames = (id) [[pkeyFields BX_Collect] name];
 		NSArray* attrs = [[entity attributesByName] objectsForKeys: pkeyNames notFoundMarker: [NSNull null]];
 		ExpectV (! [attrs containsObject: [NSNull null]]);
 		NSString* fieldList = BXPGReturnList (attrs, alias, YES);

@@ -28,7 +28,7 @@
 
 #import "NSAttributeDescription+BXPGAdditions.h"
 #import "NSPredicate+PGTSAdditions.h"
-#import "PGTSHOM.h"
+#import "BXHOM.h"
 #import "PGTSConstantValue.h"
 #import "BXLogger.h"
 #import "PGTSFoundationObjects.h"
@@ -165,7 +165,7 @@
 	[predicates addObjectsFromArray: [self validationPredicates]];
 	
 	NSExpression* lengthExp = [NSExpression expressionForKeyPath: @"length"];
-	[[predicates PGTSVisit: self] BXPGPredicate: nil lengthExp: lengthExp maxLength: &retval];
+	[[predicates BX_Visit: self] BXPGPredicate: nil lengthExp: lengthExp maxLength: &retval];
 	
 	if (retval <= 0)
 		retval = NSIntegerMax;

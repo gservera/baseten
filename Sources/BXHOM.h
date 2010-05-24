@@ -1,5 +1,5 @@
 //
-// PGTSHOM.h
+// BXHOM.h
 // BaseTen
 //
 // Copyright (C) 2008-2010 Marko Karppinen & Co. LLC.
@@ -29,11 +29,11 @@
 #import <Foundation/Foundation.h>
 
 
-@protocol PGTSHOM <NSObject>
-- (id) PGTSAny;
-- (id) PGTSDo;
-- (id) PGTSCollect;
-- (id) PGTSCollectReturning: (Class) aClass;
+@protocol BXHOM <NSObject>
+- (id) BX_Any;
+- (id) BX_Do;
+- (id) BX_Collect;
+- (id) BX_CollectReturning: (Class) aClass;
 
 /**
  * \internal
@@ -42,7 +42,7 @@
  * Make existing objects values and collected objects keys.
  * \return An invocation recorder that creates an NSDictionary.
  */
-- (id) PGTSCollectD;
+- (id) BX_CollectD;
 
 /**
  * \internal
@@ -51,7 +51,7 @@
  * Make existing objects keys and collected objects values.
  * \return An invocation recorder that creates an NSDictionary.
  */
-- (id) PGTSCollectDK;
+- (id) BX_CollectDK;
 
 /**
  * \internal
@@ -61,24 +61,27 @@
  * \param visitor The object that will be called.
  * \return An invocation recorder.
  */
-- (id) PGTSVisit: (id) visitor;
+- (id) BX_Visit: (id) visitor;
 @end
 
 
-@interface NSSet (PGTSHOM) <PGTSHOM>
-- (id) PGTSSelectFunction: (int (*)(id)) fptr;
-- (id) PGTSSelectFunction: (int (*)(id, void*)) fptr argument: (void *) arg;
+
+@interface NSSet (BXHOM) <BXHOM>
+- (id) BX_SelectFunction: (int (*)(id)) fptr;
+- (id) BX_SelectFunction: (int (*)(id, void*)) fptr argument: (void *) arg;
 @end
 
 
-@interface NSArray (PGTSHOM) <PGTSHOM>
-- (NSArray *) PGTSReverse;
-- (id) PGTSSelectFunction: (int (*)(id)) fptr;
-- (id) PGTSSelectFunction: (int (*)(id, void*)) fptr argument: (void *) arg;
+
+@interface NSArray (BXHOM) <BXHOM>
+- (NSArray *) BX_Reverse;
+- (id) BX_SelectFunction: (int (*)(id)) fptr;
+- (id) BX_SelectFunction: (int (*)(id, void*)) fptr argument: (void *) arg;
 @end
 
 
-@interface NSDictionary (PGTSHOM) <PGTSHOM>
+
+@interface NSDictionary (BXHOM) <BXHOM>
 /**
  * \internal
  * \brief Make a dictionary of objects collected from keys.
@@ -86,8 +89,8 @@
  * Make existing objects values and collected objects keys.
  * \return An invocation recorder that creates an NSDictionary.
  */
-- (id) PGTSKeyCollectD;
+- (id) BX_KeyCollectD;
 
-- (id) PGTSValueSelectFunction: (int (*)(id)) fptr;
-- (id) PGTSValueSelectFunction: (int (*)(id, void*)) fptr argument: (void *) arg;
+- (id) BX_ValueSelectFunction: (int (*)(id)) fptr;
+- (id) BX_ValueSelectFunction: (int (*)(id, void*)) fptr argument: (void *) arg;
 @end

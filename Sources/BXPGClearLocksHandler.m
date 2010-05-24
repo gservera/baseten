@@ -30,7 +30,7 @@
 #import "BXDatabaseObjectIDPrivate.h"
 #import "BXLogger.h"
 #import "PGTSAdditions.h"
-#import "PGTSHOM.h"
+#import "BXHOM.h"
 #import "PGTSOids.h"
 
 
@@ -100,7 +100,7 @@ bx_error_during_clear_notification (id self, NSError* error)
 			@" AND baseten_lock_timestamp > COALESCE ($1, '-infinity')::timestamp ";
 						
 			//Primary key field names.
-			NSArray* pkeyfnames = (id) [[[[table primaryKey] columns] PGTSCollect] quotedName: mConnection];
+			NSArray* pkeyfnames = (id) [[[[table primaryKey] columns] BX_Collect] quotedName: mConnection];
 			NSString* pkeystr = [pkeyfnames componentsJoinedByString: @", "];
 			
 			//Table names.

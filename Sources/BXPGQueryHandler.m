@@ -29,7 +29,7 @@
 #import "BXPGQueryHandler.h"
 #import "BXPredicateVisitor.h"
 #import "BXPGFromItem.h"
-#import "PGTSHOM.h"
+#import "BXHOM.h"
 #import "BXRelationshipDescriptionPrivate.h"
 #import "BXForeignKey.h"
 

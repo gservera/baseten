@@ -36,7 +36,7 @@
 #import "BXPGExpressionVisitor.h"
 #import "BXPGConstantParameterMapper.h"
 #import "PGTSConstants.h"
-#import "PGTSHOM.h"
+#import "BXHOM.h"
 #import "BXPGFunctionExpressionEvaluator.h"
 #import "BXPGKeypathExpressionValueType.h"
 #import "BXPGAggregateExpressionValueType.h"
@@ -1213,7 +1213,7 @@ end:
 
 - (NSString *) handlePGAggregateExpressionValue: (NSArray *) valueTree
 {
-	NSArray* subValues = (id)[[valueTree PGTSCollect] expressionSQL: self];
+	NSArray* subValues = (id)[[valueTree BX_Collect] expressionSQL: self];
 	NSString* retval = [NSString stringWithFormat: @"ARRAY [%@]", [subValues componentsJoinedByString: @","]];
 	return retval;
 }

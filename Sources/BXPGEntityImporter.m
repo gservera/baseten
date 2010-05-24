@@ -33,7 +33,7 @@
 #import "BXPGTransactionHandler.h"
 #import "BXPGEntityConverter.h"
 #import "PGTSResultSet.h"
-#import "PGTSHOM.h"
+#import "BXHOM.h"
 #import "PGTSDatabaseDescription.h"
 
 
@@ -224,7 +224,7 @@
 	ExpectR (mSchemaName, NO);
 	if (0 < [entities count])
 	{
-		NSArray* names = (id) [[entities PGTSCollect] name];
+		NSArray* names = (id) [[entities BX_Collect] name];
 		NSString* queryString = 
 		@"SELECT baseten.disable (c.oid) "
 		"  FROM pg_class c, pg_namespace n "
