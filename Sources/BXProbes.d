@@ -32,10 +32,15 @@ provider BaseTen
 	probe begin_fetch ();
 	probe end_fetch (void* context, char* schema, char* table, long count);
 
-	probe received_pg_notice (void* connection, char* message);
-
 	probe sent_rollback_transaction (void* connection, long status, char* name);
 	probe sent_commit_transaction (void* connection, long status, char* name);
 	probe sent_savepoint (void* connection, long status, char* name);
 	probe sent_rollback_to_savepoint (void* connection, long status, char* name);
+	
+	probe begin_sleep_preparation ();
+	probe end_sleep_preparation ();
+	probe begin_wake_preparation ();
+	probe end_wake_preparation ();	
+	probe begin_exit_preparation ();
+	probe end_exit_preparation ();
 };

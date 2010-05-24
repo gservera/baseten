@@ -32,10 +32,12 @@
 #import "PGTSOids.h"
 
 #import "BXInterface.h"
-#import "BXProbes.h"
 #import "BXLogger.h"
 #import "BXEnumerate.h"
 #import "BXError.h"
+
+#import "BXProbes.h"
+#import "PGTSProbes.h"
 
 #import "BXPGCertificateVerificationDelegate.h"
 #import "BXPGTransactionHandler.h"
@@ -790,11 +792,11 @@ SSLMode (enum BXSSLMode mode)
 - (void) PGTSConnection: (PGTSConnection *) connection receivedNotice: (NSError *) notice
 {
 	//BXLogDebug (@"%p: %s", connection, message);
-	if (BASETEN_RECEIVED_PG_NOTICE_ENABLED ())
+	if (BASETEN_POSTGRESQL_RECEIVED_NOTICE_ENABLED ())
 	{
 		NSString* message = [[notice userInfo] objectForKey: kPGTSErrorMessage];
 		char* message_s = strdup ([message UTF8String]);
-		BASETEN_RECEIVED_PG_NOTICE (connection, message_s);
+		BASETEN_POSTGRESQL_RECEIVED_NOTICE (connection, message_s);
 		free (message_s);
 	}
 }

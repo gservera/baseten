@@ -30,7 +30,7 @@
 #import "BXPGConnectionResetRecoveryAttempter.h"
 #import "BXDatabaseContextPrivate.h"
 #import "BXDatabaseContextDelegateProtocol.h"
-#import "BXProbes.h"
+#import "PGTSProbes.h"
 
 
 @implementation BXPGConnectionRecoveryAttempter
@@ -166,11 +166,11 @@
 - (void) PGTSConnection: (PGTSConnection *) connection receivedNotice: (NSError *) notice
 {
 	//BXLogDebug (@"%p: %s", connection, message);
-	if (BASETEN_RECEIVED_PG_NOTICE_ENABLED ())
+	if (BASETEN_POSTGRESQL_RECEIVED_NOTICE_ENABLED ())
 	{
 		NSString* message = [[notice userInfo] objectForKey: kPGTSErrorMessage];
 		char* message_s = strdup ([message UTF8String]);
-		BASETEN_RECEIVED_PG_NOTICE (connection, message_s);
+		BASETEN_POSTGRESQL_RECEIVED_NOTICE (connection, message_s);
 		free (message_s);
 	}
 }

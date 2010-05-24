@@ -29,7 +29,9 @@
 #import <Foundation/Foundation.h>
 
 
+
 @class PGTSInvocationRecorderHelper;
+
 
 
 @interface PGTSInvocationRecorder : NSObject
@@ -46,10 +48,12 @@
 @end
 
 
+
 @interface PGTSPersistentTargetInvocationRecorder : PGTSInvocationRecorder
 {
 }
 @end
+
 
 
 @interface PGTSCallbackInvocationRecorder : PGTSInvocationRecorder
@@ -63,6 +67,7 @@
 - (void) setUserInfo: (id) anObject;
 - (id) userInfo;
 @end
+
 
 
 @interface PGTSHOMInvocationRecorder : PGTSCallbackInvocationRecorder

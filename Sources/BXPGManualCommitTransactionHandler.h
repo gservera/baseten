@@ -37,4 +37,7 @@
 	BOOL mHandlingConnectionLoss;
 }
 - (PGTSConnection *) notifyConnection;
+
+- (void) begunTransaction: (id <BXPGResultSetPlaceholder>) placeholderResult;
+- (void) createdSavepoint: (PGTSResultSet *) res;
 @end

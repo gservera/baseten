@@ -41,7 +41,7 @@
 	if (aName != mNotificationName)
 	{
 		[mNotificationName release];
-		mNotificationName = [aName retain];
+		mNotificationName = [aName copy];
 	}
 }
 

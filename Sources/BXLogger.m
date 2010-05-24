@@ -50,7 +50,7 @@ static void TruncateLogFile (NSString *filePath)
 		if ([fm respondsToSelector: @selector (attributesOfItemAtPath:error:)])
 			sizeAttr = [[fm attributesOfItemAtPath: filePath error: &error] objectForKey: NSFileSize];
 		else
-			sizeAttr = [[fm fileAttributesAtPath: filePath traverseLink: NO] objectForKey: NSFileSize];
+			sizeAttr = [[(id) fm fileAttributesAtPath: filePath traverseLink: NO] objectForKey: NSFileSize];
 		
 		if (sizeAttr)
 		{
@@ -122,10 +122,10 @@ const char* LastPathComponent (const char* path)
 
 
 static char*
-CopyLibraryName (const void* addr)
+CopyLibraryName (const void *addr)
 {
 	Dl_info info = {};
-	char* retval = NULL;
+	char *retval = NULL;
 	if (dladdr (addr, &info))
 		retval = strdup (LastPathComponent (info.dli_fname));
 	return retval;
@@ -220,7 +220,7 @@ BXDeprecationWarning ()
 
 
 void
-BXLog (const char* fileName, const char* functionName, void* functionAddress, int line, enum BXLogLevel level, id messageFmt, ...)
+BXLog (const char *fileName, const char *functionName, const void *functionAddress, int line, enum BXLogLevel level, NSString * const messageFmt, ...)
 {
 	va_list args;
     va_start (args, messageFmt);
@@ -230,15 +230,15 @@ BXLog (const char* fileName, const char* functionName, void* functionAddress, in
 
 
 void
-BXLog_v (const char* fileName, const char* functionName, void* functionAddress, int line, enum BXLogLevel level, id messageFmt, va_list args)
+BXLog_v (char const *fileName, char const *functionName, void const *functionAddress, int line, enum BXLogLevel level, NSString * const messageFmt, va_list args)
 {
-	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-	char* executable = CopyExecutableName ();
-	char* library = CopyLibraryName (functionAddress);
-	const char* file = LastPathComponent (fileName);
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	char *executable = CopyExecutableName ();
+	char *library = CopyLibraryName (functionAddress);
+	const char *file = LastPathComponent (fileName);
 	
-	NSString* date = [[NSDate date] descriptionWithCalendarFormat: @"%Y-%m-%d %H:%M:%S.%F" timeZone: nil locale: nil];
-	NSString* message = [[[NSString alloc] initWithFormat: messageFmt arguments: args] autorelease];
+	NSString *date = [[NSDate date] descriptionWithCalendarFormat: @"%Y-%m-%d %H:%M:%S.%F" timeZone: nil locale: nil];
+	NSString *message = [[[NSString alloc] initWithFormat: messageFmt arguments: args] autorelease];
 		
 	const char isMain = ([NSThread isMainThread] ? 'm' : 's');
 	fprintf (stderr, "%23s  %s (%s) [%d]  %s:%d  %s [%p%c] \t%8s %s\n", 

@@ -43,6 +43,8 @@
 		5354447D0D634D9C002A6C47 /* BXNetServiceConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = 532D60E00B944D8C0028E90B /* BXNetServiceConnector.m */; };
 		535444800D634D9C002A6C47 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
 		535444820D634D9C002A6C47 /* SecurityInterface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 531650C30B72040700785454 /* SecurityInterface.framework */; };
+		5355C15311A8744700C5DEAF /* BXAppKitSystemEventNotifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 5355C15111A8744700C5DEAF /* BXAppKitSystemEventNotifier.h */; };
+		5355C15411A8744700C5DEAF /* BXAppKitSystemEventNotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 5355C15211A8744700C5DEAF /* BXAppKitSystemEventNotifier.m */; };
 		53ED303F0E1ACBA80095BE8B /* BaseTen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5354443E0D634CA4002A6C47 /* BaseTen.framework */; };
 		53F137CD0EB074C400D0F517 /* WaitForNetworkWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = 53F137CB0EB074C400D0F517 /* WaitForNetworkWindow.nib */; };
 /* End PBXBuildFile section */
@@ -100,6 +102,8 @@
 		5354444C0D634D63002A6C47 /* release-non-gc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "release-non-gc.xcconfig"; path = "xcconfig/release-non-gc.xcconfig"; sourceTree = "<group>"; };
 		5354444D0D634D63002A6C47 /* common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = common.xcconfig; path = xcconfig/common.xcconfig; sourceTree = "<group>"; };
 		535444870D634D9C002A6C47 /* BaseTenAppKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BaseTenAppKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5355C15111A8744700C5DEAF /* BXAppKitSystemEventNotifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXAppKitSystemEventNotifier.h; path = Sources/BXAppKitSystemEventNotifier.h; sourceTree = "<group>"; };
+		5355C15211A8744700C5DEAF /* BXAppKitSystemEventNotifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BXAppKitSystemEventNotifier.m; path = Sources/BXAppKitSystemEventNotifier.m; sourceTree = "<group>"; };
 		5364C8C90A222FA600AD8AAF /* BXObjectStatusToColorTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXObjectStatusToColorTransformer.h; path = Sources/BXObjectStatusToColorTransformer.h; sourceTree = "<group>"; };
 		5364C8CA0A222FA600AD8AAF /* BXObjectStatusToColorTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BXObjectStatusToColorTransformer.m; path = Sources/BXObjectStatusToColorTransformer.m; sourceTree = "<group>"; };
 		53726D830A30E4A30086BB60 /* BXObjectStatusToEditableTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXObjectStatusToEditableTransformer.h; path = Sources/BXObjectStatusToEditableTransformer.h; sourceTree = "<group>"; };
@@ -185,6 +189,8 @@
 			children = (
 				53D0D1590B6F896200D2D101 /* BXDatabaseContextAdditions.h */,
 				53D0D15A0B6F896200D2D101 /* BXDatabaseContextAdditions.m */,
+				5355C15111A8744700C5DEAF /* BXAppKitSystemEventNotifier.h */,
+				5355C15211A8744700C5DEAF /* BXAppKitSystemEventNotifier.m */,
 				531060190B905E44009329AD /* NSController Subclasses */,
 				5310601A0B905E59009329AD /* Connection views and panels */,
 				53726DAD0A30E8FD0086BB60 /* Transformers */,
@@ -290,6 +296,7 @@
 				53174ED40F52073600551EBC /* BXConnectByHostnameViewController.h in Headers */,
 				53174F000F5209E300551EBC /* BXHostPanel.h in Headers */,
 				53174F670F52182700551EBC /* BXConnectionViewController.h in Headers */,
+				5355C15311A8744700C5DEAF /* BXAppKitSystemEventNotifier.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -427,6 +434,7 @@
 				53174EFF0F5209E300551EBC /* BXHostPanel.m in Sources */,
 				53174F680F52182700551EBC /* BXConnectionViewController.m in Sources */,
 				5302F39F0F536C4500105ECD /* BXAuthenticationPanel.m in Sources */,
+				5355C15411A8744700C5DEAF /* BXAppKitSystemEventNotifier.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

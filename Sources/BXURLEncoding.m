@@ -48,7 +48,7 @@ URLEncode (const char* bytes, size_t length)
             [retval appendBytes: hex length: 3 * sizeof (char)];
         }
     }
-    return retval;
+    return [[retval copy] autorelease];
 }
 
 static NSData* 
@@ -75,7 +75,7 @@ URLDecode (const char* bytes, size_t length, id sender)
             i++;
         }
     }
-    return retval;
+    return [[retval copy] autorelease];
 }
 
 

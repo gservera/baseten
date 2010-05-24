@@ -37,17 +37,17 @@
 
 
 
-@interface BXHostResolver (PrivateMethods)
-- (void) setNodeName: (NSString *) nodeName;
-- (void) setAddresses: (NSArray *) addresses;
+@interface BXHostResolver ()
+- (void) _setNodeName: (NSString *) nodeName;
+- (void) _setAddresses: (NSArray *) addresses;
 
-- (NSError *) errorForStreamError: (const CFStreamError *) streamError;
+- (NSError *) _errorForStreamError: (const CFStreamError *) streamError;
 
-- (void) reachabilityCheckDidComplete: (SCNetworkConnectionFlags) flags;
-- (void) hostCheckDidComplete: (const CFStreamError *) streamError;
+- (void) _reachabilityCheckDidComplete: (SCNetworkConnectionFlags) flags;
+- (void) _hostCheckDidComplete: (const CFStreamError *) streamError;
 
-- (void) removeReachability;
-- (void) removeHost;
+- (void) _removeReachability;
+- (void) _removeHost;
 @end
 
 
@@ -69,23 +69,32 @@ CopySockaddrArrayFromAddrinfo (struct addrinfo *addrinfo)
 static void
 ReachabilityCallback (SCNetworkReachabilityRef target, SCNetworkConnectionFlags flags, void *info)
 {
-	[(id) info reachabilityCheckDidComplete: flags];
+	[(id) info _reachabilityCheckDidComplete: flags];
 }
 
 
 static void 
 HostCallback (CFHostRef theHost, CFHostInfoType typeInfo, const CFStreamError *error, void *info)
 {
-	[(id) info hostCheckDidComplete: error];
+	[(id) info _hostCheckDidComplete: error];
 }
 
 
 
+/**
+ * \internal
+ * \brief A façade for CFHost that also tests reachability.
+ * \note Instances of this class can safely be used from only one thread at a time.
+ */
 @implementation BXHostResolver
-+ (BOOL) getAddrinfo: (struct addrinfo **) outAddrinfo forIPAddress: (NSString *) host
+/**
+ * \brief Test whether a given address is numeric.
+ * \note This method is thread safe.
+ */
++ (BOOL) getAddrinfo: (struct addrinfo **) outAddrinfo forIPAddress: (NSString *) node
 {
 	ExpectR (outAddrinfo, NO);
-	ExpectR (0 < [host length], NO);
+	ExpectR (0 < [node length], NO);
 	
 	struct addrinfo hints = {
 		AI_NUMERICHOST,
@@ -96,15 +105,16 @@ HostCallback (CFHostRef theHost, CFHostInfoType typeInfo, const CFStreamError *e
 		NULL,
 		NULL
 	};
-	int status = getaddrinfo ([host UTF8String], NULL, &hints, outAddrinfo);
+	int status = getaddrinfo ([node UTF8String], NULL, &hints, outAddrinfo);
+	[node self]; //For GC
 	return (0 == status ? YES : NO);
 }
 
 
 - (void) dealloc
 {	
-	[self removeReachability];
-	[self removeHost];
+	[self _removeReachability];
+	[self _removeHost];
 	
 	if (mRunLoop)
 		CFRelease (mRunLoop);
@@ -116,8 +126,8 @@ HostCallback (CFHostRef theHost, CFHostInfoType typeInfo, const CFStreamError *e
 
 - (void) finalize
 {
-	[self removeReachability];
-	[self removeHost];
+	[self _removeReachability];
+	[self _removeHost];
 
 	if (mRunLoop)
 		CFRelease (mRunLoop);
@@ -128,12 +138,12 @@ HostCallback (CFHostRef theHost, CFHostInfoType typeInfo, const CFStreamError *e
 
 - (void) cancelResolution
 {
-	[self removeReachability];
-	[self removeHost];
+	[self _removeReachability];
+	[self _removeHost];
 }
 
 
-- (void) removeReachability
+- (void) _removeReachability
 {
 	if (mReachability)
 	{
@@ -145,7 +155,7 @@ HostCallback (CFHostRef theHost, CFHostInfoType typeInfo, const CFStreamError *e
 }
 
 
-- (void) removeHost
+- (void) _removeHost
 {
 	if (mHost)
 	{
@@ -158,6 +168,9 @@ HostCallback (CFHostRef theHost, CFHostInfoType typeInfo, const CFStreamError *e
 }
 
 
+/**
+ * \brief Resolve the given host.
+ */
 - (void) resolveHost: (NSString *) host
 {	
 	ExpectV (mRunLoop);
@@ -165,11 +178,11 @@ HostCallback (CFHostRef theHost, CFHostInfoType typeInfo, const CFStreamError *e
 	ExpectV (host);
 	ExpectV ([host characterAtIndex: 0] != '/');	
 	
-	[self removeReachability];
-	[self removeHost];
+	[self _removeReachability];
+	[self _removeHost];
 	bzero (&mHostError, sizeof (mHostError));
 
-	[self setNodeName: host];
+	[self _setNodeName: host];
 	SCNetworkReachabilityContext ctx = {
 		0,
 		self,
@@ -183,7 +196,7 @@ HostCallback (CFHostRef theHost, CFHostInfoType typeInfo, const CFStreamError *e
 	if ([[self class] getAddrinfo: &addrinfo forIPAddress: host])
 	{
 		NSArray *addresses = CopySockaddrArrayFromAddrinfo (addrinfo);
-		[self setAddresses: addresses];
+		[self _setAddresses: addresses];
 		[addresses release];
 		
 		mReachability = SCNetworkReachabilityCreateWithAddress (kCFAllocatorDefault, addrinfo->ai_addr);
@@ -193,7 +206,7 @@ HostCallback (CFHostRef theHost, CFHostInfoType typeInfo, const CFStreamError *e
 		status = SCNetworkReachabilityGetFlags (mReachability, &flags);
 		ExpectL (status)
 		
-		[self reachabilityCheckDidComplete: flags];
+		[self _reachabilityCheckDidComplete: flags];
 	}
 	else
 	{
@@ -213,11 +226,11 @@ HostCallback (CFHostRef theHost, CFHostInfoType typeInfo, const CFStreamError *e
 }
 
 
-- (void) reachabilityCheckDidComplete: (SCNetworkConnectionFlags) actual
+- (void) _reachabilityCheckDidComplete: (SCNetworkConnectionFlags) actual
 {
 	// We use the old type name, since the new one only appeared in 10.6.
 	
-	[self removeReachability];
+	[self _removeReachability];
 	bzero (&mHostError, sizeof (mHostError));
 	
 	if (mAddresses)
@@ -232,7 +245,7 @@ HostCallback (CFHostRef theHost, CFHostInfoType typeInfo, const CFStreamError *e
 			// doesn't provide us with good error messages, we settle with a generic one.
 			if (NULL != &kCFStreamErrorDomainSystemConfiguration)
 				mHostError.domain = kCFStreamErrorDomainSystemConfiguration;
-			[mDelegate hostResolverDidFail: self error: [self errorForStreamError: &mHostError]];
+			[mDelegate hostResolverDidFail: self error: [self _errorForStreamError: &mHostError]];
 		}
 	}
 	else
@@ -250,16 +263,16 @@ HostCallback (CFHostRef theHost, CFHostInfoType typeInfo, const CFStreamError *e
 		CFHostScheduleWithRunLoop (mHost, mRunLoop, (CFStringRef) mRunLoopMode);
 		
 		if (! CFHostStartInfoResolution (mHost, kCFHostAddresses, &mHostError))
-			[self hostCheckDidComplete: &mHostError];
+			[self _hostCheckDidComplete: &mHostError];
 	}
 }
 
 
-- (void) hostCheckDidComplete: (const CFStreamError *) streamError
+- (void) _hostCheckDidComplete: (const CFStreamError *) streamError
 {	
 	if (streamError && streamError->domain)
 	{
-		NSError *error = [self errorForStreamError: streamError];
+		NSError *error = [self _errorForStreamError: streamError];
 		[mDelegate hostResolverDidFail: self error: error];
 	}
 	else
@@ -268,13 +281,12 @@ HostCallback (CFHostRef theHost, CFHostInfoType typeInfo, const CFStreamError *e
 		[mDelegate hostResolverDidSucceed: self addresses: (id) CFHostGetAddressing (mHost, &status)];
 	}
 	
-	[self removeHost];
+	[self _removeHost];
 }
 
 
-- (NSError *) errorForStreamError: (const CFStreamError *) streamError
+- (NSError *) _errorForStreamError: (const CFStreamError *) streamError
 {
-	// In case the domain field hasn't been set, return a generic error.
 	NSError* retval = nil;
 	if (streamError)
 	{
@@ -301,6 +313,7 @@ HostCallback (CFHostRef theHost, CFHostInfoType typeInfo, const CFStreamError *e
 		}
 		else
 		{
+			// In case the domain field hasn't been set, return a generic error.
 			messageFormat = @"The server %@ wasn't found.";
 		}
 		NSString* message = [NSString stringWithFormat: messageFormat, mNodeName, reason];
@@ -315,12 +328,9 @@ HostCallback (CFHostRef theHost, CFHostInfoType typeInfo, const CFStreamError *e
 	}
 	return retval;
 }
-@end
 
 
-
-@implementation BXHostResolver (Accessors)
-- (void) setNodeName: (NSString *) nodeName
+- (void) _setNodeName: (NSString *) nodeName
 {
 	if (nodeName != mNodeName)
 	{
@@ -330,7 +340,7 @@ HostCallback (CFHostRef theHost, CFHostInfoType typeInfo, const CFStreamError *e
 }
 
 
-- (void) setAddresses: (NSArray *) addresses
+- (void) _setAddresses: (NSArray *) addresses
 {
 	if (addresses != mAddresses)
 	{
@@ -338,8 +348,11 @@ HostCallback (CFHostRef theHost, CFHostInfoType typeInfo, const CFStreamError *e
 		mAddresses = [addresses retain];
 	}
 }
+@end
 
 
+
+@implementation BXHostResolver (Accessors)
 - (NSString *) runLoopMode;
 {
 	return mRunLoopMode;
@@ -350,7 +363,7 @@ HostCallback (CFHostRef theHost, CFHostInfoType typeInfo, const CFStreamError *e
 {
 	if (mode != mRunLoopMode)
 	{
-		[self removeHost];
+		[self _removeHost];
 		
 		[mRunLoopMode release];
 		mRunLoopMode = [mode retain];
@@ -368,7 +381,7 @@ HostCallback (CFHostRef theHost, CFHostInfoType typeInfo, const CFStreamError *e
 {
 	if (runLoop != mRunLoop)
 	{
-		[self removeHost];
+		[self _removeHost];
 		
 		if (mRunLoop)
 			CFRelease (mRunLoop);

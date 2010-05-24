@@ -84,6 +84,15 @@
     return [[mDatabaseURI retain] autorelease];
 }
 
+
+- (NSURL *) entityURI
+{
+	NSURL *URI = [NSURL URLWithString: [NSString stringWithFormat: @"/%@/%@", mSchemaName, mName] 
+						relativeToURL: [self databaseURI]];
+	return [URI absoluteURL];
+}
+
+
 - (id) initWithCoder: (NSCoder *) decoder
 {
     NSString* name = [decoder decodeObjectForKey: @"name"];

@@ -35,6 +35,12 @@
 @interface PGTSQueryDescription : NSObject
 {
 }
++ (PGTSQueryDescription *) queryDescriptionFor: (NSString *) queryString 
+									  delegate: (id) delegate 
+									  callback: (SEL) callback 
+								parameterArray: (NSArray *) parameters 
+									  userInfo: (id) userInfo;
+
 - (SEL) callback;
 - (void) setCallback: (SEL) aSel;
 - (id) delegate;

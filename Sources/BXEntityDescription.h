@@ -62,6 +62,7 @@ enum BXEntityFlag
 }
 
 - (NSURL *) databaseURI;
+- (NSURL *) entityURI;
 - (NSString *) schemaName;
 - (BOOL) isEqual: (BXEntityDescription *) desc;
 - (NSUInteger) hash;

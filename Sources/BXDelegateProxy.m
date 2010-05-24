@@ -29,12 +29,27 @@
 #import "BXDelegateProxy.h"
 
 
+
+/** 
+ * \internal
+ * \brief A delegate proxy for cases where a default implementation is needed.
+ *
+ * \note This class should be thread safe after it has been instantiated
+ *       as it only uses NSProxy's methods that are expected to be thread safe.
+ * \ingroup basetenutility
+ */
 @implementation BXDelegateProxy
+/**
+ * \brief Create the proxy.
+ * \param anObject The object that contains the default implementations.
+ * \note  This method is not thread safe.
+ */
 - (id) initWithDelegateDefaultImplementation: (id) anObject
 {
 	mDelegateDefaultImplementation = [anObject retain];
 	return self;
 }
+
 
 - (void) dealloc
 {
@@ -42,10 +57,17 @@
 	[super dealloc];
 }
 
+
+/**
+ * \brief Set the partial delegate.
+ * \param anObject The object that contains the primary implementations.
+ * \note  This method is not thread safe.
+ */
 - (void) setDelegateForBXDelegateProxy: (id) anObject
 {
 	mDelegate = anObject;
 }
+
 
 - (NSMethodSignature *) methodSignatureForSelector: (SEL) aSelector
 {
@@ -54,6 +76,7 @@
 		retval = [mDelegateDefaultImplementation methodSignatureForSelector: aSelector];
 	return retval;
 }
+
 
 - (void) forwardInvocation: (NSInvocation *) invocation
 {

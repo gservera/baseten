@@ -613,7 +613,7 @@
  * relationships, the foreign key's name should have the form <em>name1__name2</em>, where <em>name1</em> is 
  * the relationship's name from the foreign key's side, and <em>name2</em> is the inverse relationship's 
  * name. If the foreign key's name doesn't contain two consecutive underscores, a generated name is 
- * used for the inverse relationship. (Similarly, if the foreign key's name begins with two 
+ * used for the inverse relationship. Similarly, if the foreign key's name begins with two 
  * underscores, a generated name is used for the relationship. The generated name has the format 
  * <em>schema_table_foreignkey</em>.
  *

@@ -28,7 +28,7 @@
 
 #import <TargetConditionals.h>
 
-#ifdef TARGET_OS_IPHONE
+#if defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE
 #import <CFNetwork/CFHost.h>
 #else
 #import <CoreFoundation/CoreFoundation.h>

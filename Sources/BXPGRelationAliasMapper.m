@@ -189,7 +189,7 @@ BXPGConditions (NSString* alias1, NSString* alias2, id <BXForeignKey> fkey, BOOL
 	[mUsedAliases setObject: idx forKey: base];
 	
 	//Append the index to our table alias.
-	NSString* retval = [base stringByAppendingFormat: [idx description]];
+	NSString* retval = [base stringByAppendingString: [idx description]];
 	return retval;
 }
 

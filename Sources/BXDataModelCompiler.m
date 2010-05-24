@@ -33,6 +33,7 @@
 #import "BXArraySize.h"
 
 
+
 @implementation BXDataModelCompiler
 + (NSString *) momcPath
 {
@@ -109,6 +110,7 @@ end:
 	return momcPath;
 }
 
+
 - (void) dealloc
 {
 	[mModelURL release];
@@ -118,10 +120,12 @@ end:
 	[super dealloc];
 }
 
+
 - (void) setDelegate: (id <BXDataModelCompilerDelegate>) anObject
 {
 	mDelegate = anObject;
 }
+
 
 - (void) setModelURL: (NSURL *) aFileURL
 {
@@ -132,6 +136,7 @@ end:
 	}
 }
 
+
 - (void) setCompiledModelURL: (NSURL *) aFileURL
 {
 	if (mCompiledModelURL != aFileURL)
@@ -141,10 +146,30 @@ end:
 	}
 }
 
+
 - (NSURL *) compiledModelURL
 {
 	return mCompiledModelURL;
 }
+
+
+- (void) waitForCompletion
+{
+	[mMomcTask waitUntilExit];
+}
+
+
+- (void) momcTaskFinished: (NSNotification *) notification
+{
+	[mDelegate dataModelCompiler: self finished: [mMomcTask terminationStatus] errorOutput: [mErrorPipe fileHandleForReading]];
+	
+	[[NSNotificationCenter defaultCenter] removeObserver: self];
+	[mMomcTask release];
+	mMomcTask = nil;
+	[mErrorPipe release];
+	mErrorPipe = nil;
+}
+
 
 - (void) compileDataModel
 {	
@@ -200,21 +225,5 @@ end:
 bail:
 	if (pathFormat)
 		free (pathFormat);
-}
-
-- (void) waitForCompletion
-{
-	[mMomcTask waitUntilExit];
-}
-
-- (void) momcTaskFinished: (NSNotification *) notification
-{
-	[mDelegate dataModelCompiler: self finished: [mMomcTask terminationStatus] errorOutput: [mErrorPipe fileHandleForReading]];
-	
-	[[NSNotificationCenter defaultCenter] removeObserver: self];
-	[mMomcTask release];
-	mMomcTask = nil;
-	[mErrorPipe release];
-	mErrorPipe = nil;
 }
 @end

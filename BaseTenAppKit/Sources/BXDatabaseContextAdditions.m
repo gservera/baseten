@@ -36,7 +36,6 @@
 
 
 @implementation BXDatabaseContext (BaseTenAppKitAdditions)
-
 - (void) awakeFromNib
 {
 	[(BXDelegateProxy *) mDelegateProxy setDelegateForBXDelegateProxy: delegate];

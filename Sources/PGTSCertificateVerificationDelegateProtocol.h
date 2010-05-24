@@ -28,7 +28,7 @@
 
 @class PGTSConnection;
 
-@protocol PGTSCertificateVerificationDelegate
+@protocol PGTSCertificateVerificationDelegate <NSObject>
 /** 
  * \internal
  * \brief Should the SSL connection be allowed or not.

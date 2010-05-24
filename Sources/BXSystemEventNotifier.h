@@ -1,8 +1,8 @@
 //
-// PGTSFoundationObjects.h
+// BXSystemEventNotifier.h
 // BaseTen
 //
-// Copyright (C) 2008 Marko Karppinen & Co. LLC.
+// Copyright (C) 2010 Marko Karppinen & Co. LLC.
 //
 // Before using this software, please review the available licensing options
 // by visiting http://www.karppinen.fi/baseten/licensing/ or by contacting
@@ -27,18 +27,23 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <CoreData/CoreData.h>
-@class PGTSResultSet;
-@class PGTSConnection;
-@class PGTSTypeDescription;
+#import <BaseTen/BXExport.h>
 
 
-@interface NSObject (PGTSFoundationObjects)
-+ (id) copyForPGTSResultSet: (PGTSResultSet *) set withCharacters: (char const *) value type: (PGTSTypeDescription *) type;
-+ (id) copyForPGTSResultSet: (PGTSResultSet *) set withCharacters: (char const *) value type: (PGTSTypeDescription *) type columnIndex: (int) columnIndex;
-- (id) PGTSParameter: (PGTSConnection *) connection;
-- (char const *) PGTSParameterLength: (size_t *) length connection: (PGTSConnection *) connection;
-- (id) PGTSExpressionOfType: (NSAttributeType) attrType connection: (PGTSConnection *) connection;
-- (BOOL) PGTSIsBinaryParameter;
-- (BOOL) PGTSIsCollection;
+BX_INTERNAL NSString * const kBXSystemEventNotifierProcessWillExitNotification;
+BX_INTERNAL NSString * const kBXSystemEventNotifierSystemWillSleepNotification;
+BX_INTERNAL NSString * const kBXSystemEventNotifierSystemDidWakeNotification;
+
+
+
+@interface BXSystemEventNotifier : NSObject
+{
+}
++ (id) copyNotifier;
+- (void) install;
+- (void) invalidate;
+
+- (void) processWillExit;
+- (void) systemWillSleep;
+- (void) systemDidWake;
 @end

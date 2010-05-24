@@ -160,9 +160,10 @@ end:
 
 /**
  * \internal
- * A parser for key paths.
+ * \brief A parser for key paths.
  * Accepts some malformed key paths but NSPredicate and other classes probably notice them, when
  * they get re-used.
+ * \not This function is thread safe.
  */
 NSArray* 
 BXKeyPathComponents (NSString* keyPath)
@@ -193,5 +194,5 @@ BXKeyPathComponents (NSString* keyPath)
 	
 	if (! [retval count])
 		retval = nil;
-	return retval;
+	return [[retval copy] autorelease];
 }

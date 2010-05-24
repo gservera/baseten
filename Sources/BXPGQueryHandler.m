@@ -54,7 +54,8 @@ NSString* kBXPGExceptionInternalInconsistency = @"kBXPGExceptionInternalInconsis
 
 + (void) willCollectAllNone
 {
-	[BXPGExceptionCollectAllNoneNotAllowed raise: kBXPGExceptionCollectAllNoneNotAllowed format: nil];
+	[BXPGExceptionCollectAllNoneNotAllowed raise: kBXPGExceptionCollectAllNoneNotAllowed 
+										  format: @"Collect all / none not allowed here."];
 }
 
 + (void) beginQuerySpecific: (BXPGPredicateVisitor *) visitor predicate: (NSPredicate *) predicate

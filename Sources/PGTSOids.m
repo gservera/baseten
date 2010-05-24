@@ -40,7 +40,7 @@ PGTSOidAsObject (Oid o)
 {
     //Methods inherited from NSValue seem to return an NSValue instead of an NSNumber.
 	//Thus, we use NSNumber.
-    return [NSNumber numberWithUnsignedInt: o];
+    return [NSNumber numberWithUnsignedLong: o];
 }
 
 
@@ -52,6 +52,6 @@ PGTSOidAsObject (Oid o)
  */
 - (Oid) PGTSOidValue
 {
-    return [self unsignedIntValue];
+    return [self unsignedLongValue];
 }
 @end

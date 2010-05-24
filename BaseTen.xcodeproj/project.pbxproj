@@ -91,6 +91,8 @@
 		5329E7F9119F48BC000EC6ED /* pcre.h in Headers */ = {isa = PBXBuildFile; fileRef = 53C4E26B1194C757003FB842 /* pcre.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		5331CB5B0DEDA843003AF2A9 /* BXPGReconnectionRecoveryAttempter.h in Headers */ = {isa = PBXBuildFile; fileRef = 5331CB570DEDA843003AF2A9 /* BXPGReconnectionRecoveryAttempter.h */; };
 		5331CB5C0DEDA843003AF2A9 /* BXPGReconnectionRecoveryAttempter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5331CB580DEDA843003AF2A9 /* BXPGReconnectionRecoveryAttempter.m */; };
+		5334324511A881F200B71D24 /* BXConnectionMonitor.h in Headers */ = {isa = PBXBuildFile; fileRef = 5334324311A881F200B71D24 /* BXConnectionMonitor.h */; };
+		5334324611A881F200B71D24 /* BXConnectionMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 5334324411A881F200B71D24 /* BXConnectionMonitor.m */; };
 		53372E2A119AD74D0006F0A3 /* BXHostResolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 53372E29119AD74D0006F0A3 /* BXHostResolver.m */; };
 		53372E2C119AD77C0006F0A3 /* BXHostResolver.h in Headers */ = {isa = PBXBuildFile; fileRef = 53372E2B119AD77C0006F0A3 /* BXHostResolver.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		5338E5540E5EE69E0045B6D7 /* BXPGInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 530132E109D460230037C485 /* BXPGInterface.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -122,6 +124,8 @@
 		5348B84A0F575EE100B2655E /* BXDatabaseObjectModelStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 535736CA0F333CCD00DB3D0B /* BXDatabaseObjectModelStorage.m */; };
 		534A14AF0F0FBBE6002A9F68 /* BaseTenModifications.sql.m4 in Resources */ = {isa = PBXBuildFile; fileRef = 534A14AE0F0FBBE6002A9F68 /* BaseTenModifications.sql.m4 */; };
 		534BE4680F34F7130098951C /* BXForeignKey.h in Headers */ = {isa = PBXBuildFile; fileRef = 5328FBD40C4580CD006DE171 /* BXForeignKey.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		534E3C7D11A77088002D49C8 /* BXSocketReachabilityObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 534E3C7B11A77088002D49C8 /* BXSocketReachabilityObserver.h */; };
+		534E3C7E11A77088002D49C8 /* BXSocketReachabilityObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 534E3C7C11A77088002D49C8 /* BXSocketReachabilityObserver.m */; };
 		5350CC380EFBE66500EBC328 /* PGTSCollections.h in Headers */ = {isa = PBXBuildFile; fileRef = 5350CC360EFBE66500EBC328 /* PGTSCollections.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		5350CC390EFBE66500EBC328 /* PGTSCollections.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5350CC370EFBE66500EBC328 /* PGTSCollections.mm */; };
 		53526E0A0E5D70EB00B67550 /* BXPredicateVisitor.h in Headers */ = {isa = PBXBuildFile; fileRef = 53526E080E5D70EB00B67550 /* BXPredicateVisitor.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -201,7 +205,7 @@
 		5354F8840F004F9300422613 /* PGTSOids.m in Sources */ = {isa = PBXBuildFile; fileRef = 5354F8820F004F9300422613 /* PGTSOids.m */; };
 		5354F91E0F00511100422613 /* PGTSDeleteRule.h in Headers */ = {isa = PBXBuildFile; fileRef = 5354F91C0F00511100422613 /* PGTSDeleteRule.h */; };
 		5354F91F0F00511100422613 /* PGTSDeleteRule.m in Sources */ = {isa = PBXBuildFile; fileRef = 5354F91D0F00511100422613 /* PGTSDeleteRule.m */; };
-		5354F9410F00537200422613 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5354F9400F00537200422613 /* AppKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		5355C08911A8725700C5DEAF /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5355C08811A8725700C5DEAF /* CoreServices.framework */; };
 		5356277D0E6E7D1F002EA3FD /* BXPGInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 530132E209D460230037C485 /* BXPGInterface.m */; };
 		535661D10F025DD800920008 /* NSURL+BaseTenAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 535661CB0F025DD800920008 /* NSURL+BaseTenAdditions.m */; };
 		535661D20F025DD800920008 /* NSURL+BaseTenAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 535661CC0F025DD800920008 /* NSURL+BaseTenAdditions.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -266,8 +270,6 @@
 		53666CE70E1CD8D20028DBEA /* PGTSCertificateVerificationDelegateProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 53666CA80E1CD8D20028DBEA /* PGTSCertificateVerificationDelegateProtocol.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		53666CE90E1CD8D20028DBEA /* PGTSConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 53666CAA0E1CD8D20028DBEA /* PGTSConnection.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		53666CEA0E1CD8D20028DBEA /* PGTSConnection.mm in Sources */ = {isa = PBXBuildFile; fileRef = 53666CAB0E1CD8D20028DBEA /* PGTSConnection.mm */; };
-		53666CED0E1CD8D20028DBEA /* PGTSConnectionMonitor.h in Headers */ = {isa = PBXBuildFile; fileRef = 53666CAE0E1CD8D20028DBEA /* PGTSConnectionMonitor.h */; };
-		53666CEE0E1CD8D20028DBEA /* PGTSConnectionMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 53666CAF0E1CD8D20028DBEA /* PGTSConnectionMonitor.m */; };
 		53666CF00E1CD8D20028DBEA /* PGTSConnectionPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 53666CB10E1CD8D20028DBEA /* PGTSConnectionPrivate.h */; };
 		53666CF10E1CD8D20028DBEA /* PGTSConnector.h in Headers */ = {isa = PBXBuildFile; fileRef = 53666CB20E1CD8D20028DBEA /* PGTSConnector.h */; };
 		53666CF20E1CD8D20028DBEA /* PGTSConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = 53666CB30E1CD8D20028DBEA /* PGTSConnector.m */; };
@@ -305,6 +307,10 @@
 		536891C60F30A42600AAC65D /* BXPGForeignKeyDescription.mm in Sources */ = {isa = PBXBuildFile; fileRef = 536891C40F30A42600AAC65D /* BXPGForeignKeyDescription.mm */; };
 		536891C70F30A42600AAC65D /* BXPGForeignKeyDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = 536891C50F30A42600AAC65D /* BXPGForeignKeyDescription.h */; };
 		536C9D600EFD94D10041422F /* BXEnumerate.h in Headers */ = {isa = PBXBuildFile; fileRef = 536C9D5F0EFD94D10041422F /* BXEnumerate.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		53776B9A11A7595C009F1A8E /* BXIOKitSystemEventNotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 53776B9811A7595C009F1A8E /* BXIOKitSystemEventNotifier.m */; };
+		53776BA011A75B7F009F1A8E /* BXIOKitSystemEventNotifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 53776B9F11A75B7F009F1A8E /* BXIOKitSystemEventNotifier.h */; };
+		53776BA711A75DB3009F1A8E /* BXSystemEventNotifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 53776BA511A75DB3009F1A8E /* BXSystemEventNotifier.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		53776BA811A75DB3009F1A8E /* BXSystemEventNotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 53776BA611A75DB3009F1A8E /* BXSystemEventNotifier.m */; };
 		537920580E3F519000423965 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2F7E79907B2D74100F64583 /* CoreData.framework */; };
 		537A23B10E8404FA002AAE95 /* BXPGKeyPathExpressionValueType.h in Headers */ = {isa = PBXBuildFile; fileRef = 537A23AF0E8404FA002AAE95 /* BXPGKeyPathExpressionValueType.h */; };
 		537A23B20E8404FA002AAE95 /* BXPGKeyPathExpressionValueType.m in Sources */ = {isa = PBXBuildFile; fileRef = 537A23B00E8404FA002AAE95 /* BXPGKeyPathExpressionValueType.m */; };
@@ -525,6 +531,12 @@
 		53877EAE0E27667B0097C35F /* PGTSConstantValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 53877EAC0E27667B0097C35F /* PGTSConstantValue.m */; };
 		53877EEB0E2773E30097C35F /* NSRelationshipDescription+BXPGAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 53877EE90E2773E30097C35F /* NSRelationshipDescription+BXPGAdditions.h */; };
 		53877EEC0E2773E30097C35F /* NSRelationshipDescription+BXPGAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 53877EEA0E2773E30097C35F /* NSRelationshipDescription+BXPGAdditions.m */; };
+		538E031C11A4A5F700C3447F /* BXSocketDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = 538E031A11A4A5F700C3447F /* BXSocketDescriptor.h */; };
+		538E031D11A4A5F700C3447F /* BXSocketDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 538E031B11A4A5F700C3447F /* BXSocketDescriptor.m */; };
+		538E032011A4A61F00C3447F /* BXRunLoopSocketDesciptor.h in Headers */ = {isa = PBXBuildFile; fileRef = 538E031E11A4A61F00C3447F /* BXRunLoopSocketDesciptor.h */; };
+		538E032111A4A61F00C3447F /* BXRunLoopSocketDesciptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 538E031F11A4A61F00C3447F /* BXRunLoopSocketDesciptor.m */; };
+		538E032411A4A63100C3447F /* BXDispatchSocketDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = 538E032211A4A63100C3447F /* BXDispatchSocketDescriptor.h */; };
+		538E032511A4A63100C3447F /* BXDispatchSocketDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 538E032311A4A63100C3447F /* BXDispatchSocketDescriptor.m */; };
 		538FA0250F576278005EBFAC /* BXOpenSSLCompatibility.h in Headers */ = {isa = PBXBuildFile; fileRef = 538FA0240F576278005EBFAC /* BXOpenSSLCompatibility.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5390DE590E32B788003980BE /* BXPGCurrentCompatVersion.m.m4 in Sources */ = {isa = PBXBuildFile; fileRef = 5390DE580E32B788003980BE /* BXPGCurrentCompatVersion.m.m4 */; };
 		53915F9E0E3FD22D0098B419 /* libpq_additions.h in Headers */ = {isa = PBXBuildFile; fileRef = 53915F9C0E3FD22D0098B419 /* libpq_additions.h */; };
@@ -806,6 +818,8 @@
 		533229E40A024C2500BDB151 /* BXEntityDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = BXEntityDescription.h; path = Sources/BXEntityDescription.h; sourceTree = "<group>"; };
 		533307E20A2283AD00EE9280 /* BXObjectStatusInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = BXObjectStatusInfo.h; path = Sources/BXObjectStatusInfo.h; sourceTree = "<group>"; };
 		533307E30A2283AD00EE9280 /* BXObjectStatusInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BXObjectStatusInfo.m; path = Sources/BXObjectStatusInfo.m; sourceTree = "<group>"; };
+		5334324311A881F200B71D24 /* BXConnectionMonitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXConnectionMonitor.h; path = Sources/BXConnectionMonitor.h; sourceTree = "<group>"; };
+		5334324411A881F200B71D24 /* BXConnectionMonitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BXConnectionMonitor.m; path = Sources/BXConnectionMonitor.m; sourceTree = "<group>"; };
 		53372E29119AD74D0006F0A3 /* BXHostResolver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BXHostResolver.m; path = Sources/BXHostResolver.m; sourceTree = "<group>"; };
 		53372E2B119AD77C0006F0A3 /* BXHostResolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXHostResolver.h; path = Sources/BXHostResolver.h; sourceTree = "<group>"; };
 		5338E5C80E62CEAE0045B6D7 /* BXPGSQLFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXPGSQLFunction.h; path = Sources/BXPGSQLFunction.h; sourceTree = "<group>"; };
@@ -816,6 +830,8 @@
 		533BAACA0F2C000A0030CD05 /* PGTSTableDescription.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = PGTSTableDescription.mm; path = Sources/PGTSTableDescription.mm; sourceTree = "<group>"; };
 		5347BB510B37F78000D963E7 /* BXDatabaseObjectIDPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = BXDatabaseObjectIDPrivate.h; path = Sources/BXDatabaseObjectIDPrivate.h; sourceTree = "<group>"; };
 		534A14AE0F0FBBE6002A9F68 /* BaseTenModifications.sql.m4 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = BaseTenModifications.sql.m4; path = Resources/BaseTenModifications.sql.m4; sourceTree = "<group>"; };
+		534E3C7B11A77088002D49C8 /* BXSocketReachabilityObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXSocketReachabilityObserver.h; path = Sources/BXSocketReachabilityObserver.h; sourceTree = "<group>"; };
+		534E3C7C11A77088002D49C8 /* BXSocketReachabilityObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BXSocketReachabilityObserver.m; path = Sources/BXSocketReachabilityObserver.m; sourceTree = "<group>"; };
 		534EE22F0E53213300B079B0 /* libBaseTen.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBaseTen.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5350CC360EFBE66500EBC328 /* PGTSCollections.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PGTSCollections.h; path = Sources/PGTSCollections.h; sourceTree = "<group>"; };
 		5350CC370EFBE66500EBC328 /* PGTSCollections.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = PGTSCollections.mm; path = Sources/PGTSCollections.mm; sourceTree = "<group>"; };
@@ -834,7 +850,7 @@
 		5354F8820F004F9300422613 /* PGTSOids.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; name = PGTSOids.m; path = Sources/PGTSOids.m; sourceTree = "<group>"; };
 		5354F91C0F00511100422613 /* PGTSDeleteRule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PGTSDeleteRule.h; path = Sources/PGTSDeleteRule.h; sourceTree = "<group>"; };
 		5354F91D0F00511100422613 /* PGTSDeleteRule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PGTSDeleteRule.m; path = Sources/PGTSDeleteRule.m; sourceTree = "<group>"; };
-		5354F9400F00537200422613 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		5355C08811A8725700C5DEAF /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = /System/Library/Frameworks/CoreServices.framework; sourceTree = "<absolute>"; };
 		535661CB0F025DD800920008 /* NSURL+BaseTenAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSURL+BaseTenAdditions.m"; path = "Sources/NSURL+BaseTenAdditions.m"; sourceTree = "<group>"; };
 		535661CC0F025DD800920008 /* NSURL+BaseTenAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSURL+BaseTenAdditions.h"; path = "Sources/NSURL+BaseTenAdditions.h"; sourceTree = "<group>"; };
 		535661CD0F025DD800920008 /* NSArray+BaseTenAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+BaseTenAdditions.h"; path = "Sources/NSArray+BaseTenAdditions.h"; sourceTree = "<group>"; };
@@ -914,8 +930,6 @@
 		53666CA80E1CD8D20028DBEA /* PGTSCertificateVerificationDelegateProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PGTSCertificateVerificationDelegateProtocol.h; path = Sources/PGTSCertificateVerificationDelegateProtocol.h; sourceTree = "<group>"; };
 		53666CAA0E1CD8D20028DBEA /* PGTSConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PGTSConnection.h; path = Sources/PGTSConnection.h; sourceTree = "<group>"; };
 		53666CAB0E1CD8D20028DBEA /* PGTSConnection.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = PGTSConnection.mm; path = Sources/PGTSConnection.mm; sourceTree = "<group>"; };
-		53666CAE0E1CD8D20028DBEA /* PGTSConnectionMonitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PGTSConnectionMonitor.h; path = Sources/PGTSConnectionMonitor.h; sourceTree = "<group>"; };
-		53666CAF0E1CD8D20028DBEA /* PGTSConnectionMonitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PGTSConnectionMonitor.m; path = Sources/PGTSConnectionMonitor.m; sourceTree = "<group>"; };
 		53666CB10E1CD8D20028DBEA /* PGTSConnectionPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PGTSConnectionPrivate.h; path = Sources/PGTSConnectionPrivate.h; sourceTree = "<group>"; };
 		53666CB20E1CD8D20028DBEA /* PGTSConnector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PGTSConnector.h; path = Sources/PGTSConnector.h; sourceTree = "<group>"; };
 		53666CB30E1CD8D20028DBEA /* PGTSConnector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PGTSConnector.m; path = Sources/PGTSConnector.m; sourceTree = "<group>"; };
@@ -959,6 +973,10 @@
 		536891C50F30A42600AAC65D /* BXPGForeignKeyDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXPGForeignKeyDescription.h; path = Sources/BXPGForeignKeyDescription.h; sourceTree = "<group>"; };
 		536892570F30B9E800AAC65D /* BXForeignKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BXForeignKey.m; path = Sources/BXForeignKey.m; sourceTree = "<group>"; };
 		536C9D5F0EFD94D10041422F /* BXEnumerate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXEnumerate.h; path = Sources/BXEnumerate.h; sourceTree = "<group>"; };
+		53776B9811A7595C009F1A8E /* BXIOKitSystemEventNotifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BXIOKitSystemEventNotifier.m; path = Sources/BXIOKitSystemEventNotifier.m; sourceTree = "<group>"; };
+		53776B9F11A75B7F009F1A8E /* BXIOKitSystemEventNotifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXIOKitSystemEventNotifier.h; path = Sources/BXIOKitSystemEventNotifier.h; sourceTree = "<group>"; };
+		53776BA511A75DB3009F1A8E /* BXSystemEventNotifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXSystemEventNotifier.h; path = Sources/BXSystemEventNotifier.h; sourceTree = "<group>"; };
+		53776BA611A75DB3009F1A8E /* BXSystemEventNotifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BXSystemEventNotifier.m; path = Sources/BXSystemEventNotifier.m; sourceTree = "<group>"; };
 		537A23570E83B8DC002AAE95 /* BXSubqueryExpression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXSubqueryExpression.h; path = Sources/BXSubqueryExpression.h; sourceTree = "<group>"; };
 		537A23580E83B8DC002AAE95 /* BXSubqueryExpression.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BXSubqueryExpression.m; path = Sources/BXSubqueryExpression.m; sourceTree = "<group>"; };
 		537A23AF0E8404FA002AAE95 /* BXPGKeyPathExpressionValueType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXPGKeyPathExpressionValueType.h; path = Sources/BXPGKeyPathExpressionValueType.h; sourceTree = "<group>"; };
@@ -1006,6 +1024,12 @@
 		53877EE90E2773E30097C35F /* NSRelationshipDescription+BXPGAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSRelationshipDescription+BXPGAdditions.h"; path = "Sources/NSRelationshipDescription+BXPGAdditions.h"; sourceTree = "<group>"; };
 		53877EEA0E2773E30097C35F /* NSRelationshipDescription+BXPGAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSRelationshipDescription+BXPGAdditions.m"; path = "Sources/NSRelationshipDescription+BXPGAdditions.m"; sourceTree = "<group>"; };
 		5389E1A20C464107002714B8 /* BXRelationshipDescriptionPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXRelationshipDescriptionPrivate.h; path = Sources/BXRelationshipDescriptionPrivate.h; sourceTree = "<group>"; };
+		538E031A11A4A5F700C3447F /* BXSocketDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXSocketDescriptor.h; path = Sources/BXSocketDescriptor.h; sourceTree = "<group>"; };
+		538E031B11A4A5F700C3447F /* BXSocketDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BXSocketDescriptor.m; path = Sources/BXSocketDescriptor.m; sourceTree = "<group>"; };
+		538E031E11A4A61F00C3447F /* BXRunLoopSocketDesciptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXRunLoopSocketDesciptor.h; path = Sources/BXRunLoopSocketDesciptor.h; sourceTree = "<group>"; };
+		538E031F11A4A61F00C3447F /* BXRunLoopSocketDesciptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BXRunLoopSocketDesciptor.m; path = Sources/BXRunLoopSocketDesciptor.m; sourceTree = "<group>"; };
+		538E032211A4A63100C3447F /* BXDispatchSocketDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXDispatchSocketDescriptor.h; path = Sources/BXDispatchSocketDescriptor.h; sourceTree = "<group>"; };
+		538E032311A4A63100C3447F /* BXDispatchSocketDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BXDispatchSocketDescriptor.m; path = Sources/BXDispatchSocketDescriptor.m; sourceTree = "<group>"; };
 		538FA0240F576278005EBFAC /* BXOpenSSLCompatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXOpenSSLCompatibility.h; path = Sources/BXOpenSSLCompatibility.h; sourceTree = "<group>"; };
 		5390DE580E32B788003980BE /* BXPGCurrentCompatVersion.m.m4 */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 4; name = BXPGCurrentCompatVersion.m.m4; path = Sources/BXPGCurrentCompatVersion.m.m4; sourceTree = "<group>"; };
 		53915F9C0E3FD22D0098B419 /* libpq_additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = libpq_additions.h; path = Sources/libpq_additions.h; sourceTree = "<group>"; };
@@ -1121,8 +1145,8 @@
 				538679880DE31C1D000C9A78 /* libstdc++.6.dylib in Frameworks */,
 				537920580E3F519000423965 /* CoreData.framework in Frameworks */,
 				53D69A880EAE072A00C4C22D /* SystemConfiguration.framework in Frameworks */,
-				5354F9410F00537200422613 /* AppKit.framework in Frameworks */,
 				535B3E1E1038146500A5FB7E /* libpcre.a in Frameworks */,
+				5355C08911A8725700C5DEAF /* CoreServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1161,11 +1185,11 @@
 				53DBE8010B666C3B00C3D20A /* libcrypto.dylib */,
 				53DBE8120B666C7900C3D20A /* libssl.dylib */,
 				538679870DE31C1D000C9A78 /* libstdc++.6.dylib */,
-				0867D69BFE84028FC02AAC07 /* Foundation.framework */,
-				5354F9400F00537200422613 /* AppKit.framework */,
 				D2F7E79907B2D74100F64583 /* CoreData.framework */,
-				531266E40B68F9CA00637EDA /* Security.framework */,
+				5355C08811A8725700C5DEAF /* CoreServices.framework */,
+				0867D69BFE84028FC02AAC07 /* Foundation.framework */,
 				538678D30DE31BA0000C9A78 /* IOKit.framework */,
+				531266E40B68F9CA00637EDA /* Security.framework */,
 				53D69A870EAE072A00C4C22D /* SystemConfiguration.framework */,
 				53E11A250A791A8D00D0107C /* ExceptionHandling.framework */,
 				53EFE9E00BA96444008666B7 /* BaseTenAppKit.xcodeproj */,
@@ -1282,6 +1306,52 @@
 			name = Relationships;
 			sourceTree = "<group>";
 		};
+		533433B411A8AEA800B71D24 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				53372E2B119AD77C0006F0A3 /* BXHostResolver.h */,
+				53372E29119AD74D0006F0A3 /* BXHostResolver.m */,
+				5334324311A881F200B71D24 /* BXConnectionMonitor.h */,
+				5334324411A881F200B71D24 /* BXConnectionMonitor.m */,
+				534E3C7B11A77088002D49C8 /* BXSocketReachabilityObserver.h */,
+				534E3C7C11A77088002D49C8 /* BXSocketReachabilityObserver.m */,
+				538E032711A4A72300C3447F /* Socket descriptor */,
+			);
+			name = Network;
+			sourceTree = "<group>";
+		};
+		534E3C5F11A76F49002D49C8 /* Foundation additions */ = {
+			isa = PBXGroup;
+			children = (
+				53666CC20E1CD8D20028DBEA /* PGTSHOM.h */,
+				53666CC30E1CD8D20028DBEA /* PGTSHOM.m */,
+				535661CC0F025DD800920008 /* NSURL+BaseTenAdditions.h */,
+				535661CB0F025DD800920008 /* NSURL+BaseTenAdditions.m */,
+				535661CD0F025DD800920008 /* NSArray+BaseTenAdditions.h */,
+				535661CE0F025DD800920008 /* NSArray+BaseTenAdditions.m */,
+				530A69811199A5BA00ED63FD /* NSDictionary+BaseTenAdditions.h */,
+				530A69821199A5BA00ED63FD /* NSDictionary+BaseTenAdditions.m */,
+				535661D00F025DD800920008 /* NSPredicate+BaseTenAdditions.h */,
+				535661CF0F025DD800920008 /* NSPredicate+BaseTenAdditions.m */,
+				538334C30F03F4DF0040368E /* NSString+PGTSAdditions.h */,
+				538334C40F03F4DF0040368E /* NSString+PGTSAdditions.m */,
+				5354F7DC0F00417400422613 /* BXURLEncoding.h */,
+				5354F7DD0F00417400422613 /* BXURLEncoding.m */,
+			);
+			name = "Foundation additions";
+			sourceTree = "<group>";
+		};
+		534E3C6211A76F81002D49C8 /* Unneeded */ = {
+			isa = PBXGroup;
+			children = (
+				537A23570E83B8DC002AAE95 /* BXSubqueryExpression.h */,
+				537A23580E83B8DC002AAE95 /* BXSubqueryExpression.m */,
+				53A59B230E34EB570026D7E1 /* BXWeakNotification.h */,
+				53A59B240E34EB570026D7E1 /* BXWeakNotification.m */,
+			);
+			name = Unneeded;
+			sourceTree = "<group>";
+		};
 		535738400F33695000DB3D0B /* Object model */ = {
 			isa = PBXGroup;
 			children = (
@@ -1378,6 +1448,9 @@
 		53666C800E1CD8580028DBEA /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				533433B411A8AEA800B71D24 /* Network */,
+				53776B9B11A75964009F1A8E /* System event notifier */,
+				534E3C5F11A76F49002D49C8 /* Foundation additions */,
 				538FA0240F576278005EBFAC /* BXOpenSSLCompatibility.h */,
 				53C4C3F31192EC10003FB842 /* BXCFHostCompatibility.h */,
 				5354F87A0F004A6600422613 /* BXExport.h */,
@@ -1387,24 +1460,16 @@
 				53015A830FBEF18800E52C1E /* BXArraySize.h */,
 				53ED2E8C0E1AB7CB0095BE8B /* BXLogger.h */,
 				5364EF5B0E1B940A003D3DB6 /* BXLogger.m */,
-				53A59B230E34EB570026D7E1 /* BXWeakNotification.h */,
-				53A59B240E34EB570026D7E1 /* BXWeakNotification.m */,
 				539ACEC60E3B3FF7006602B5 /* BXDelegateProxy.h */,
 				539ACEC70E3B3FF7006602B5 /* BXDelegateProxy.m */,
 				53680C0C0E59922C00A53B26 /* BXKeyPathParser.h */,
 				53680C0D0E59922C00A53B26 /* BXKeyPathParser.m */,
-				5354F7DC0F00417400422613 /* BXURLEncoding.h */,
-				5354F7DD0F00417400422613 /* BXURLEncoding.m */,
 				53BFE53B0FAF2EFA0004533F /* BXError.h */,
 				53BFE53C0FAF2EFA0004533F /* BXError.m */,
 				5339AB910A7542EC00994B1A /* BXException.h */,
 				5339AB920A7542EC00994B1A /* BXException.m */,
-				53372E2B119AD77C0006F0A3 /* BXHostResolver.h */,
-				53372E29119AD74D0006F0A3 /* BXHostResolver.m */,
 				5329E7F7119F4878000EC6ED /* BXRegularExpressions.h */,
 				5329E7F5119F4845000EC6ED /* BXRegularExpressions.m */,
-				53666CC20E1CD8D20028DBEA /* PGTSHOM.h */,
-				53666CC30E1CD8D20028DBEA /* PGTSHOM.m */,
 				53937B650EFD097700510DBD /* PGTSInvocationRecorder.h */,
 				53937B660EFD097700510DBD /* PGTSInvocationRecorder.m */,
 				5350CC360EFBE66500EBC328 /* PGTSCollections.h */,
@@ -1417,18 +1482,7 @@
 				5354F8820F004F9300422613 /* PGTSOids.m */,
 				5354F91C0F00511100422613 /* PGTSDeleteRule.h */,
 				5354F91D0F00511100422613 /* PGTSDeleteRule.m */,
-				535661CC0F025DD800920008 /* NSURL+BaseTenAdditions.h */,
-				535661CB0F025DD800920008 /* NSURL+BaseTenAdditions.m */,
-				535661CD0F025DD800920008 /* NSArray+BaseTenAdditions.h */,
-				535661CE0F025DD800920008 /* NSArray+BaseTenAdditions.m */,
-				530A69811199A5BA00ED63FD /* NSDictionary+BaseTenAdditions.h */,
-				530A69821199A5BA00ED63FD /* NSDictionary+BaseTenAdditions.m */,
-				535661D00F025DD800920008 /* NSPredicate+BaseTenAdditions.h */,
-				535661CF0F025DD800920008 /* NSPredicate+BaseTenAdditions.m */,
-				538334C30F03F4DF0040368E /* NSString+PGTSAdditions.h */,
-				538334C40F03F4DF0040368E /* NSString+PGTSAdditions.m */,
-				537A23570E83B8DC002AAE95 /* BXSubqueryExpression.h */,
-				537A23580E83B8DC002AAE95 /* BXSubqueryExpression.m */,
+				534E3C6211A76F81002D49C8 /* Unneeded */,
 				536C9E8D0EFDAFF20041422F /* Remember to remove */,
 			);
 			name = Utility;
@@ -1475,19 +1529,15 @@
 		53666D850E1CDFF80028DBEA /* Connection */ = {
 			isa = PBXGroup;
 			children = (
-				53666CC60E1CD8D20028DBEA /* PGTSNotification.h */,
-				53666CC70E1CD8D20028DBEA /* PGTSNotification.m */,
+				53666CAA0E1CD8D20028DBEA /* PGTSConnection.h */,
+				53666CB10E1CD8D20028DBEA /* PGTSConnectionPrivate.h */,
+				53666CAB0E1CD8D20028DBEA /* PGTSConnection.mm */,
 				53666CB20E1CD8D20028DBEA /* PGTSConnector.h */,
 				53666CB30E1CD8D20028DBEA /* PGTSConnector.m */,
 				530A6A541199B9CA00ED63FD /* PGTSSynchronousConnector.h */,
 				530A6A551199B9CA00ED63FD /* PGTSSynchronousConnector.m */,
 				530A6A521199B9CA00ED63FD /* PGTSAsynchronousConnector.h */,
 				530A6A531199B9CA00ED63FD /* PGTSAsynchronousConnector.m */,
-				53666CAA0E1CD8D20028DBEA /* PGTSConnection.h */,
-				53666CB10E1CD8D20028DBEA /* PGTSConnectionPrivate.h */,
-				53666CAB0E1CD8D20028DBEA /* PGTSConnection.mm */,
-				53666CAE0E1CD8D20028DBEA /* PGTSConnectionMonitor.h */,
-				53666CAF0E1CD8D20028DBEA /* PGTSConnectionMonitor.m */,
 			);
 			name = Connection;
 			sourceTree = "<group>";
@@ -1532,6 +1582,8 @@
 				53666CA80E1CD8D20028DBEA /* PGTSCertificateVerificationDelegateProtocol.h */,
 				53666CB40E1CD8D20028DBEA /* PGTSConstants.h */,
 				53666CB50E1CD8D20028DBEA /* PGTSConstants.m */,
+				53666CC60E1CD8D20028DBEA /* PGTSNotification.h */,
+				53666CC70E1CD8D20028DBEA /* PGTSNotification.m */,
 				53915F9C0E3FD22D0098B419 /* libpq_additions.h */,
 				53915F9D0E3FD22D0098B419 /* libpq_additions.c */,
 			);
@@ -1551,6 +1603,17 @@
 				5321F83C0CF7807700E663CE /* BXInvocation.m */,
 			);
 			name = "Remember to remove";
+			sourceTree = "<group>";
+		};
+		53776B9B11A75964009F1A8E /* System event notifier */ = {
+			isa = PBXGroup;
+			children = (
+				53776BA511A75DB3009F1A8E /* BXSystemEventNotifier.h */,
+				53776BA611A75DB3009F1A8E /* BXSystemEventNotifier.m */,
+				53776B9F11A75B7F009F1A8E /* BXIOKitSystemEventNotifier.h */,
+				53776B9811A7595C009F1A8E /* BXIOKitSystemEventNotifier.m */,
+			);
+			name = "System event notifier";
 			sourceTree = "<group>";
 		};
 		537A23C00E84055F002AAE95 /* Expression value types */ = {
@@ -1595,6 +1658,19 @@
 				5321C0570AD4FD780011D0C8 /* BXSetHelperTableRelationProxy.m */,
 			);
 			name = "Automatically-updating containers";
+			sourceTree = "<group>";
+		};
+		538E032711A4A72300C3447F /* Socket descriptor */ = {
+			isa = PBXGroup;
+			children = (
+				538E031A11A4A5F700C3447F /* BXSocketDescriptor.h */,
+				538E031B11A4A5F700C3447F /* BXSocketDescriptor.m */,
+				538E031E11A4A61F00C3447F /* BXRunLoopSocketDesciptor.h */,
+				538E031F11A4A61F00C3447F /* BXRunLoopSocketDesciptor.m */,
+				538E032211A4A63100C3447F /* BXDispatchSocketDescriptor.h */,
+				538E032311A4A63100C3447F /* BXDispatchSocketDescriptor.m */,
+			);
+			name = "Socket descriptor";
 			sourceTree = "<group>";
 		};
 		539758B50E1EB25F0042120A /* SQL Schema Generation */ = {
@@ -1843,7 +1919,6 @@
 				53666CE50E1CD8D20028DBEA /* PGTSCertificateVerificationDelegate.h in Headers */,
 				53666CE70E1CD8D20028DBEA /* PGTSCertificateVerificationDelegateProtocol.h in Headers */,
 				53666CE90E1CD8D20028DBEA /* PGTSConnection.h in Headers */,
-				53666CED0E1CD8D20028DBEA /* PGTSConnectionMonitor.h in Headers */,
 				53666CF00E1CD8D20028DBEA /* PGTSConnectionPrivate.h in Headers */,
 				53666CF10E1CD8D20028DBEA /* PGTSConnector.h in Headers */,
 				53666CF30E1CD8D20028DBEA /* PGTSConstants.h in Headers */,
@@ -1943,6 +2018,13 @@
 				53372E2C119AD77C0006F0A3 /* BXHostResolver.h in Headers */,
 				5329E7F8119F4878000EC6ED /* BXRegularExpressions.h in Headers */,
 				5329E7F9119F48BC000EC6ED /* pcre.h in Headers */,
+				538E031C11A4A5F700C3447F /* BXSocketDescriptor.h in Headers */,
+				538E032011A4A61F00C3447F /* BXRunLoopSocketDesciptor.h in Headers */,
+				538E032411A4A63100C3447F /* BXDispatchSocketDescriptor.h in Headers */,
+				53776BA011A75B7F009F1A8E /* BXIOKitSystemEventNotifier.h in Headers */,
+				53776BA711A75DB3009F1A8E /* BXSystemEventNotifier.h in Headers */,
+				534E3C7D11A77088002D49C8 /* BXSocketReachabilityObserver.h in Headers */,
+				5334324511A881F200B71D24 /* BXConnectionMonitor.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2525,7 +2607,6 @@
 				53666CE40E1CD8D20028DBEA /* PGTSAdditions.m in Sources */,
 				53666CE60E1CD8D20028DBEA /* PGTSCertificateVerificationDelegate.m in Sources */,
 				53666CEA0E1CD8D20028DBEA /* PGTSConnection.mm in Sources */,
-				53666CEE0E1CD8D20028DBEA /* PGTSConnectionMonitor.m in Sources */,
 				53666CF20E1CD8D20028DBEA /* PGTSConnector.m in Sources */,
 				53666CF40E1CD8D20028DBEA /* PGTSConstants.m in Sources */,
 				53666CFE0E1CD8D20028DBEA /* PGTSFoundationObjects.m in Sources */,
@@ -2624,6 +2705,13 @@
 				530A6A591199B9CA00ED63FD /* PGTSSynchronousConnector.m in Sources */,
 				53372E2A119AD74D0006F0A3 /* BXHostResolver.m in Sources */,
 				5329E7F6119F4845000EC6ED /* BXRegularExpressions.m in Sources */,
+				538E031D11A4A5F700C3447F /* BXSocketDescriptor.m in Sources */,
+				538E032111A4A61F00C3447F /* BXRunLoopSocketDesciptor.m in Sources */,
+				538E032511A4A63100C3447F /* BXDispatchSocketDescriptor.m in Sources */,
+				53776B9A11A7595C009F1A8E /* BXIOKitSystemEventNotifier.m in Sources */,
+				53776BA811A75DB3009F1A8E /* BXSystemEventNotifier.m in Sources */,
+				534E3C7E11A77088002D49C8 /* BXSocketReachabilityObserver.m in Sources */,
+				5334324611A881F200B71D24 /* BXConnectionMonitor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

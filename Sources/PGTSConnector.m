@@ -107,6 +107,7 @@ VerifySSLCertificate (int preverify_ok, X509_STORE_CTX *x509_ctx)
 	}
 }
 
+
 - (id) init
 {
     if ((self = [super init]))
@@ -116,35 +117,42 @@ VerifySSLCertificate (int preverify_ok, X509_STORE_CTX *x509_ctx)
     return self;
 }
 
+
 - (void) dealloc
 {
 	//Everything is weak.
 	[super dealloc];
 }
 
+
 - (BOOL) SSLSetUp
 {
 	return mSSLSetUp;
 }
+
 
 - (id <PGTSConnectorDelegate>) delegate
 {
 	return mDelegate;
 }
 
+
 - (void) setDelegate: (id <PGTSConnectorDelegate>) anObject
 {
 	mDelegate = anObject;
 }
+
 
 - (BOOL) connect: (NSDictionary *) connectionDictionary
 {
 	return NO;
 }
 
+
 - (void) cancel
 {
 }
+
 
 - (BOOL) start: (const char *) connectionString
 {
@@ -155,25 +163,30 @@ VerifySSLCertificate (int preverify_ok, X509_STORE_CTX *x509_ctx)
 	return (mConnection ? YES : NO);
 }
 
+
 - (void) setConnection: (PGconn *) connection
 {
 	mConnection = connection;
 }
+
 
 - (void) setTraceFile: (FILE *) stream
 {
 	mTraceFile = stream;
 }
 
+
 - (void) setServerCertificateVerificationFailed: (BOOL) aBool
 {
 	mServerCertificateVerificationFailed = aBool;
 }
 
+
 - (NSError *) connectionError
 {
 	return [[mConnectionError copy] autorelease];
 }
+
 
 - (void) setConnectionError: (NSError *) anError
 {
@@ -183,6 +196,7 @@ VerifySSLCertificate (int preverify_ok, X509_STORE_CTX *x509_ctx)
 		mConnectionError = [anError retain];
 	}
 }
+
 
 - (void) finishedConnecting: (BOOL) status
 {
@@ -241,6 +255,7 @@ VerifySSLCertificate (int preverify_ok, X509_STORE_CTX *x509_ctx)
 	}	
 }
 
+
 - (void) setUpSSL
 {
 #ifdef USE_SSL
@@ -255,6 +270,7 @@ VerifySSLCertificate (int preverify_ok, X509_STORE_CTX *x509_ctx)
 	}
 #endif	
 }
+
 
 - (void) prepareForConnect
 {

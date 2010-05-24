@@ -137,17 +137,17 @@ BX_EXPORT void BXDeprecationWarning ();
 
 
 BX_EXPORT void BXLogSetLogFile (NSBundle *bundle);
-BX_EXPORT void BXLog (const char *fileName, 
-					  const char *functionName, 
-					  void *functionAddress, 
+BX_EXPORT void BXLog (char const *fileName, 
+					  char const *functionName, 
+					  void const *functionAddress, 
 					  int line, 
 					  enum BXLogLevel level, 
-					  id messageFmt, 
+					  NSString * const messageFmt, 
 					  ...) BX_FORMAT_FUNCTION(6,7);
-BX_EXPORT void BXLog_v (const char *fileName, 
-						const char *functionName, 
-						void *functionAddress, 
+BX_EXPORT void BXLog_v (char const *fileName, 
+						char const *functionName, 
+						void const *functionAddress, 
 						int line, 
 						enum BXLogLevel level, 
-						id messageFmt, 
+						NSString * const messageFmt, 
 						va_list args) BX_FORMAT_FUNCTION(6,0);

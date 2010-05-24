@@ -1417,7 +1417,7 @@ ModTypeToObject (enum BXModificationType value)
 				}
 				else
 				{
-					BXAssertValueReturn ([currentKey isKindOfClass: [BXPropertyDescription class]],
+					BXAssertValueReturn ([currentKey isKindOfClass: [BXPropertyDescription class]], nil,
 										 @"Expected %@ to be either a string or a property description.", currentKey);
 				}
 				

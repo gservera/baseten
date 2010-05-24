@@ -548,8 +548,8 @@ KVCompare (PGTSResultSet* res, void* ctx)
 @end
 
 
-@implementation PGTSConcreteResultSet (FieldAccessors)
 
+@implementation PGTSConcreteResultSet (FieldAccessors)
 /**
  * \brief Set the class that should be used with a specific field.
  * @{
@@ -558,6 +558,7 @@ KVCompare (PGTSResultSet* res, void* ctx)
 {
     return [self setClass: aClass forFieldAtIndex: (* mFieldIndices) [aName]];
 }
+
 
 - (BOOL) setClass: (Class) aClass forFieldAtIndex: (int) fieldIndex
 {
@@ -571,12 +572,13 @@ KVCompare (PGTSResultSet* res, void* ctx)
 }
 /** @} */
 
+
 - (id) valueForFieldAtIndex: (int) columnIndex row: (int) rowIndex
 {
     id retval = nil;
     if (! ((columnIndex < mFields) && (-1 < rowIndex) && (rowIndex < mTuples)))
     {
-		[NSException raise: kPGTSFieldNotFoundException format: nil];
+		[NSException raise: kPGTSFieldNotFoundException format: @"No field for index %d.", columnIndex];
     }
     
     if (! PQgetisnull (mResult, rowIndex, columnIndex))

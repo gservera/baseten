@@ -113,6 +113,7 @@
 @end
 
 
+
 @implementation PGTSSynchronousReconnector
 - (id) init
 {
@@ -122,6 +123,7 @@
     }
     return self;
 }
+
 
 - (BOOL) start: (const char *) connectionString
 {

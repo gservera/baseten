@@ -41,6 +41,8 @@
 @class PGTSColumnDescription;
 @class PGTSQuery;
 @class PGTSResultSet;
+@protocol BXPGResultSetPlaceholder;
+
 
 
 BX_EXPORT NSString* BXPGReturnList (NSArray* attrs, NSString* alias, BOOL prependAlias);
@@ -88,6 +90,9 @@ BX_EXPORT NSString* BXPGReturnList (NSArray* attrs, NSString* alias, BOOL prepen
 
 - (void) prepareForConnecting;
 - (BXPGTransactionHandler *) transactionHandler;
+
+- (void) begunForLocking: (id <BXPGResultSetPlaceholder>) placeholderResult;
+- (void) lockedRow: (PGTSResultSet *) res;
 
 //Some of the methods needed by BaseTen Assistant.
 - (BOOL) process: (BOOL) shouldAdd primaryKeyFields: (NSArray *) attributeArray error: (NSError **) outError;

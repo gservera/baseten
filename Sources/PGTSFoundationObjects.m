@@ -43,23 +43,26 @@
 
 
 @implementation NSObject (PGTSFoundationObjects)
-+ (id) copyForPGTSResultSet: (PGTSResultSet *) set withCharacters: (const char *) value type: (PGTSTypeDescription *) type columnIndex: (int) columnIndex
++ (id) copyForPGTSResultSet: (PGTSResultSet *) set withCharacters: (char const *) value type: (PGTSTypeDescription *) type columnIndex: (int) columnIndex
 {
 	return [self copyForPGTSResultSet: set withCharacters: value type: type];
 }
 
-+ (id) copyForPGTSResultSet: (PGTSResultSet *) set withCharacters: (const char *) value type: (PGTSTypeDescription *) typeInfo
+
++ (id) copyForPGTSResultSet: (PGTSResultSet *) set withCharacters: (char const *) value type: (PGTSTypeDescription *) typeInfo
 {
     BXLogWarning (@"Returning nil from NSObject's implementation for type %@ (%p).", [typeInfo name], typeInfo);
     return nil;
 }
+
 
 - (id) PGTSParameter: (PGTSConnection *) connection
 {
 	return self;
 }
 
-- (const char *) PGTSParameterLength: (size_t *) length connection: (PGTSConnection *) connection
+
+- (char const *) PGTSParameterLength: (size_t *) length connection: (PGTSConnection *) connection
 {
     BXLogWarning (@"Returning NULL from NSObject's implementation for %@.", [self class]);
 	if (length)
@@ -67,15 +70,18 @@
 	return NULL;
 }
 
+
 - (BOOL) PGTSIsBinaryParameter
 {
     return NO;
 }
 
+
 - (BOOL) PGTSIsCollection
 {
 	return NO;
 }
+
 
 - (id) PGTSExpressionOfType: (NSAttributeType) attrType connection: (PGTSConnection *) connection
 {
@@ -87,7 +93,7 @@
 	{
 		size_t resultLength = 0;
 		unsigned char *escapedValue = NULL;
-		const unsigned char *value = (const unsigned char *) [param PGTSParameterLength: &length connection: connection];
+		unsigned char const *value = (unsigned char const *) [param PGTSParameterLength: &length connection: connection];
 		escapedValue = PQescapeByteaConn ([connection pgConnection], value, length, &resultLength);
 		retval = [NSString stringWithFormat: @"'%s'", escapedValue];
 		PQfreemem (escapedValue);
@@ -95,7 +101,7 @@
 	else
 	{
 		char *escapedValue = NULL;
-		const char *value = [param PGTSParameterLength: &length connection: connection];
+		char const *value = [param PGTSParameterLength: &length connection: connection];
 		escapedValue = PGTSCopyEscapedString (connection, value);
 		retval = [NSString stringWithFormat: @"'%s'", escapedValue];
 		free (escapedValue);
@@ -105,6 +111,7 @@
 	return retval;
 }
 @end
+
 
 
 @implementation NSExpression (PGTSFoundationObjects)
@@ -118,8 +125,9 @@
 @end
 
 
+
 @implementation NSString (PGTSFoundationObjects)
-+ (id) copyForPGTSResultSet: (PGTSResultSet *) set withCharacters: (const char *) value type: (PGTSTypeDescription *) typeInfo
++ (id) copyForPGTSResultSet: (PGTSResultSet *) set withCharacters: (char const *) value type: (PGTSTypeDescription *) typeInfo
 {
 	NSString *string = [[NSString alloc] initWithUTF8String: value];
 	NSString *retval = [[string decomposedStringWithCanonicalMapping] retain];
@@ -127,11 +135,12 @@
 	return retval;
 }
 
-- (const char *) PGTSParameterLength: (size_t *) length connection: (PGTSConnection *) connection
+
+- (char const *) PGTSParameterLength: (size_t *) length connection: (PGTSConnection *) connection
 {
     if (connection)
     {
-        const char* clientEncoding = PQparameterStatus ([connection pgConnection], "client_encoding");
+        char const *clientEncoding = PQparameterStatus ([connection pgConnection], "client_encoding");
 		BXAssertValueReturn (clientEncoding && 0 == strcmp ("UNICODE", clientEncoding), NULL,
 							 @"Expected client_encoding to be UNICODE (was: %s).", clientEncoding);
     }
@@ -140,7 +149,7 @@
         BXLogWarning (@"Connection pointer was nil.");
 	}
 	NSString* decomposed = [self decomposedStringWithCanonicalMapping];
-    const char* retval = [decomposed UTF8String];
+    char const *retval = [decomposed UTF8String];
     if (NULL != length)
         *length = strlen (retval);
     return retval;
@@ -148,8 +157,9 @@
 @end
 
 
+
 @implementation NSData (PGTSFoundationObjects)
-+ (id) copyForPGTSResultSet: (PGTSResultSet *) set withCharacters: (const char *) value type: (PGTSTypeDescription *) typeInfo
++ (id) copyForPGTSResultSet: (PGTSResultSet *) set withCharacters: (char const *) value type: (PGTSTypeDescription *) typeInfo
 {
 	//All columns are currently fetched in text format but according to the manual only bytea is escaped.
 	//Bit and varbit seem to return bit strings as their name indicates, rather than octet strings.
@@ -160,7 +170,7 @@
 	if ([@"bytea" isEqualToString: name])
 	{
 		size_t resultLength = 0;
-		unsigned char *unescaped = PQunescapeBytea ((const unsigned char *) value, &resultLength);
+		unsigned char *unescaped = PQunescapeBytea ((unsigned char const *) value, &resultLength);
 		if (unescaped)
 		{
 			retval = [[self alloc] initWithBytes: unescaped length: resultLength];
@@ -178,13 +188,15 @@
 	return retval;
 }
 
-- (const char *) PGTSParameterLength: (size_t *) length connection: (PGTSConnection *) connection
+
+- (char const *) PGTSParameterLength: (size_t *) length connection: (PGTSConnection *) connection
 {
-    const char* retval = [self bytes];
+    char const *retval = [self bytes];
     if (NULL != length)
         *length = [self length];
     return retval;
 }
+
 
 - (BOOL) PGTSIsBinaryParameter
 {
@@ -193,12 +205,13 @@
 @end
 
 
+
 @implementation NSArray (PGTSFoundationObjects)
 static inline size_t
-UnescapePGArray (char* dst, const char* const src_, size_t length)
+UnescapePGArray (char *dst, char const * const src_, size_t length)
 {
-    const char* const end = src_ + length;
-    const char* src = src_;
+    char const * const end = src_ + length;
+    char const *src = src_;
     char c = '\0';
     while (src < end)
     {
@@ -219,7 +232,8 @@ UnescapePGArray (char* dst, const char* const src_, size_t length)
     return length;
 }
 
-+ (id) copyForPGTSResultSet: (PGTSResultSet *) set withCharacters: (const char *) current type: (PGTSTypeDescription *) typeInfo
+
++ (id) copyForPGTSResultSet: (PGTSResultSet *) set withCharacters: (char const *) current type: (PGTSTypeDescription *) typeInfo
 {
     id retval = [[NSMutableArray alloc] init];
     //Used with type: argument later
@@ -256,8 +270,8 @@ UnescapePGArray (char* dst, const char* const src_, size_t length)
             endings [1] = '}';
         }
         
-        const char* element = NULL;
-        const char* escaped = NULL;
+        char const *element = NULL;
+        char const *escaped = NULL;
         while (1)
         {
             //Mark the element beginning.
@@ -270,7 +284,7 @@ UnescapePGArray (char* dst, const char* const src_, size_t length)
             
             if (strchr (endings, *current) && current != escaped)
             {
-                const char* end = current;
+                char const *end = current;
                 //Check for "value" -style element.
                 if ('"' == *element)
                 {
@@ -292,14 +306,16 @@ UnescapePGArray (char* dst, const char* const src_, size_t length)
                     //Make a copy and remove double-escapes.
                     //FIXME: hopefully malloc copes with requests for more than 0xffff bytes.
                     size_t last = end - element;
-                    char* elementData = malloc (1 + last);
+                    char *elementData = malloc (1 + last);
                     last = UnescapePGArray (elementData, element, last);
                     
                     //Add a terminating NUL so we get a C-string.
                     elementData [last] = '\0';
                     
                     //Create the object.
-                    object = [[elementClass copyForPGTSResultSet: set withCharacters: elementData type: elementType] autorelease];
+                    object = [[elementClass copyForPGTSResultSet: set 
+												  withCharacters: elementData 
+															type: elementType] autorelease];
                     free (elementData);
                 }
                 [retval addObject: object];
@@ -318,14 +334,16 @@ continue_iteration:
     return retval;
 }
 
-static inline void
-AppendBytes (IMP impl, NSMutableData* target, const void* bytes, NSUInteger length)
-{
-	(void)(void (*)(id, SEL, const void*, NSUInteger)) impl (target, @selector (appendBytes:length:), bytes, length);
-}
 
 static inline void
-EscapeAndAppendByte (IMP appendImpl, NSMutableData* target, const char* src)
+AppendBytes (IMP impl, NSMutableData *target, void const *bytes, NSUInteger length)
+{
+	(void)(void (*)(id, SEL, void const *, NSUInteger)) impl (target, @selector (appendBytes:length:), bytes, length);
+}
+
+
+static inline void
+EscapeAndAppendByte (IMP appendImpl, NSMutableData *target, char const *src)
 {
     switch (*src)
     {
@@ -338,32 +356,33 @@ EscapeAndAppendByte (IMP appendImpl, NSMutableData* target, const char* src)
     }
 }
 
+
 - (id) PGTSParameter: (PGTSConnection *) connection
 {
     //We make use of UTF-8's ASCII-compatibility feature.
 	id retval = nil;
     if (0 == [self count])
     {
-		const char* emptyArray = "{}";
+		char const * const emptyArray = "{}";
 		retval = [NSData dataWithBytes: &emptyArray length: strlen (emptyArray)];
     }
     else
     {
         //Optimize a bit because we append each byte individually.
-        NSMutableData* contents = [NSMutableData data];
+        NSMutableData *contents = [NSMutableData data];
         IMP impl = [contents methodForSelector: @selector (appendBytes:length:)];
         AppendBytes (impl, contents, "{", 1);
         BXEnumerate (currentObject, e, [self objectEnumerator])
         {
             if ([NSNull null] == currentObject)
 			{
-				const char* bytes = "null,";
+				char const *bytes = "null,";
                 [contents appendBytes: bytes length: strlen (bytes)];
 			}
             else
             {
                 size_t length = SIZE_T_MAX;
-                const char* value = [[currentObject PGTSParameter: connection] 
+                char const *value = [[currentObject PGTSParameter: connection] 
 									 PGTSParameterLength: &length connection: connection];
                 
                 //Arrays can't have quotes around them.
@@ -378,7 +397,7 @@ EscapeAndAppendByte (IMP appendImpl, NSMutableData* target, const char* src)
                     AppendBytes (impl, contents, "\"", 1);
                     if ([currentObject PGTSIsBinaryParameter] && SIZE_T_MAX != length)
                     {
-                        const char* end = value + length;
+                        char const *end = value + length;
                         while (value < end)
                         {
                             EscapeAndAppendByte (impl, contents, value);
@@ -399,10 +418,11 @@ EscapeAndAppendByte (IMP appendImpl, NSMutableData* target, const char* src)
             }
         }
 		[contents replaceBytesInRange: NSMakeRange ([contents length] - 1, 1) withBytes: "}\0" length: 2]; 
-		retval = contents;
+		retval = [[contents copy] autorelease];
     }
     return retval;
 }
+
 
 - (BOOL) PGTSIsCollection
 {
@@ -411,8 +431,9 @@ EscapeAndAppendByte (IMP appendImpl, NSMutableData* target, const char* src)
 @end
 
 
+
 @implementation NSDecimalNumber (PGTSFoundationObjects)
-+ (id) copyForPGTSResultSet: (PGTSResultSet *) set withCharacters: (const char *) value type: (PGTSTypeDescription *) typeInfo
++ (id) copyForPGTSResultSet: (PGTSResultSet *) set withCharacters: (char const *) value type: (PGTSTypeDescription *) typeInfo
 {
     NSDecimal decimal = {};
     NSString* stringValue = [NSString stringWithUTF8String: value];
@@ -429,7 +450,7 @@ EscapeAndAppendByte (IMP appendImpl, NSMutableData* target, const char* src)
 	return [self description];
 }
 
-+ (id) copyForPGTSResultSet: (PGTSResultSet *) set withCharacters: (const char *) value type: (PGTSTypeDescription *) typeInfo
++ (id) copyForPGTSResultSet: (PGTSResultSet *) set withCharacters: (char const *) value type: (PGTSTypeDescription *) typeInfo
 {
     return [[NSNumber alloc] initWithLongLong: strtoll (value, NULL, 10)];
 }
@@ -459,7 +480,7 @@ EscapeAndAppendByte (IMP appendImpl, NSMutableData* target, const char* src)
 	return nil;
 }
 
-- (const char *) PGTSParameterLength: (size_t *) length connection: (PGTSConnection *) connection
+- (char const *) PGTSParameterLength: (size_t *) length connection: (PGTSConnection *) connection
 {
 	[self doesNotRecognizeSelector: _cmd];
 	return NULL;
@@ -468,7 +489,7 @@ EscapeAndAppendByte (IMP appendImpl, NSMutableData* target, const char* src)
 
 
 @implementation NSXMLDocument (PGTSFoundationObjects)
-+ (id) copyForPGTSResultSet: (PGTSResultSet *) result withCharacters: (const char *) value type: (PGTSTypeDescription *) type columnIndex: (int) columnIndex
++ (id) copyForPGTSResultSet: (PGTSResultSet *) result withCharacters: (char const *) value type: (PGTSTypeDescription *) type columnIndex: (int) columnIndex
 {
 	BOOL shouldReturnDocument = NO;
 	NSData* xmlData = [[NSData alloc] initWithBytes: value length: strlen (value)];
@@ -528,7 +549,7 @@ EscapeAndAppendByte (IMP appendImpl, NSMutableData* target, const char* src)
 
 
 @implementation NSNull (PGTSFoundationObjects)
-- (const char *) PGTSParameterLength: (size_t *) length connection: (PGTSConnection *) connection
+- (char const *) PGTSParameterLength: (size_t *) length connection: (PGTSConnection *) connection
 {
 	if (length)
 		*length = 0;

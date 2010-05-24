@@ -1,8 +1,8 @@
 //
-// PGTSConnectionMonitor.h
+// BXDispatchSocketDescriptor.h
 // BaseTen
 //
-// Copyright (C) 2008 Marko Karppinen & Co. LLC.
+// Copyright (C) 2010 Marko Karppinen & Co. LLC.
 //
 // Before using this software, please review the available licensing options
 // by visiting http://www.karppinen.fi/baseten/licensing/ or by contacting
@@ -26,14 +26,13 @@
 // $Id$
 //
 
-#import <Foundation/Foundation.h>
-@class PGTSConnection;
+#import <BaseTen/BXSocketDescriptor.h>
 
 
-@interface PGTSConnectionMonitor : NSObject 
+@interface BXDispatchSocketDescriptor : BXSocketDescriptor
 {
+	dispatch_queue_t mQueue;
+	dispatch_source_t mSocketSource;
+	int mSocket;
 }
-+ (id) sharedInstance;
-- (void) monitorConnection: (PGTSConnection *) connection;
-- (void) unmonitorConnection: (PGTSConnection *) connection;
 @end

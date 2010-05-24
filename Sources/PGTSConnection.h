@@ -28,10 +28,11 @@
 
 #import <CoreFoundation/CoreFoundation.h>
 #import <Foundation/Foundation.h>
-#import <SystemConfiguration/SCNetworkReachability.h>
+#import <SystemConfiguration/SystemConfiguration.h>
 #import <BaseTen/BXOpenSSLCompatibility.h>
 #import <BaseTen/libpq-fe.h>
 #import <BaseTen/PGTSCertificateVerificationDelegate.h>
+#import <BaseTen/BXConnectionMonitor.h>
 @class PGTSConnection;
 @class PGTSResultSet;
 @class PGTSConnector;
@@ -40,6 +41,7 @@
 @class PGTSDatabaseDescription;
 @class PGTSNotification;
 @class PGTSQuery;
+@class BXSocketDescriptor;
 @protocol PGTSConnectorDelegate;
 
 
@@ -84,14 +86,9 @@ enum PGTSConnectionError
 	id mConnector;
     PGTSMetadataContainer* mMetadataContainer;
     NSMutableDictionary* mPGTypes;
-	id <PGTSCertificateVerificationDelegate> mCertificateVerificationDelegate; //Weak
-    
-    CFRunLoopRef mRunLoop;
-    CFSocketRef mSocket;
-    CFRunLoopSourceRef mSocketSource;
+	id <PGTSCertificateVerificationDelegate> mCertificateVerificationDelegate; //Weak	
+	BXSocketDescriptor *mSocketDescriptor;
 	
-	SCNetworkReachabilityRef mReachability;
-    
     id <PGTSConnectionDelegate> mDelegate; //Weak
 	
 	BOOL mDidDisconnectOnSleep;
@@ -117,10 +114,9 @@ enum PGTSConnectionError
 - (BOOL) usedPassword;
 - (PGconn *) pgConnection;
 - (int) backendPID;
+- (int) socket;
 - (SSL *) SSLStruct;
-- (CFSocketRef) socket;
 - (BOOL) canSend;
-- (void) setCFRunLoop: (CFRunLoopRef) aRef;
 
 - (id <PGTSCertificateVerificationDelegate>) certificateVerificationDelegate;
 - (void) setCertificateVerificationDelegate: (id <PGTSCertificateVerificationDelegate>) anObject;
@@ -130,6 +126,12 @@ enum PGTSConnectionError
 
 - (void) logIfNeeded: (PGTSResultSet *) res;
 @end
+
+
+
+@interface PGTSConnection (BXConnectionMonitorClient) <BXConnectionMonitorClient>
+@end
+
 
 
 @interface PGTSConnection (Queries)

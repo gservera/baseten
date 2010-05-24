@@ -37,6 +37,13 @@
 #import "PGTSDatabaseDescription.h"
 
 
+
+@interface BXPGEntityImporter ()
+- (void) receivedResult: (PGTSResultSet *) res;
+@end
+
+
+
 @implementation BXPGEntityImporter
 - (void) dealloc
 {
@@ -49,6 +56,7 @@
 	[super dealloc];
 }
 
+
 - (void) setDatabaseContext: (BXDatabaseContext *) aContext
 {
 	if (mContext != aContext)
@@ -57,6 +65,7 @@
 		mContext = [aContext retain];
 	}
 }
+
 
 - (void) setConverter: (BXPGEntityConverter *) aConverter
 {
@@ -69,6 +78,7 @@
 	}
 }
 
+
 - (void) setStatements: (NSArray *) anArray
 {
 	if (mStatements != anArray)
@@ -77,6 +87,7 @@
 		mStatements = [anArray retain];
 	}
 }
+
 
 - (void) setEntities: (NSArray *) aCollection
 {
@@ -89,6 +100,7 @@
 	}
 }
 
+
 - (void) setSchemaName: (NSString *) aName
 {
 	if (mSchemaName != aName)
@@ -97,6 +109,7 @@
 		mSchemaName = [aName retain];
 	}
 }
+
 
 - (void) setEnabledRelations: (NSArray *) anArray
 {
@@ -107,15 +120,18 @@
 	}
 }
 
+
 - (void) setDelegate: (id <BXPGEntityImporterDelegate>) anObject
 {
 	mDelegate = anObject;
 }
 
+
 - (NSArray *) importStatements
 {
 	return [self importStatements: NULL];
 }
+
 
 - (NSArray *) importStatements: (NSArray **) outErrors
 {
@@ -141,6 +157,7 @@
 	return statements;
 }
 
+
 - (void) enumerateStatements: (NSEnumerator *) statementEnumerator
 {
 	NSString* statement = [statementEnumerator nextObject];
@@ -158,6 +175,7 @@
 	}
 }
 
+
 - (void) receivedResult: (PGTSResultSet *) res
 {
 	if ([res querySucceeded])
@@ -166,11 +184,13 @@
 		[mDelegate entityImporter: self finishedImporting: NO error: [res error]];
 }
 
+
 - (void) importEntities
 {
 	NSArray* statements = [self importStatements];
 	[self enumerateStatements: [statements objectEnumerator]];
 }
+
 
 - (BOOL) enableEntities: (NSError **) outError
 {
@@ -196,6 +216,7 @@
 	}
 	return retval;
 }
+
 
 - (BOOL) disableEntities: (NSArray *) entities error: (NSError **) outError
 {

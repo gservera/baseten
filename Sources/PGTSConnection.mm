@@ -40,50 +40,42 @@
 #import "PGTSAdditions.h"
 #import "PGTSResultSet.h"
 #import "PGTSDatabaseDescription.h"
-#import "PGTSConnectionMonitor.h"
 #import "PGTSNotification.h"
 #import "PGTSProbes.h"
 #import "PGTSMetadataStorage.h"
 #import "PGTSMetadataContainer.h"
 
+#import "PGTSInvocationRecorder.h"
 #import "BXLogger.h"
 #import "BXEnumerate.h"
 #import "BXArraySize.h"
 #import "BXConstants.h"
+#import "BXSocketDescriptor.h"
+#import "BXConnectionMonitor.h"
 
 #import "NSString+PGTSAdditions.h"
+
+// FIXME: change connector-related methods so that they Expect (mConnector) and synchronize on the connector, or make the connector thread-safe.
+// FIXME: See that methods don't pass self while synchronized to anything that calls -executeQuery:….
 
 
 @interface PGTSConnection (PGTSConnectorDelegate) <PGTSConnectorDelegate>
 @end
 
 
+
+@interface PGTSConnection (BXSocketDescriptorDelegate) <BXSocketDescriptorDelegate>
+@end
+
+
+
 @implementation PGTSConnection
-
 static void
-NoticeReceiver (void* connectionPtr, const PGresult* notice)
+NoticeReceiver (void *connectionPtr, PGresult const *notice)
 {
-	PGTSConnection* connection = (PGTSConnection *) connectionPtr;
-	NSError* error = [PGTSResultSet errorForPGresult: notice];
+	PGTSConnection *connection = (PGTSConnection *) connectionPtr;
+	NSError *error = [PGTSResultSet errorForPGresult: notice];
 	[connection->mDelegate PGTSConnection: connection receivedNotice: error];
-}
-
-
-static void
-SocketReady (CFSocketRef s, CFSocketCallBackType callbackType, CFDataRef address, const void* data, void* self)
-{
-	if (kCFSocketReadCallBack & callbackType)
-	{
-		[(id) self readFromSocket];
-	}
-}
-
-
-static void
-NetworkStatusChanged (SCNetworkReachabilityRef target, SCNetworkConnectionFlags flags, void *connectionPtr)
-{
-	PGTSConnection* connection = (PGTSConnection *) connectionPtr;
-	[(connection->mDelegate) PGTSConnection: connection networkStatusChanged: flags];
 }
 
 
@@ -95,17 +87,17 @@ NetworkStatusChanged (SCNetworkReachabilityRef target, SCNetworkConnectionFlags 
 		tooLate = YES;
 				
 		{
-            NSMutableArray* keys = [[NSMutableArray alloc] init];
+            NSMutableArray *keys = [[[NSMutableArray alloc] init] autorelease];
 			CFRetain (keys);
-            PQconninfoOption *option = PQconndefaults ();
+            PQconninfoOption *options = PQconndefaults ();
             char* keyword = NULL;
-            while ((keyword = option->keyword))
+            while ((keyword = options->keyword))
             {
-                NSString* key = [NSString stringWithUTF8String: keyword];
+                NSString *key = [NSString stringWithUTF8String: keyword];
                 [keys addObject: key];
-                option++;
+                options++;
             }
-			kPGTSConnectionDictionaryKeys = keys;
+			kPGTSConnectionDictionaryKeys = [keys copy];
 		}
 		
 		[[PGTSMetadataStorage defaultStorage] setContainerClass: [PGTSEFMetadataContainer class]];
@@ -119,441 +111,495 @@ NetworkStatusChanged (SCNetworkReachabilityRef target, SCNetworkConnectionFlags 
 	{
 		mQueue = [[NSMutableArray alloc] init];
 		mCertificateVerificationDelegate = [PGTSCertificateVerificationDelegate defaultCertificateVerificationDelegate];
-		[self setCFRunLoop: CFRunLoopGetCurrent ()];
 	}
 	return self;
 }
 
-- (void) setCFRunLoop: (CFRunLoopRef) aRef
-{
-	if (mRunLoop != aRef)
-	{
-		if (mRunLoop) CFRelease (mRunLoop);
-		if (aRef)
-		{
-			mRunLoop = aRef;
-			CFRetain (mRunLoop);
-		}
-	}
-}
-
-- (void) freeCFTypes
-{
-	//Don't release the connection. Delegate will handle it.
-	
-	//BXLogDebug (@"removing socket: %p socketSource: %p", mSocket, mSocketSource);
-
-	if (mReachability)
-	{
-		CFRelease (mReachability);
-		mReachability = NULL;
-	}
-	
-	if (mSocketSource)
-	{
-		CFRunLoopSourceInvalidate (mSocketSource);
-		CFRelease (mSocketSource);
-		mSocketSource = NULL;
-	}
-	
-	if (mSocket)
-	{
-		CFSocketInvalidate (mSocket);
-		CFRelease (mSocket);
-		mSocket = NULL;
-	}	
-	
-	if (mRunLoop)
-	{
-		CFRelease (mRunLoop);
-		mRunLoop = NULL;
-	}
-}
 
 - (void) dealloc
 {
-	[[PGTSConnectionMonitor sharedInstance] unmonitorConnection: self];
     [self disconnect];
 	[mQueue release];
-	[self setConnector: nil];
+	[self _setConnector: nil];
     [mMetadataContainer release];
+	[mSocketDescriptor release];
 	[mPGTypes release];
-    [self freeCFTypes];
 	[super dealloc];
 }
+
 
 - (void) finalize
 {
     [self disconnect];
-    [self freeCFTypes];
     [super finalize];
 }
 
+
 - (BOOL) connectUsingClass: (Class) connectorClass connectionDictionary: (NSDictionary *) connectionDictionary
 {
+	// FIXME: thread safety?
+
 	PGTSConnector* connector = [[[connectorClass alloc] init] autorelease];
-	[self setConnector: connector];
+	[self _setConnector: connector];
 	
 	[connector setConnection: mConnection]; //For resetting.
 	[connector setDelegate: self];
 	[connector setTraceFile: [mDelegate PGTSConnectionTraceFile: self]];
-	[[PGTSConnectionMonitor sharedInstance] monitorConnection: self];
+	[[BXConnectionMonitor sharedInstance] clientDidStartConnectionAttempt: self];
 	BXLogDebug (@"Making %@ connect.", [connector class]);
 	return [connector connect: connectionDictionary];
 }
+
 
 - (void) connectAsync: (NSDictionary *) connectionDictionary
 {
 	[self connectUsingClass: [PGTSAsynchronousConnector class] connectionDictionary: connectionDictionary];
 }
 
+
 - (BOOL) connectSync: (NSDictionary *) connectionDictionary
 {
 	return [self connectUsingClass: [PGTSSynchronousConnector class] connectionDictionary: connectionDictionary];
 }
+
 
 - (void) resetAsync
 {
 	[self connectUsingClass: [PGTSAsynchronousReconnector class] connectionDictionary: nil];
 }
 
+
 - (BOOL) resetSync
 {
 	return [self connectUsingClass: [PGTSSynchronousReconnector class] connectionDictionary: nil];
 }
 
+
 - (void) disconnect
 {
-    BXLogInfo (@"Disconnecting.");
-    [mConnector cancel];
-	[self setConnector: nil];
+	@synchronized (self)
+	{
+	    BXLogInfo (@"Disconnecting.");
+		[[BXConnectionMonitor sharedInstance] clientWillDisconnect: self];
+
+	    [mConnector cancel];
+		[self _setConnector: nil];
 	
-	[self freeCFTypes];
-    if (mConnection)
-    {        
-		PQfinish (mConnection);
-        mConnection = NULL;
+	    if (mConnection)
+	    {        
+			PQfinish (mConnection);
+	        mConnection = NULL;
+		}
 	}
 }
+
 
 - (PGconn *) pgConnection
 {
-    return mConnection;
-}
-
-- (void) setConnector: (PGTSConnector *) anObject
-{
-	if (mConnector != anObject)
+	PGconn *retval = NULL;
+	@synchronized (self)
 	{
-		[mConnector cancel];
-		[mConnector release];
-		mConnector = [anObject retain];
+    	retval = mConnection;
 	}
-}
-
-- (void) readFromSocket
-{
-	//When the socket is ready for read, send any available notifications and read results until 
-	//the socket blocks. If all results for the current query have been read, send the next query.
-	PQconsumeInput (mConnection);
-    
-    [self processNotifications];
-	
-	if (0 < [mQueue count])
-	{
-		PGTSQueryDescription* queryDescription = [[[mQueue objectAtIndex: 0] retain] autorelease];
-		while (! PQisBusy (mConnection))
-		{
-			[queryDescription receiveForConnection: self];
-			if ([queryDescription finished])
-				break;
-		}
-		
-		if ([queryDescription finished])
-		{
-			NSUInteger count = [mQueue count];
-			if (count)
-			{
-				if ([mQueue objectAtIndex: 0] == queryDescription)
-				{
-					[mQueue removeObjectAtIndex: 0];
-					count--;
-				}
-				
-				if (count)
-					[self sendNextQuery];
-			}            
-		}
-	}
-}
-
-- (void) processNotifications
-{
-	//Notifications may cause methods to be called. They might require a specific order
-	//(e.g. self-updating collections in BaseTen), which breaks if this is called recursively.
-	//Hence we prevent it.
-	if (! mProcessingNotifications)
-	{
-		mProcessingNotifications = YES;
-		PGnotify* pgNotification = NULL;
-		while ((pgNotification = PQnotifies (mConnection)))
-		{
-			NSString* name = [NSString stringWithUTF8String: pgNotification->relname];
-			PGTSNotification* notification = [[[PGTSNotification alloc] init] autorelease];
-			[notification setBackendPID: pgNotification->be_pid];
-			[notification setNotificationName: name];
-			PGTS_RECEIVED_NOTIFICATION (self, pgNotification->be_pid, pgNotification->relname, pgNotification->extra);		
-			PQfreeNotify (pgNotification);
-			[mDelegate PGTSConnection: self gotNotification: notification];
-		}    
-		mProcessingNotifications = NO;
-	}
-}
-
-- (int) sendNextQuery
-{
-	int retval = -1;
-	PGTSQueryDescription* desc = [mQueue objectAtIndex: 0];
-	if (nil != desc)
-	{
-		BXAssertValueReturn (! [desc sent], retval, @"Expected %@ not to have been sent.", desc);	
-		retval = [desc sendForConnection: self];
-		
-		[self checkConnectionStatus];
-	}
-    return retval;
-}
-
-- (int) sendOrEnqueueQuery: (PGTSQueryDescription *) query
-{
-	int retval = -1;
-	[mQueue addObject: query];
-	if (1 == [mQueue count] && mConnection)
-		retval = [self sendNextQuery];
 	return retval;
 }
 
+
 - (void) setDelegate: (id <PGTSConnectionDelegate>) anObject
 {
-    mDelegate = anObject;
+	@synchronized (self)
+	{
+	    mDelegate = anObject;
+	}
 }
+
 
 - (void) reloadDatabaseDescription
 {
-	if (mMetadataContainer)
+	BOOL shouldReload = YES;
+	@synchronized (self)
+	{
+		if (! mMetadataContainer)
+			shouldReload = NO;
+	}
+	
+	[self databaseDescription];
+	if (shouldReload)
 		[mMetadataContainer reloadUsingConnection: self];
-	else
-		[self databaseDescription];
 }
+
 
 - (PGTSDatabaseDescription *) databaseDescription
 {
-    if (! mMetadataContainer)
-    {
-		NSString* keyFormat = [NSString stringWithFormat: @"//%s@%s:%s/%s",
-							   PQuser (mConnection), PQhost (mConnection), PQport (mConnection), PQdb (mConnection)];
-		NSURL* metadataKey = [NSURL URLWithString: keyFormat];
-		
-		mMetadataContainer = [[[PGTSMetadataStorage defaultStorage] metadataContainerForURI: metadataKey] retain];
-		[mMetadataContainer prepareForConnection: self];
-    }
+	@synchronized (self)
+	{
+		if (! mMetadataContainer)
+		{
+			NSString* keyFormat = [NSString stringWithFormat: @"//%s@%s:%s/%s",
+								   PQuser (mConnection), PQhost (mConnection), PQport (mConnection), PQdb (mConnection)];
+			NSURL* metadataKey = [NSURL URLWithString: keyFormat];
+			
+			mMetadataContainer = [[[PGTSMetadataStorage defaultStorage] metadataContainerForURI: metadataKey] retain];
+		}
+	}
+	[mMetadataContainer prepareForConnection: self];
     return [mMetadataContainer databaseDescription];
 }
 
+
 - (id) deserializationDictionary
 {
-    if (! mPGTypes)
-    {
-		NSBundle* bundle = [NSBundle bundleForClass: [PGTSConnection class]];
-        NSString* path = [[bundle resourcePath] stringByAppendingString: @"/datatypeassociations.plist"];
-        NSData* plist = [NSData dataWithContentsOfFile: path];
-        BXAssertValueReturn (nil != plist, nil, @"datatypeassociations.plist was not found (looked from %@).", path);
-        NSString* error = nil;
-        mPGTypes = [[NSPropertyListSerialization propertyListFromData: plist mutabilityOption: NSPropertyListMutableContainers
-                                                               format: NULL errorDescription: &error] retain];
-        BXAssertValueReturn (nil != mPGTypes, nil, @"Error creating PGTSDeserializationDictionary: %@ (file: %@)", error, path);
-        NSArray* keys = [mPGTypes allKeys];
-        BXEnumerate (key, e, [keys objectEnumerator])
-        {
-            Class typeClass = NSClassFromString ([mPGTypes objectForKey: key]);
-            if (Nil == typeClass)
-                [mPGTypes removeObjectForKey: key];
-            else
-                [mPGTypes setObject: typeClass forKey: key];
-        }
-    }
+	@synchronized (self)
+	{
+		if (! mPGTypes)
+		{
+			NSBundle* bundle = [NSBundle bundleForClass: [PGTSConnection class]];
+			NSString* path = [[bundle resourcePath] stringByAppendingString: @"/datatypeassociations.plist"];
+			NSData* plist = [NSData dataWithContentsOfFile: path];
+			BXAssertValueReturn (plist, nil, @"datatypeassociations.plist was not found (looked from %@).", path);
+			
+			NSString* error = nil;
+			NSMutableDictionary *PGTypes = [[[NSPropertyListSerialization propertyListFromData: plist 
+																			  mutabilityOption: NSPropertyListImmutable
+																						format: NULL 
+																			  errorDescription: &error] mutableCopy] autorelease];
+			BXAssertValueReturn (PGTypes, nil, @"Error creating PGTSDeserializationDictionary: %@ (file: %@)", error, path);
+			
+			NSArray* keys = [PGTypes allKeys];
+			BXEnumerate (key, e, [keys objectEnumerator])
+			{
+				Class typeClass = NSClassFromString ([PGTypes objectForKey: key]);
+				if (Nil == typeClass)
+					[PGTypes removeObjectForKey: key];
+				else
+					[PGTypes setObject: typeClass forKey: key];
+			}
+			
+			mPGTypes = [PGTypes copy];
+		}
+	}
     return mPGTypes;
 }
 
+
 - (NSString *) errorString
 {
-	NSString* message = [NSString stringWithUTF8String: PQerrorMessage (mConnection)];
+	NSString *message = nil;
+	@synchronized (self)
+	{
+		message = [NSString stringWithUTF8String: PQerrorMessage (mConnection)];
+	}
 	message = PGTSReformatErrorMessage (message);
 	return message;
 }
 
+
 - (NSError *) connectionError
 {
+	// FIXME: thread safety?
 	return [mConnector connectionError];
 }
 
+
 - (id <PGTSCertificateVerificationDelegate>) certificateVerificationDelegate
 {
-	return mCertificateVerificationDelegate;
+	id <PGTSCertificateVerificationDelegate> retval = nil;
+	@synchronized (self)
+	{
+		retval = [[mCertificateVerificationDelegate retain] autorelease];
+	}
+	return retval;
 }
+
 
 - (void) setCertificateVerificationDelegate: (id <PGTSCertificateVerificationDelegate>) anObject
 {
-	mCertificateVerificationDelegate = anObject;
-	if (! mCertificateVerificationDelegate)
-		mCertificateVerificationDelegate = [PGTSCertificateVerificationDelegate defaultCertificateVerificationDelegate];
-}
-
-- (void) applicationWillTerminate: (NSNotification *) n
-{
-    [self disconnect];
-}
-
-- (void) workspaceWillSleep: (NSNotification *) n
-{
- 	[self disconnect];
-	mDidDisconnectOnSleep = YES;
-}
-
-- (void) workspaceDidWake: (NSNotification *) n
-{
-	if (mDidDisconnectOnSleep)
+	@synchronized (self)
 	{
-		mDidDisconnectOnSleep = NO;
-		[mDelegate PGTSConnectionLost: self error: nil]; //FIXME: set the error.
+		mCertificateVerificationDelegate = anObject;
+		if (! mCertificateVerificationDelegate)
+			mCertificateVerificationDelegate = [PGTSCertificateVerificationDelegate defaultCertificateVerificationDelegate];
 	}
 }
 
-- (void) checkConnectionStatus
-{
-	if (CONNECTION_BAD == PQstatus (mConnection))
-		[mDelegate PGTSConnectionLost: self error: nil]; //FIXME: set the error.
-	//FIXME: also indicate that a reset will be sufficient instead of reconnecting.
-}
 
 - (ConnStatusType) connectionStatus
 {
-	return PQstatus (mConnection);
+	ConnStatusType retval = CONNECTION_OK;
+	@synchronized (self)
+	{
+		retval = PQstatus (mConnection);
+	}
+	return retval;
 }
+
 
 - (PGTransactionStatusType) transactionStatus
 {
-	return PQtransactionStatus (mConnection);
+	PGTransactionStatusType retval = PQTRANS_IDLE;
+	@synchronized (self)
+	{
+		retval = PQtransactionStatus (mConnection);
+	}
+	return retval;
 }
+
 
 - (int) backendPID
 {
-	return PQbackendPID (mConnection);
+	int retval = 0;
+	@synchronized (self)
+	{
+		retval = PQbackendPID (mConnection);
+	}
+	return retval;
 }
+
+
+- (int) socket
+{
+	int retval = 0;
+	@synchronized (self)
+	{
+		retval = PQsocket (mConnection);
+	}
+	return retval;
+}
+
 
 - (PGresult *) execQuery: (const char *) query
 {
-	PGresult* res = NULL;
-	if ([self canSend])
+	PGresult *res = NULL;
+
+	@synchronized (self)
 	{
-		if (mLogsQueries)
-			[mDelegate PGTSConnection: self sentQueryString: query];
-		
-		res = PQexec (mConnection, query);
-		if (PGTS_SEND_QUERY_ENABLED ())
+		Expect (! mSocketDescriptor || [mSocketDescriptor isLocked]);
+
+		if ([self canSend])
 		{
-			char* query_s = strdup (query);
-			PGTS_SEND_QUERY (self, 1, query_s, NULL);
-			free (query_s);
+			if (mLogsQueries)
+				[mDelegate PGTSConnection: self sentQueryString: query];
+			
+			res = PQexec (mConnection, query);
+			if (BASETEN_POSTGRESQL_SEND_QUERY_ENABLED ())
+			{
+				char *query_s = strdup (query);
+				BASETEN_POSTGRESQL_SEND_QUERY (self, 1, query_s, NULL);
+				free (query_s);
+			}
 		}
 	}
 	return res;
 }
 
+
 - (id <PGTSConnectionDelegate>) delegate
 {
-	return mDelegate;
+	id <PGTSConnectionDelegate> retval = nil;
+	@synchronized (self)
+	{
+		retval = [[mDelegate retain] autorelease];
+	}
+	return retval;
 }
+
 
 - (BOOL) logsQueries
 {
-	return mLogsQueries;
+	BOOL retval = NO;
+	@synchronized (self)
+	{
+		retval = mLogsQueries;
+	}
+	return retval;
 }
+
 
 - (void) setLogsQueries: (BOOL) flag
 {
-	mLogsQueries = flag;
+	@synchronized (self)
+	{
+		mLogsQueries = flag;
+	}
 }
+
 
 - (void) logIfNeeded: (PGTSResultSet *) res
 {
-	if (mLogsQueries)
-		[mDelegate PGTSConnection: self receivedResultSet: res];
+	@synchronized (self)
+	{
+		if (mLogsQueries)
+			[mDelegate PGTSConnection: self receivedResultSet: res];
+	}
 }
 
 
 - (SSL *) SSLStruct
 {
-	return (SSL *) PQgetssl (mConnection);
-}
-
-- (CFSocketRef) socket
-{
-	return mSocket;
-}
-
-- (void) beginTrackingNetworkStatusIn: (CFRunLoopRef) runloop mode: (CFStringRef) mode
-{
-	//Create the reachability object with socket addresses.
-	
-	CFDataRef addressData = CFSocketCopyAddress (mSocket);
-	CFDataRef peerAddressData = CFSocketCopyPeerAddress (mSocket);
-	struct sockaddr* address = (struct sockaddr *) CFDataGetBytePtr (addressData);
-	struct sockaddr* peerAddress = (struct sockaddr *) CFDataGetBytePtr (peerAddressData);
-	
-	//We don't need to monitor UNIX internal protocols and SC functions seem to return
-	//bad values for them anyway.
-	if (! (AF_LOCAL == address->sa_family && AF_LOCAL == peerAddress->sa_family))
+	SSL *retval = NULL;
+	@synchronized (self)
 	{
-		mReachability = SCNetworkReachabilityCreateWithAddressPair (NULL, address, peerAddress);
-		SCNetworkReachabilityContext ctx = {0, self, NULL, NULL, NULL};
-		SCNetworkReachabilitySetCallback (mReachability, &NetworkStatusChanged, &ctx);
-		if (! SCNetworkReachabilityScheduleWithRunLoop (mReachability, runloop, mode))
-		{
-			CFRelease (mReachability);
-			mReachability = NULL;
-		}
-	}
-}
-
-- (BOOL) canSend
-{
-	BOOL retval = NO;
-	if (! mReachability)
-	{
-		//If we don't have mReachability, it wasn't needed.
-		retval = YES;
-	}
-	else
-	{
-		SCNetworkConnectionFlags flags = 0;
-		if (SCNetworkReachabilityGetFlags (mReachability, &flags))
-		{
-			if (kSCNetworkFlagsReachable & flags ||
-				kSCNetworkFlagsConnectionAutomatic & flags)
-			{
-				retval = YES;
-			}
-		}
+		retval = (SSL *) PQgetssl (mConnection);
 	}
 	return retval;
 }
 
+
+- (BOOL) canSend
+{
+	//FIXME: rewrite
+	return YES;
+}
+
+
 - (BOOL) usedPassword
 {
-	return (PQconnectionUsedPassword (mConnection) ? YES : NO);
+	BOOL retval = NO;
+	@synchronized (self)
+	{
+		retval = (PQconnectionUsedPassword (mConnection) ? YES : NO);
+	}
+	return retval;
 }
 @end
+
+
+
+@implementation PGTSConnection (PGTSConnectionPrivate)
+- (void) _setConnector: (PGTSConnector *) anObject
+{
+	@synchronized (self)
+	{
+		if (mConnector != anObject)
+		{
+			[mConnector cancel];
+			[mConnector release];
+			mConnector = [anObject retain];
+		}
+	}
+}
+
+
+- (void) _setSocketDescriptor: (BXSocketDescriptor *) desc
+{
+	@synchronized (self)
+	{
+		if (desc != mSocketDescriptor)
+		{
+			[mSocketDescriptor invalidate];
+			[mSocketDescriptor release];
+			
+			mSocketDescriptor = [desc retain];
+			[mSocketDescriptor install];
+		}
+	}
+}
+
+
+- (void) _processNotifications
+{
+	@synchronized (self)
+	{
+		//Notifications may cause methods to be called. They might require a specific order
+		//(e.g. self-updating collections in BaseTen), which breaks if this is called recursively.
+		//Hence we prevent it.
+		if (! mProcessingNotifications)
+		{
+			mProcessingNotifications = YES;
+			PGnotify* pgNotification = NULL;
+			while ((pgNotification = PQnotifies (mConnection)))
+			{
+				NSString* name = [NSString stringWithUTF8String: pgNotification->relname];
+				PGTSNotification* notification = [[[PGTSNotification alloc] init] autorelease];
+				[notification setBackendPID: pgNotification->be_pid];
+				[notification setNotificationName: name];
+				BASETEN_POSTGRESQL_RECEIVED_NOTIFICATION (self, pgNotification->be_pid, pgNotification->relname, pgNotification->extra);		
+				PQfreeNotify (pgNotification);
+				[mDelegate PGTSConnection: self gotNotification: notification];
+			}    
+			mProcessingNotifications = NO;
+		}
+	}
+}
+
+
+- (int) _sendNextQuery
+{
+	int retval = -1;
+	@synchronized (self)
+	{
+		ExpectR ([mSocketDescriptor isLocked], retval);
+
+		PGTSQueryDescription* desc = [mQueue objectAtIndex: 0];
+		if (nil != desc)
+		{
+			BXAssertValueReturn (! [desc sent], retval, @"Expected %@ not to have been sent.", desc);	
+			retval = [desc sendForConnection: self];
+			
+			[self _checkConnectionStatus];
+		}
+	}
+    return retval;
+}
+
+
+- (void) _sendOrEnqueueQuery: (PGTSQueryDescription *) query
+{	
+	@synchronized (self)
+	{
+		[mQueue addObject: query];
+		if (1 == [mQueue count] && mConnection)
+		{
+			NSInvocation *invocation = nil;
+			[[PGTSInvocationRecorder recordWithTarget: self outInvocation: &invocation] _sendNextQuery];
+			[mSocketDescriptor lock: invocation];
+		}
+	}
+}
+
+
+- (void) _checkConnectionStatus
+{
+	@synchronized (self)
+	{
+		if (CONNECTION_BAD == PQstatus (mConnection))
+			[mDelegate PGTSConnectionLost: self error: nil]; //FIXME: set the error.
+		//FIXME: also indicate that a reset will be sufficient instead of reconnecting.
+	}
+}
+
+
+- (PGTSResultSet *) _executeQuery: (NSString *) queryString parameterArray: (NSArray *) parameters
+{
+	PGTSResultSet *retval = nil;
+	@synchronized (self)
+	{
+		//First empty the query queue.
+		{
+			PGTSResultSet* res = nil;
+			PGTSQueryDescription* desc = nil;
+			while (0 < [mQueue count] && (desc = [mQueue objectAtIndex: 0])) 
+			{
+				res = [desc finishForConnection: self];
+				if ([mQueue count]) //Patch by Jianhua Meng 2008-11-12
+					[mQueue removeObjectAtIndex: 0];		
+			}
+		}
+		
+		// Send the actual query.
+		// FIXME: move outside @synchronized
+		PGTSQueryDescription* desc = [PGTSQueryDescription queryDescriptionFor: queryString 
+																	  delegate: nil
+																	  callback: NULL 
+																parameterArray: parameters
+																	  userInfo: nil];
+		retval = [desc finishForConnection: self];
+	}
+	return retval;
+}
+@end
+
+
 
 
 @implementation PGTSConnection (PGTSConnectorDelegate)
@@ -593,40 +639,37 @@ NetworkStatusChanged (SCNetworkReachabilityRef target, SCNetworkConnectionFlags 
 	{
 		PQsetNoticeReceiver (connection, &NoticeReceiver, (void *) self);
 		
-		//Create a runloop source to receive data asynchronously.
-		CFSocketContext context = {0, self, NULL, NULL, NULL};
-		CFSocketCallBackType callbacks = (CFSocketCallBackType)(kCFSocketReadCallBack | kCFSocketWriteCallBack);
-		mSocket = CFSocketCreateWithNative (NULL, PQsocket (mConnection), callbacks, &SocketReady, &context);
+		BXSocketDescriptor *desc = [BXSocketDescriptor copyDescriptorWithSocket: PQsocket (mConnection)];
+		[desc setDelegate: self];
+		[self _setSocketDescriptor: desc];
+		[desc release];
 		
-		CFOptionFlags flags = ~kCFSocketCloseOnInvalidate & CFSocketGetSocketFlags (mSocket);
-		CFSocketSetSocketFlags (mSocket, flags);
-		mSocketSource = CFSocketCreateRunLoopSource (NULL, mSocket, 0);
-		//BXLogDebug (@"created socket: %p socketSource: %p", mSocket, mSocketSource);
-		
-		BXAssertLog (mSocket, @"Expected source to have been created.");
-		BXAssertLog (CFSocketIsValid (mSocket), @"Expected socket to be valid.");
-		BXAssertLog (mSocketSource, @"Expected socketSource to have been created.");
-		BXAssertLog (CFRunLoopSourceIsValid (mSocketSource), @"Expected socketSource to be valid.");
-		
-		CFSocketDisableCallBacks (mSocket, kCFSocketWriteCallBack);
-		CFSocketEnableCallBacks (mSocket, kCFSocketReadCallBack);
-		CFRunLoopAddSource (mRunLoop, mSocketSource, (CFStringRef) kCFRunLoopCommonModes);
-		
-		[self beginTrackingNetworkStatusIn: mRunLoop mode: (CFStringRef) kCFRunLoopCommonModes];
+		[[BXConnectionMonitor sharedInstance] clientDidConnect: self];
 		
 		if (0 < [mQueue count])
-			[self sendNextQuery];
+		{
+			NSInvocation *invocation = nil;
+			[[PGTSInvocationRecorder recordWithTarget: self outInvocation: &invocation] _sendNextQuery];
+			[mSocketDescriptor lock: invocation];
+		}
+		
 		[mDelegate PGTSConnectionEstablished: self];
-		[self setConnector: nil];
+		[self _setConnector: nil];
+	}
+	else
+	{
+		[[BXConnectionMonitor sharedInstance] clientDidFailConnectionAttempt: self];
 	}
 }
 
+
 - (void) connectorFailed: (PGTSConnector*) connector
 {
-	[[PGTSConnectionMonitor sharedInstance] unmonitorConnection: self];
+	[[BXConnectionMonitor sharedInstance] clientDidFailConnectionAttempt: self];
 	[mDelegate PGTSConnectionFailed: self];
 	//Retain the connector for error handling.
 }
+
 
 - (BOOL) allowSSLForConnector: (PGTSConnector *) connector context: (void *) x509_ctx preverifyStatus: (int) preverifyStatus
 {
@@ -635,8 +678,60 @@ NetworkStatusChanged (SCNetworkReachabilityRef target, SCNetworkConnectionFlags 
 @end
 
 
-@implementation PGTSConnection (Queries)
 
+@implementation PGTSConnection (BXSocketDescriptorDelegate)
+- (void) socketReadyForReading: (int) fd estimatedSize: (unsigned long) size
+{
+	@synchronized (self)
+	{
+		ExpectV ([mSocketDescriptor isLocked]);
+
+		//When the socket is ready for read, send any available notifications and read results until 
+		//the socket blocks. If all results for the current query have been read, send the next query.
+		PQconsumeInput (mConnection);
+		
+		[self _processNotifications];
+		
+		if (0 < [mQueue count])
+		{
+			PGTSQueryDescription* queryDescription = [[[mQueue objectAtIndex: 0] retain] autorelease];
+			while (! PQisBusy (mConnection))
+			{
+				[queryDescription receiveForConnection: self];
+				if ([queryDescription finished])
+					break;
+			}
+			
+			if ([queryDescription finished])
+			{
+				NSUInteger count = [mQueue count];
+				if (count)
+				{
+					if ([mQueue objectAtIndex: 0] == queryDescription)
+					{
+						[mQueue removeObjectAtIndex: 0];
+						count--;
+					}
+					
+					if (count)
+						[self _sendNextQuery];
+				}            
+			}
+		}
+	}
+}
+
+
+- (void) socketLocked: (int) fd userInfo: (id) userInfo
+{
+	ExpectV ([userInfo isKindOfClass: [NSInvocation class]]);
+	[userInfo invoke];
+}
+@end
+
+
+
+@implementation PGTSConnection (Queries)
 #define StdargToNSArray( ARRAY_VAR, COUNT, LAST ) \
     { va_list ap; va_start (ap, LAST); ARRAY_VAR = StdargToNSArray2 (ap, COUNT, LAST); va_end (ap); }
 
@@ -683,25 +778,11 @@ ParameterCount (NSString* query)
 }
 
 
-//FIXME: move this elsewhere, perhaps PGTSConcreteQueryDescription or PGTSParameterQuery.
-- (PGTSQueryDescription *) queryDescriptionFor: (NSString *) queryString delegate: (id) delegate callback: (SEL) callback 
-								parameterArray: (NSArray *) parameters userInfo: (id) userInfo
-{
-	PGTSQueryDescription* desc = [[[PGTSConcreteQueryDescription alloc] init] autorelease];
-	PGTSParameterQuery* query = [[[PGTSParameterQuery alloc] init] autorelease];
-	[query setQuery: queryString];
-	[query setParameters: parameters];
-	[desc setQuery: query];
-	[desc setDelegate: delegate];
-	[desc setCallback: callback];
-	[desc setUserInfo: userInfo];
-	return desc;	
-}
-
 - (PGTSResultSet *) executeQuery: (NSString *) queryString
 {
 	return [self executeQuery: queryString parameterArray: nil];
 }
+
 
 - (PGTSResultSet *) executeQuery: (NSString *) queryString parameters: (id) p1, ...
 {
@@ -710,35 +791,28 @@ ParameterCount (NSString* query)
 	return [self executeQuery: queryString parameterArray: parameters];
 }
 
+
 - (PGTSResultSet *) executeQuery: (NSString *) queryString parameterArray: (NSArray *) parameters
 {
-    PGTSResultSet* retval = nil;
+	NSInvocation *invocation = nil;
+	PGTSResultSet *retval = nil;
 	
-	//First empty the query queue.
-	{
-		PGTSResultSet* res = nil;
-		PGTSQueryDescription* desc = nil;
-		while (0 < [mQueue count] && (desc = [mQueue objectAtIndex: 0])) 
-		{
-			res = [desc finishForConnection: self];
-			if ([mQueue count]) //Patch by Jianhua Meng 2008-11-12
-				[mQueue removeObjectAtIndex: 0];		
-		}
-	}
+	[[PGTSInvocationRecorder recordWithTarget: self outInvocation: &invocation] 
+	 _executeQuery: queryString parameterArray: parameters];
 	
-	//Send the actual query.
-	PGTSQueryDescription* desc = [self queryDescriptionFor: queryString delegate: nil callback: NULL 
-											parameterArray: parameters userInfo: nil];
-
-	retval = [desc finishForConnection: self];
+	// Remember not to call -lockAndWait: while @synchronized. Otherwise we'll deadlock.
+	[mSocketDescriptor lockAndWait: invocation];
+	[invocation getReturnValue: &retval];
 	
-    return retval;
+	return retval;
 }
+
 
 - (int) sendQuery: (NSString *) queryString delegate: (id) delegate callback: (SEL) callback
 {
 	return [self sendQuery: queryString delegate: delegate callback: callback parameterArray: nil];
 }
+
 
 - (int) sendQuery: (NSString *) queryString delegate: (id) delegate callback: (SEL) callback
 	   parameters: (id) p1, ...
@@ -748,6 +822,7 @@ ParameterCount (NSString* query)
 	return [self sendQuery: queryString delegate: delegate callback: callback parameterArray: parameters];
 }
 
+
 - (int) sendQuery: (NSString *) queryString delegate: (id) delegate callback: (SEL) callback 
    parameterArray: (NSArray *) parameters
 {
@@ -755,13 +830,56 @@ ParameterCount (NSString* query)
 			parameterArray: parameters userInfo: nil];
 }
 
+
 - (int) sendQuery: (NSString *) queryString delegate: (id) delegate callback: (SEL) callback 
    parameterArray: (NSArray *) parameters userInfo: (id) userInfo
 {
-	PGTSQueryDescription* desc = [self queryDescriptionFor: queryString delegate: delegate callback: callback
-											parameterArray: parameters userInfo: userInfo];
+	PGTSQueryDescription* desc = [PGTSQueryDescription queryDescriptionFor: queryString 
+																  delegate: delegate 
+																  callback: callback
+															parameterArray: parameters
+																  userInfo: userInfo];
 	int retval = [desc identifier];
-	[self sendOrEnqueueQuery: desc];
+	[self _sendOrEnqueueQuery: desc];
 	return retval;
+}
+@end
+
+
+
+@implementation PGTSConnection (BXConnectionMonitorClient)
+- (int) socketForConnectionMonitor: (BXConnectionMonitor *) monitor
+{
+	return [self socket];
+}
+
+
+- (void) connectionMonitorProcessWillExit: (BXConnectionMonitor *) monitor
+{
+    [self disconnect];
+}
+
+
+- (void) connectionMonitorSystemWillSleep: (BXConnectionMonitor *) monitor
+{
+ 	[self disconnect];
+	mDidDisconnectOnSleep = YES;
+}
+
+
+- (void) connectionMonitorSystemDidWake: (BXConnectionMonitor *) monitor
+{
+	if (mDidDisconnectOnSleep)
+	{
+		mDidDisconnectOnSleep = NO;
+		[mDelegate PGTSConnectionLost: self error: nil]; //FIXME: set the error.
+	}
+}
+
+
+- (void) connectionMonitor: (BXConnectionMonitor *) monitor
+	  networkStatusChanged: (SCNetworkConnectionFlags) flags
+{
+	[mDelegate PGTSConnection: self networkStatusChanged: flags];
 }
 @end

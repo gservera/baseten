@@ -40,17 +40,20 @@
 	return 0;
 }
 
+
 - (NSString *) query
 {
 	[self doesNotRecognizeSelector: _cmd];
 	return nil;
 }
 
+
 - (id) visitQuery: (id <PGTSQueryVisitor>) visitor
 {
 	return [visitor visitQuery: self];
 }
 @end
+
 
 
 @implementation PGTSAbstractParameterQuery
@@ -60,30 +63,48 @@
 	[super dealloc];
 }
 
+
 - (NSArray *) parameters
 {
-	return mParameters;
+	NSArray *retval = nil;
+	@synchronized (self)
+	{
+		retval = mParameters;
+	}
+	return retval;
 }
+
 
 - (void) setParameters: (NSArray *) anArray
 {
-	if (mParameters != anArray)
+	@synchronized (self)
 	{
-		[mParameters release];
-		mParameters = [anArray retain];
+		if (mParameters != anArray)
+		{
+			[mParameters release];
+			mParameters = [anArray copy];
+		}
 	}
 }
 
+
 - (NSUInteger) parameterCount
 {
-	return [mParameters count];
+	NSUInteger retval = 0;
+	@synchronized (self)
+	{
+		retval = [mParameters count];
+	}
+	return retval;
 }
+
 
 - (id) visitQuery: (id <PGTSQueryVisitor>) visitor
 {
 	return [visitor visitParameterQuery: self];
 }
 @end
+
 
 
 @implementation PGTSParameterQuery
@@ -93,23 +114,34 @@
 	[super dealloc];
 }
 
+
 - (NSString *) query
 {
-	return mQuery;
+	NSString *retval = nil;
+	@synchronized (self)
+	{
+		retval = mQuery;
+	}
+	return retval;
 }
+
 
 - (void) setQuery: (NSString *) aString
 {
-	if (mQuery != aString)
+	@synchronized (self)
 	{
-		[mQuery release];
-		mQuery = [aString copy];
+		if (mQuery != aString)
+		{
+			[mQuery release];
+			mQuery = [aString copy];
+		}
 	}
 }
 
+
 #if 0
 static void
-RemoveChars (char* str, const char* removed)
+RemoveChars (char *str, char const *removed)
 {
 	BOOL copy = NO;
 	while (1)
@@ -146,7 +178,7 @@ RemoveChars (char* str, const char* removed)
 
 
 static char*
-CopyParameterString (int nParams, const char** values, int* formats)
+CopyParameterString (int nParams, char const * const * const values, int const * const formats)
 {
 	NSMutableString* desc = [NSMutableString string];
 	for (int i = 0; i < nParams; i++)
@@ -171,60 +203,62 @@ CopyParameterString (int nParams, const char** values, int* formats)
 {    
     int retval = 0;
 	//For some reason, libpq doesn't receive signal or EPIPE from send if network is down. Hence we check it here.
-	if ([connection canSend])
+	@synchronized (self)
 	{
-		NSUInteger nParams = [self parameterCount];
-		NSArray* parameterObjects = [[mParameters PGTSCollect] PGTSParameter: connection];
-		
-		const char** paramValues  = calloc (nParams, sizeof (char *));
-		Oid*   paramTypes   = calloc (nParams, sizeof (Oid));
-		int*   paramLengths = calloc (nParams, sizeof (int));
-		int*   paramFormats = calloc (nParams, sizeof (int));
-		
-		for (int i = 0; i < nParams; i++)
+		if ([connection canSend])
 		{
-			BOOL isBinary = [[mParameters objectAtIndex: i] PGTSIsBinaryParameter];
-			id parameter = [parameterObjects objectAtIndex: i];
-			size_t length = 0;
-			const char* value = [parameter PGTSParameterLength: &length connection: connection];
+			NSUInteger nParams = [self parameterCount];
+			NSArray* parameterObjects = [[mParameters PGTSCollect] PGTSParameter: connection];
 			
-			paramTypes   [i] = InvalidOid;
-			paramValues  [i] = value;
-			paramLengths [i] = (isBinary ? length : 0);
-			paramFormats [i] = isBinary;
+			const char** paramValues  = calloc (nParams, sizeof (char *));
+			Oid*   paramTypes   = calloc (nParams, sizeof (Oid));
+			int*   paramLengths = calloc (nParams, sizeof (int));
+			int*   paramFormats = calloc (nParams, sizeof (int));
+			
+			for (int i = 0; i < nParams; i++)
+			{
+				BOOL isBinary = [[mParameters objectAtIndex: i] PGTSIsBinaryParameter];
+				id parameter = [parameterObjects objectAtIndex: i];
+				size_t length = 0;
+				const char* value = [parameter PGTSParameterLength: &length connection: connection];
+				
+				paramTypes   [i] = InvalidOid;
+				paramValues  [i] = value;
+				paramLengths [i] = (isBinary ? length : 0);
+				paramFormats [i] = isBinary;
+			}
+			
+			if (BASETEN_POSTGRESQL_SEND_QUERY_ENABLED ())
+			{
+				char* params = CopyParameterString (nParams, paramValues, paramFormats);
+				char* query = strdup ([mQuery UTF8String] ?: "");
+				BASETEN_POSTGRESQL_SEND_QUERY (connection, retval, query, params);
+				free (query);
+				free (params);
+			}
+			
+			if (nParams)
+			{
+				retval = PQsendQueryParams ([connection pgConnection], [mQuery UTF8String], nParams, paramTypes,
+											paramValues, paramLengths, paramFormats, 0);
+			}
+			else
+			{
+				retval = PQsendQuery ([connection pgConnection], [mQuery UTF8String]);
+			}
+			
+			if ([connection logsQueries])
+				[(id) [connection delegate] PGTSConnection: connection sentQuery: self];
+			
+			free (paramTypes);
+			free (paramValues);
+			free (paramLengths);
+			free (paramFormats);
+			
+			//For GC.
+			[parameterObjects self];
 		}
-		
-		if (PGTS_SEND_QUERY_ENABLED ())
-		{
-			char* params = CopyParameterString (nParams, paramValues, paramFormats);
-			char* query = strdup ([mQuery UTF8String] ?: "");
-			PGTS_SEND_QUERY (connection, retval, query, params);
-			free (query);
-			free (params);
-		}
-		
-		if (nParams)
-		{
-			retval = PQsendQueryParams ([connection pgConnection], [mQuery UTF8String], nParams, paramTypes,
-										paramValues, paramLengths, paramFormats, 0);
-		}
-		else
-		{
-			retval = PQsendQuery ([connection pgConnection], [mQuery UTF8String]);
-		}
-		
-		if ([connection logsQueries])
-			[(id) [connection delegate] PGTSConnection: connection sentQuery: self];
-		
-		free (paramTypes);
-		free (paramValues);
-		free (paramLengths);
-		free (paramFormats);
-
-		//For GC.
-		[parameterObjects self];
 	}
     return retval;
 }
-
 @end

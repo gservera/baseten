@@ -27,15 +27,11 @@
  */
 
 
-provider PGTS
+provider BaseTen
 {
-	probe send_query (void* connection, long sendStatus, char* query, char* parameters);
-	probe finish_query ();
+	probe postgresql_send_query (void *connection, long sendStatus, char *query, char *parameters);
+	probe postgresql_finish_query ();
 	
-	probe received_notification (void* connection, long be_pid, char* name, void* extra);
-	
-	probe begin_sleep_preparation ();
-	probe end_sleep_preparation ();
-	probe begin_wake_preparation ();
-	probe end_wake_preparation ();	
+	probe postgresql_received_notification (void *connection, long be_pid, char *name, void *extra);
+	probe postgresql_received_notice (void *connection, char *message);
 };

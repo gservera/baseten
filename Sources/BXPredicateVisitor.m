@@ -117,10 +117,16 @@ static NSString*
 Comparison1 (NSString* lval, NSString* operatorString, NSString* rval, NSComparisonPredicateModifier modifier)
 {
 	if (! (lval && rval && operatorString))
-		[BXPGExceptionInternalInconsistency raise: kBXPGExceptionInternalInconsistency format: nil];
+	{
+		[BXPGExceptionInternalInconsistency raise: kBXPGExceptionInternalInconsistency 
+										   format: @"Internal inconsistency exception"];
+	}
 	
 	if (! (0 < [lval length] && 0 < [rval length] && 0 < [operatorString length]))
-		[BXPGExceptionInternalInconsistency raise: kBXPGExceptionInternalInconsistency format: nil];
+	{
+		[BXPGExceptionInternalInconsistency raise: kBXPGExceptionInternalInconsistency 
+										   format: @"Internal inconsistency exception"];
+	}
 
 	NSString* format = @"%@ %@ %@";
 	if (NSDirectPredicateModifier != modifier)

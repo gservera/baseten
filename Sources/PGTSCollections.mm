@@ -65,9 +65,30 @@ EqualRelationship (const void *value1, const void *value2)
 	Boolean retval = FALSE;
 	NSRelationshipDescription* r1 = (id) value1;
 	NSRelationshipDescription* r2 = (id) value2;
-	if ([[r1 name] isEqualToString: [r2 name]])
+	
+	NSString *n1 = nil, *n2 = nil;
+	@synchronized (r1)
 	{
-		if ([[r1 entity] isEqual: [r2 entity]])
+		n1 = [r1 name];
+	}
+	@synchronized (r2)
+	{
+		n2 = [r2 name];
+	}
+	
+	if ([n1 isEqualToString: n2])
+	{
+		NSEntityDescription *e1 = nil, *e2 = nil;
+		@synchronized (r1)
+		{
+			e1 = [r1 entity];
+		}
+		@synchronized (r2)
+		{
+			e2 = [r2 entity];
+		}
+		
+		if ([e1 isEqual: e2])
 			retval = TRUE;
 	}
 	return retval;

@@ -98,43 +98,6 @@ AddSelector (SEL selector, NSInteger cardinality, BOOL acceptsVariableArgs, ...)
 	}
 }
 
-+ (void) initialize
-{
-	static BOOL tooLate = NO;
-	if (! tooLate)
-	{
-		tooLate = YES;
-		
-		gSelectorCardinality = new SelectorCardinalityMap ();
-		AddSelector (@selector (sum:),				0, YES, 0);
-		AddSelector (@selector (count:),			0, YES, 0);
-		AddSelector (@selector (min:), 				0, YES, 0);
-		AddSelector (@selector (max:), 				0, YES, 0);
-		AddSelector (@selector (average:), 			0, YES, 0);
-		AddSelector (@selector (median:), 			0, YES, 0);
-		AddSelector (@selector (mode:), 			1, YES, 0);
-		AddSelector (@selector (stddev:), 			0, YES, 0);
-		AddSelector (@selector (add:to:), 			0, NO, 	0, 0);
-		AddSelector (@selector (from:subtract:), 	0, NO, 	0, 0);
-		AddSelector (@selector (multiply:by:), 		0, NO, 	0, 0);
-		AddSelector (@selector (divide:by:), 		0, NO, 	0, 0);
-		AddSelector (@selector (modulus:by:), 		0, NO, 	0, 0);
-		AddSelector (@selector (sqrt:), 			0, NO, 	0);
-		AddSelector (@selector (log:), 				0, NO, 	0);
-		AddSelector (@selector (ln:), 				0, NO, 	0);
-		AddSelector (@selector (raise:toPower:), 	0, NO, 	0, 0);
-		AddSelector (@selector (exp:), 				0, NO, 	0);
-		AddSelector (@selector (floor:),			0, NO,	0);
-		AddSelector (@selector (ceiling:), 			0, NO, 	0);
-		AddSelector (@selector (abs:), 				0, NO, 	0);
-		AddSelector (@selector (trunc:), 			0, NO, 	0);
-		//What do we do with this? @selector (castObject:toType:)]
-		AddSelector (@selector (random), 			0, NO);
-		//What do we do with this? @selector (randomn:)]
-		AddSelector (@selector (now), 				0, NO);
-	}
-}
-
 
 + (BXPGExpressionValueType *) valueTypeForExpression: (NSExpression *) expression visitor: (id <BXPGPredicateVisitor>) visitor
 {
@@ -356,5 +319,43 @@ end:
 {
 	NSString* retval = @"statement_timestamp ()";
 	return retval;
+}
+
+
++ (void) initialize
+{
+	static BOOL tooLate = NO;
+	if (! tooLate)
+	{
+		tooLate = YES;
+		
+		gSelectorCardinality = new SelectorCardinalityMap ();
+		AddSelector (@selector (sum:),				0, YES, 0);
+		AddSelector (@selector (count:),			0, YES, 0);
+		//AddSelector (@selector (min:), 				0, YES, 0);
+		//AddSelector (@selector (max:), 				0, YES, 0);
+		//AddSelector (@selector (average:), 			0, YES, 0);
+		//AddSelector (@selector (median:), 			0, YES, 0);
+		//AddSelector (@selector (mode:), 			1, YES, 0);
+		//AddSelector (@selector (stddev:), 			0, YES, 0);
+		AddSelector (@selector (add:to:), 			0, NO, 	0, 0);
+		AddSelector (@selector (from:subtract:), 	0, NO, 	0, 0);
+		AddSelector (@selector (multiply:by:), 		0, NO, 	0, 0);
+		AddSelector (@selector (divide:by:), 		0, NO, 	0, 0);
+		AddSelector (@selector (modulus:by:), 		0, NO, 	0, 0);
+		AddSelector (@selector (sqrt:), 			0, NO, 	0);
+		AddSelector (@selector (log:), 				0, NO, 	0);
+		AddSelector (@selector (ln:), 				0, NO, 	0);
+		AddSelector (@selector (raise:toPower:), 	0, NO, 	0, 0);
+		AddSelector (@selector (exp:), 				0, NO, 	0);
+		AddSelector (@selector (floor:),			0, NO,	0);
+		AddSelector (@selector (ceiling:), 			0, NO, 	0);
+		AddSelector (@selector (abs:), 				0, NO, 	0);
+		AddSelector (@selector (trunc:), 			0, NO, 	0);
+		//What do we do with this? @selector (castObject:toType:)]
+		//AddSelector (@selector (random), 			0, NO);
+		//What do we do with this? @selector (randomn:)]
+		AddSelector (@selector (now), 				0, NO);
+	}
 }
 @end

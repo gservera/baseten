@@ -102,40 +102,43 @@ __strong static id <PGTSCertificateVerificationDelegate> gDefaultCertDelegate = 
  */
 - (CFArrayRef) policies
 {
-	if (! mPolicies)
+	@synchronized (self)
 	{
-		OSStatus status = noErr;
-		
-		CFMutableArrayRef policies = CFArrayCreateMutable (NULL, 0, &kCFTypeArrayCallBacks);
-		const CSSM_OID* currentOidPtr = NULL;
-		const CSSM_OID* oidPtrs [] = {&CSSMOID_APPLE_TP_SSL, &CSSMOID_APPLE_TP_REVOCATION_CRL};
-		for (int i = 0, count = BXArraySize (oidPtrs); i < count; i++)
+		if (! mPolicies)
 		{
-			currentOidPtr = oidPtrs [i];
-			SecPolicySearchRef criteria = NULL;
-			SecPolicyRef policy = NULL;
-			status = SecPolicySearchCreate (CSSM_CERT_X_509v3, currentOidPtr, NULL, &criteria);
-			if (noErr != status)
+			OSStatus status = noErr;
+			
+			CFMutableArrayRef policies = CFArrayCreateMutable (NULL, 0, &kCFTypeArrayCallBacks);
+			const CSSM_OID* currentOidPtr = NULL;
+			const CSSM_OID* oidPtrs [] = {&CSSMOID_APPLE_TP_SSL, &CSSMOID_APPLE_TP_REVOCATION_CRL};
+			for (int i = 0, count = BXArraySize (oidPtrs); i < count; i++)
 			{
+				currentOidPtr = oidPtrs [i];
+				SecPolicySearchRef criteria = NULL;
+				SecPolicyRef policy = NULL;
+				status = SecPolicySearchCreate (CSSM_CERT_X_509v3, currentOidPtr, NULL, &criteria);
+				if (noErr != status)
+				{
+					SafeCFRelease (criteria);
+					CFArrayRemoveAllValues (policies);
+					break;
+				}
+				
+				//SecPolicySearchCopyNext should only return noErr or errSecPolicyNotFound.
+				while (noErr == SecPolicySearchCopyNext (criteria, &policy))
+				{
+					CFArrayAppendValue (policies, policy);
+					CFRelease (policy);
+				}
 				SafeCFRelease (criteria);
-				CFArrayRemoveAllValues (policies);
-				break;
 			}
 			
-			//SecPolicySearchCopyNext should only return noErr or errSecPolicyNotFound.
-			while (noErr == SecPolicySearchCopyNext (criteria, &policy))
-			{
-				CFArrayAppendValue (policies, policy);
-				CFRelease (policy);
-			}
-			SafeCFRelease (criteria);
+			if (noErr == status)
+				mPolicies = CFArrayCreateCopy (NULL, policies);
+			
+			SafeCFRelease (policies);
+			
 		}
-		
-		if (noErr == status)
-			mPolicies = CFArrayCreateCopy (NULL, policies);
-		
-		SafeCFRelease (policies);
-		
 	}
 	return mPolicies;
 }

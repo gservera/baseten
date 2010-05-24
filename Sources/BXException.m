@@ -42,6 +42,7 @@
 {
     NSMutableDictionary* userInfo = [NSMutableDictionary dictionaryWithDictionary: [self userInfo]];
     [userInfo setObject: self forKey: kBXErrorKey];
+	userInfo = [[userInfo copy] autorelease];
     return [BXException exceptionWithName: name 
 								   reason: [self localizedFailureReason]
 								 userInfo: userInfo];

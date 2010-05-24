@@ -143,6 +143,7 @@ SocketReady (CFSocketRef s, CFSocketCallBackType callBackType, CFDataRef address
 	[super finalize];
 }
 
+
 - (void) prepareForConnect
 {
 	[super prepareForConnect];
@@ -446,6 +447,7 @@ SocketReady (CFSocketRef s, CFSocketCallBackType callBackType, CFDataRef address
     }
     return self;
 }
+
 
 - (BOOL) start: (const char *) connectionString
 {
