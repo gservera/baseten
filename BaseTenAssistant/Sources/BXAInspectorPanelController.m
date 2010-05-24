@@ -210,7 +210,7 @@ static NSPoint gLastPoint = {};
 
 - (IBAction) propertyDoubleClick: (id) sender
 {
-	BXPropertyDescription *property = [[[mPropertyController selectedObjects] lastObject] value];
+	BXPropertyDescription *property = (id) [[[mPropertyController selectedObjects] lastObject] value];
 	if (property && [property propertyKind] == kBXPropertyKindRelationship)
 		[self displayProperty: [(BXRelationshipDescription *) property inverseRelationship]];
 }
@@ -229,7 +229,7 @@ static NSPoint gLastPoint = {};
 	NSArray *arrangedObjects = [mPropertyController arrangedObjects];
 	for (id pair in arrangedObjects)
 	{
-		if ([pair value] == property)
+		if ((id) [pair value] == property)
 		{
 			[mPropertyController setSelectedObjects: [NSArray arrayWithObject: pair]];
 			break;

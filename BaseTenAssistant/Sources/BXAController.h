@@ -39,7 +39,7 @@
 @class RKRegex;
 
 
-@interface BXAController : NSObject 
+@interface BXAController : NSObject <NSNetServiceBrowserDelegate, NSNetServiceDelegate>
 {
 	MKCPolishedCornerView* mCornerView;
 	NSButtonCell* mInspectorButtonCell;

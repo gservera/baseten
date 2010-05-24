@@ -32,7 +32,7 @@
 #import "MKCPolishedCornerView.h"
 #import "MKCEventPassingTextField.h"
 #import "Additions.h"
-#import <BaseTen/PGTSHOM.h>
+#import <BaseTen/BXHOM.h>
 #import <BaseTen/BXDatabaseContextPrivate.h>
 #import <BaseTen/PGTSConnection.h>
 #import <BaseTen/PGTSResultSet.h>
@@ -201,7 +201,7 @@ ShouldImport (id entity)
 - (void) import: (BOOL) modifyDatabase usingSheet: (BOOL) useSheet
 {
 	BOOL shouldContinue = YES;
-	NSArray* importedEntities = [[mEntities arrangedObjects] PGTSSelectFunction: &ShouldImport];
+	NSArray* importedEntities = [[mEntities arrangedObjects] BX_SelectFunction: &ShouldImport];
 
 	if (! mEntityImporter)
 	{

@@ -91,7 +91,7 @@
 		5329E7F9119F48BC000EC6ED /* pcre.h in Headers */ = {isa = PBXBuildFile; fileRef = 53C4E26B1194C757003FB842 /* pcre.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		5331CB5B0DEDA843003AF2A9 /* BXPGReconnectionRecoveryAttempter.h in Headers */ = {isa = PBXBuildFile; fileRef = 5331CB570DEDA843003AF2A9 /* BXPGReconnectionRecoveryAttempter.h */; };
 		5331CB5C0DEDA843003AF2A9 /* BXPGReconnectionRecoveryAttempter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5331CB580DEDA843003AF2A9 /* BXPGReconnectionRecoveryAttempter.m */; };
-		5334324511A881F200B71D24 /* BXConnectionMonitor.h in Headers */ = {isa = PBXBuildFile; fileRef = 5334324311A881F200B71D24 /* BXConnectionMonitor.h */; };
+		5334324511A881F200B71D24 /* BXConnectionMonitor.h in Headers */ = {isa = PBXBuildFile; fileRef = 5334324311A881F200B71D24 /* BXConnectionMonitor.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		5334324611A881F200B71D24 /* BXConnectionMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 5334324411A881F200B71D24 /* BXConnectionMonitor.m */; };
 		53372E2A119AD74D0006F0A3 /* BXHostResolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 53372E29119AD74D0006F0A3 /* BXHostResolver.m */; };
 		53372E2C119AD77C0006F0A3 /* BXHostResolver.h in Headers */ = {isa = PBXBuildFile; fileRef = 53372E2B119AD77C0006F0A3 /* BXHostResolver.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -124,7 +124,7 @@
 		5348B84A0F575EE100B2655E /* BXDatabaseObjectModelStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 535736CA0F333CCD00DB3D0B /* BXDatabaseObjectModelStorage.m */; };
 		534A14AF0F0FBBE6002A9F68 /* BaseTenModifications.sql.m4 in Resources */ = {isa = PBXBuildFile; fileRef = 534A14AE0F0FBBE6002A9F68 /* BaseTenModifications.sql.m4 */; };
 		534BE4680F34F7130098951C /* BXForeignKey.h in Headers */ = {isa = PBXBuildFile; fileRef = 5328FBD40C4580CD006DE171 /* BXForeignKey.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		534E3C7D11A77088002D49C8 /* BXSocketReachabilityObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 534E3C7B11A77088002D49C8 /* BXSocketReachabilityObserver.h */; };
+		534E3C7D11A77088002D49C8 /* BXSocketReachabilityObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 534E3C7B11A77088002D49C8 /* BXSocketReachabilityObserver.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		534E3C7E11A77088002D49C8 /* BXSocketReachabilityObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 534E3C7C11A77088002D49C8 /* BXSocketReachabilityObserver.m */; };
 		5350CC380EFBE66500EBC328 /* PGTSCollections.h in Headers */ = {isa = PBXBuildFile; fileRef = 5350CC360EFBE66500EBC328 /* PGTSCollections.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		5350CC390EFBE66500EBC328 /* PGTSCollections.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5350CC370EFBE66500EBC328 /* PGTSCollections.mm */; };

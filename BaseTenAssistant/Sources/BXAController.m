@@ -281,7 +281,10 @@ NSInvocation* MakeInvocation (id target, SEL selector)
 		BOOL currentIsView = NO;
 		NSArray* selectedEntities = [mEntities selectedObjects];
 		if (0 < [selectedEntities count])
-			currentIsView = [[[selectedEntities objectAtIndex: 0] value]isView];
+		{
+			BXEntityDescription *entity = (id) [[selectedEntities objectAtIndex: 0] value];
+			currentIsView = [entity isView];
+		}
 		
 		NSView* scrollView = [[mAttributeTable superview] superview];
 		NSRect frame = [scrollView frame];			
@@ -342,7 +345,7 @@ NSInvocation* MakeInvocation (id target, SEL selector)
 	if (-1 != rowIndex)
 	{
 		retval = YES;
-		BXEntityDescription* entity = [[[mEntities arrangedObjects] objectAtIndex: rowIndex] value];
+		BXEntityDescription* entity = (id) [[[mEntities arrangedObjects] objectAtIndex: rowIndex] value];
 		if ([entity isView])
 		{
 			if (! [[entity primaryKeyFields] count])
@@ -534,37 +537,37 @@ NSInvocation* MakeInvocation (id target, SEL selector)
 		{
 			query = @"CREATE TEMPORARY TABLE baseten_view_pkey AS SELECT * FROM baseten.view_pkey";
 			res = [connection executeQuery: query];
-			BXAssertLog ([res querySucceeded], [[res error] description]);
+			BXAssertLog ([res querySucceeded], @"%@", [[res error] description]);
 
 			query =
 			@"CREATE TEMPORARY TABLE baseten_enabled_oids AS "
 			@" SELECT c.oid FROM pg_class c WHERE baseten.is_enabled (c.oid) = true";
 			res = [connection executeQuery: query];
-			BXAssertLog ([res querySucceeded], [[res error] description]);
+			BXAssertLog ([res querySucceeded], @"%@", [[res error] description]);
 		}
 		else if (NSOrderedAscending != [version compare: [NSDecimalNumber decimalNumberWithString: @"0.922"]])
 		{
 			query = @"CREATE TEMPORARY TABLE baseten_view_pkey AS SELECT * FROM baseten.view_pkey";
 			res = [connection executeQuery: query];
-			BXAssertLog ([res querySucceeded], [[res error] description]);
+			BXAssertLog ([res querySucceeded], @"%@", [[res error] description]);
 
 			query = 
 			@"CREATE TEMPORARY TABLE baseten_enabled_oids AS "
 			@" SELECT relid AS oid FROM baseten.enabled_relation";
 			res = [connection executeQuery: query];			
-			BXAssertLog ([res querySucceeded], [[res error] description]);
+			BXAssertLog ([res querySucceeded], @"%@", [[res error] description]);
 		}
 		else
 		{
 			query = @"CREATE TEMPORARY TABLE baseten_view_pkey AS SELECT * FROM baseten.viewprimarykey";
 			res = [connection executeQuery: query];
-			BXAssertLog ([res querySucceeded], [[res error] description]);
+			BXAssertLog ([res querySucceeded], @"%@", [[res error] description]);
 
 			query = 
 			@"CREATE TEMPORARY TABLE baseten_enabled_oids AS "
 			@" SELECT oid FROM pg_class WHERE baseten.isobservingcompatible (oid) = true";
 			res = [connection executeQuery: query];			
-			BXAssertLog ([res querySucceeded], [[res error] description]);
+			BXAssertLog ([res querySucceeded], @"%@", [[res error] description]);
 		}
 	}
 	
@@ -632,7 +635,7 @@ NSInvocation* MakeInvocation (id target, SEL selector)
 	NSArray *arrangedObjects = [mEntities arrangedObjects];
 	for (id pair in arrangedObjects)
 	{
-		if ([pair value] == entity)
+		if ((id) [pair value] == entity)
 		{
 			[mEntities setSelectedObjects: [NSArray arrayWithObject: pair]];
 			break;
@@ -1755,7 +1758,10 @@ InvokeRecoveryInvocation (NSInvocation* recoveryInvocation, BOOL status)
 	else
 	{
 		for (id pair in [mEntities arrangedObjects])
-			[[pair value] setEnabled: NO];
+		{
+			BXEntityDescription *entity = (id) [pair value];
+			[entity setEnabled: NO];
+		}
 
 		[self reload: nil];
 		[self checkBaseTenSchema: NULL];
