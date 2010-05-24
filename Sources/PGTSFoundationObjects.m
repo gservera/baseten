@@ -93,7 +93,7 @@
 	{
 		size_t resultLength = 0;
 		unsigned char *escapedValue = NULL;
-		unsigned char const *value = (unsigned char const *) [param PGTSParameterLength: &length connection: connection];
+		unsigned char const * const value = (unsigned char *) [param PGTSParameterLength: &length connection: connection];
 		escapedValue = PQescapeByteaConn ([connection pgConnection], value, length, &resultLength);
 		retval = [NSString stringWithFormat: @"'%s'", escapedValue];
 		PQfreemem (escapedValue);
@@ -101,7 +101,7 @@
 	else
 	{
 		char *escapedValue = NULL;
-		char const *value = [param PGTSParameterLength: &length connection: connection];
+		char const * const value = [param PGTSParameterLength: &length connection: connection];
 		escapedValue = PGTSCopyEscapedString (connection, value);
 		retval = [NSString stringWithFormat: @"'%s'", escapedValue];
 		free (escapedValue);
