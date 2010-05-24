@@ -32,17 +32,17 @@
 
 
 void
-BXRegularExpressionCompile (struct bx_regular_expression_st *re, const char *pattern)
+BXRegularExpressionCompile (struct bx_regular_expression_st *re, char const * const pattern)
 {
-	const int options = PCRE_UTF8 | PCRE_MULTILINE | PCRE_DOLLAR_ENDONLY;
-	const char* error = NULL;
+	int const options = PCRE_UTF8 | PCRE_MULTILINE | PCRE_DOLLAR_ENDONLY;
+	char const *error = NULL;
 	int errorOffset = 0;
 	if ((re->re_expression = pcre_compile (pattern, options, &error, &errorOffset, NULL)))
 	{
 		re->re_extra = pcre_study (re->re_expression, 0, &error);
 		if (error)
 		{
-			BXLogError (@"Failed to study pattern'%s': %s", pattern, error);
+			BXLogError (@"Failed to study pattern '%s': %s", pattern, error);
 			pcre_free (re->re_expression);
 		}
 		else

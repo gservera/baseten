@@ -33,11 +33,11 @@
 
 struct bx_regular_expression_st 
 {
-	pcre* re_expression;
-	pcre_extra* re_extra;
-	char* re_pattern;
+	pcre *re_expression;
+	pcre_extra *re_extra;
+	char *re_pattern;
 };
 
 
-BX_EXPORT void BXRegularExpressionCompile (struct bx_regular_expression_st *re, const char *pattern);
+BX_EXPORT void BXRegularExpressionCompile (struct bx_regular_expression_st *re, char const * const pattern);
 BX_EXPORT void BXRegularExpressionFree (struct bx_regular_expression_st *re);
