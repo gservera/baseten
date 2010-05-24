@@ -64,7 +64,8 @@ __strong static NSNib* gNib = nil;
 
 - (NSInteger) port
 {
-	return [[[mBonjourArrayController selectedObjects] lastObject] port];
+	NSNetService *service = [[mBonjourArrayController selectedObjects] lastObject];
+	return [service port];
 }
 
 - (void) startDiscovery

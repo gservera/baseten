@@ -139,7 +139,7 @@ __strong static NSNib* gNib = nil;
 	mDelegate = object;
 }
 
-- (void) connectionViewControllerOtherButtonClicked: (id) controller
+- (void) connectionViewControllerOtherButtonClicked: (BXConnectionViewController *) controller
 {
 	NSRect currentFrame = [self frame];
 	NSRect newFrame = currentFrame;
@@ -171,7 +171,7 @@ __strong static NSNib* gNib = nil;
 	[self makeFirstResponder: [mCurrentController initialFirstResponder]];
 }
 
-- (void) connectionViewControllerCancelButtonClicked: (id) controller
+- (void) connectionViewControllerCancelButtonClicked: (BXConnectionViewController *) controller
 {
 	if ([controller isConnecting])
 	{
@@ -186,7 +186,7 @@ __strong static NSNib* gNib = nil;
 	}
 }
 
-- (void) connectionViewControllerConnectButtonClicked: (id) controller
+- (void) connectionViewControllerConnectButtonClicked: (BXConnectionViewController *) controller
 {
 	[controller setConnecting: YES];
 	[mDelegate hostPanel: self connectToHost: [controller host] port: [controller port]];

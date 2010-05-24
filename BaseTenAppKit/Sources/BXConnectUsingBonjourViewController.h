@@ -30,7 +30,7 @@
 #import <BaseTenAppKit/BXConnectionViewController.h>
 
 
-@interface BXConnectUsingBonjourViewController : BXConnectionViewController
+@interface BXConnectUsingBonjourViewController : BXConnectionViewController <NSNetServiceBrowserDelegate, NSNetServiceDelegate>
 {
 	IBOutlet NSTableView* mAddressTable;
 	IBOutlet NSArrayController* mBonjourArrayController;

@@ -26,10 +26,13 @@
 // $Id$
 //
 
+@class BXConnectionViewController;
+
+
 @protocol BXConnectionViewControllerDelegate <NSObject>
-- (void) connectionViewControllerOtherButtonClicked: (id) controller;
-- (void) connectionViewControllerCancelButtonClicked: (id) controller;
-- (void) connectionViewControllerConnectButtonClicked: (id) controller;
+- (void) connectionViewControllerOtherButtonClicked: (BXConnectionViewController *) controller;
+- (void) connectionViewControllerCancelButtonClicked: (BXConnectionViewController *) controller;
+- (void) connectionViewControllerConnectButtonClicked: (BXConnectionViewController *) controller;
 @end
 
 

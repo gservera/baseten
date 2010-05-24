@@ -44,6 +44,13 @@
 //FIXME: Handle locks
 
 
+@interface BXSynchronizedArrayController ()
+- (void) _endConnecting: (NSNotification *) notification;
+@end
+
+
+
+
 @implementation NSObject (BXSynchronizedArrayControllerAdditions)
 - (BOOL) BXIsRelationshipProxy
 {
@@ -97,8 +104,6 @@
 		[self exposeBinding: @"modalWindow"];
 		[self exposeBinding: @"selectedObjects"];
         
-		[self setKeys: [NSArray arrayWithObject: @"selectedObjects"] triggerChangeNotificationsForDependentKey: @"selectedObjectIDs"];
-		
 		[BXDatabaseContext loadedAppKitFramework];
 	}
 }
@@ -213,7 +218,7 @@
 		if (databaseContext)
 		{
 			[self setEntityDescription: nil];
-			[[databaseContext notificationCenter] addObserver: self selector: @selector (endConnecting:) name: kBXConnectionSuccessfulNotification object: databaseContext];
+			[[databaseContext notificationCenter] addObserver: self selector: @selector (_endConnecting:) name: kBXConnectionSuccessfulNotification object: databaseContext];
 			
 			if (mFetchesAutomatically && (mTableName || mEntityDescription) && [databaseContext isConnected])
 				[self fetch: nil];
@@ -254,7 +259,7 @@
 		{
 			NSNotificationCenter* nc = [databaseContext notificationCenter];
 			if (mFetchesAutomatically)
-				[nc addObserver: self selector: @selector (endConnecting:) name: kBXConnectionSuccessfulNotification object: databaseContext];
+				[nc addObserver: self selector: @selector (_endConnecting:) name: kBXConnectionSuccessfulNotification object: databaseContext];
 			else
 				[nc removeObserver: self name: kBXConnectionSuccessfulNotification object: databaseContext];
 		}
@@ -359,7 +364,7 @@
 }
 //@}
 
-- (void) endConnecting: (NSNotification *) notification
+- (void) _endConnecting: (NSNotification *) notification
 {
 	if (! mEntityDescription)
 		[self prepareEntity];
@@ -462,12 +467,18 @@ IsKindOfClass (id self, Class class)
 	}
 }
 
+
++ (NSSet *) keyPathsForValuesAffectingSelectedObjectIDs
+{
+	return [NSSet setWithObject: @"selectedObjects"];
+}
+
 /**
  * \brief The Object IDs of the selected objects.
  */
 - (NSArray *) selectedObjectIDs
 {
-	return (id) [[[self selectedObjects] PGTSCollect] objectID];
+	return (id) [[[self selectedObjects] BX_Collect] objectID];
 }
 
 

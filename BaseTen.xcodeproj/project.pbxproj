@@ -278,8 +278,8 @@
 		53666CF50E1CD8D20028DBEA /* PGTSDatabaseDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = 53666CB60E1CD8D20028DBEA /* PGTSDatabaseDescription.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		53666CFD0E1CD8D20028DBEA /* PGTSFoundationObjects.h in Headers */ = {isa = PBXBuildFile; fileRef = 53666CBE0E1CD8D20028DBEA /* PGTSFoundationObjects.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		53666CFE0E1CD8D20028DBEA /* PGTSFoundationObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = 53666CBF0E1CD8D20028DBEA /* PGTSFoundationObjects.m */; };
-		53666D010E1CD8D20028DBEA /* PGTSHOM.h in Headers */ = {isa = PBXBuildFile; fileRef = 53666CC20E1CD8D20028DBEA /* PGTSHOM.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		53666D020E1CD8D20028DBEA /* PGTSHOM.m in Sources */ = {isa = PBXBuildFile; fileRef = 53666CC30E1CD8D20028DBEA /* PGTSHOM.m */; };
+		53666D010E1CD8D20028DBEA /* BXHOM.h in Headers */ = {isa = PBXBuildFile; fileRef = 53666CC20E1CD8D20028DBEA /* BXHOM.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		53666D020E1CD8D20028DBEA /* BXHOM.m in Sources */ = {isa = PBXBuildFile; fileRef = 53666CC30E1CD8D20028DBEA /* BXHOM.m */; };
 		53666D030E1CD8D20028DBEA /* PGTSIndexDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = 53666CC40E1CD8D20028DBEA /* PGTSIndexDescription.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		53666D040E1CD8D20028DBEA /* PGTSIndexDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 53666CC50E1CD8D20028DBEA /* PGTSIndexDescription.m */; };
 		53666D050E1CD8D20028DBEA /* PGTSNotification.h in Headers */ = {isa = PBXBuildFile; fileRef = 53666CC60E1CD8D20028DBEA /* PGTSNotification.h */; };
@@ -388,7 +388,7 @@
 		538579CF119219BB00426CEA /* PGTSDeleteRule.h in Headers */ = {isa = PBXBuildFile; fileRef = 5354F91C0F00511100422613 /* PGTSDeleteRule.h */; };
 		538579D0119219BD00426CEA /* PGTSOids.h in Headers */ = {isa = PBXBuildFile; fileRef = 5354F8810F004F9300422613 /* PGTSOids.h */; };
 		538579D1119219BF00426CEA /* PGTSInvocationRecorder.h in Headers */ = {isa = PBXBuildFile; fileRef = 53937B650EFD097700510DBD /* PGTSInvocationRecorder.h */; };
-		538579D2119219C000426CEA /* PGTSHOM.h in Headers */ = {isa = PBXBuildFile; fileRef = 53666CC20E1CD8D20028DBEA /* PGTSHOM.h */; };
+		538579D2119219C000426CEA /* BXHOM.h in Headers */ = {isa = PBXBuildFile; fileRef = 53666CC20E1CD8D20028DBEA /* BXHOM.h */; };
 		538579D4119219C200426CEA /* BXException.h in Headers */ = {isa = PBXBuildFile; fileRef = 5339AB910A7542EC00994B1A /* BXException.h */; };
 		538579D5119219C200426CEA /* BXError.h in Headers */ = {isa = PBXBuildFile; fileRef = 53BFE53B0FAF2EFA0004533F /* BXError.h */; };
 		538579D6119219C400426CEA /* BXURLEncoding.h in Headers */ = {isa = PBXBuildFile; fileRef = 5354F7DC0F00417400422613 /* BXURLEncoding.h */; };
@@ -617,7 +617,7 @@
 		53E3AEE20E55B8D1001A99B5 /* BXInvocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5321F83C0CF7807700E663CE /* BXInvocation.m */; };
 		53E3AEE30E55B8D1001A99B5 /* BXWeakNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 53A59B240E34EB570026D7E1 /* BXWeakNotification.m */; };
 		53E3AEE40E55B8D2001A99B5 /* BXDelegateProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 539ACEC70E3B3FF7006602B5 /* BXDelegateProxy.m */; };
-		53E3AEE50E55B8D2001A99B5 /* PGTSHOM.m in Sources */ = {isa = PBXBuildFile; fileRef = 53666CC30E1CD8D20028DBEA /* PGTSHOM.m */; };
+		53E3AEE50E55B8D2001A99B5 /* BXHOM.m in Sources */ = {isa = PBXBuildFile; fileRef = 53666CC30E1CD8D20028DBEA /* BXHOM.m */; };
 		53E3B1BE0E55BFC9001A99B5 /* PGTSAbstractObjectDescription.mm in Sources */ = {isa = PBXBuildFile; fileRef = 53666CA10E1CD8D20028DBEA /* PGTSAbstractObjectDescription.mm */; };
 		53E3B1DA0E55C8B6001A99B5 /* PGTSNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 53666CC70E1CD8D20028DBEA /* PGTSNotification.m */; };
 		53E3B1EB0E55C8D8001A99B5 /* PGTSConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 53666CB50E1CD8D20028DBEA /* PGTSConstants.m */; };
@@ -938,8 +938,8 @@
 		53666CB60E1CD8D20028DBEA /* PGTSDatabaseDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PGTSDatabaseDescription.h; path = Sources/PGTSDatabaseDescription.h; sourceTree = "<group>"; };
 		53666CBE0E1CD8D20028DBEA /* PGTSFoundationObjects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PGTSFoundationObjects.h; path = Sources/PGTSFoundationObjects.h; sourceTree = "<group>"; };
 		53666CBF0E1CD8D20028DBEA /* PGTSFoundationObjects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PGTSFoundationObjects.m; path = Sources/PGTSFoundationObjects.m; sourceTree = "<group>"; };
-		53666CC20E1CD8D20028DBEA /* PGTSHOM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PGTSHOM.h; path = Sources/PGTSHOM.h; sourceTree = "<group>"; };
-		53666CC30E1CD8D20028DBEA /* PGTSHOM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PGTSHOM.m; path = Sources/PGTSHOM.m; sourceTree = "<group>"; };
+		53666CC20E1CD8D20028DBEA /* BXHOM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXHOM.h; path = Sources/BXHOM.h; sourceTree = "<group>"; };
+		53666CC30E1CD8D20028DBEA /* BXHOM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BXHOM.m; path = Sources/BXHOM.m; sourceTree = "<group>"; };
 		53666CC40E1CD8D20028DBEA /* PGTSIndexDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PGTSIndexDescription.h; path = Sources/PGTSIndexDescription.h; sourceTree = "<group>"; };
 		53666CC50E1CD8D20028DBEA /* PGTSIndexDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PGTSIndexDescription.m; path = Sources/PGTSIndexDescription.m; sourceTree = "<group>"; };
 		53666CC60E1CD8D20028DBEA /* PGTSNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PGTSNotification.h; path = Sources/PGTSNotification.h; sourceTree = "<group>"; };
@@ -1323,8 +1323,8 @@
 		534E3C5F11A76F49002D49C8 /* Foundation additions */ = {
 			isa = PBXGroup;
 			children = (
-				53666CC20E1CD8D20028DBEA /* PGTSHOM.h */,
-				53666CC30E1CD8D20028DBEA /* PGTSHOM.m */,
+				53666CC20E1CD8D20028DBEA /* BXHOM.h */,
+				53666CC30E1CD8D20028DBEA /* BXHOM.m */,
 				535661CC0F025DD800920008 /* NSURL+BaseTenAdditions.h */,
 				535661CB0F025DD800920008 /* NSURL+BaseTenAdditions.m */,
 				535661CD0F025DD800920008 /* NSArray+BaseTenAdditions.h */,
@@ -1478,10 +1478,6 @@
 				53F0BD990EC523A200773BE7 /* PGTSScannedMemoryAllocator.mm */,
 				53F0BB9F0EC49E3B00773BE7 /* PGTSCFScannedMemoryAllocator.h */,
 				53F0BBA70EC4A40700773BE7 /* PGTSCFScannedMemoryAllocator.mm */,
-				5354F8810F004F9300422613 /* PGTSOids.h */,
-				5354F8820F004F9300422613 /* PGTSOids.m */,
-				5354F91C0F00511100422613 /* PGTSDeleteRule.h */,
-				5354F91D0F00511100422613 /* PGTSDeleteRule.m */,
 				534E3C6211A76F81002D49C8 /* Unneeded */,
 				536C9E8D0EFDAFF20041422F /* Remember to remove */,
 			);
@@ -1584,6 +1580,10 @@
 				53666CB50E1CD8D20028DBEA /* PGTSConstants.m */,
 				53666CC60E1CD8D20028DBEA /* PGTSNotification.h */,
 				53666CC70E1CD8D20028DBEA /* PGTSNotification.m */,
+				5354F8810F004F9300422613 /* PGTSOids.h */,
+				5354F8820F004F9300422613 /* PGTSOids.m */,
+				5354F91C0F00511100422613 /* PGTSDeleteRule.h */,
+				5354F91D0F00511100422613 /* PGTSDeleteRule.m */,
 				53915F9C0E3FD22D0098B419 /* libpq_additions.h */,
 				53915F9D0E3FD22D0098B419 /* libpq_additions.c */,
 			);
@@ -1924,7 +1924,7 @@
 				53666CF30E1CD8D20028DBEA /* PGTSConstants.h in Headers */,
 				53666CF50E1CD8D20028DBEA /* PGTSDatabaseDescription.h in Headers */,
 				53666CFD0E1CD8D20028DBEA /* PGTSFoundationObjects.h in Headers */,
-				53666D010E1CD8D20028DBEA /* PGTSHOM.h in Headers */,
+				53666D010E1CD8D20028DBEA /* BXHOM.h in Headers */,
 				53666D030E1CD8D20028DBEA /* PGTSIndexDescription.h in Headers */,
 				53666D050E1CD8D20028DBEA /* PGTSNotification.h in Headers */,
 				53666D080E1CD8D20028DBEA /* PGTSQuery.h in Headers */,
@@ -2043,7 +2043,7 @@
 				538579CF119219BB00426CEA /* PGTSDeleteRule.h in Headers */,
 				538579D0119219BD00426CEA /* PGTSOids.h in Headers */,
 				538579D1119219BF00426CEA /* PGTSInvocationRecorder.h in Headers */,
-				538579D2119219C000426CEA /* PGTSHOM.h in Headers */,
+				538579D2119219C000426CEA /* BXHOM.h in Headers */,
 				538579D4119219C200426CEA /* BXException.h in Headers */,
 				538579D5119219C200426CEA /* BXError.h in Headers */,
 				538579D6119219C400426CEA /* BXURLEncoding.h in Headers */,
@@ -2451,7 +2451,7 @@
 				53E3AEE20E55B8D1001A99B5 /* BXInvocation.m in Sources */,
 				53E3AEE30E55B8D1001A99B5 /* BXWeakNotification.m in Sources */,
 				53E3AEE40E55B8D2001A99B5 /* BXDelegateProxy.m in Sources */,
-				53E3AEE50E55B8D2001A99B5 /* PGTSHOM.m in Sources */,
+				53E3AEE50E55B8D2001A99B5 /* BXHOM.m in Sources */,
 				53E3B1BE0E55BFC9001A99B5 /* PGTSAbstractObjectDescription.mm in Sources */,
 				53E3B1DA0E55C8B6001A99B5 /* PGTSNotification.m in Sources */,
 				53E3B1EB0E55C8D8001A99B5 /* PGTSConstants.m in Sources */,
@@ -2610,7 +2610,7 @@
 				53666CF20E1CD8D20028DBEA /* PGTSConnector.m in Sources */,
 				53666CF40E1CD8D20028DBEA /* PGTSConstants.m in Sources */,
 				53666CFE0E1CD8D20028DBEA /* PGTSFoundationObjects.m in Sources */,
-				53666D020E1CD8D20028DBEA /* PGTSHOM.m in Sources */,
+				53666D020E1CD8D20028DBEA /* BXHOM.m in Sources */,
 				53666D040E1CD8D20028DBEA /* PGTSIndexDescription.m in Sources */,
 				53666D060E1CD8D20028DBEA /* PGTSNotification.m in Sources */,
 				53666D070E1CD8D20028DBEA /* PGTSProbes.d in Sources */,

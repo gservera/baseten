@@ -38,6 +38,12 @@
 #import <BaseTen/BXHostResolver.h>
 
 
+@interface BXNetServiceConnector ()
+- (void) _endConnecting: (NSNotification *) notification;
+@end
+
+
+
 @interface BXWindowModalNSConnectorImplementation : BXNSConnectorImplementation <BXNSConnectorImplementation>
 {
 }
@@ -109,18 +115,18 @@ MakeInvocation (const id target, const SEL selector)
 }
 
 
-- (void) presentError: (NSError *) error didEndSelector: (SEL) selector
-{
-	[NSApp presentError: error modalForWindow: [mConnector modalWindow] delegate: self 
-	 didPresentSelector: @selector (didPresentErrorWithRecovery:contextInfo:) contextInfo: selector];
-}
-
-
-- (void) didPresentErrorWithRecovery: (BOOL) didRecover contextInfo: (void *) contextInfo
+- (void) _didPresentErrorWithRecovery: (BOOL) didRecover contextInfo: (void *) contextInfo
 {
 	NSInvocation* callback = MakeInvocation (mConnector, (SEL) contextInfo);
 	[callback setArgument: &didRecover atIndex: 2];
 	[callback invoke];
+}
+
+
+- (void) presentError: (NSError *) error didEndSelector: (SEL) selector
+{
+	[NSApp presentError: error modalForWindow: [mConnector modalWindow] delegate: self 
+	 didPresentSelector: @selector (_didPresentErrorWithRecovery:contextInfo:) contextInfo: selector];
 }
 
 
@@ -378,9 +384,9 @@ MakeInvocation (const id target, const SEL selector)
 	{
 		mContext = context;
 		nc = [mContext notificationCenter];
-		[nc addObserver: self selector: @selector (endConnecting:) 
+		[nc addObserver: self selector: @selector (_endConnecting:) 
 				   name: kBXConnectionFailedNotification object: mContext];
-		[nc addObserver: self selector: @selector (endConnecting:) 
+		[nc addObserver: self selector: @selector (_endConnecting:) 
 				   name: kBXConnectionSuccessfulNotification object: mContext];    
 	}
 }
@@ -560,7 +566,7 @@ MakeInvocation (const id target, const SEL selector)
 }
 
 
-- (void) endConnecting: (NSNotification *) notification
+- (void) _endConnecting: (NSNotification *) notification
 {	
 	if ([[notification name] isEqualToString: kBXConnectionSuccessfulNotification])
 	{
