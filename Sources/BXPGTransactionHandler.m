@@ -846,7 +846,7 @@ SSLMode (enum BXSSLMode mode)
 	[mInterface connection: connection receivedResultSet: res];
 }
 
-- (void) PGTSConnection: (PGTSConnection *) connection networkStatusChanged: (SCNetworkConnectionFlags) newFlags
+- (void) PGTSConnection: (PGTSConnection *) connection networkStatusChanged: (SCNetworkReachabilityFlags) newFlags
 {
 	BXDatabaseContext* context = [mInterface databaseContext];
 	[context networkStatusChanged: newFlags];

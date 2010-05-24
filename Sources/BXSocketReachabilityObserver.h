@@ -34,25 +34,30 @@
 
 @protocol BXSocketReachabilityObserverDelegate <NSObject>
 - (void) socketReachabilityObserver: (BXSocketReachabilityObserver *) observer 
-			   networkStatusChanged: (SCNetworkConnectionFlags) flags;
+			   networkStatusChanged: (SCNetworkReachabilityFlags) flags;
 @end
 
 
 
 @interface BXSocketReachabilityObserver : NSObject
 {
-	SCNetworkReachabilityRef mReachability;
+	SCNetworkReachabilityRef mSyncReachability;
+	SCNetworkReachabilityRef mAsyncReachability;
 	CFRunLoopRef mRunLoop;
 	id <BXSocketReachabilityObserverDelegate> mDelegate;
 	void *mUserInfo;
 }
++ (BOOL) getAddress: (struct sockaddr **) addressPtr forPeer: (BOOL) peerAddress ofSocket: (int) socket;
+
 + (id) copyObserverWithSocket: (int) socket;
 + (id) copyObserverWithAddress: (struct sockaddr *) address 
 				   peerAddress: (struct sockaddr *) peerAddress;
-- (id) initWithReachability: (SCNetworkReachabilityRef) reachability;
+
+- (id) initWithReachabilities: (SCNetworkReachabilityRef [2]) reachabilities;
 - (BOOL) install;
 - (void) invalidate;
 
+- (BOOL) getReachabilityFlags: (SCNetworkReachabilityFlags *) flags;
 - (void) setRunLoop: (CFRunLoopRef) runLoop;
 - (CFRunLoopRef) runLoop;
 - (void) setDelegate: (id <BXSocketReachabilityObserverDelegate>) delegate;

@@ -34,7 +34,7 @@
 
 
 static void
-NetworkStatusChanged (SCNetworkReachabilityRef target, SCNetworkConnectionFlags flags, void *observerPtr)
+NetworkStatusChanged (SCNetworkReachabilityRef target, SCNetworkReachabilityFlags flags, void *observerPtr)
 {
 	BXSocketReachabilityObserver* observer = (BXSocketReachabilityObserver *) observerPtr;
 	[[observer delegate] socketReachabilityObserver: observer networkStatusChanged: flags];
@@ -45,33 +45,49 @@ NetworkStatusChanged (SCNetworkReachabilityRef target, SCNetworkConnectionFlags 
 /**
  * \internal
  * \brief A wrapper for SCNetworkReachability.
- * \note Instances of this class can safely be used from only one thread at a time.
+ * \note Instances of this class can safely be used from only one thread at a time,
+ *       except for the method -getReachabilityFlags:.
  */
 @implementation BXSocketReachabilityObserver
++ (BOOL) getAddress: (struct sockaddr **) addressPtr forPeer: (BOOL) peerAddress ofSocket: (int) socket
+{
+	ExpectR (addressPtr, NO);
+
+	BOOL retval = NO;
+	const size_t size = SOCK_MAXADDRLEN;
+	*addressPtr = calloc (1, size);
+	socklen_t addressLength = size;
+	
+	int status = 0;
+	if (peerAddress)
+		status = getpeername (socket, *addressPtr, &addressLength);
+	else
+		status = getsockname (socket, *addressPtr, &addressLength);
+	
+	if (0 == status)
+		retval = YES;
+	else if (*addressPtr)
+		free (*addressPtr);
+
+	return retval;
+}
+
+
 + (id) copyObserverWithSocket: (int) socket
 {
-	const size_t size = SOCK_MAXADDRLEN;
-	
 	id retval = nil;
-	struct sockaddr *address     = calloc (1, size);
-	struct sockaddr *peerAddress = calloc (1, size);
-	socklen_t addressLength      = size;
-	socklen_t peerAddressLength  = size;
+	struct sockaddr *address     = NULL;
+	struct sockaddr *peerAddress = NULL;
 	
-	if (0 != getsockname (socket, address, &addressLength))
-		goto bail;
+	if ([self getAddress: &address forPeer: NO  ofSocket: socket] &&
+		[self getAddress: &address forPeer: YES ofSocket: socket])
+	{
+		//We don't need to monitor UNIX internal protocols and SC functions seem to return
+		//bad values for them anyway.
+		if (! (AF_UNIX == address->sa_family || AF_UNIX == peerAddress->sa_family))
+			retval = [self copyObserverWithAddress: address peerAddress: peerAddress];
+	}
 	
-	if (0 != getpeername (socket, peerAddress, &peerAddressLength))
-		goto bail;
-	
-	//We don't need to monitor UNIX internal protocols and SC functions seem to return
-	//bad values for them anyway.
-	if (AF_UNIX == address->sa_family || AF_UNIX == peerAddress->sa_family)
-		goto bail;
-	
-	retval = [self copyObserverWithAddress: address peerAddress: peerAddress];
-	
-bail:
 	if (address)
 		free (address);
 	
@@ -87,24 +103,35 @@ bail:
 {
 	BXSocketReachabilityObserver *retval = nil;
 	
-	SCNetworkReachabilityRef reachability = SCNetworkReachabilityCreateWithAddressPair (kCFAllocatorDefault, address, peerAddress);
-	if (! reachability)
+	SCNetworkReachabilityRef r1 = NULL, r2 = NULL;
+	r1 = SCNetworkReachabilityCreateWithAddressPair (kCFAllocatorDefault, address, peerAddress);
+	r2 = SCNetworkReachabilityCreateWithAddressPair (kCFAllocatorDefault, address, peerAddress);
+	
+	if (! (r1 && r2))
 		goto bail;
 	
-	retval = [[self alloc] initWithReachability: reachability];
-			
+	SCNetworkReachabilityRef reachabilities [] = {r1, r2};
+	retval = [[self alloc] initWithReachabilities: reachabilities];
+
 bail:
-	CFRelease (reachability);
+	if (r1)
+		CFRelease (r1);
+	
+	if (r2)
+		CFRelease (r2);
+	
 	return retval;
 }
 
 
-- (id) initWithReachability: (SCNetworkReachabilityRef) reachability
+- (id) initWithReachabilities: (SCNetworkReachabilityRef [2]) reachabilities
 {
 	if ((self = [super init]))
 	{
-		mReachability = reachability;
-		CFRetain (reachability);
+		mAsyncReachability = reachabilities [0];
+		mSyncReachability  = reachabilities [1];
+		CFRetain (mAsyncReachability);
+		CFRetain (mSyncReachability);
 	}
 	return self;
 }
@@ -123,11 +150,11 @@ bail:
 - (BOOL) install
 {
 	ExpectR (mRunLoop, NO);
-	ExpectR (mReachability, NO);
+	ExpectR (mAsyncReachability, NO);
 	
 	SCNetworkReachabilityContext ctx = {0, self, NULL, NULL, NULL};
-	SCNetworkReachabilitySetCallback (mReachability, &NetworkStatusChanged, &ctx);
-	return (SCNetworkReachabilityScheduleWithRunLoop (mReachability, mRunLoop, kCFRunLoopCommonModes) ? YES : NO);
+	SCNetworkReachabilitySetCallback (mAsyncReachability, &NetworkStatusChanged, &ctx);
+	return (SCNetworkReachabilityScheduleWithRunLoop (mAsyncReachability, mRunLoop, kCFRunLoopCommonModes) ? YES : NO);
 }
 
 
@@ -136,13 +163,19 @@ bail:
  */
 - (void) invalidate
 {
-	if (mReachability && mRunLoop)
-		SCNetworkReachabilityUnscheduleFromRunLoop (mReachability, mRunLoop, kCFRunLoopCommonModes);
+	if (mAsyncReachability && mRunLoop)
+		SCNetworkReachabilityUnscheduleFromRunLoop (mAsyncReachability, mRunLoop, kCFRunLoopCommonModes);
 	
-	if (mReachability)
+	if (mAsyncReachability)
 	{
-		CFRelease (mReachability);
-		mReachability = NULL;
+		CFRelease (mAsyncReachability);
+		mAsyncReachability = NULL;
+	}
+	
+	if (mSyncReachability)
+	{
+		CFRelease (mSyncReachability);
+		mSyncReachability = NULL;
 	}
 	
 	if (mRunLoop)
@@ -164,6 +197,18 @@ bail:
 {
 	[self invalidate];
 	[super finalize];
+}
+
+
+- (BOOL) getReachabilityFlags: (SCNetworkReachabilityFlags *) flags
+{
+	ExpectR (flags, NO);
+	BOOL retval = NO;
+	@synchronized (self)
+	{
+		retval = SCNetworkReachabilityGetFlags (mSyncReachability, flags);
+	}
+	return retval;
 }
 
 

@@ -276,13 +276,41 @@ DictionaryKeys (CFDictionaryRef dict)
 	
 	[observer release];
 }
+
+
+- (BOOL) clientCanSend: (id <BXConnectionMonitorClient>) connection
+{
+	BOOL retval = NO;
+	@synchronized ((id) mConnections)
+	{
+		BXSocketReachabilityObserver *observer = (id) CFDictionaryGetValue (mConnections, connection);
+		if ((id) kCFNull == observer)
+		{
+			//If we don't have an observer, it wasn't needed.
+			retval = YES;
+		}
+		else
+		{
+			SCNetworkReachabilityFlags flags = 0;
+			if ([observer getReachabilityFlags: &flags])
+			{
+				if (kSCNetworkReachabilityFlagsReachable & flags ||
+					kSCNetworkReachabilityFlagsConnectionAutomatic & flags)
+				{
+					retval = YES;
+				}				
+			}
+		}
+	}
+	return retval;
+}
 @end
 
 
 
 @implementation BXConnectionMonitor (BXSocketReachabilityObserverDelegate)
 - (void) socketReachabilityObserver: (BXSocketReachabilityObserver *) observer 
-			   networkStatusChanged: (SCNetworkConnectionFlags) flags
+			   networkStatusChanged: (SCNetworkReachabilityFlags) flags
 {
 	[(id <BXConnectionMonitorClient>) [observer userInfo] connectionMonitor: self networkStatusChanged: flags];
 }

@@ -29,7 +29,7 @@
 #import <Foundation/Foundation.h>
 #import <Security/Security.h>
 #import <BaseTen/BXConstants.h>
-#import <SystemConfiguration/SCNetwork.h>
+#import <SystemConfiguration/SystemConfiguration.h>
 
 
 @class BXDatabaseContext;
@@ -158,5 +158,5 @@
  * \note The default implementation does nothing but this might change in the future.
  */
 - (void) databaseContext: (BXDatabaseContext *) context
-	networkStatusChanged: (SCNetworkConnectionFlags) newFlags;
+	networkStatusChanged: (SCNetworkReachabilityFlags) newFlags;
 @end

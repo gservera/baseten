@@ -43,7 +43,7 @@
 
 - (NSError *) _errorForStreamError: (const CFStreamError *) streamError;
 
-- (void) _reachabilityCheckDidComplete: (SCNetworkConnectionFlags) flags;
+- (void) _reachabilityCheckDidComplete: (SCNetworkReachabilityFlags) flags;
 - (void) _hostCheckDidComplete: (const CFStreamError *) streamError;
 
 - (void) _removeReachability;
@@ -67,7 +67,7 @@ CopySockaddrArrayFromAddrinfo (struct addrinfo *addrinfo)
 
 
 static void
-ReachabilityCallback (SCNetworkReachabilityRef target, SCNetworkConnectionFlags flags, void *info)
+ReachabilityCallback (SCNetworkReachabilityRef target, SCNetworkReachabilityFlags flags, void *info)
 {
 	[(id) info _reachabilityCheckDidComplete: flags];
 }
@@ -202,7 +202,7 @@ HostCallback (CFHostRef theHost, CFHostInfoType typeInfo, const CFStreamError *e
 		mReachability = SCNetworkReachabilityCreateWithAddress (kCFAllocatorDefault, addrinfo->ai_addr);
 		
 		// For some reason the reachability check doesn't work with numeric addresses when using the run loop.
-		SCNetworkConnectionFlags flags = 0;
+		SCNetworkReachabilityFlags flags = 0;
 		status = SCNetworkReachabilityGetFlags (mReachability, &flags);
 		ExpectL (status)
 		
@@ -226,7 +226,7 @@ HostCallback (CFHostRef theHost, CFHostInfoType typeInfo, const CFStreamError *e
 }
 
 
-- (void) _reachabilityCheckDidComplete: (SCNetworkConnectionFlags) actual
+- (void) _reachabilityCheckDidComplete: (SCNetworkReachabilityFlags) actual
 {
 	// We use the old type name, since the new one only appeared in 10.6.
 	
@@ -236,7 +236,7 @@ HostCallback (CFHostRef theHost, CFHostInfoType typeInfo, const CFStreamError *e
 	if (mAddresses)
 	{
 		//Any flag in "required" will suffice. (Hence not 'required == (required & actual)'.)
-		SCNetworkConnectionFlags required = kSCNetworkFlagsReachable | kSCNetworkFlagsConnectionAutomatic;	
+		SCNetworkReachabilityFlags required = kSCNetworkReachabilityFlagsReachable | kSCNetworkReachabilityFlagsConnectionAutomatic;	
 		if ((required & actual) && [mAddresses count])
 			[mDelegate hostResolverDidSucceed: self addresses: mAddresses];
 		else

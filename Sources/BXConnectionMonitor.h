@@ -41,7 +41,7 @@
 - (void) connectionMonitorSystemWillSleep: (BXConnectionMonitor *) monitor;
 - (void) connectionMonitorSystemDidWake: (BXConnectionMonitor *) monitor;
 - (void) connectionMonitor: (BXConnectionMonitor *) monitor
-	  networkStatusChanged: (SCNetworkConnectionFlags) flags;
+	  networkStatusChanged: (SCNetworkReachabilityFlags) flags;
 @end
 
 
@@ -58,6 +58,7 @@
 - (void) clientDidFailConnectionAttempt: (id <BXConnectionMonitorClient>) connection;
 - (void) clientDidConnect: (id <BXConnectionMonitorClient>) connection;
 - (void) clientWillDisconnect: (id <BXConnectionMonitorClient>) connection;
+- (BOOL) clientCanSend: (id <BXConnectionMonitorClient>) connection;
 @end
 
 

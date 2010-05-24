@@ -2123,7 +2123,7 @@ ModTypeToObject (enum BXModificationType value)
 	return mode;
 }
 
-- (void) networkStatusChanged: (SCNetworkConnectionFlags) newFlags
+- (void) networkStatusChanged: (SCNetworkReachabilityFlags) newFlags
 {
 	[mDelegateProxy databaseContext: self networkStatusChanged: newFlags];
 }
