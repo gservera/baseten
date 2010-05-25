@@ -128,6 +128,15 @@ bail:
 {
 	if ((self = [super init]))
 	{
+		// Apparently two SCNetworkReachabilities are needed to allow both
+		// asynchronous notification and thread safe synchronous checks:
+		//
+		// "It is thread safe in that different threads can allocate and operate 
+		// on different SCF objects. Having two threads operating on the same 
+		// SCF object would be unwise."
+		//
+		// Retrieved from http://lists.apple.com/archives/Macnetworkprog/2005/Jul/msg00042.html
+		
 		mAsyncReachability = reachabilities [0];
 		mSyncReachability  = reachabilities [1];
 		CFRetain (mAsyncReachability);
