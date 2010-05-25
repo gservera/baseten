@@ -34,7 +34,7 @@
 #import <BaseTen/BXRelationshipDescriptionPrivate.h>
 #import <BaseTen/BXForeignKey.h>
 #import <BaseTen/BXLogger.h>
-#import <BaseTen/PGTSHOM.h>
+#import <BaseTen/BXHOM.h>
 #import "BXSynchronizedArrayController.h"
 #import "NSController+BXAppKitAdditions.h"
 #import "BXObjectStatusToColorTransformer.h"
