@@ -1,2 +1,9 @@
 GCC_VERSION = 4.2
+
+// For the PostgreSQL build script.
+GCC_VERSION_ppc = 4.2
+GCC_VERSION_i386 = 4.2
+GCC_VERSION_ppc64 = 4.2
+GCC_VERSION_x86_64 = 4.2
+
 MACOSX_DEPLOYMENT_TARGET = 10.5

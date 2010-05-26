@@ -157,8 +157,8 @@ then
 			powerpc-apple-darwin
 			"${PLATFORM_DEVELOPER_BIN_DIR}/gcc-${GCC_VERSION_ppc}"
 			"-arch ppc"
-			"-arch ppc -mmacosx-version-min=10.4 -isysroot ${SDKROOT}"
-			"-arch ppc -Wl,-syslibroot,${SDKROOT} -mmacosx-version-min=10.4"
+			"-arch ppc -mmacosx-version-min=10.5 -isysroot ${SDKROOT}"
+			"-arch ppc -mmacosx-version-min=10.5 -Wl,-syslibroot,${SDKROOT}"
 			""
 			""
 		)
@@ -169,8 +169,8 @@ then
 			i386-apple-darwin
 			"${PLATFORM_DEVELOPER_BIN_DIR}/gcc-${GCC_VERSION_i386}"
 			"-arch i386"
-			"-arch i386 -mmacosx-version-min=10.4 -isysroot ${SDKROOT}"
-			"-arch i386 -Wl,-syslibroot,${SDKROOT} -mmacosx-version-min=10.4"
+			"-arch i386 -mmacosx-version-min=10.5 -isysroot ${SDKROOT}"
+			"-arch i386 -mmacosx-version-min=10.5 -Wl,-syslibroot,${SDKROOT}"
 			""
 			""
 		)
@@ -182,7 +182,7 @@ then
 			"${PLATFORM_DEVELOPER_BIN_DIR}/gcc-${GCC_VERSION_ppc64}"
 			"-arch ppc64"
 			"-arch ppc64 -mmacosx-version-min=10.5 -isysroot ${SDKROOT}"
-			"-arch ppc64 -Wl,-syslibroot,${SDKROOT} -mmacosx-version-min=10.5"
+			"-arch ppc64 -mmacosx-version-min=10.5 -Wl,-syslibroot,${SDKROOT}"
 			""
 			""
 		)
@@ -194,11 +194,12 @@ then
 			"${PLATFORM_DEVELOPER_BIN_DIR}/gcc-${GCC_VERSION_x86_64}"
 			"-arch x86_64"
 			"-arch x86_64 -mmacosx-version-min=10.5 -isysroot ${SDKROOT}"
-			"-arch x86_64 -Wl,-syslibroot,${SDKROOT} -mmacosx-version-min=10.5"
+			"-arch x86_64 -mmacosx-version-min=10.5 -Wl,-syslibroot,${SDKROOT}"
 			""
 			""
 		)
 	elif [ "armv6" = "$my_architecture" ]
+
 	then
 		opts=(
 			armv6
