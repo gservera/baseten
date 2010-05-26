@@ -219,7 +219,7 @@ CopyDate (struct bx_regular_expression_st *re, const char *subject, int *ovector
 		//There might be a trailing 'BC' for years before 1 AD.
 		
 		const char* pattern = "^(?<y>\\d{4,7})-(?<m>\\d{2})-(?<d>\\d{2})(?<e> BC)?$";
-		BXRegularExpressionCompile (&gDateExp, pattern);
+		BXRECompile (&gDateExp, pattern);
 	}
 }
 
@@ -259,7 +259,7 @@ CopyDate (struct bx_regular_expression_st *re, const char *subject, int *ovector
 		"^(?<H>\\d{2}):(?<M>\\d{2}):(?<S>\\d{2})"                             //Time
 		"(?<frac>\\.\\d{1,6})?"                                               //Fraction
 		"((?<tzd>[+-])(?<tzh>\\d{2})(:(?<tzm>\\d{2})(:(?<tzs>\\d{2}))?)?)?$"; //Time zone
-		BXRegularExpressionCompile (&gTimeExp, pattern);
+		BXRECompile (&gTimeExp, pattern);
 	}
 }
 
@@ -297,7 +297,7 @@ CopyDate (struct bx_regular_expression_st *re, const char *subject, int *ovector
 		"(?<frac>\\.\\d{1,6})?"                                             //Fraction
 		"((?<tzd>[+-])(?<tzh>\\d{2})(:(?<tzm>\\d{2})(:(?<tzs>\\d{2}))?)?)?" //Time zone
 		"(?<e> BC)?$";                                                      //Era specifier
-		BXRegularExpressionCompile (&gTimestampExp, pattern);
+		BXRECompile (&gTimestampExp, pattern);
 	}
 }
 

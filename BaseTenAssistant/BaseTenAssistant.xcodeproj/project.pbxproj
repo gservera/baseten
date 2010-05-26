@@ -118,13 +118,6 @@
 			remoteGlobalIDString = 535443BB0D634A47002A6C47;
 			remoteInfo = "BaseTen Framework + GC";
 		};
-		53E9B36E106C300100A5E95B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5388DCD20E23AE22006CDBD8 /* BaseTen.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 53F1C5DF105C4BF200A610A8;
-			remoteInfo = RegexKit;
-		};
 		53F749970E362E62003C2E55 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 53F749930E362E62003C2E55 /* BaseTenAppKit.xcodeproj */;
@@ -174,7 +167,6 @@
 		532F429F0D69B70F009FEDCD /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/Import.xib; sourceTree = "<group>"; };
 		53425B630E2CD237005F6123 /* MKCStackView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKCStackView.h; path = Sources/MKCStackView.h; sourceTree = "<group>"; };
 		53425B640E2CD237005F6123 /* MKCStackView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKCStackView.m; path = Sources/MKCStackView.m; sourceTree = "<group>"; };
-		535B3E00103813FC00A5FB7E /* RegexKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RegexKit.framework; path = ../Release/RegexKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		536353D80FAF46AF003AE7D5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/InspectorView.xib; sourceTree = "<group>"; };
 		536CB9C50B0D217000EBCB39 /* ImportModel32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ImportModel32.png; path = Resources/ImportModel32.png; sourceTree = "<group>"; };
 		536CB9C60B0D217000EBCB39 /* Entity16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Entity16.png; path = Resources/Entity16.png; sourceTree = "<group>"; };
@@ -208,6 +200,7 @@
 		53C422890B0E87C40008F4F2 /* MKCPolishedSeparatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKCPolishedSeparatorView.m; path = Sources/MKCPolishedSeparatorView.m; sourceTree = "<group>"; };
 		53C80FED0E31413300302B3F /* MKCEventPassingTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKCEventPassingTextField.h; path = Sources/MKCEventPassingTextField.h; sourceTree = "<group>"; };
 		53C80FEE0E31413300302B3F /* MKCEventPassingTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKCEventPassingTextField.m; path = Sources/MKCEventPassingTextField.m; sourceTree = "<group>"; };
+		53D0442911ADB34B00695779 /* pcre.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pcre.h; path = "../Release/BaseTen-pcre/universal/include/pcre.h"; sourceTree = BUILT_PRODUCTS_DIR; };
 		53D7BFEC0D6C787200290858 /* MKCImageAndTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MKCImageAndTextCell.h; path = Sources/MKCImageAndTextCell.h; sourceTree = "<group>"; };
 		53D7BFED0D6C787200290858 /* MKCImageAndTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MKCImageAndTextCell.m; path = Sources/MKCImageAndTextCell.m; sourceTree = "<group>"; };
 		53DAF3CE0E2BC40200085C3E /* BXAPGInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXAPGInterface.h; path = Sources/BXAPGInterface.h; sourceTree = "<group>"; };
@@ -328,10 +321,10 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				53D0442911ADB34B00695779 /* pcre.h */,
 				5388DCD20E23AE22006CDBD8 /* BaseTen.xcodeproj */,
 				53F749930E362E62003C2E55 /* BaseTenAppKit.xcodeproj */,
 				530D557B0E489F0A006BDEB2 /* InterfaceBuilderPlugin.xcodeproj */,
-				535B3E00103813FC00A5FB7E /* RegexKit.framework */,
 				5388DE290E23AE48006CDBD8 /* Cocoa.framework */,
 			);
 			name = Frameworks;
@@ -444,7 +437,6 @@
 				5388DE670E23AE6C006CDBD8 /* PBXTargetDependency */,
 				536D93EA0FDECF8200439719 /* PBXTargetDependency */,
 				530D55820E489F1B006BDEB2 /* PBXTargetDependency */,
-				53E9B36F106C300100A5E95B /* PBXTargetDependency */,
 			);
 			name = Assistant;
 			productInstallPath = "$(HOME)/Applications";
@@ -644,11 +636,6 @@
 			isa = PBXTargetDependency;
 			name = "BaseTen Framework + GC";
 			targetProxy = 5388DE660E23AE6C006CDBD8 /* PBXContainerItemProxy */;
-		};
-		53E9B36F106C300100A5E95B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = RegexKit;
-			targetProxy = 53E9B36E106C300100A5E95B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

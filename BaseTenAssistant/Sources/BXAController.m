@@ -57,11 +57,11 @@
 #import <netinet/in.h>
 #import <arpa/inet.h>
 //End patch
-#import <RegexKit/RegexKit.h>
 
 
 static NSString* kBXAControllerCtx = @"kBXAControllerCtx";
 static NSString* kBXAControllerErrorDomain = @"kBXAControllerErrorDomain";
+static int const kOvectorSize = 64;
 
 
 enum BXAControllerErrorCode
@@ -126,6 +126,15 @@ NSInvocation* MakeInvocation (id target, SEL selector)
 							userInfo: userInfo];
 	return error;	
 }
+
+
+- (void) finalize
+{
+	BXREFree (&mCompilationErrorRegex);
+	BXREFree (&mCompilationFailedRegex);
+	[super finalize];
+}
+
 
 - (BOOL) schemaInstallDenied
 {
@@ -256,10 +265,8 @@ NSInvocation* MakeInvocation (id target, SEL selector)
 	
 	[mProgressCancelButton setTarget: self];
 	
-	NSString* regex = @"Compilation failed for data model at path";
-	mCompilationFailedRegex = [[RKRegex alloc] initWithRegexString: regex options: RKCompileNoOptions];
-	regex = @"/([^/]+.xcdatamodel[d]?.+)$";
-	mCompilationErrorRegex = [[RKRegex alloc] initWithRegexString: regex options: RKCompileNoOptions];
+	BXRECompile (&mCompilationFailedRegex, "Compilation failed for data model at path");
+	BXRECompile (&mCompilationErrorRegex, "/([^/]+.xcdatamodel[d]?.+)$");
 	
 	//Set main window's position and display it.
 	//Frame name format from NSWindow's documentation.
@@ -730,6 +737,7 @@ NSInvocation* MakeInvocation (id target, SEL selector)
 		const char* const outputEnd = bytes + [output length];
 		const char* line = bytes;
 		const char* end = memchr (line, '\n', outputEnd - line);
+		int ovector [kOvectorSize];
 		
 		while (end && line < outputEnd && end < outputEnd)
 		{
@@ -738,10 +746,10 @@ NSInvocation* MakeInvocation (id target, SEL selector)
 			line = end + 1;
 			end = memchr (line, '\n', outputEnd - line);
 			
-			if ([lineString isMatchedByRegex: mCompilationFailedRegex])
+			if (0 < BXREExec (&mCompilationFailedRegex, lineString, 0, ovector, kOvectorSize))
 				continue;
 			
-			[lineString getCapturesWithRegexAndReferences: mCompilationErrorRegex, @"${1}", &lineString, nil];
+			lineString = BXRESubstring (&mCompilationErrorRegex, lineString, 1, ovector, kOvectorSize);
 			
 			NSTextView* textView = [[NSTextView alloc] initWithFrame: NSZeroRect];
 			[[[textView textStorage] mutableString] setString: lineString];

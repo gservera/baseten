@@ -30,27 +30,27 @@
 #import <BaseTen/BaseTen.h>
 #import <BaseTen/BXDataModelCompiler.h>
 #import <BaseTen/BXPGSQLScriptReader.h>
+#import <BaseTen/BXRegularExpressions.h>
 
 @class MKCBackgroundView;
 @class MKCPolishedCornerView;
 @class BXAImportController;
 @class BXAGetInfoWindowController;
 @class MKCStackView;
-@class RKRegex;
 
 
 @interface BXAController : NSObject <NSNetServiceBrowserDelegate, NSNetServiceDelegate>
 {
+	struct bx_regular_expression_st mCompilationErrorRegex;
+	struct bx_regular_expression_st mCompilationFailedRegex;
+
 	MKCPolishedCornerView* mCornerView;
 	NSButtonCell* mInspectorButtonCell;
 	BXAImportController* mImportController;
 	BXDataModelCompiler* mCompiler;
 	BXPGSQLScriptReader* mReader;
 	NSNumber* mBundledSchemaVersionNumber;
-	
-	RKRegex* mCompilationErrorRegex;
-	RKRegex* mCompilationFailedRegex;
-	
+		
 	IBOutlet BXDatabaseContext* mContext;
 	IBOutlet NSDictionaryController* mEntitiesBySchema;
 	IBOutlet NSDictionaryController* mEntities;

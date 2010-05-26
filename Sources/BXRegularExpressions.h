@@ -39,5 +39,7 @@ struct bx_regular_expression_st
 };
 
 
-BX_EXPORT void BXRegularExpressionCompile (struct bx_regular_expression_st *re, char const * const pattern);
-BX_EXPORT void BXRegularExpressionFree (struct bx_regular_expression_st *re);
+BX_EXPORT int BXREExec (struct bx_regular_expression_st *re, NSString *subject, int options, int *ovector, int ovectorSize);
+BX_EXPORT NSString *BXRESubstring (struct bx_regular_expression_st *re, NSString *inSubject, int idx, int *ovector, int ovectorSize);
+BX_EXPORT void BXRECompile (struct bx_regular_expression_st *re, char const * const pattern);
+BX_EXPORT void BXREFree (struct bx_regular_expression_st *re);
