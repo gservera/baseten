@@ -38,7 +38,6 @@
 #import <arpa/inet.h>
 
 
-@implementation PGTSAsynchronousConnector
 static void 
 SocketReady (CFSocketRef s, CFSocketCallBackType callBackType, CFDataRef address, const void* data, void* self)
 {
@@ -46,6 +45,8 @@ SocketReady (CFSocketRef s, CFSocketCallBackType callBackType, CFDataRef address
 }
 
 
+
+@implementation PGTSAsynchronousConnector
 - (id) init
 {
 	if ((self = [super init]))
@@ -68,13 +69,17 @@ SocketReady (CFSocketRef s, CFSocketCallBackType callBackType, CFDataRef address
 
 - (void) setCFRunLoop: (CFRunLoopRef) aRef
 {
-	if (mRunLoop != aRef)
+	@synchronized (self)
 	{
-		if (mRunLoop) CFRelease (mRunLoop);
-		if (aRef)
+		if (mRunLoop != aRef)
 		{
+			if (mRunLoop)
+				CFRelease (mRunLoop);
+			
 			mRunLoop = aRef;
-			CFRetain (mRunLoop);
+			
+			if (mRunLoop)
+				CFRetain (mRunLoop);
 		}
 	}
 }
@@ -82,10 +87,13 @@ SocketReady (CFSocketRef s, CFSocketCallBackType callBackType, CFDataRef address
 
 - (void) setConnectionDictionary: (NSDictionary *) aDict
 {
-	if (mConnectionDictionary != aDict)
+	@synchronized (self)
 	{
-		[mConnectionDictionary release];
-		mConnectionDictionary = [aDict retain];
+		if (mConnectionDictionary != aDict)
+		{
+			[mConnectionDictionary release];
+			mConnectionDictionary = [aDict retain];
+		}
 	}
 }
 
@@ -132,6 +140,8 @@ SocketReady (CFSocketRef s, CFSocketCallBackType callBackType, CFDataRef address
 	[self freeCFTypes];
 	[self cancel];
 	[mConnectionError release];
+	[mConnectionDictionary release];
+	[mHostResolver release];
 	[super dealloc];
 }
 
@@ -144,9 +154,10 @@ SocketReady (CFSocketRef s, CFSocketCallBackType callBackType, CFDataRef address
 }
 
 
-- (void) prepareForConnect
+- (void) prepareToConnect
 {
-	[super prepareForConnect];
+	ExpectL (CFRunLoopGetCurrent () == mRunLoop);
+	[super prepareToConnect];
 	bzero (&mHostError, sizeof (mHostError));
 }
 
@@ -155,6 +166,7 @@ SocketReady (CFSocketRef s, CFSocketCallBackType callBackType, CFDataRef address
 
 - (void) hostResolverDidSucceed: (BXHostResolver *) resolver addresses: (NSArray *) addresses
 {
+	ExpectL (CFRunLoopGetCurrent () == mRunLoop);
 	BOOL reachedServer = NO;
 	if (addresses)
 	{
@@ -213,6 +225,7 @@ SocketReady (CFSocketRef s, CFSocketCallBackType callBackType, CFDataRef address
 
 - (void) hostResolverDidFail: (BXHostResolver *) resolver error: (NSError *) error
 {
+	ExpectL (CFRunLoopGetCurrent () == mRunLoop);
 	[self setConnectionError: error];		
 	[self finishedConnecting: NO];
 }
@@ -221,6 +234,7 @@ SocketReady (CFSocketRef s, CFSocketCallBackType callBackType, CFDataRef address
 - (void) socketReady: (CFSocketCallBackType) callBackType
 {
 	BXLogDebug (@"Socket got ready.");
+	ExpectL (CFRunLoopGetCurrent () == mRunLoop);
 	
 	//Sometimes the wrong callback type gets called. We cope with this
 	//by checking against an expected type and re-enabling it if needed.
@@ -263,6 +277,7 @@ SocketReady (CFSocketRef s, CFSocketCallBackType callBackType, CFDataRef address
 
 - (void) finishedConnecting: (BOOL) succeeded
 {
+	ExpectL (CFRunLoopGetCurrent () == mRunLoop);
 	[self freeCFTypes];
 	[super finishedConnecting: succeeded];
 }
@@ -273,10 +288,11 @@ SocketReady (CFSocketRef s, CFSocketCallBackType callBackType, CFDataRef address
 - (BOOL) connect: (NSDictionary *) connectionDictionary
 {
 	BXLogDebug (@"Beginning connecting.");
+	ExpectL (CFRunLoopGetCurrent () == mRunLoop);
 	
 	BOOL retval = NO;
 	mExpectedCallBack = 0;
-	[self prepareForConnect];
+	[self prepareToConnect];
 	[self setConnectionDictionary: connectionDictionary];
 	
 	//CFSocket etc. do some nice things for us that prevent libpq from noticing
@@ -315,7 +331,8 @@ SocketReady (CFSocketRef s, CFSocketCallBackType callBackType, CFDataRef address
 - (BOOL) startNegotiation: (const char *) conninfo
 {
 	BXLogDebug (@"Beginning negotiation.");
-	
+	ExpectL (CFRunLoopGetCurrent () == mRunLoop);
+
 	mNegotiationStarted = NO;
 	BOOL retval = NO;
 	if ([self start: conninfo])
@@ -408,7 +425,8 @@ SocketReady (CFSocketRef s, CFSocketCallBackType callBackType, CFDataRef address
 - (void) negotiateConnection
 {
 	BXLogDebug (@"Negotiating.");
-	
+	ExpectL (CFRunLoopGetCurrent () == mRunLoop);
+
 	if (mTraceFile)
 		PQtrace (mConnection, mTraceFile);
 	
@@ -451,6 +469,7 @@ SocketReady (CFSocketRef s, CFSocketCallBackType callBackType, CFDataRef address
 
 - (BOOL) start: (const char *) connectionString
 {
+	ExpectL (CFRunLoopGetCurrent () == mRunLoop);
 	return (BOOL) PQresetStart (mConnection);
 }
 @end

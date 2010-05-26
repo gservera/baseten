@@ -36,7 +36,7 @@
 	//Here libpq can resolve the name for us, because we don't use CFRunLoop and CFSocket.
 
     BOOL retval = NO;
-	[self prepareForConnect];
+	[self prepareToConnect];
 	char* conninfo = PGTSCopyConnectionString (connectionDictionary);
 	if ([self start: conninfo] && CONNECTION_BAD != PQstatus (mConnection))
 	{

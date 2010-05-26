@@ -69,5 +69,5 @@ BX_INTERNAL char *PGTSCopyConnectionString (NSDictionary *);
 
 - (void) finishedConnecting: (BOOL) status;
 - (void) setUpSSL;
-- (void) prepareForConnect;
+- (void) prepareToConnect;
 @end

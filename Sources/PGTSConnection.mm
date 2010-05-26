@@ -55,8 +55,6 @@
 
 #import "NSString+PGTSAdditions.h"
 
-// FIXME: change connector-related methods so that they Expect (mConnector) and synchronize on the connector, or make the connector thread-safe.
-// FIXME: See that methods don't pass self while synchronized to anything that calls -executeQuery:….
 
 
 @interface PGTSConnection (PGTSConnectorDelegate) <PGTSConnectorDelegate>
@@ -69,16 +67,22 @@
 
 
 
-@implementation PGTSConnection
 static void
 NoticeReceiver (void *connectionPtr, PGresult const *notice)
 {
 	PGTSConnection *connection = (PGTSConnection *) connectionPtr;
 	NSError *error = [PGTSResultSet errorForPGresult: notice];
-	[connection->mDelegate PGTSConnection: connection receivedNotice: error];
+	[[connection delegate] PGTSConnection: connection receivedNotice: error];
 }
 
 
+
+/**
+ * \internal
+ * \brief A connection class for Postgresql.
+ * \note Instances of this class may be used from multiple threads after a connection has been made.
+ */
+@implementation PGTSConnection
 + (void) initialize
 {
 	static BOOL tooLate = NO;
@@ -605,7 +609,6 @@ NoticeReceiver (void *connectionPtr, PGresult const *notice)
 		}
 		
 		// Send the actual query.
-		// FIXME: move outside @synchronized
 		PGTSQueryDescription* desc = [PGTSQueryDescription queryDescriptionFor: queryString 
 																	  delegate: nil
 																	  callback: NULL 
@@ -631,7 +634,7 @@ NoticeReceiver (void *connectionPtr, PGresult const *notice)
 	PQsetClientEncoding (connection, "UNICODE"); 
 	
 	BOOL shouldContinue = YES;
-	const char* queries [] = {
+	char const * const queries [] = {
 		"SET standard_conforming_strings TO true",
 		"SET datestyle TO 'ISO, YMD'",
 		"SET timezone TO 'UTC'",
@@ -677,6 +680,7 @@ NoticeReceiver (void *connectionPtr, PGresult const *notice)
 	else
 	{
 		[[BXConnectionMonitor sharedInstance] clientDidFailConnectionAttempt: self];
+        [mDelegate PGTSConnectionFailed: self];
 	}
 }
 

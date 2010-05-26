@@ -63,7 +63,7 @@ PGTSCopyConnectionString (NSDictionary* connectionDict)
 static int
 SSLConnectionExIndex ()
 {
-	static int sslConnectionExIndex = -1;
+	static volatile int sslConnectionExIndex = -1;
 	if (-1 == sslConnectionExIndex)
 		sslConnectionExIndex = SSL_get_ex_new_index (0, NULL, NULL, NULL, NULL);
 	return sslConnectionExIndex;
@@ -272,7 +272,7 @@ VerifySSLCertificate (int preverify_ok, X509_STORE_CTX *x509_ctx)
 }
 
 
-- (void) prepareForConnect
+- (void) prepareToConnect
 {
 	mSSLSetUp = NO;
 	mNegotiationStarted = NO;
