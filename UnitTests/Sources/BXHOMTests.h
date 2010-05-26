@@ -1,5 +1,5 @@
 //
-// PGTSHOMTests.h
+// BXHOMTests.h
 // BaseTen
 //
 // Copyright (C) 2010 Marko Karppinen & Co. LLC.
@@ -30,7 +30,7 @@
 #import "BXTestCase.h"
 
 
-@interface PGTSHOMTests : BXTestCase
+@interface BXHOMTests : BXTestCase
 {
 }
 @end

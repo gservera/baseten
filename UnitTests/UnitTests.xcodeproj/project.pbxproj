@@ -57,7 +57,7 @@
 		53A59C560E3509CE0026D7E1 /* FetchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 53BD965B0A5C1BA5001C950C /* FetchTests.m */; };
 		53BCC1D80F5EE90D00BD717A /* PGTSTypeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 53BCC1D70F5EE90D00BD717A /* PGTSTypeTests.m */; };
 		53C4C544119376A5003FB842 /* BXDelegateProxyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C4C543119376A5003FB842 /* BXDelegateProxyTests.m */; };
-		53C4C55011937A1F003FB842 /* PGTSHOMTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C4C54F11937A1F003FB842 /* PGTSHOMTests.m */; };
+		53C4C55011937A1F003FB842 /* BXHOMTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C4C54F11937A1F003FB842 /* BXHOMTests.m */; };
 		53C4C61711943369003FB842 /* PGTSInvocationRecorderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C4C61611943369003FB842 /* PGTSInvocationRecorderTests.m */; };
 		53C4C61C119439BF003FB842 /* NSArray+BaseTenAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C4C61B119439BF003FB842 /* NSArray+BaseTenAdditionsTests.m */; };
 		53C4C62111943C8E003FB842 /* NSPredicate+BaseTenAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C4C62011943C8E003FB842 /* NSPredicate+BaseTenAdditionsTests.m */; };
@@ -190,8 +190,8 @@
 		53BD96BE0A5C2501001C950C /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = /System/Library/Frameworks/SenTestingKit.framework; sourceTree = "<absolute>"; };
 		53C4C542119376A5003FB842 /* BXDelegateProxyTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXDelegateProxyTests.h; path = Sources/BXDelegateProxyTests.h; sourceTree = "<group>"; };
 		53C4C543119376A5003FB842 /* BXDelegateProxyTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BXDelegateProxyTests.m; path = Sources/BXDelegateProxyTests.m; sourceTree = "<group>"; };
-		53C4C54E11937A1F003FB842 /* PGTSHOMTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PGTSHOMTests.h; path = Sources/PGTSHOMTests.h; sourceTree = "<group>"; };
-		53C4C54F11937A1F003FB842 /* PGTSHOMTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PGTSHOMTests.m; path = Sources/PGTSHOMTests.m; sourceTree = "<group>"; };
+		53C4C54E11937A1F003FB842 /* BXHOMTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXHOMTests.h; path = Sources/BXHOMTests.h; sourceTree = "<group>"; };
+		53C4C54F11937A1F003FB842 /* BXHOMTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BXHOMTests.m; path = Sources/BXHOMTests.m; sourceTree = "<group>"; };
 		53C4C61511943369003FB842 /* PGTSInvocationRecorderTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PGTSInvocationRecorderTests.h; path = Sources/PGTSInvocationRecorderTests.h; sourceTree = "<group>"; };
 		53C4C61611943369003FB842 /* PGTSInvocationRecorderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PGTSInvocationRecorderTests.m; path = Sources/PGTSInvocationRecorderTests.m; sourceTree = "<group>"; };
 		53C4C61A119439BF003FB842 /* NSArray+BaseTenAdditionsTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+BaseTenAdditionsTests.h"; path = "Sources/NSArray+BaseTenAdditionsTests.h"; sourceTree = "<group>"; };
@@ -284,8 +284,8 @@
 			children = (
 				53C4C61511943369003FB842 /* PGTSInvocationRecorderTests.h */,
 				53C4C61611943369003FB842 /* PGTSInvocationRecorderTests.m */,
-				53C4C54E11937A1F003FB842 /* PGTSHOMTests.h */,
-				53C4C54F11937A1F003FB842 /* PGTSHOMTests.m */,
+				53C4C54E11937A1F003FB842 /* BXHOMTests.h */,
+				53C4C54F11937A1F003FB842 /* BXHOMTests.m */,
 				53C4C542119376A5003FB842 /* BXDelegateProxyTests.h */,
 				53C4C543119376A5003FB842 /* BXDelegateProxyTests.m */,
 				53C4C61F11943C8E003FB842 /* NSPredicate+BaseTenAdditionsTests.h */,
@@ -573,7 +573,7 @@
 				53DA50F40FCC53960044C961 /* people-departments-no-inverse.xcdatamodel in Sources */,
 				3FC3D13211918C3D00D3CA68 /* PGTSPgBouncerTests.m in Sources */,
 				53C4C544119376A5003FB842 /* BXDelegateProxyTests.m in Sources */,
-				53C4C55011937A1F003FB842 /* PGTSHOMTests.m in Sources */,
+				53C4C55011937A1F003FB842 /* BXHOMTests.m in Sources */,
 				53C4C61711943369003FB842 /* PGTSInvocationRecorderTests.m in Sources */,
 				53C4C61C119439BF003FB842 /* NSArray+BaseTenAdditionsTests.m in Sources */,
 				53C4C62111943C8E003FB842 /* NSPredicate+BaseTenAdditionsTests.m in Sources */,

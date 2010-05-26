@@ -32,7 +32,7 @@
 #import "MKCSenTestCaseAdditions.h"
 
 #import "PGTSInvocationRecorderTests.h"
-#import "PGTSHOMTests.h"
+#import "BXHOMTests.h"
 #import "BXDelegateProxyTests.h"
 #import "NSPredicate+BaseTenAdditionsTests.h"
 #import "NSArray+BaseTenAdditionsTests.h"
@@ -76,7 +76,7 @@
 	
 	NSArray* testClasses = [NSArray arrayWithObjects:
 							[PGTSInvocationRecorderTests class],
-							[PGTSHOMTests class],
+							[BXHOMTests class],
 							[BXDelegateProxyTests class],
 							[NSPredicate_BaseTenAdditionsTests class],
 							[NSArray_BaseTenAdditionsTests class],

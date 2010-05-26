@@ -115,6 +115,18 @@
 }
 
 
+- (void) expected: (NSNotification *) n
+{
+	mExpectedCount++;
+}
+
+
+- (void) unexpected: (NSNotification *) n
+{
+	STAssertTrue (NO, @"Expected connection not to have been made.");
+}
+
+
 - (void) test6ConnectFail
 {
 	[mContext setDatabaseURI: [NSURL URLWithString: @"pgsql://localhost/anonexistantdatabase"]];
@@ -127,17 +139,5 @@
 	[mContext connectAsync];
 	[self waitForConnectionAttempts: 3];
 	STAssertTrue (3 == mExpectedCount, @"Expected 3 connection attempts while there were %d.", mExpectedCount);
-}
-
-
-- (void) expected: (NSNotification *) n
-{
-	mExpectedCount++;
-}
-
-
-- (void) unexpected: (NSNotification *) n
-{
-	STAssertTrue (NO, @"Expected connection not to have been made.");
 }
 @end

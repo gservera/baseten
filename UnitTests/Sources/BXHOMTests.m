@@ -1,5 +1,5 @@
 //
-// PGTSHOMTests.m
+// BXHOMTests.m
 // BaseTen
 //
 // Copyright (C) 2010 Marko Karppinen & Co. LLC.
@@ -26,17 +26,17 @@
 // $Id$
 //
 
-#import "PGTSHOMTests.h"
+#import "BXHOMTests.h"
 #import "MKCSenTestCaseAdditions.h"
 #import <OCMock/OCMock.h>
-#import <BaseTen/PGTSHOM.h>
+#import <BaseTen/BXHOM.h>
 
 
-@implementation PGTSHOMTests
+@implementation BXHOMTests
 - (void) test01ArrayAny
 {
 	NSArray *array = [NSArray arrayWithObjects: @"a", @"b", @"c", nil];
-	id object = [array PGTSAny];
+	id object = [array BX_Any];
 	MKCAssertTrue ([array containsObject: object]);
 }
 
@@ -44,7 +44,7 @@
 - (void) test02SetAny
 {
 	NSSet *set = [NSSet setWithObjects: @"a", @"b", @"c", nil];
-	id object = [set PGTSAny];
+	id object = [set BX_Any];
 	MKCAssertTrue ([set containsObject: object]);
 }
 
@@ -56,7 +56,7 @@
 						  @"b", @"2",
 						  @"c", @"3",
 						  nil];
-	id object = [dict PGTSAny];
+	id object = [dict BX_Any];
 	MKCAssertTrue ([[dict allValues] containsObject: object]);
 }
 
@@ -69,7 +69,7 @@
 	[[m2 expect] stringValue];
 	
 	NSSet *set = [NSSet setWithObjects: m1, m2, nil];
-	[[set PGTSDo] stringValue];
+	[[set BX_Do] stringValue];
 	
 	[m1 verify];
 	[m2 verify];
@@ -84,7 +84,7 @@
 	[[m2 expect] stringValue];
 	
 	NSArray *array = [NSArray arrayWithObjects: m1, m2, nil];
-	[[array PGTSDo] stringValue];
+	[[array BX_Do] stringValue];
 	
 	[m1 verify];
 	[m2 verify];
@@ -102,7 +102,7 @@
 						  m1, @"a",
 						  m2, @"b",
 						  nil];
-	[[dict PGTSDo] stringValue];
+	[[dict BX_Do] stringValue];
 	
 	[m1 verify];
 	[m2 verify];
@@ -112,7 +112,7 @@
 - (void) test07ArrayCollect
 {
 	NSArray *array1 = [NSArray arrayWithObjects: @"a", @"b", @"c", nil];
-	NSArray *array2 = (id) [[array1 PGTSCollect] uppercaseString];
+	NSArray *array2 = (id) [[array1 BX_Collect] uppercaseString];
 	MKCAssertEqualObjects (array2, ([NSArray arrayWithObjects: @"A", @"B", @"C", nil]));
 }
 
@@ -120,7 +120,7 @@
 - (void) test08SetCollect
 {
 	NSSet *set1 = [NSSet setWithObjects: @"a", @"b", @"c", nil];
-	NSSet *set2 = (id) [[set1 PGTSCollect] uppercaseString];
+	NSSet *set2 = (id) [[set1 BX_Collect] uppercaseString];
 	MKCAssertEqualObjects (set2, ([NSSet setWithObjects: @"A", @"B", @"C", nil]));
 }
 
@@ -132,7 +132,7 @@
 						  @"b", @"2",
 						  @"c", @"3",
 						  nil];
-	NSArray *array = (id) [[dict PGTSCollect] uppercaseString];
+	NSArray *array = (id) [[dict BX_Collect] uppercaseString];
 	MKCAssertEqualObjects (array, ([NSArray arrayWithObjects: @"A", @"B", @"C", nil]));
 }
 
@@ -140,7 +140,7 @@
 - (void) test10ArrayCollectRet
 {
 	NSArray *array = [NSArray arrayWithObjects: @"a", @"b", @"c", nil];
-	NSSet *set = (id) [[array PGTSCollectReturning: [NSMutableSet class]] uppercaseString];
+	NSSet *set = (id) [[array BX_CollectReturning: [NSMutableSet class]] uppercaseString];
 	MKCAssertEqualObjects (set, ([NSSet setWithObjects: @"A", @"B", @"C", nil]));
 }
 
@@ -148,7 +148,7 @@
 - (void) test11SetCollectRet
 {
 	NSSet *set = [NSSet setWithObjects: @"a", @"b", @"c", nil];
-	NSArray *array = (id) [[set PGTSCollectReturning: [NSMutableArray class]] uppercaseString];
+	NSArray *array = (id) [[set BX_CollectReturning: [NSMutableArray class]] uppercaseString];
 	MKCAssertEqualObjects ([array sortedArrayUsingSelector: @selector (compare:)],
 						   ([NSArray arrayWithObjects: @"A", @"B", @"C", nil]));
 }
@@ -161,7 +161,7 @@
 						  @"b", @"2",
 						  @"c", @"3",
 						  nil];
-	NSSet *set = (id) [[dict PGTSCollectReturning: [NSMutableSet class]] uppercaseString];
+	NSSet *set = (id) [[dict BX_CollectReturning: [NSMutableSet class]] uppercaseString];
 	MKCAssertEqualObjects (set, ([NSSet setWithObjects: @"A", @"B", @"C", nil]));
 }
 
@@ -169,7 +169,7 @@
 - (void) test13ArrayCollectD
 {
 	NSArray *array = [NSArray arrayWithObjects: @"a", @"b", @"c", nil];
-	NSDictionary *dict = (id) [[array PGTSCollectD] uppercaseString];
+	NSDictionary *dict = (id) [[array BX_CollectD] uppercaseString];
 	MKCAssertEqualObjects (dict, ([NSDictionary dictionaryWithObjectsAndKeys:
 								   @"a", @"A",
 								   @"b", @"B",
@@ -181,7 +181,7 @@
 - (void) test14SetCollectD
 {
 	NSSet *set = [NSSet setWithObjects: @"a", @"b", @"c", nil];
-	NSDictionary *dict = (id) [[set PGTSCollectD] uppercaseString];
+	NSDictionary *dict = (id) [[set BX_CollectD] uppercaseString];
 	MKCAssertEqualObjects (dict, ([NSDictionary dictionaryWithObjectsAndKeys:
 								   @"a", @"A",
 								   @"b", @"B",
@@ -197,7 +197,7 @@
 					@"b", @"2",
 					@"c", @"3",
 					nil];
-	NSDictionary *dict2 = (id) [[dict1 PGTSCollectD] uppercaseString];
+	NSDictionary *dict2 = (id) [[dict1 BX_CollectD] uppercaseString];
 	MKCAssertEqualObjects (dict2, ([NSDictionary dictionaryWithObjectsAndKeys:
 									@"a", @"A",
 									@"b", @"B",
@@ -209,7 +209,7 @@
 - (void) test16ArrayCollectDK
 {
 	NSArray *array = [NSArray arrayWithObjects: @"a", @"b", @"c", nil];
-	NSDictionary *dict = (id) [[array PGTSCollectDK] uppercaseString];
+	NSDictionary *dict = (id) [[array BX_CollectDK] uppercaseString];
 	MKCAssertEqualObjects (dict, ([NSDictionary dictionaryWithObjectsAndKeys:
 								   @"A", @"a",
 								   @"B", @"b",
@@ -221,7 +221,7 @@
 - (void) test17SetCollectDK
 {
 	NSSet *set = [NSSet setWithObjects: @"a", @"b", @"c", nil];
-	NSDictionary *dict = (id) [[set PGTSCollectDK] uppercaseString];
+	NSDictionary *dict = (id) [[set BX_CollectDK] uppercaseString];
 	MKCAssertEqualObjects (dict, ([NSDictionary dictionaryWithObjectsAndKeys:
 								   @"A", @"a",
 								   @"B", @"b",
@@ -237,7 +237,7 @@
 					@"b", @"2",
 					@"c", @"3",
 					nil];
-	NSDictionary *dict2 = (id) [[dict1 PGTSCollectDK] uppercaseString];
+	NSDictionary *dict2 = (id) [[dict1 BX_CollectDK] uppercaseString];
 	MKCAssertEqualObjects (dict2, ([NSDictionary dictionaryWithObjectsAndKeys:
 									@"A", @"a",
 									@"B", @"b",
@@ -252,7 +252,7 @@
 	[[mock expect] objectIsForcedForKey: @"a" inDomain: @"b"];
 	
 	NSArray *array = [NSArray arrayWithObject: @"a"];
-	[[array PGTSVisit: mock] objectIsForcedForKey: nil inDomain: @"b"];
+	[[array BX_Visit: mock] objectIsForcedForKey: nil inDomain: @"b"];
 	
 	[mock verify];
 }
@@ -264,7 +264,7 @@
 	[[mock expect] objectIsForcedForKey: @"a" inDomain: @"b"];
 	
 	NSSet *set = [NSSet setWithObject: @"a"];
-	[[set PGTSVisit: mock] objectIsForcedForKey: nil inDomain: @"b"];
+	[[set BX_Visit: mock] objectIsForcedForKey: nil inDomain: @"b"];
 	
 	[mock verify];
 }
@@ -276,7 +276,7 @@
 	[[mock expect] objectIsForcedForKey: @"a" inDomain: @"b"];
 	
 	NSDictionary *dict = [NSDictionary dictionaryWithObject: @"a" forKey: @"1"];
-	[[dict PGTSVisit: mock] objectIsForcedForKey: nil inDomain: @"b"];
+	[[dict BX_Visit: mock] objectIsForcedForKey: nil inDomain: @"b"];
 	
 	[mock verify];
 }
@@ -285,7 +285,7 @@
 - (void) test22ArrayReverse
 {
 	NSArray *array = [NSArray arrayWithObjects: @"a", @"b", @"c", nil];
-	MKCAssertEqualObjects ([array PGTSReverse], ([NSArray arrayWithObjects: @"c", @"b", @"a", nil]));
+	MKCAssertEqualObjects ([array BX_Reverse], ([NSArray arrayWithObjects: @"c", @"b", @"a", nil]));
 }
 
 
@@ -296,7 +296,7 @@
 						   @"2", @"b",
 						   @"3", @"c",
 						   nil];
-	NSDictionary *dict2 = (id) [[dict1 PGTSKeyCollectD] uppercaseString];
+	NSDictionary *dict2 = (id) [[dict1 BX_KeyCollectD] uppercaseString];
 	MKCAssertEqualObjects (dict2, ([NSDictionary dictionaryWithObjectsAndKeys:
 									@"1", @"A",
 									@"2", @"B",
@@ -318,14 +318,14 @@ SelectFunction (id object)
 - (void) test24ArraySelectFunction
 {
 	NSArray *array = [NSArray arrayWithObjects: @"a", @"b", @"c", nil];
-	MKCAssertEqualObjects ([array PGTSSelectFunction: &SelectFunction], ([NSArray arrayWithObjects: @"a", @"c", nil]));
+	MKCAssertEqualObjects ([array BX_SelectFunction: &SelectFunction], ([NSArray arrayWithObjects: @"a", @"c", nil]));
 }
 
 
 - (void) test25SetSelectFunction
 {
 	NSSet *set = [NSSet setWithObjects: @"a", @"b", @"c", nil];
-	MKCAssertEqualObjects ([set PGTSSelectFunction: &SelectFunction], ([NSSet setWithObjects: @"a", @"c", nil]));
+	MKCAssertEqualObjects ([set BX_SelectFunction: &SelectFunction], ([NSSet setWithObjects: @"a", @"c", nil]));
 }
 
 
@@ -336,7 +336,7 @@ SelectFunction (id object)
 						  @"b", @"2",
 						  @"c", @"3",
 						  nil];
-	MKCAssertEqualObjects ([dict PGTSValueSelectFunction: &SelectFunction], ([NSArray arrayWithObjects: @"a", @"c", nil]));
+	MKCAssertEqualObjects ([dict BX_ValueSelectFunction: &SelectFunction], ([NSArray arrayWithObjects: @"a", @"c", nil]));
 }
 
 
@@ -355,14 +355,14 @@ SelectFunction2 (id object, void *arg)
 - (void) test27ArraySelectFunction
 {
 	NSArray *array = [NSArray arrayWithObjects: @"a", @"b", @"c", nil];
-	MKCAssertEqualObjects ([array PGTSSelectFunction: &SelectFunction2 argument: @"k"], ([NSArray arrayWithObjects: @"a", @"c", nil]));
+	MKCAssertEqualObjects ([array BX_SelectFunction: &SelectFunction2 argument: @"k"], ([NSArray arrayWithObjects: @"a", @"c", nil]));
 }
 
 
 - (void) test28SetSelectFunction
 {
 	NSSet *set = [NSSet setWithObjects: @"a", @"b", @"c", nil];
-	MKCAssertEqualObjects ([set PGTSSelectFunction: &SelectFunction2 argument: @"k"], ([NSSet setWithObjects: @"a", @"c", nil]));
+	MKCAssertEqualObjects ([set BX_SelectFunction: &SelectFunction2 argument: @"k"], ([NSSet setWithObjects: @"a", @"c", nil]));
 }
 
 
@@ -373,6 +373,6 @@ SelectFunction2 (id object, void *arg)
 						  @"b", @"2",
 						  @"c", @"3",
 						  nil];
-	MKCAssertEqualObjects ([dict PGTSValueSelectFunction: &SelectFunction2 argument: @"k"], ([NSArray arrayWithObjects: @"a", @"c", nil]));
+	MKCAssertEqualObjects ([dict BX_ValueSelectFunction: &SelectFunction2 argument: @"k"], ([NSArray arrayWithObjects: @"a", @"c", nil]));
 }
 @end
