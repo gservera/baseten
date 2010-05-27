@@ -33,6 +33,8 @@
 #import <dispatch/dispatch.h>
 
 
+static volatile BOOL stUsesGCD = NO;
+
 
 /** 
  * \internal
@@ -42,18 +44,39 @@
  * \ingroup basetenutility
  */
 @implementation BXSocketDescriptor
++ (BOOL) usesGCD
+{
+	BOOL retval = NO;
+	@synchronized (self)
+	{
+		retval = stUsesGCD;
+	}
+	return retval;
+}
+
+
++ (void) setUsesGCD: (BOOL) useGCD
+{
+	@synchronized (self)
+	{
+		stUsesGCD = useGCD;
+	}
+}
+
+
 /** 
  * \brief Instantiate an event source.
  */
 + (id) copyDescriptorWithSocket: (int) socket
 {
 	id retval = nil;
-#if 0 // Enable after testing.
-	if (NULL != dispatch_get_current_queue)
-		retval = [[BXDispatchSocketDescriptor alloc] initWithSocket: socket];
-	else
-#endif
-		retval = [[BXRunLoopSocketDesciptor alloc] initWithSocket: socket];
+	@synchronized (self)
+	{
+		if (NULL != dispatch_get_current_queue && stUsesGCD)
+			retval = [[BXDispatchSocketDescriptor alloc] initWithSocket: socket];
+		else
+			retval = [[BXRunLoopSocketDesciptor alloc] initWithSocket: socket];
+	}
 	
 	return retval;
 }

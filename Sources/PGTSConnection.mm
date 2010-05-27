@@ -544,6 +544,7 @@ NoticeReceiver (void *connectionPtr, PGresult const *notice)
 
 	if ([notifications count])
 	{
+		BXLogInfo (@"Received %lu notifications.", [notifications count]);
 		id <PGTSConnectionDelegate> delegate = [self delegate];
 		for (PGTSNotification *notification in notifications)
 			[delegate PGTSConnection: self gotNotification: notification];

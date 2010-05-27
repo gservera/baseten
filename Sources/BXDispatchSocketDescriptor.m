@@ -42,7 +42,7 @@
 
 - (id) initWithSocket: (int) socket
 {
-	if ((self = [super init]))
+	if ((self = [super initWithSocket: socket]))
 	{
 		mSocket = socket;
 	}

@@ -542,7 +542,7 @@
 		53877EAE0E27667B0097C35F /* PGTSConstantValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 53877EAC0E27667B0097C35F /* PGTSConstantValue.m */; };
 		53877EEB0E2773E30097C35F /* NSRelationshipDescription+BXPGAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 53877EE90E2773E30097C35F /* NSRelationshipDescription+BXPGAdditions.h */; };
 		53877EEC0E2773E30097C35F /* NSRelationshipDescription+BXPGAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 53877EEA0E2773E30097C35F /* NSRelationshipDescription+BXPGAdditions.m */; };
-		538E031C11A4A5F700C3447F /* BXSocketDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = 538E031A11A4A5F700C3447F /* BXSocketDescriptor.h */; };
+		538E031C11A4A5F700C3447F /* BXSocketDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = 538E031A11A4A5F700C3447F /* BXSocketDescriptor.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		538E031D11A4A5F700C3447F /* BXSocketDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 538E031B11A4A5F700C3447F /* BXSocketDescriptor.m */; };
 		538E032011A4A61F00C3447F /* BXRunLoopSocketDesciptor.h in Headers */ = {isa = PBXBuildFile; fileRef = 538E031E11A4A61F00C3447F /* BXRunLoopSocketDesciptor.h */; };
 		538E032111A4A61F00C3447F /* BXRunLoopSocketDesciptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 538E031F11A4A61F00C3447F /* BXRunLoopSocketDesciptor.m */; };

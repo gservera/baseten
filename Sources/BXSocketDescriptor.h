@@ -42,6 +42,9 @@
 	BXValidationLock *mValidationLock;
 	id <BXSocketDescriptorDelegate> mDelegate;
 }
++ (BOOL) usesGCD;
++ (void) setUsesGCD: (BOOL) useGCD;
+
 + (id) copyDescriptorWithSocket: (int) socket;
 - (id) initWithSocket: (int) socket;
 - (void) install;

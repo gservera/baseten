@@ -29,6 +29,7 @@
 #import "TestLoader.h"
 #import <BaseTen/BaseTen.h>
 #import <BaseTen/BXLogger.h>
+#import <BaseTen/BXSocketDescriptor.h>
 #import "MKCSenTestCaseAdditions.h"
 
 #import "PGTSInvocationRecorderTests.h"
@@ -114,13 +115,27 @@
 	
 	//testClasses = [NSArray arrayWithObject: [BXHostResolverTests class]];
 	
-	for (Class testCaseClass in testClasses)
+	for (int i = 0; i < 2; i++)
 	{
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		SenTestSuite *suite = [SenTestSuite testSuiteForTestCaseClass: testCaseClass];
-		SenTestRun *testRun = [suite run];
-		STAssertTrue (0 == [testRun unexpectedExceptionCount], @"Had %u unexpected exceptions.", [testRun unexpectedExceptionCount]);
-		[pool drain];
+		if (1 == i)
+		{
+			[BXSocketDescriptor setUsesGCD: YES];
+			NSLog (@"Using GCD with BXSocketDescriptor.");
+		}
+		else
+		{
+			[BXSocketDescriptor setUsesGCD: NO];
+			NSLog (@"Not using GCD with BXSocketDescriptor.");
+		}
+		
+		for (Class testCaseClass in testClasses)
+		{
+			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+			SenTestSuite *suite = [SenTestSuite testSuiteForTestCaseClass: testCaseClass];
+			SenTestRun *testRun = [suite run];
+			STAssertTrue (0 == [testRun unexpectedExceptionCount], @"Had %u unexpected exceptions.", [testRun unexpectedExceptionCount]);
+			[pool drain];
+		}
 	}
 }
 @end
