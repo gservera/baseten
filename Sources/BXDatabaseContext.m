@@ -31,10 +31,9 @@
 #import <string.h>
 #import <pthread.h>
 
-#import "PGTSCFScannedMemoryAllocator.h"
-#import "PGTSCollections.h"
+#import "BXSetFunctions.h"
+#import "BXDictionaryFunctions.h"
 #import "BXHOM.h"
-
 #import "BXDatabaseContext.h"
 #import "BXDatabaseContextPrivate.h"
 #import "BXConstants.h"
@@ -199,8 +198,6 @@ ModTypeToObject (enum BXModificationType value)
         //If this class were in a separate framework, this method should be called from the
         //framework initializer function
         [BXPGInterface initialize];
-		
-		PGTSScannedMemoryAllocator ();
     }
 }
 
@@ -2592,7 +2589,7 @@ bail:
 		
 	if (nil == mObjects)
 	{
-		mObjects = PGTSDictionaryCreateMutableWeakNonretainedObjects ();
+		mObjects = BXDictionaryCreateMutableWeakNonretainedObjects ();
 	}
 	
 	if (nil == mModifiedObjectIDs)

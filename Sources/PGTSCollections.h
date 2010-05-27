@@ -97,12 +97,6 @@ namespace PGTS
 	
 	typedef std::list <id, PGTS::scanned_memory_allocator <id> > IdList;
 	
-	typedef std::tr1::unordered_set <id,
-		PGTS::ObjectHash, 
-		PGTS::ObjectCompare <id>, 
-		PGTS::scanned_memory_allocator <id> > 
-		IdSet;
-	
 	typedef std::tr1::unordered_set  <RetainingIdPair,
 		RetainingIdPair::Hash,
 		std::equal_to <RetainingIdPair>,
@@ -123,21 +117,13 @@ namespace PGTS
 }
 
 #define PGTS_IdList PGTS::IdList
-#define PGTS_IdSet PGTS::IdSet
 #define PGTS_IdMap PGTS::IdMap
 #define PGTS_IndexMap PGTS::IndexMap
 #define PGTS_RetainingIdPairSet PGTS::RetainingIdPairSet
 
 #else
 #define PGTS_IdList void
-#define PGTS_IdSet void
 #define PGTS_IdMap void
 #define PGTS_IndexMap void
 #define PGTS_RetainingIdPairSet void
 #endif
-
-
-BX_EXPORT id PGTSSetCreateMutableWeakNonretaining ();
-BX_EXPORT id PGTSSetCreateMutableStrongRetainingForNSRD (); //Has a better comparison function for NSRelationshipDescription.
-BX_EXPORT id PGTSArrayCreateMutableWeakNonretaining ();
-BX_EXPORT id PGTSDictionaryCreateMutableWeakNonretainedObjects ();

@@ -39,7 +39,7 @@
 #import "BXLogger.h"
 #import "BXWeakNotification.h"
 #import "BXHOM.h"
-#import "PGTSCollections.h"
+#import "BXSetFunctions.h"
 #import "BXEnumerate.h"
 #import "NSURL+BaseTenAdditions.h"
 
@@ -443,9 +443,9 @@ FilterPkeyAttributes (id attribute, void* arg)
         mDatabaseURI = [anURI copy];
         mSchemaName = [sName copy];
 		
-		mObjectIDs = PGTSSetCreateMutableWeakNonretaining ();
-        mSuperEntities = PGTSSetCreateMutableWeakNonretaining ();
-        mSubEntities = PGTSSetCreateMutableWeakNonretaining ();
+		mObjectIDs = BXSetCreateMutableWeakNonretaining ();
+        mSuperEntities = BXSetCreateMutableWeakNonretaining ();
+        mSubEntities = BXSetCreateMutableWeakNonretaining ();
 		
 		mValidationLock = [[NSLock alloc] init];
 		mHash = ([super hash] ^ [mSchemaName hash] ^ [mDatabaseURI BXHash]);

@@ -1,8 +1,8 @@
 //
-// PGTSCFScannedMemoryAllocator.h
+// BXArrayFunctions.h
 // BaseTen
 //
-// Copyright (C) 2008 Marko Karppinen & Co. LLC.
+// Copyright (C) 2008-2010 Marko Karppinen & Co. LLC.
 //
 // Before using this software, please review the available licensing options
 // by visiting http://www.karppinen.fi/baseten/licensing/ or by contacting
@@ -26,9 +26,8 @@
 // $Id$
 //
 
-#import <CoreFoundation/CoreFoundation.h>
+#import <Foundation/Foundation.h>
 #import <BaseTen/BXExport.h>
 
 
-BX_INTERNAL CFAllocatorRef PGTSScannedMemoryAllocator ();
-BX_INTERNAL CFSetCallBacks PGTSScannedSetCallbacks ();
+BX_EXPORT id BXArrayCreateMutableWeakNonretaining ();

@@ -32,8 +32,8 @@
 #import "BXEntityDescription.h"
 #import "BXRelationshipDescription.h"
 #import "BXPropertyDescriptionPrivate.h"
-#import "PGTSCollections.h"
 #import "BXLogger.h"
+#import "BXSetFunctions.h"
 
 
 @class BXRelationshipDescription;
@@ -150,7 +150,7 @@
 {
 	if ((self = [super initWithName: name entity: entity]))
 	{
-		mRelationshipsUsing = PGTSSetCreateMutableStrongRetainingForNSRD ();
+		mRelationshipsUsing = BXSetCreateMutableStrongRetainingForNSRD ();
 	}
 	return self;
 }

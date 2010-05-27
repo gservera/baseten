@@ -32,6 +32,7 @@
 #import "PGTSConstants.h"
 #import "PGTSOids.h"
 #import "PGTSMetadataStorage.h"
+#import "BXArrayFunctions.h"
 
 #import "BaseTen.h"
 #import "BXRelationshipDescription.h"
@@ -1030,7 +1031,7 @@ static void FkeyOptionalityCallback (NSString* srcName, NSString* dstName, void*
 					[entity setHasCapability: kBXEntityCapabilityAutomaticUpdate to: YES];
 				}
 				
-				id superEntities = [PGTSArrayCreateMutableWeakNonretaining () autorelease];
+				id superEntities = [BXArrayCreateMutableWeakNonretaining () autorelease];
 				struct table_inheritance_st ctx = {objectModel, database, superEntities};
 				[table iterateInheritedOids: &TableInheritanceCallback context: &ctx];
 				[entity setFetchedSuperEntities: superEntities];

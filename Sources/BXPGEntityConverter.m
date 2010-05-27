@@ -39,7 +39,7 @@
 #import "NSAttributeDescription+BXPGAdditions.h"
 #import "NSRelationshipDescription+BXPGAdditions.h"
 #import "PGTSDatabaseDescription.h"
-#import "PGTSCollections.h"
+#import "BXSetFunctions.h"
 #import "BXEnumerate.h"
 #import "BXError.h"
 
@@ -194,7 +194,7 @@ ImportError (NSString* message, NSString* reason)
 		}
 	}
 	
-	NSMutableSet* handledRelationships = PGTSSetCreateMutableStrongRetainingForNSRD ();
+	NSMutableSet* handledRelationships = BXSetCreateMutableStrongRetainingForNSRD ();
 	BXEnumerate (currentEntity, e, [entityArray objectEnumerator])
 	{
 		BXEnumerate (currentProperty, e, [[currentEntity properties] objectEnumerator])

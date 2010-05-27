@@ -33,7 +33,7 @@
 #import "PGTSMetadataStorage.h"
 #import "PGTSMetadataContainer.h"
 #import "BXLogger.h"
-#import "PGTSCollections.h"
+#import "BXDictionaryFunctions.h"
 
 
 __strong static id gSharedInstance = nil;
@@ -54,7 +54,7 @@ __strong static id gSharedInstance = nil;
 {
 	if ((self = [super init]))
 	{
-		mMetadataByURI = PGTSDictionaryCreateMutableWeakNonretainedObjects ();
+		mMetadataByURI = BXDictionaryCreateMutableWeakNonretainedObjects ();
 	}
 	return self;
 }

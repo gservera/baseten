@@ -29,7 +29,7 @@
 #import "BXDatabaseObjectModelStorage.h"
 #import "BXDatabaseObjectModel.h"
 #import "BXDatabaseObjectModelPrivate.h"
-#import "PGTSCollections.h"
+#import "BXDictionaryFunctions.h"
 
 
 
@@ -73,7 +73,7 @@ __strong static volatile id gSharedInstance = nil;
 {
 	if ((self = [super init]))
 	{
-		mModelsByURI = PGTSDictionaryCreateMutableWeakNonretainedObjects ();
+		mModelsByURI = BXDictionaryCreateMutableWeakNonretainedObjects ();
 	}
 	return self;
 }
