@@ -123,19 +123,12 @@ NoticeReceiver (void *connectionPtr, PGresult const *notice)
 - (void) dealloc
 {
     [self disconnect];
-	[mQueue release];
 	[self _setConnector: nil];
+	
+	[mQueue release];
     [mMetadataContainer release];
-	[mSocketDescriptor release];
 	[mPGTypes release];
 	[super dealloc];
-}
-
-
-- (void) finalize
-{
-    [self disconnect];
-    [super finalize];
 }
 
 
@@ -147,7 +140,6 @@ NoticeReceiver (void *connectionPtr, PGresult const *notice)
 	[self _setConnector: connector];
 	
 	[connector setConnection: mConnection]; //For resetting.
-	[connector setDelegate: self];
 	[connector setTraceFile: [mDelegate PGTSConnectionTraceFile: self]];
 	[[BXConnectionMonitor sharedInstance] clientDidStartConnectionAttempt: self];
 	BXLogDebug (@"Making %@ connect.", [connector class]);
@@ -195,6 +187,8 @@ NoticeReceiver (void *connectionPtr, PGresult const *notice)
 	        mConnection = NULL;
 		}
 	}
+	
+	[self _setSocketDescriptor: nil];
 }
 
 
@@ -493,8 +487,11 @@ NoticeReceiver (void *connectionPtr, PGresult const *notice)
 		if (mConnector != anObject)
 		{
 			[mConnector cancel];
+			[mConnector setDelegate: nil];
 			[mConnector release];
+			
 			mConnector = [anObject retain];
+			[mConnector setDelegate: self];
 		}
 	}
 }
@@ -502,17 +499,22 @@ NoticeReceiver (void *connectionPtr, PGresult const *notice)
 
 - (void) _setSocketDescriptor: (BXSocketDescriptor *) desc
 {
+	BXSocketDescriptor *oldDescriptor = nil;
 	@synchronized (self)
 	{
 		if (desc != mSocketDescriptor)
 		{
-			[mSocketDescriptor invalidate];
-			[mSocketDescriptor release];
+			oldDescriptor = mSocketDescriptor;
 			
 			mSocketDescriptor = [desc retain];
+			[mSocketDescriptor setDelegate: self];
 			[mSocketDescriptor install];
 		}
 	}
+	
+	[oldDescriptor invalidate];
+	[oldDescriptor setDelegate: nil];
+	[oldDescriptor release];
 }
 
 
@@ -526,7 +528,7 @@ NoticeReceiver (void *connectionPtr, PGresult const *notice)
 		while ((pgNotification = PQnotifies (mConnection)))
 		{
 			if (! notifications)
-				notifications = [NSMutableArray array];
+				notifications = [[NSMutableArray alloc] init];
 			
 			NSString* name = [NSString stringWithUTF8String: pgNotification->relname];
 			PGTSNotification* notification = [[PGTSNotification alloc] init];
@@ -539,9 +541,15 @@ NoticeReceiver (void *connectionPtr, PGresult const *notice)
 			[notification release];
 		}    
 	}
+
+	if ([notifications count])
+	{
+		id <PGTSConnectionDelegate> delegate = [self delegate];
+		for (PGTSNotification *notification in notifications)
+			[delegate PGTSConnection: self gotNotification: notification];
+	}
 	
-	for (PGTSNotification *notification in notifications)
-		[mDelegate PGTSConnection: self gotNotification: notification];
+	[notifications release];
 }
 
 
@@ -661,7 +669,6 @@ NoticeReceiver (void *connectionPtr, PGresult const *notice)
 		PQsetNoticeReceiver (connection, &NoticeReceiver, (void *) self);
 		
 		BXSocketDescriptor *desc = [BXSocketDescriptor copyDescriptorWithSocket: PQsocket (mConnection)];
-		[desc setDelegate: self];
 		[self _setSocketDescriptor: desc];
 		[desc release];
 		

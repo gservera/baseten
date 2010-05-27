@@ -81,7 +81,7 @@
 	STAssertNotNil (object, [error description]);
 	
     MKCAssertEqualObjects ([object primitiveValueForKey: @"id"], [NSNumber numberWithInt: 1]);
-    //if this is not nil, then another test has failed or the database is not in known state
+    //if this is not nil, then another test has failed or the database isn't clean.
     STAssertEqualObjects ([object valueForKey: @"value"], nil, @"Database is not in known state!");
 }
 

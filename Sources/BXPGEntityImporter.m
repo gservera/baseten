@@ -48,6 +48,7 @@
 - (void) dealloc
 {
 	[mContext release];
+	[mEntityConverter setDelegate: nil];
 	[mEntityConverter release];
 	[mEntities release];
 	[mSchemaName release];
@@ -73,6 +74,7 @@
 	{
 		[mEntityConverter setDelegate: nil];
 		[mEntityConverter release];
+		
 		mEntityConverter = [aConverter retain];
 		[mEntityConverter setDelegate: self];
 	}

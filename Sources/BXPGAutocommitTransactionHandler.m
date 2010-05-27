@@ -69,13 +69,6 @@
 
 
 @implementation BXPGAutocommitTransactionHandler (Connecting)
-- (void) disconnect
-{
-	[mConnection disconnect];
-	[self didDisconnect];
-}
-
-
 - (void) connectAsync
 {
 	[self prepareForConnecting];

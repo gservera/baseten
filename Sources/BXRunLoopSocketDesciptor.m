@@ -27,6 +27,7 @@
 //
 
 #import "BXRunLoopSocketDesciptor.h"
+#import "BXSocketDescriptorPrivate.h"
 #import "BXLogger.h"
 
 
@@ -36,7 +37,7 @@ SocketReady (CFSocketRef socket, CFSocketCallBackType callbackType, CFDataRef ad
 	if (kCFSocketReadCallBack & callbackType)
 	{
 		BXSocketDescriptor *descriptor = (id) descriptorPtr;
-		[[descriptor delegate] socketReadyForReading: CFSocketGetNative (socket) estimatedSize: 0];
+		[descriptor _socketReadyForReading: CFSocketGetNative (socket) estimatedSize: 0];
 	}
 }
 
@@ -55,7 +56,7 @@ SocketReady (CFSocketRef socket, CFSocketCallBackType callbackType, CFDataRef ad
 
 - (id) initWithSocket: (int) socket
 {
-	if ((self = [super init]))
+	if ((self = [super initWithSocket: socket]))
 	{
 		CFSocketContext context = {0, self, NULL, NULL, NULL};
 		CFSocketCallBackType callbacks = (CFSocketCallBackType) (kCFSocketReadCallBack | kCFSocketWriteCallBack);
@@ -144,6 +145,8 @@ SocketReady (CFSocketRef socket, CFSocketCallBackType callbackType, CFDataRef ad
 
 - (void) invalidate
 {
+	[super invalidate];
+	
 	if (mSocketSource)
 	{
 		CFRunLoopSourceInvalidate (mSocketSource);

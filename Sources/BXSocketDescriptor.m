@@ -26,9 +26,10 @@
 // $Id$
 //
 
-#import "BXSocketDescriptor.h"
+#import "BXSocketDescriptorPrivate.h"
 #import "BXDispatchSocketDescriptor.h"
 #import "BXRunLoopSocketDesciptor.h"
+#import "BXValidationLock.h"
 #import <dispatch/dispatch.h>
 
 
@@ -60,8 +61,32 @@
 
 - (id) initWithSocket: (int) socket
 {
-	[self doesNotRecognizeSelector: _cmd];
-	return nil;
+	if ([self class] == [BXSocketDescriptor class])
+		[self doesNotRecognizeSelector: _cmd];
+	
+	if ((self = [super init]))
+	{
+		mValidationLock = [[BXValidationLock alloc] init];
+	}
+	return self;
+}
+
+
+- (void) dealloc
+{
+	[mValidationLock invalidate];
+	[mValidationLock release];
+	[super dealloc];
+}
+
+
+- (void) _socketReadyForReading: (int) fd estimatedSize: (unsigned long) size
+{
+	if ([mValidationLock lockIfValid])
+	{
+		[[self delegate] socketReadyForReading: fd estimatedSize: size];
+		[mValidationLock unlock];
+	}
 }
 
 
@@ -113,7 +138,7 @@
  */
 - (void) invalidate
 {
-	[self doesNotRecognizeSelector: _cmd];
+	[mValidationLock invalidate];
 }
 
 

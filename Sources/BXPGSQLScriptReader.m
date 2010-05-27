@@ -165,7 +165,10 @@
 {
 	if (mFile)
 		fclose (mFile);
+	
+	[mScanner setDelegate: nil];
 	[mScanner release];
+	
 	[mConnection release];
 	[mDelegateUserInfo release];
 	[super dealloc];

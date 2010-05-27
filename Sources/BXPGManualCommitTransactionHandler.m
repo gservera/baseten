@@ -57,13 +57,6 @@
 }
 
 
-- (void) dealloc
-{
-	[mNotifyConnection release];
-	[super dealloc];
-}
-
-
 - (BOOL) isSSLInUse
 {
 	return ([super isSSLInUse] && [mNotifyConnection SSLStruct] ? YES : NO);
@@ -178,8 +171,11 @@
 {
 	[mNotifyConnection executeQuery: @"SELECT baseten.lock_unlock ()"];
 	[mNotifyConnection disconnect];
-	[mConnection disconnect];
-	[self didDisconnect];
+	[mNotifyConnection setDelegate: nil];
+	[mNotifyConnection release];
+	mNotifyConnection = nil;
+
+	[super disconnect];
 }
 
 

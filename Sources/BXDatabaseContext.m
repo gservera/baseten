@@ -280,6 +280,7 @@ ModTypeToObject (enum BXModificationType value)
 }
 //@}
 
+
 - (void) dealloc
 {
     mDeallocating = YES;
@@ -290,7 +291,10 @@ ModTypeToObject (enum BXModificationType value)
     
 	[mObjectModel release];
 	[mObjectModelStorage release];
+	
+	[mDatabaseInterface disconnect];
     [mDatabaseInterface release];
+	
     [mDatabaseURI release];
     [mObjects release];
     [mModifiedObjectIDs release];

@@ -27,6 +27,7 @@
 //
 
 #import "BXAppKitSystemEventNotifier.h"
+#import <BaseTen/BXValidationLock.h>
 #import <AppKit/AppKit.h>
 
 
@@ -89,6 +90,8 @@ Constructor ()
 
 - (void) dealloc
 {
+	[self invalidate];
+	
 	[[NSNotificationCenter defaultCenter] removeObserver: self];
 	[[[NSWorkspace sharedWorkspace] notificationCenter] removeObserver: self];
 	

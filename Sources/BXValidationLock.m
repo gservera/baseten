@@ -1,5 +1,5 @@
 //
-// BXSystemEventNotifier.h
+// BXValidationLock.m
 // BaseTen
 //
 // Copyright (C) 2010 Marko Karppinen & Co. LLC.
@@ -26,26 +26,56 @@
 // $Id$
 //
 
-#import <Foundation/Foundation.h>
-#import <BaseTen/BXExport.h>
-@class BXValidationLock;
+#import "BXValidationLock.h"
+#import "BXLogger.h"
 
 
-BX_INTERNAL NSString * const kBXSystemEventNotifierProcessWillExitNotification;
-BX_INTERNAL NSString * const kBXSystemEventNotifierSystemWillSleepNotification;
-BX_INTERNAL NSString * const kBXSystemEventNotifierSystemDidWakeNotification;
-
-
-
-@interface BXSystemEventNotifier : NSObject
+@implementation BXValidationLock
+- (id) init
 {
-	BXValidationLock *mValidationLock;
+	if ((self = [super init]))
+	{
+		Expect (0 == pthread_rwlock_init (&mLock, NULL));
+		mIsValid = YES;
+	}
+	return self;
 }
-+ (id) copyNotifier;
-- (void) install;
-- (void) invalidate;
 
-- (void) processWillExit;
-- (void) systemWillSleep;
-- (void) systemDidWake;
+
+- (void) finalize
+{
+	[self invalidate];
+	[super finalize];
+}
+
+
+- (void) dealloc
+{
+	[self invalidate];
+	[super dealloc];
+}
+
+
+- (BOOL) lockIfValid
+{
+	pthread_rwlock_rdlock (&mLock);
+	if (! mIsValid)
+		pthread_rwlock_unlock (&mLock);
+	
+	return mIsValid;
+}
+
+
+- (void) unlock
+{
+	pthread_rwlock_unlock (&mLock);
+}
+
+
+- (void) invalidate
+{
+	pthread_rwlock_wrlock (&mLock);
+	mIsValid = NO;
+	pthread_rwlock_unlock (&mLock);
+}
 @end

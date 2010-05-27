@@ -48,7 +48,7 @@
 
 @interface BXConnectionMonitor : NSObject 
 {
-	CFMutableDictionaryRef mConnections;
+	NSMapTable *mConnections;
 	BXSystemEventNotifier *mSystemEventNotifier;
 	BXConnectionMonitorThread *mMonitorThread;
 }

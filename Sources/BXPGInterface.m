@@ -450,6 +450,7 @@ bx_error_during_rollback (id self, NSError* error)
 - (void) disconnect
 {
 	[mTransactionHandler disconnect];
+	[mTransactionHandler setInterface: nil];
 	[mTransactionHandler release];
 	mTransactionHandler = nil;
 }
@@ -457,8 +458,8 @@ bx_error_during_rollback (id self, NSError* error)
 
 - (void) dealloc
 {
+	[self disconnect];
 	[mCurrentlyChangedEntity release];
-	[mTransactionHandler release];
 	[mLockedObjects release];
 	[mQueryBuilder release];
 	[super dealloc];

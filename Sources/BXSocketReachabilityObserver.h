@@ -29,6 +29,7 @@
 #import <Foundation/Foundation.h>
 #import <SystemConfiguration/SystemConfiguration.h>
 @class BXSocketReachabilityObserver;
+@class BXValidationLock;
 
 
 
@@ -44,6 +45,7 @@
 	SCNetworkReachabilityRef mSyncReachability;
 	SCNetworkReachabilityRef mAsyncReachability;
 	CFRunLoopRef mRunLoop;
+	BXValidationLock *mValidationLock;
 	id <BXSocketReachabilityObserverDelegate> mDelegate;
 	void *mUserInfo;
 }

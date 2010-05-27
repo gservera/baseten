@@ -1,5 +1,5 @@
 //
-// BXSystemEventNotifier.h
+// BXSocketDescriptorPrivate.h
 // BaseTen
 //
 // Copyright (C) 2010 Marko Karppinen & Co. LLC.
@@ -26,26 +26,10 @@
 // $Id$
 //
 
-#import <Foundation/Foundation.h>
-#import <BaseTen/BXExport.h>
-@class BXValidationLock;
+
+#import <BaseTen/BXSocketDescriptor.h>
 
 
-BX_INTERNAL NSString * const kBXSystemEventNotifierProcessWillExitNotification;
-BX_INTERNAL NSString * const kBXSystemEventNotifierSystemWillSleepNotification;
-BX_INTERNAL NSString * const kBXSystemEventNotifierSystemDidWakeNotification;
-
-
-
-@interface BXSystemEventNotifier : NSObject
-{
-	BXValidationLock *mValidationLock;
-}
-+ (id) copyNotifier;
-- (void) install;
-- (void) invalidate;
-
-- (void) processWillExit;
-- (void) systemWillSleep;
-- (void) systemDidWake;
+@interface BXSocketDescriptor ()
+- (void) _socketReadyForReading: (int) fd estimatedSize: (unsigned long) size;
 @end

@@ -552,6 +552,9 @@
 		5390DE590E32B788003980BE /* BXPGCurrentCompatVersion.m.m4 in Sources */ = {isa = PBXBuildFile; fileRef = 5390DE580E32B788003980BE /* BXPGCurrentCompatVersion.m.m4 */; };
 		53915F9E0E3FD22D0098B419 /* libpq_additions.h in Headers */ = {isa = PBXBuildFile; fileRef = 53915F9C0E3FD22D0098B419 /* libpq_additions.h */; };
 		53915F9F0E3FD22D0098B419 /* libpq_additions.c in Sources */ = {isa = PBXBuildFile; fileRef = 53915F9D0E3FD22D0098B419 /* libpq_additions.c */; };
+		5392034211AEA108000E2BEC /* BXValidationLock.h in Headers */ = {isa = PBXBuildFile; fileRef = 5392034011AEA108000E2BEC /* BXValidationLock.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		5392034311AEA108000E2BEC /* BXValidationLock.m in Sources */ = {isa = PBXBuildFile; fileRef = 5392034111AEA108000E2BEC /* BXValidationLock.m */; };
+		5392038611AEA8BF000E2BEC /* BXSocketDescriptorPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 5392038511AEA8BF000E2BEC /* BXSocketDescriptorPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		53937B670EFD097700510DBD /* PGTSInvocationRecorder.h in Headers */ = {isa = PBXBuildFile; fileRef = 53937B650EFD097700510DBD /* PGTSInvocationRecorder.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		53937B680EFD097700510DBD /* PGTSInvocationRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 53937B660EFD097700510DBD /* PGTSInvocationRecorder.m */; };
 		5395E7260E2F77DF006E8441 /* BXPGEntityImporter.h in Headers */ = {isa = PBXBuildFile; fileRef = 5395E7240E2F77DF006E8441 /* BXPGEntityImporter.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -774,7 +777,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 537EB5EB11AD8448008FA78E /* PCRE */;
+			remoteGlobalIDString = 537EB5EB11AD8448008FA78E;
 			remoteInfo = PCRE;
 		};
 /* End PBXContainerItemProxy section */
@@ -1045,6 +1048,9 @@
 		5390DE580E32B788003980BE /* BXPGCurrentCompatVersion.m.m4 */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 4; name = BXPGCurrentCompatVersion.m.m4; path = Sources/BXPGCurrentCompatVersion.m.m4; sourceTree = "<group>"; };
 		53915F9C0E3FD22D0098B419 /* libpq_additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = libpq_additions.h; path = Sources/libpq_additions.h; sourceTree = "<group>"; };
 		53915F9D0E3FD22D0098B419 /* libpq_additions.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = libpq_additions.c; path = Sources/libpq_additions.c; sourceTree = "<group>"; };
+		5392034011AEA108000E2BEC /* BXValidationLock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXValidationLock.h; path = Sources/BXValidationLock.h; sourceTree = "<group>"; };
+		5392034111AEA108000E2BEC /* BXValidationLock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BXValidationLock.m; path = Sources/BXValidationLock.m; sourceTree = "<group>"; };
+		5392038511AEA8BF000E2BEC /* BXSocketDescriptorPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXSocketDescriptorPrivate.h; path = Sources/BXSocketDescriptorPrivate.h; sourceTree = "<group>"; };
 		53933EF409EBD082001D00BB /* BXInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = BXInterface.h; path = Sources/BXInterface.h; sourceTree = "<group>"; };
 		53937B650EFD097700510DBD /* PGTSInvocationRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PGTSInvocationRecorder.h; path = Sources/PGTSInvocationRecorder.h; sourceTree = "<group>"; };
 		53937B660EFD097700510DBD /* PGTSInvocationRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PGTSInvocationRecorder.m; path = Sources/PGTSInvocationRecorder.m; sourceTree = "<group>"; };
@@ -1481,6 +1487,8 @@
 				5339AB920A7542EC00994B1A /* BXException.m */,
 				5329E7F7119F4878000EC6ED /* BXRegularExpressions.h */,
 				5329E7F5119F4845000EC6ED /* BXRegularExpressions.m */,
+				5392034011AEA108000E2BEC /* BXValidationLock.h */,
+				5392034111AEA108000E2BEC /* BXValidationLock.m */,
 				53937B650EFD097700510DBD /* PGTSInvocationRecorder.h */,
 				53937B660EFD097700510DBD /* PGTSInvocationRecorder.m */,
 				5350CC360EFBE66500EBC328 /* PGTSCollections.h */,
@@ -1675,6 +1683,7 @@
 			isa = PBXGroup;
 			children = (
 				538E031A11A4A5F700C3447F /* BXSocketDescriptor.h */,
+				5392038511AEA8BF000E2BEC /* BXSocketDescriptorPrivate.h */,
 				538E031B11A4A5F700C3447F /* BXSocketDescriptor.m */,
 				538E031E11A4A61F00C3447F /* BXRunLoopSocketDesciptor.h */,
 				538E031F11A4A61F00C3447F /* BXRunLoopSocketDesciptor.m */,
@@ -2036,6 +2045,8 @@
 				53776BA711A75DB3009F1A8E /* BXSystemEventNotifier.h in Headers */,
 				534E3C7D11A77088002D49C8 /* BXSocketReachabilityObserver.h in Headers */,
 				5334324511A881F200B71D24 /* BXConnectionMonitor.h in Headers */,
+				5392034211AEA108000E2BEC /* BXValidationLock.h in Headers */,
+				5392038611AEA8BF000E2BEC /* BXSocketDescriptorPrivate.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2706,6 +2717,7 @@
 				53776BA811A75DB3009F1A8E /* BXSystemEventNotifier.m in Sources */,
 				534E3C7E11A77088002D49C8 /* BXSocketReachabilityObserver.m in Sources */,
 				5334324611A881F200B71D24 /* BXConnectionMonitor.m in Sources */,
+				5392034311AEA108000E2BEC /* BXValidationLock.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

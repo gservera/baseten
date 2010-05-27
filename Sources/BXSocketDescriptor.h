@@ -27,6 +27,7 @@
 //
 
 #import <Foundation/Foundation.h>
+@class BXValidationLock;
 
 
 @protocol BXSocketDescriptorDelegate <NSObject>
@@ -38,6 +39,7 @@
 
 @interface BXSocketDescriptor : NSObject
 {
+	BXValidationLock *mValidationLock;
 	id <BXSocketDescriptorDelegate> mDelegate;
 }
 + (id) copyDescriptorWithSocket: (int) socket;

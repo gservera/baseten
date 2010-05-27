@@ -1,5 +1,5 @@
 //
-// BXSystemEventNotifier.h
+// BXValidationLock.h
 // BaseTen
 //
 // Copyright (C) 2010 Marko Karppinen & Co. LLC.
@@ -27,25 +27,15 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <BaseTen/BXExport.h>
-@class BXValidationLock;
+#import <pthread.h>
 
 
-BX_INTERNAL NSString * const kBXSystemEventNotifierProcessWillExitNotification;
-BX_INTERNAL NSString * const kBXSystemEventNotifierSystemWillSleepNotification;
-BX_INTERNAL NSString * const kBXSystemEventNotifierSystemDidWakeNotification;
-
-
-
-@interface BXSystemEventNotifier : NSObject
+@interface BXValidationLock : NSObject
 {
-	BXValidationLock *mValidationLock;
+	pthread_rwlock_t mLock;
+	BOOL mIsValid;
 }
-+ (id) copyNotifier;
-- (void) install;
+- (BOOL) lockIfValid;
+- (void) unlock;
 - (void) invalidate;
-
-- (void) processWillExit;
-- (void) systemWillSleep;
-- (void) systemDidWake;
 @end

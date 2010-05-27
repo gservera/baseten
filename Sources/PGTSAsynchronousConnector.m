@@ -141,7 +141,10 @@ SocketReady (CFSocketRef s, CFSocketCallBackType callBackType, CFDataRef address
 	[self cancel];
 	[mConnectionError release];
 	[mConnectionDictionary release];
+	
+	[mHostResolver setDelegate: nil];
 	[mHostResolver release];
+	
 	[super dealloc];
 }
 
@@ -149,7 +152,6 @@ SocketReady (CFSocketRef s, CFSocketCallBackType callBackType, CFDataRef address
 - (void) finalize
 {
 	[self freeCFTypes];
-	[self cancel];
 	[super finalize];
 }
 

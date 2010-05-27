@@ -29,6 +29,7 @@
 #import "BXSystemEventNotifier.h"
 #import "BXIOKitSystemEventNotifier.h"
 #import "BXProbes.h"
+#import "BXValidationLock.h"
 
 #import "../BaseTenAppKit/Sources/BXAppKitSystemEventNotifier.h"
 Class BXAppKitSystemEventNotifierClass WEAK_IMPORT_ATTRIBUTE;
@@ -54,6 +55,27 @@ NSString * const kBXSystemEventNotifierSystemDidWakeNotification   = @"kBXSystem
 }
 
 
+- (id) init
+{
+	if ([self class] == [BXSystemEventNotifier class])
+		[self doesNotRecognizeSelector: _cmd];
+	
+	if ((self = [super init]))
+	{
+		mValidationLock = [[BXValidationLock alloc] init];
+	}
+	return self;
+}
+
+
+- (void) dealloc
+{
+	[self invalidate];
+	[mValidationLock release];
+	[super dealloc];
+}
+
+
 - (void) install
 {
 }
@@ -61,32 +83,48 @@ NSString * const kBXSystemEventNotifierSystemDidWakeNotification   = @"kBXSystem
 
 - (void) invalidate
 {
+	[mValidationLock invalidate];
 }
 
 
 - (void) processWillExit
 {
-	BASETEN_BEGIN_EXIT_PREPARATION ();
-	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-	[nc postNotificationName: kBXSystemEventNotifierProcessWillExitNotification object: self];
-	BASETEN_END_EXIT_PREPARATION ();
+	if ([mValidationLock lockIfValid])
+	{
+		BASETEN_BEGIN_EXIT_PREPARATION ();
+		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+		[nc postNotificationName: kBXSystemEventNotifierProcessWillExitNotification object: self];
+		BASETEN_END_EXIT_PREPARATION ();
+		
+		[mValidationLock unlock];
+	}
 }
 
 
 - (void) systemWillSleep
 {
-	BASETEN_BEGIN_SLEEP_PREPARATION ();
-	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-	[nc postNotificationName: kBXSystemEventNotifierSystemWillSleepNotification object: self];
-	BASETEN_END_SLEEP_PREPARATION ();
+	if ([mValidationLock lockIfValid])
+	{
+		BASETEN_BEGIN_SLEEP_PREPARATION ();
+		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+		[nc postNotificationName: kBXSystemEventNotifierSystemWillSleepNotification object: self];
+		BASETEN_END_SLEEP_PREPARATION ();
+		
+		[mValidationLock unlock];
+	}
 }
 
 
 - (void) systemDidWake
 {
-	BASETEN_BEGIN_WAKE_PREPARATION ();
-	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-	[nc postNotificationName: kBXSystemEventNotifierSystemDidWakeNotification object: self];
-	BASETEN_END_WAKE_PREPARATION ();
+	if ([mValidationLock lockIfValid])
+	{
+		BASETEN_BEGIN_WAKE_PREPARATION ();
+		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+		[nc postNotificationName: kBXSystemEventNotifierSystemDidWakeNotification object: self];
+		BASETEN_END_WAKE_PREPARATION ();
+		
+		[mValidationLock unlock];
+	}
 }
 @end

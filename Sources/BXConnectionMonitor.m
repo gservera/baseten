@@ -45,12 +45,12 @@
 
 
 static NSArray*
-DictionaryKeys (CFDictionaryRef dict)
+DictionaryKeys (NSMapTable *dict)
 {
 	NSArray *retval = nil;
-	@synchronized ((id) dict)
+	@synchronized (dict)
 	{
-		retval = [(id) dict allKeys];
+		retval = [[dict keyEnumerator] allObjects];
 	}
 	return retval;
 }
@@ -62,7 +62,7 @@ DictionaryKeys (CFDictionaryRef dict)
 {
 	mRunLoop = CFRunLoopGetCurrent ();
 	
-	NSPort *port = [NSPort port];
+	NSPort *port = [[NSPort alloc] init];
 	[port scheduleInRunLoop: [NSRunLoop currentRunLoop] forMode: NSDefaultRunLoopMode];
 	
 	while (1)
@@ -75,7 +75,17 @@ DictionaryKeys (CFDictionaryRef dict)
 			break;
 	}
 	
+	[port release];
 	mRunLoop = NULL;
+}
+
+
+- (void) finalize
+{
+	if (mRunLoop)
+		CFRunLoopStop (mRunLoop);
+	
+	[super finalize];
 }
 
 
@@ -168,9 +178,7 @@ DictionaryKeys (CFDictionaryRef dict)
 				[nc addObserver: self selector: callbacks [i] name: notifications [i] object: mSystemEventNotifier];
 		}
 		
-		mConnections = CFDictionaryCreateMutable (kCFAllocatorDefault, 0, 
-												  &kCFTypeDictionaryKeyCallBacks,
-												  &kCFTypeDictionaryValueCallBacks);
+		mConnections = [[NSMapTable mapTableWithStrongToStrongObjects] retain];
 		mMonitorThread = [[BXConnectionMonitorThread alloc] init];
 		[mMonitorThread setName: @"org.basetenframework.ConnectionMonitorThread"];
 		[mMonitorThread start];
@@ -188,6 +196,7 @@ DictionaryKeys (CFDictionaryRef dict)
 - (void) dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver: self];
+	[mSystemEventNotifier invalidate];
 	[mSystemEventNotifier release];
 	
 	CFRunLoopRef runLoop = [mMonitorThread runLoop];
@@ -195,43 +204,25 @@ DictionaryKeys (CFDictionaryRef dict)
 		CFRunLoopStop ([mMonitorThread runLoop]);
 	
 	[mMonitorThread release];
-	
-	if (mConnections)
-		CFRelease (mConnections);
-	
+	[mConnections release];
 	[super dealloc];
-}
-
-
-- (void) finalize
-{
-	CFRunLoopRef runLoop = [mMonitorThread runLoop];
-	if (runLoop)
-		CFRunLoopStop ([mMonitorThread runLoop]);
-	
-	[mSystemEventNotifier invalidate];
-	
-	if (mConnections)
-		CFRelease (mConnections);
-
-	[super finalize];
 }
 
 
 - (void) clientDidStartConnectionAttempt: (id <BXConnectionMonitorClient>) connection
 {
-	@synchronized ((id) mConnections)
+	@synchronized (mConnections)
 	{
-		CFDictionarySetValue (mConnections, connection, kCFNull);
+		[mConnections setObject: [NSNull null] forKey: connection];
 	}
 }
 
 
 - (void) clientDidFailConnectionAttempt: (id <BXConnectionMonitorClient>) connection
 {
-	@synchronized ((id) mConnections)
+	@synchronized (mConnections)
 	{
-		CFDictionaryRemoveValue (mConnections, connection);
+		[mConnections removeObjectForKey: connection];
 	}
 }
 
@@ -251,9 +242,9 @@ DictionaryKeys (CFDictionaryRef dict)
 				   withObject: observer
 				waitUntilDone: NO];
 		
-		@synchronized ((id) mConnections)
+		@synchronized (mConnections)
 		{
-			CFDictionarySetValue (mConnections, connection, observer);
+			[mConnections setObject: observer forKey: connection];
 		}
 		
 		[observer release];
@@ -264,26 +255,31 @@ DictionaryKeys (CFDictionaryRef dict)
 - (void) clientWillDisconnect: (id <BXConnectionMonitorClient>) connection
 {
 	BXSocketReachabilityObserver *observer = nil;
-	@synchronized ((id) mConnections)
+	@synchronized (mConnections)
 	{
-		observer = (id) CFDictionaryGetValue (mConnections, connection);
+		observer = [mConnections objectForKey: connection];
 		[observer retain];
-		CFDictionaryRemoveValue (mConnections, connection);
+		[connection retain];
+		[mConnections removeObjectForKey: connection];
 	}
 	
-	if ((id) kCFNull != observer)
+	if ((id) [NSNull null] != observer)
+	{
 		[observer invalidate];
+		[observer setDelegate: nil];
+	}
 	
 	[observer release];
+	[connection release];
 }
 
 
 - (BOOL) clientCanSend: (id <BXConnectionMonitorClient>) connection
 {
 	BOOL retval = NO;
-	@synchronized ((id) mConnections)
+	@synchronized (mConnections)
 	{
-		BXSocketReachabilityObserver *observer = (id) CFDictionaryGetValue (mConnections, connection);
+		BXSocketReachabilityObserver *observer = [mConnections objectForKey: connection];
 		if ((id) kCFNull == observer)
 		{
 			//If we don't have an observer, it wasn't needed.

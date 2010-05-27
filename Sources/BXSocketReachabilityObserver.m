@@ -27,9 +27,15 @@
 //
 
 #import "BXSocketReachabilityObserver.h"
+#import "BXValidationLock.h"
 #import "BXLogger.h"
 #import <sys/socket.h>
 #import <arpa/inet.h>
+
+
+@interface BXSocketReachabilityObserver ()
+- (void) _networkStatusChanged: (SCNetworkReachabilityFlags) flags;
+@end
 
 
 
@@ -37,7 +43,7 @@ static void
 NetworkStatusChanged (SCNetworkReachabilityRef target, SCNetworkReachabilityFlags flags, void *observerPtr)
 {
 	BXSocketReachabilityObserver* observer = (BXSocketReachabilityObserver *) observerPtr;
-	[[observer delegate] socketReachabilityObserver: observer networkStatusChanged: flags];
+	[observer _networkStatusChanged: flags];
 }
 
 
@@ -52,6 +58,7 @@ NetworkStatusChanged (SCNetworkReachabilityRef target, SCNetworkReachabilityFlag
 + (BOOL) getAddress: (struct sockaddr **) addressPtr forPeer: (BOOL) peerAddress ofSocket: (int) socket
 {
 	ExpectR (addressPtr, NO);
+	ExpectR (! *addressPtr, NO);
 
 	BOOL retval = NO;
 	const size_t size = SOCK_MAXADDRLEN;
@@ -80,7 +87,7 @@ NetworkStatusChanged (SCNetworkReachabilityRef target, SCNetworkReachabilityFlag
 	struct sockaddr *peerAddress = NULL;
 	
 	if ([self getAddress: &address forPeer: NO  ofSocket: socket] &&
-		[self getAddress: &address forPeer: YES ofSocket: socket])
+		[self getAddress: &peerAddress forPeer: YES ofSocket: socket])
 	{
 		//We don't need to monitor UNIX internal protocols and SC functions seem to return
 		//bad values for them anyway.
@@ -128,6 +135,8 @@ bail:
 {
 	if ((self = [super init]))
 	{
+		mValidationLock = [[BXValidationLock alloc] init];
+		
 		// Apparently two SCNetworkReachabilities are needed to allow both
 		// asynchronous notification and thread safe synchronous checks:
 		//
@@ -153,17 +162,33 @@ bail:
 }
 
 
+- (void) _networkStatusChanged: (SCNetworkReachabilityFlags) flags
+{
+	if ([mValidationLock lockIfValid])
+	{
+		[[self delegate] socketReachabilityObserver: self networkStatusChanged: flags];
+		[mValidationLock unlock];
+	}
+}
+
+
 /**
  * \brief Install the observer into a run loop.
  */
 - (BOOL) install
 {
-	ExpectR (mRunLoop, NO);
-	ExpectR (mAsyncReachability, NO);
-	
-	SCNetworkReachabilityContext ctx = {0, self, NULL, NULL, NULL};
-	SCNetworkReachabilitySetCallback (mAsyncReachability, &NetworkStatusChanged, &ctx);
-	return (SCNetworkReachabilityScheduleWithRunLoop (mAsyncReachability, mRunLoop, kCFRunLoopCommonModes) ? YES : NO);
+	BOOL retval = NO;
+	@synchronized (self)
+	{
+		if (mAsyncReachability && mRunLoop)
+		{
+			SCNetworkReachabilityContext ctx = {0, self, NULL, NULL, NULL};
+			SCNetworkReachabilitySetCallback (mAsyncReachability, &NetworkStatusChanged, &ctx);
+			if (SCNetworkReachabilityScheduleWithRunLoop (mAsyncReachability, mRunLoop, kCFRunLoopCommonModes))
+				retval = YES;
+		}
+	}
+	return retval;
 }
 
 
@@ -172,6 +197,8 @@ bail:
  */
 - (void) invalidate
 {
+	[mValidationLock invalidate];
+	
 	if (mAsyncReachability && mRunLoop)
 		SCNetworkReachabilityUnscheduleFromRunLoop (mAsyncReachability, mRunLoop, kCFRunLoopCommonModes);
 	
@@ -181,16 +208,19 @@ bail:
 		mAsyncReachability = NULL;
 	}
 	
-	if (mSyncReachability)
-	{
-		CFRelease (mSyncReachability);
-		mSyncReachability = NULL;
-	}
-	
 	if (mRunLoop)
 	{
 		CFRelease (mRunLoop);
 		mRunLoop = NULL;
+	}
+	
+	@synchronized (self)
+	{
+		if (mSyncReachability)
+		{
+			CFRelease (mSyncReachability);
+			mSyncReachability = NULL;
+		}
 	}
 }
 

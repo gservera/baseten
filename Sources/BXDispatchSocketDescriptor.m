@@ -27,6 +27,7 @@
 //
 
 #import "BXDispatchSocketDescriptor.h"
+#import "BXSocketDescriptorPrivate.h"
 #import <libkern/OSAtomic.h>
 
 
@@ -56,6 +57,13 @@
 }
 
 
+- (void) finalize
+{
+	[self invalidate];
+	[super finalize];
+}
+
+
 - (void) install
 {
 	NSString *delegateClassName = [[mDelegate class] description];
@@ -70,7 +78,7 @@
 		
 		dispatch_source_set_event_handler (mSocketSource, ^{
 			unsigned long estimated = dispatch_source_get_data (mSocketSource);			
-			[mDelegate socketReadyForReading: mSocket estimatedSize: estimated];
+			[self _socketReadyForReading: mSocket estimatedSize: estimated];
 		});
 		
 		// No cancellation handler because libpq manages the socket.
@@ -114,6 +122,8 @@
 
 - (void) invalidate
 {
+	[super invalidate];
+	
 	if (mSocketSource)
 	{
 		dispatch_source_cancel (mSocketSource);

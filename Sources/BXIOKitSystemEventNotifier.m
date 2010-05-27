@@ -54,7 +54,6 @@ ProcessWillExit ()
 static void
 WorkspaceWillSleep (void *refCon, io_service_t service, natural_t messageType, void *messageArgument)
 {
-	
 	BXIOKitSystemEventNotifier *notifier = (id) refCon;
     switch (messageType)
     {
@@ -170,6 +169,8 @@ bail:
 
 - (void) invalidate
 {
+	[super invalidate];
+	
 	@synchronized ([self class])
 	{
 		CFSetRemoveValue (stInstances, self);

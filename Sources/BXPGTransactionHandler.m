@@ -168,8 +168,8 @@ SSLMode (enum BXSSLMode mode)
 
 - (void) dealloc
 {
+	[self disconnect];
 	[mCertificateVerificationDelegate release];
-	[mConnection release];
 	[mObservedEntities release];
 	[mObservers release];
 	[mChangeHandlers release];
@@ -177,6 +177,7 @@ SSLMode (enum BXSSLMode mode)
 	[mDatabaseIdentifiers release];
 	[super dealloc];
 }
+
 
 - (PGTSConnection *) connection
 {
@@ -327,8 +328,8 @@ SSLMode (enum BXSSLMode mode)
 	{
 		mConnection = [[PGTSConnection alloc] init];
 		[mConnection setDelegate: self];
-		[mConnection setCertificateVerificationDelegate: mCertificateVerificationDelegate];
 		[mConnection setLogsQueries: [mInterface logsQueries]];
+		[mConnection setCertificateVerificationDelegate: mCertificateVerificationDelegate];
 	}	
 }
 
@@ -398,7 +399,11 @@ SSLMode (enum BXSSLMode mode)
 
 - (void) disconnect
 {
-	[self doesNotRecognizeSelector: _cmd];
+	[mConnection disconnect];
+	[mConnection setDelegate: nil];
+	[mConnection release];
+	mConnection = nil;
+	[self didDisconnect];
 }
 
 
