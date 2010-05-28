@@ -137,7 +137,7 @@
 		534BE4680F34F7130098951C /* BXForeignKey.h in Headers */ = {isa = PBXBuildFile; fileRef = 5328FBD40C4580CD006DE171 /* BXForeignKey.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		534E3C7D11A77088002D49C8 /* BXSocketReachabilityObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 534E3C7B11A77088002D49C8 /* BXSocketReachabilityObserver.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		534E3C7E11A77088002D49C8 /* BXSocketReachabilityObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 534E3C7C11A77088002D49C8 /* BXSocketReachabilityObserver.m */; };
-		5350CC380EFBE66500EBC328 /* PGTSCollections.h in Headers */ = {isa = PBXBuildFile; fileRef = 5350CC360EFBE66500EBC328 /* PGTSCollections.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		5350CC380EFBE66500EBC328 /* BXCollections.h in Headers */ = {isa = PBXBuildFile; fileRef = 5350CC360EFBE66500EBC328 /* BXCollections.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		53526E0A0E5D70EB00B67550 /* BXPredicateVisitor.h in Headers */ = {isa = PBXBuildFile; fileRef = 53526E080E5D70EB00B67550 /* BXPredicateVisitor.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		53526E0E0E5D909B00B67550 /* BXPGFromItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 539A84DA0E5B3AFF00A2625C /* BXPGFromItem.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		53526E0F0E5D909B00B67550 /* BXPGFromItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 539A84DB0E5B3AFF00A2625C /* BXPGFromItem.m */; };
@@ -303,7 +303,7 @@
 		53666D0D0E1CD8D20028DBEA /* PGTSResultSet.mm in Sources */ = {isa = PBXBuildFile; fileRef = 53666CCE0E1CD8D20028DBEA /* PGTSResultSet.mm */; };
 		53666D0F0E1CD8D20028DBEA /* PGTSRoleDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = 53666CD00E1CD8D20028DBEA /* PGTSRoleDescription.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		53666D100E1CD8D20028DBEA /* PGTSRoleDescription.mm in Sources */ = {isa = PBXBuildFile; fileRef = 53666CD10E1CD8D20028DBEA /* PGTSRoleDescription.mm */; };
-		53666D110E1CD8D20028DBEA /* PGTSScannedMemoryAllocator.h in Headers */ = {isa = PBXBuildFile; fileRef = 53666CD20E1CD8D20028DBEA /* PGTSScannedMemoryAllocator.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		53666D110E1CD8D20028DBEA /* BXScannedMemoryAllocator.h in Headers */ = {isa = PBXBuildFile; fileRef = 53666CD20E1CD8D20028DBEA /* BXScannedMemoryAllocator.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		53666D120E1CD8D20028DBEA /* PGTSSchemaDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = 53666CD30E1CD8D20028DBEA /* PGTSSchemaDescription.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		53666D130E1CD8D20028DBEA /* PGTSSchemaDescription.mm in Sources */ = {isa = PBXBuildFile; fileRef = 53666CD40E1CD8D20028DBEA /* PGTSSchemaDescription.mm */; };
 		53666D140E1CD8D20028DBEA /* PGTSTableDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = 53666CD50E1CD8D20028DBEA /* PGTSTableDescription.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -562,6 +562,12 @@
 		539204DA11AECE07000E2BEC /* BXDictionaryFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 539204D811AECE07000E2BEC /* BXDictionaryFunctions.m */; };
 		539204DD11AECEAF000E2BEC /* BXArrayFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = 539204DB11AECEAF000E2BEC /* BXArrayFunctions.h */; };
 		539204DE11AECEAF000E2BEC /* BXDictionaryFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = 539204DC11AECEAF000E2BEC /* BXDictionaryFunctions.h */; };
+		5392052B11AED850000E2BEC /* BXObjCPtr.h in Headers */ = {isa = PBXBuildFile; fileRef = 5392052911AED850000E2BEC /* BXObjCPtr.h */; };
+		5392052C11AED850000E2BEC /* BXObjCPtr.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5392052A11AED850000E2BEC /* BXObjCPtr.mm */; };
+		5392053D11AEDB4F000E2BEC /* BXCollectionFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5392053C11AEDB4F000E2BEC /* BXCollectionFunctions.h */; };
+		5392053F11AEDC88000E2BEC /* BXObjCPair.h in Headers */ = {isa = PBXBuildFile; fileRef = 5392053E11AEDC88000E2BEC /* BXObjCPair.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		5392086111AF3EEC000E2BEC /* BXScannedMemoryObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 5392085F11AF3EEC000E2BEC /* BXScannedMemoryObject.h */; };
+		5392086211AF3EEC000E2BEC /* BXScannedMemoryObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5392086011AF3EEC000E2BEC /* BXScannedMemoryObject.mm */; };
 		53937B670EFD097700510DBD /* PGTSInvocationRecorder.h in Headers */ = {isa = PBXBuildFile; fileRef = 53937B650EFD097700510DBD /* PGTSInvocationRecorder.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		53937B680EFD097700510DBD /* PGTSInvocationRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 53937B660EFD097700510DBD /* PGTSInvocationRecorder.m */; };
 		5395E7260E2F77DF006E8441 /* BXPGEntityImporter.h in Headers */ = {isa = PBXBuildFile; fileRef = 5395E7240E2F77DF006E8441 /* BXPGEntityImporter.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -644,7 +650,7 @@
 		53E3B1EB0E55C8D8001A99B5 /* PGTSConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 53666CB50E1CD8D20028DBEA /* PGTSConstants.m */; };
 		53E8985E1035B97D0062AA4D /* psqlscan.l in Sources */ = {isa = PBXBuildFile; fileRef = 53617F6B1035B89D003CE4F5 /* psqlscan.l */; };
 		53ED2E8E0E1AB7CB0095BE8B /* BXLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 53ED2E8C0E1AB7CB0095BE8B /* BXLogger.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		53F0BD9A0EC523A200773BE7 /* PGTSScannedMemoryAllocator.mm in Sources */ = {isa = PBXBuildFile; fileRef = 53F0BD990EC523A200773BE7 /* PGTSScannedMemoryAllocator.mm */; };
+		53F0BD9A0EC523A200773BE7 /* BXScannedMemoryAllocator.mm in Sources */ = {isa = PBXBuildFile; fileRef = 53F0BD990EC523A200773BE7 /* BXScannedMemoryAllocator.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -852,7 +858,7 @@
 		534E3C7B11A77088002D49C8 /* BXSocketReachabilityObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXSocketReachabilityObserver.h; path = Sources/BXSocketReachabilityObserver.h; sourceTree = "<group>"; };
 		534E3C7C11A77088002D49C8 /* BXSocketReachabilityObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BXSocketReachabilityObserver.m; path = Sources/BXSocketReachabilityObserver.m; sourceTree = "<group>"; };
 		534EE22F0E53213300B079B0 /* libBaseTen.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBaseTen.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		5350CC360EFBE66500EBC328 /* PGTSCollections.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PGTSCollections.h; path = Sources/PGTSCollections.h; sourceTree = "<group>"; };
+		5350CC360EFBE66500EBC328 /* BXCollections.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXCollections.h; path = Sources/BXCollections.h; sourceTree = "<group>"; };
 		53526E080E5D70EB00B67550 /* BXPredicateVisitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXPredicateVisitor.h; path = Sources/BXPredicateVisitor.h; sourceTree = "<group>"; };
 		53526E090E5D70EB00B67550 /* BXPredicateVisitor.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; name = BXPredicateVisitor.m; path = Sources/BXPredicateVisitor.m; sourceTree = "<group>"; };
 		535444130D634A47002A6C47 /* BaseTen.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BaseTen.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -972,7 +978,7 @@
 		53666CCF0E1CD8D20028DBEA /* PGTSResultSetPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PGTSResultSetPrivate.h; path = Sources/PGTSResultSetPrivate.h; sourceTree = "<group>"; };
 		53666CD00E1CD8D20028DBEA /* PGTSRoleDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PGTSRoleDescription.h; path = Sources/PGTSRoleDescription.h; sourceTree = "<group>"; };
 		53666CD10E1CD8D20028DBEA /* PGTSRoleDescription.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = PGTSRoleDescription.mm; path = Sources/PGTSRoleDescription.mm; sourceTree = "<group>"; };
-		53666CD20E1CD8D20028DBEA /* PGTSScannedMemoryAllocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PGTSScannedMemoryAllocator.h; path = Sources/PGTSScannedMemoryAllocator.h; sourceTree = "<group>"; };
+		53666CD20E1CD8D20028DBEA /* BXScannedMemoryAllocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXScannedMemoryAllocator.h; path = Sources/BXScannedMemoryAllocator.h; sourceTree = "<group>"; };
 		53666CD30E1CD8D20028DBEA /* PGTSSchemaDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PGTSSchemaDescription.h; path = Sources/PGTSSchemaDescription.h; sourceTree = "<group>"; };
 		53666CD40E1CD8D20028DBEA /* PGTSSchemaDescription.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = PGTSSchemaDescription.mm; path = Sources/PGTSSchemaDescription.mm; sourceTree = "<group>"; };
 		53666CD50E1CD8D20028DBEA /* PGTSTableDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PGTSTableDescription.h; path = Sources/PGTSTableDescription.h; sourceTree = "<group>"; };
@@ -1063,6 +1069,12 @@
 		539204D811AECE07000E2BEC /* BXDictionaryFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BXDictionaryFunctions.m; path = Sources/BXDictionaryFunctions.m; sourceTree = "<group>"; };
 		539204DB11AECEAF000E2BEC /* BXArrayFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXArrayFunctions.h; path = Sources/BXArrayFunctions.h; sourceTree = "<group>"; };
 		539204DC11AECEAF000E2BEC /* BXDictionaryFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXDictionaryFunctions.h; path = Sources/BXDictionaryFunctions.h; sourceTree = "<group>"; };
+		5392052911AED850000E2BEC /* BXObjCPtr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXObjCPtr.h; path = Sources/BXObjCPtr.h; sourceTree = "<group>"; };
+		5392052A11AED850000E2BEC /* BXObjCPtr.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BXObjCPtr.mm; path = Sources/BXObjCPtr.mm; sourceTree = "<group>"; };
+		5392053C11AEDB4F000E2BEC /* BXCollectionFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXCollectionFunctions.h; path = Sources/BXCollectionFunctions.h; sourceTree = "<group>"; };
+		5392053E11AEDC88000E2BEC /* BXObjCPair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXObjCPair.h; path = Sources/BXObjCPair.h; sourceTree = "<group>"; };
+		5392085F11AF3EEC000E2BEC /* BXScannedMemoryObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXScannedMemoryObject.h; path = Sources/BXScannedMemoryObject.h; sourceTree = "<group>"; };
+		5392086011AF3EEC000E2BEC /* BXScannedMemoryObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BXScannedMemoryObject.mm; path = Sources/BXScannedMemoryObject.mm; sourceTree = "<group>"; };
 		53933EF409EBD082001D00BB /* BXInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = BXInterface.h; path = Sources/BXInterface.h; sourceTree = "<group>"; };
 		53937B650EFD097700510DBD /* PGTSInvocationRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PGTSInvocationRecorder.h; path = Sources/PGTSInvocationRecorder.h; sourceTree = "<group>"; };
 		53937B660EFD097700510DBD /* PGTSInvocationRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PGTSInvocationRecorder.m; path = Sources/PGTSInvocationRecorder.m; sourceTree = "<group>"; };
@@ -1145,7 +1157,7 @@
 		53ED2E8C0E1AB7CB0095BE8B /* BXLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXLogger.h; path = Sources/BXLogger.h; sourceTree = "<group>"; };
 		53EFE9E00BA96444008666B7 /* BaseTenAppKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BaseTenAppKit.xcodeproj; path = BaseTenAppKit/BaseTenAppKit.xcodeproj; sourceTree = "<group>"; };
 		53EFEA950BA98028008666B7 /* BXDatabaseObjectPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = BXDatabaseObjectPrivate.h; path = Sources/BXDatabaseObjectPrivate.h; sourceTree = "<group>"; };
-		53F0BD990EC523A200773BE7 /* PGTSScannedMemoryAllocator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = PGTSScannedMemoryAllocator.mm; path = Sources/PGTSScannedMemoryAllocator.mm; sourceTree = "<group>"; };
+		53F0BD990EC523A200773BE7 /* BXScannedMemoryAllocator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BXScannedMemoryAllocator.mm; path = Sources/BXScannedMemoryAllocator.mm; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Resources/Info.plist; sourceTree = "<group>"; };
 		98A6CD650F45C8420029B2C4 /* coverage-gc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "coverage-gc.xcconfig"; sourceTree = "<group>"; };
 		98A6CD660F45C8420029B2C4 /* coverage-non-gc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "coverage-non-gc.xcconfig"; sourceTree = "<group>"; };
@@ -1481,30 +1493,35 @@
 				53776B9B11A75964009F1A8E /* System event notifier */,
 				534E3C5F11A76F49002D49C8 /* Foundation additions */,
 				539204D611AECDEB000E2BEC /* Collections */,
-				538FA0240F576278005EBFAC /* BXOpenSSLCompatibility.h */,
+				53015A830FBEF18800E52C1E /* BXArraySize.h */,
 				53C4C3F31192EC10003FB842 /* BXCFHostCompatibility.h */,
 				5354F87A0F004A6600422613 /* BXExport.h */,
 				535661D70F02603600920008 /* BXLocalizedString.h */,
+				5392053E11AEDC88000E2BEC /* BXObjCPair.h */,
+				538FA0240F576278005EBFAC /* BXOpenSSLCompatibility.h */,
 				535661D80F02603600920008 /* BXSafetyMacros.h */,
-				53015A830FBEF18800E52C1E /* BXArraySize.h */,
-				53ED2E8C0E1AB7CB0095BE8B /* BXLogger.h */,
-				5364EF5B0E1B940A003D3DB6 /* BXLogger.m */,
 				539ACEC60E3B3FF7006602B5 /* BXDelegateProxy.h */,
 				539ACEC70E3B3FF7006602B5 /* BXDelegateProxy.m */,
-				53680C0C0E59922C00A53B26 /* BXKeyPathParser.h */,
-				53680C0D0E59922C00A53B26 /* BXKeyPathParser.m */,
 				53BFE53B0FAF2EFA0004533F /* BXError.h */,
 				53BFE53C0FAF2EFA0004533F /* BXError.m */,
 				5339AB910A7542EC00994B1A /* BXException.h */,
 				5339AB920A7542EC00994B1A /* BXException.m */,
+				53680C0C0E59922C00A53B26 /* BXKeyPathParser.h */,
+				53680C0D0E59922C00A53B26 /* BXKeyPathParser.m */,
+				53ED2E8C0E1AB7CB0095BE8B /* BXLogger.h */,
+				5364EF5B0E1B940A003D3DB6 /* BXLogger.m */,
+				5392052911AED850000E2BEC /* BXObjCPtr.h */,
+				5392052A11AED850000E2BEC /* BXObjCPtr.mm */,
 				5329E7F7119F4878000EC6ED /* BXRegularExpressions.h */,
 				5329E7F5119F4845000EC6ED /* BXRegularExpressions.m */,
+				53666CD20E1CD8D20028DBEA /* BXScannedMemoryAllocator.h */,
+				53F0BD990EC523A200773BE7 /* BXScannedMemoryAllocator.mm */,
+				5392085F11AF3EEC000E2BEC /* BXScannedMemoryObject.h */,
+				5392086011AF3EEC000E2BEC /* BXScannedMemoryObject.mm */,
 				5392034011AEA108000E2BEC /* BXValidationLock.h */,
 				5392034111AEA108000E2BEC /* BXValidationLock.m */,
 				53937B650EFD097700510DBD /* PGTSInvocationRecorder.h */,
 				53937B660EFD097700510DBD /* PGTSInvocationRecorder.m */,
-				53666CD20E1CD8D20028DBEA /* PGTSScannedMemoryAllocator.h */,
-				53F0BD990EC523A200773BE7 /* PGTSScannedMemoryAllocator.mm */,
 				534E3C6211A76F81002D49C8 /* Unneeded */,
 				536C9E8D0EFDAFF20041422F /* Remember to remove */,
 			);
@@ -1705,13 +1722,14 @@
 			isa = PBXGroup;
 			children = (
 				536C9D5F0EFD94D10041422F /* BXEnumerate.h */,
+				5350CC360EFBE66500EBC328 /* BXCollections.h */,
+				5392053C11AEDB4F000E2BEC /* BXCollectionFunctions.h */,
 				539204CC11AEC88E000E2BEC /* BXSetFunctions.h */,
 				539204CD11AEC88E000E2BEC /* BXSetFunctions.m */,
 				539204DB11AECEAF000E2BEC /* BXArrayFunctions.h */,
 				539204D711AECE07000E2BEC /* BXArrayFunctions.m */,
 				539204DC11AECEAF000E2BEC /* BXDictionaryFunctions.h */,
 				539204D811AECE07000E2BEC /* BXDictionaryFunctions.m */,
-				5350CC360EFBE66500EBC328 /* PGTSCollections.h */,
 			);
 			name = Collections;
 			sourceTree = "<group>";
@@ -1974,7 +1992,7 @@
 				53666D0A0E1CD8D20028DBEA /* PGTSQueryDescription.h in Headers */,
 				53666D0C0E1CD8D20028DBEA /* PGTSResultSet.h in Headers */,
 				53666D0F0E1CD8D20028DBEA /* PGTSRoleDescription.h in Headers */,
-				53666D110E1CD8D20028DBEA /* PGTSScannedMemoryAllocator.h in Headers */,
+				53666D110E1CD8D20028DBEA /* BXScannedMemoryAllocator.h in Headers */,
 				53666D120E1CD8D20028DBEA /* PGTSSchemaDescription.h in Headers */,
 				53666D140E1CD8D20028DBEA /* PGTSTableDescription.h in Headers */,
 				53666D160E1CD8D20028DBEA /* PGTSTypeDescription.h in Headers */,
@@ -2018,7 +2036,7 @@
 				535F235B0E8A8D5900311CB5 /* BXPGRelationshipExpressionValueType.h in Headers */,
 				535F24C00E8AA62800311CB5 /* BXPGObjectExpressionValueType.h in Headers */,
 				535F24EE0E8AA96B00311CB5 /* BXPGIdentityExpressionValueType.h in Headers */,
-				5350CC380EFBE66500EBC328 /* PGTSCollections.h in Headers */,
+				5350CC380EFBE66500EBC328 /* BXCollections.h in Headers */,
 				53937B670EFD097700510DBD /* PGTSInvocationRecorder.h in Headers */,
 				536C9D600EFD94D10041422F /* BXEnumerate.h in Headers */,
 				5354F7DE0F00417400422613 /* BXURLEncoding.h in Headers */,
@@ -2073,6 +2091,10 @@
 				539204D211AEC944000E2BEC /* NSObject+BaseTenAdditions.h in Headers */,
 				539204DD11AECEAF000E2BEC /* BXArrayFunctions.h in Headers */,
 				539204DE11AECEAF000E2BEC /* BXDictionaryFunctions.h in Headers */,
+				5392052B11AED850000E2BEC /* BXObjCPtr.h in Headers */,
+				5392053D11AEDB4F000E2BEC /* BXCollectionFunctions.h in Headers */,
+				5392053F11AEDC88000E2BEC /* BXObjCPair.h in Headers */,
+				5392086111AF3EEC000E2BEC /* BXScannedMemoryObject.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2689,7 +2711,7 @@
 				535F235C0E8A8D5900311CB5 /* BXPGRelationshipExpressionValueType.m in Sources */,
 				535F24C10E8AA62800311CB5 /* BXPGObjectExpressionValueType.m in Sources */,
 				535F24EF0E8AA96B00311CB5 /* BXPGIdentityExpressionValueType.m in Sources */,
-				53F0BD9A0EC523A200773BE7 /* PGTSScannedMemoryAllocator.mm in Sources */,
+				53F0BD9A0EC523A200773BE7 /* BXScannedMemoryAllocator.mm in Sources */,
 				53937B680EFD097700510DBD /* PGTSInvocationRecorder.m in Sources */,
 				5354F7DF0F00417400422613 /* BXURLEncoding.m in Sources */,
 				5354F8840F004F9300422613 /* PGTSOids.m in Sources */,
@@ -2746,6 +2768,8 @@
 				539204D311AEC944000E2BEC /* NSObject+BaseTenAdditions.m in Sources */,
 				539204D911AECE07000E2BEC /* BXArrayFunctions.m in Sources */,
 				539204DA11AECE07000E2BEC /* BXDictionaryFunctions.m in Sources */,
+				5392052C11AED850000E2BEC /* BXObjCPtr.mm in Sources */,
+				5392086211AF3EEC000E2BEC /* BXScannedMemoryObject.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
