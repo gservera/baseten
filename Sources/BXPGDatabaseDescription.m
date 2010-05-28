@@ -32,28 +32,18 @@
 #import "PGTSResultSet.h"
 #import "BXPGTableDescription.h"
 #import "BXPGForeignKeyDescription.h"
-
-namespace PGTS 
-{
-	void InsertConditionally (IdentifierMap* map, BXPGForeignKeyDescription* description);
-}
-
-void PGTS::InsertConditionally (IdentifierMap* map, BXPGForeignKeyDescription* description)
-{
-	NSInteger identifier = [description identifier];
-	if (! (* map) [identifier])
-		(* map) [identifier] = [description retain];	
-}
+#import "BXCollectionFunctions.h"
 
 
-using namespace PGTS;
+using namespace BaseTen::CollectionFunctions;
+
 
 @implementation BXPGDatabaseDescription
 - (id) init
 {
 	if ((self = [super init]))
 	{
-		mForeignKeysByIdentifier = new IdentifierMap ();
+		mForeignKeysByIdentifier = new BaseTen::IndexMap ();
 	}
 	return self;
 }
@@ -62,20 +52,8 @@ using namespace PGTS;
 {
 	[mSchemaVersion release];
 	[mSchemaCompatibilityVersion release];
-	for (IdentifierMap::const_iterator it = mForeignKeysByIdentifier->begin (), end = mForeignKeysByIdentifier->end (); 
-		 it != end; it++)
-	{
-		[it->second release];
-	}
-	
 	delete mForeignKeysByIdentifier;
 	[super dealloc];
-}
-
-- (void) finalize
-{
-	delete mForeignKeysByIdentifier;
-	[super finalize];
 }
 
 - (BOOL) hasBaseTenSchema
@@ -118,7 +96,7 @@ using namespace PGTS;
 
 - (void) addForeignKey: (BXPGForeignKeyDescription *) fkey
 {
-	InsertConditionally (mForeignKeysByIdentifier, fkey);
+	InsertConditionally (mForeignKeysByIdentifier, [fkey identifier], fkey);
 }
 
 - (BXPGForeignKeyDescription *) foreignKeyWithIdentifier: (NSInteger) identifier

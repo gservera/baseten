@@ -29,19 +29,21 @@
 
 #import "PGTSDatabaseDescription.h"
 #import "PGTSOids.h"
-#import "PGTSScannedMemoryAllocator.h"
+#import "BXScannedMemoryAllocator.h"
 #import "PGTSAbstractDescription.h"
 #import "PGTSAbstractObjectDescription.h"
 #import "PGTSTableDescription.h"
 #import "PGTSSchemaDescription.h"
 #import "PGTSTypeDescription.h"
 #import "PGTSRoleDescription.h"
-#import "PGTSCollections.h"
+#import "BXCollections.h"
 #import "BXLogger.h"
 #import "BXArraySize.h"
+#import "BXCollectionFunctions.h"
 
 
 using namespace PGTS;
+using namespace BaseTen::CollectionFunctions;
 
 
 static NSArray*
@@ -79,17 +81,10 @@ FindUsingOidVector (const Oid* oidVector, OidMap* map)
 
 - (void) dealloc
 {
-	OidMap* maps [] = {mSchemasByOid, mTablesByOid, mTypesByOid, mRolesByOid};
-	for (int i = 0, count = BXArraySize (maps); i < count; i++)
-	{
-		OidMap::const_iterator iterator = maps [i]->begin ();
-		while (maps [i]->end () != iterator)
-		{
-			[iterator->second autorelease];
-			iterator++;
-		}
-		delete maps [i];
-	}
+	delete mSchemasByOid;
+	delete mTablesByOid;
+	delete mTypesByOid;
+	delete mRolesByOid;
 	
 	[mSchemasByName release];
 	[mRolesByName release];
@@ -98,16 +93,6 @@ FindUsingOidVector (const Oid* oidVector, OidMap* map)
 	[mRoleLock release];
 		
 	[super dealloc];
-}
-
-
-- (void) finalize
-{
-	delete mSchemasByOid;
-	delete mTablesByOid;
-	delete mTypesByOid;
-	delete mRolesByOid;
-	[super finalize];
 }
 
 
@@ -129,7 +114,7 @@ FindUsingOidVector (const Oid* oidVector, OidMap* map)
 - (void) addTable: (PGTSTableDescription *) table
 {
 	ExpectV (table);
-	InsertConditionally (mTablesByOid, table);
+	InsertConditionally (mTablesByOid, [table oid], table);
 	
 	PGTSSchemaDescription* schema = [table schema];
 	ExpectV (schema);
@@ -147,14 +132,14 @@ FindUsingOidVector (const Oid* oidVector, OidMap* map)
 		mSchemasByName = nil;
 	}
 	[mSchemaLock unlock];
-	InsertConditionally (mSchemasByOid, schema);
+	InsertConditionally (mSchemasByOid, [schema oid], schema);
 }
 
 
 - (void) addType: (PGTSTypeDescription *) type
 {
 	ExpectV (type);
-	InsertConditionally (mTypesByOid, type);
+	InsertConditionally (mTypesByOid, [type oid], type);
 }
 
 
@@ -168,7 +153,7 @@ FindUsingOidVector (const Oid* oidVector, OidMap* map)
 		mRolesByName = nil;
 	}	
 	[mRoleLock unlock];
-	InsertConditionally (mRolesByOid, role);
+	InsertConditionally (mRolesByOid, [role oid], role);
 }
 
 

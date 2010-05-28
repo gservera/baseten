@@ -1,8 +1,8 @@
 //
-// PGTSAbstractObjectDescription.mm
+// BXScannedMemoryAllocator.mm
 // BaseTen
 //
-// Copyright (C) 2006-2009 Marko Karppinen & Co. LLC.
+// Copyright (C) 2008-2010 Marko Karppinen & Co. LLC.
 //
 // Before using this software, please review the available licensing options
 // by visiting http://www.karppinen.fi/baseten/licensing/ or by contacting
@@ -26,48 +26,50 @@
 // $Id$
 //
 
-#import "PGTSAbstractObjectDescription.h"
+#import "BXScannedMemoryAllocator.h"
 
 
-@implementation PGTSAbstractObjectDescription
-- (id) init
+static BOOL 
+IsCollectionEnabled ()
 {
-    if ((self = [super init]))
-    {
-        mOid = InvalidOid;
-    }
-    return self;
-}
-
-- (NSString *) description
-{
-	id retval = nil;
-	@synchronized (self)
-	{
-    	retval = [NSString stringWithFormat: @"<%@ (%p) %@ (%u)>", [self class], self, mName, mOid];
-	}
+	BOOL retval = NO;
+    //Symbol existence verification requires NULL != -like comparison.
+	if (NULL != NSAllocateCollectable && [NSGarbageCollector defaultCollector])
+		retval = YES;
 	return retval;
 }
 
-- (Oid) oid
+BOOL BaseTen::ScannedMemoryAllocatorBase::collection_enabled = IsCollectionEnabled ();
+
+
+void *
+BaseTen::ScannedMemoryAllocatorBase::allocate (size_t size)
 {
-    return mOid;
+	void *retval = NULL;
+	
+#if defined (OBJC_NO_GC)
+	retval = malloc (size);
+#else
+	if (BaseTen::ScannedMemoryAllocatorBase::collection_enabled)
+		retval = NSAllocateCollectable (size, NSScannedOption);
+	else
+		retval = malloc (size);
+#endif
+	
+	if (! retval)
+		throw std::bad_alloc ();
+	
+	return retval;
 }
 
-- (void) setOid: (Oid) anOid
-{
-    mOid = anOid;
-}
 
-- (NSUInteger) hash
+void
+BaseTen::ScannedMemoryAllocatorBase::deallocate (void *ptr)
 {
-    if (0 == mHash)
-        mHash = ([mName hash] ^ mOid);
-    return mHash;
+#if defined (OBJC_NO_GC)
+	free (ptr);
+#else
+	if (! BaseTen::ScannedMemoryAllocatorBase::collection_enabled)
+		free (ptr);
+#endif
 }
-
-- (BOOL) isEqual: (PGTSAbstractObjectDescription *) anObject
-{
-    return ([super isEqual: anObject] && anObject->mOid == mOid); 
-}
-@end

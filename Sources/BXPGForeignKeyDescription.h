@@ -36,7 +36,7 @@
 @interface BXPGForeignKeyDescription : PGTSAbstractDescription <BXForeignKey>
 {
 	NSInteger mIdentifier;
-	PGTS_RetainingIdPairSet* mFieldNames;
+	BX_IdPairSet* mFieldNames;
 	pthread_rwlock_t mFieldNameLock;
 	NSDeleteRule mDeleteRule;
 }

@@ -30,15 +30,6 @@
 #import "PGTSAbstractDescription.h"
 
 
-void 
-PGTS::InsertConditionally (IdMap* map, PGTSAbstractDescription* description)
-{
-	NSString* name = [description name];
-	if (! (* map) [name])
-		(* map) [[name retain]] = [description retain];
-}
-
-
 /** 
  * \internal
  * \brief Abstract base class.

@@ -35,14 +35,6 @@
 @class PGTSAbstractObjectDescription;
 
 
-#if defined (__cplusplus)
-namespace PGTS 
-{
-	void InsertConditionally (OidMap* map, PGTSAbstractObjectDescription* description);
-}
-#endif
-
-
 @interface PGTSAbstractObjectDescription : PGTSAbstractDescription 
 {
     Oid mOid;

@@ -28,10 +28,12 @@
 
 
 #import "PGTSRoleDescription.h"
+#import "BXCollectionFunctions.h"
 #import "BXLogger.h"
 
 
 using namespace PGTS;
+using namespace BaseTen::CollectionFunctions;
 
 
 @implementation PGTSRoleDescription
@@ -46,19 +48,10 @@ using namespace PGTS;
 
 - (void) dealloc
 {
-	for (OidMap::const_iterator it = mMembersByOid->begin (); mMembersByOid->end () != it; it++)
-		[it->second release];
-	
-	delete mMembersByOid;
-    
+	delete mMembersByOid;    
 	[super dealloc];
 }
 
-- (void) finalize
-{
-	delete mMembersByOid;
-	[super finalize];
-}
 
 /** 
  * \brief Check if given role is member of self.
@@ -72,6 +65,6 @@ using namespace PGTS;
 - (void) addMember: (PGTSRoleDescription *) aRole
 {
 	ExpectV (aRole);
-	InsertConditionally (mMembersByOid, aRole);
+	InsertConditionally (mMembersByOid, [aRole oid], aRole);
 }
 @end

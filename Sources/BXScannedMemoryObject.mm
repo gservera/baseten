@@ -1,8 +1,8 @@
 //
-// PGTSScannedMemoryAllocator.mm
+// BXScannedMemoryObject.mm
 // BaseTen
 //
-// Copyright (C) 2008 Marko Karppinen & Co. LLC.
+// Copyright (C) 2010 Marko Karppinen & Co. LLC.
 //
 // Before using this software, please review the available licensing options
 // by visiting http://www.karppinen.fi/baseten/licensing/ or by contacting
@@ -26,16 +26,20 @@
 // $Id$
 //
 
-#import "PGTSScannedMemoryAllocator.h"
+#import "BXScannedMemoryObject.h"
 
 
-static BOOL should_allocate_scanned ()
+void *
+BaseTen::ScannedMemoryObject::operator new (size_t size)
 {
-	BOOL retval = NO;
-    //Symbol existence verification requires NULL != -like comparison.
-	if (NULL != NSAllocateCollectable && [NSGarbageCollector defaultCollector])
-		retval = YES;
-	return retval;
+	BaseTen::ScannedMemoryAllocator <void> allocator;
+	return allocator.allocate (size);
 }
 
-BOOL PGTS::scanned_memory_allocator_env::allocate_scanned = should_allocate_scanned ();
+
+void
+BaseTen::ScannedMemoryObject::operator delete (void *ptr)
+{
+	BaseTen::ScannedMemoryAllocator <void> allocator;
+	allocator.deallocate (ptr);
+}

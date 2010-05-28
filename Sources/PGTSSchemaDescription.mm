@@ -29,11 +29,12 @@
 #import "PGTSSchemaDescription.h"
 #import "BXHOM.h"
 #import "PGTSTableDescription.h"
-#import "PGTSCollections.h"
+#import "BXCollections.h"
+#import "BXCollectionFunctions.h"
 #import "BXLogger.h"
 
 
-using namespace PGTS;
+using namespace BaseTen::CollectionFunctions;
 
 
 @implementation PGTSSchemaDescription
@@ -41,7 +42,7 @@ using namespace PGTS;
 {
 	if ((self = [super init]))
 	{
-		mTablesByName = new IdMap ();
+		mTablesByName = new BaseTen::IdMap ();
 		mTableLock = [[NSLock alloc] init];
 	}
 	return self;
@@ -50,23 +51,10 @@ using namespace PGTS;
 
 - (void) dealloc
 {
-	for (IdMap::const_iterator it = mTablesByName->begin (); mTablesByName->end () != it; it++)
-	{
-		[it->first release];
-		[it->second release];
-	}
-	delete mTablesByName;
-	
+	delete mTablesByName;	
 	[mAllTables release];
 	[mTableLock release];
 	[super dealloc];
-}
-
-
-- (void) finalize
-{
-	delete mTablesByName;
-	[super finalize];
 }
 
 
@@ -87,7 +75,7 @@ using namespace PGTS;
 		mAllTables = nil;
 	}
 	[mTableLock unlock];
-	InsertConditionally (mTablesByName, table);
+	InsertConditionally (mTablesByName, [table name], table);
 }
 
 - (NSArray *) allTables
@@ -96,10 +84,10 @@ using namespace PGTS;
 	if (! mAllTables)
 	{
 		NSMutableArray* tables = [NSMutableArray arrayWithCapacity: mTablesByName->size ()];
-		for (IdMap::const_iterator it = mTablesByName->begin (), end = mTablesByName->end ();
+		for (BaseTen::IdMap::const_iterator it = mTablesByName->begin (), end = mTablesByName->end ();
 			 it != end; it++)
 		{
-			[tables addObject: it->second];
+			[tables addObject: *it->second];
 		}
 		mAllTables = [tables copy];
 	}

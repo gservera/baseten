@@ -29,12 +29,15 @@
 #import "PGTSTableDescription.h"
 #import "PGTSColumnDescription.h"
 #import "PGTSIndexDescription.h"
-#import "PGTSCollections.h"
-#import "PGTSScannedMemoryAllocator.h"
+#import "BXCollections.h"
+#import "BXCollectionFunctions.h"
+#import "BXScannedMemoryAllocator.h"
 #import "BXLogger.h"
 #import "NSString+PGTSAdditions.h"
 
 
+using namespace BaseTen;
+using namespace BaseTen::CollectionFunctions;
 using namespace PGTS;
 
 
@@ -52,32 +55,16 @@ using namespace PGTS;
 
 - (void) dealloc
 {
-	for (IndexMap::const_iterator it = mColumnsByIndex->begin (); mColumnsByIndex->end () != it; it++)
-		[it->second release];
-	
-	delete mColumnsByIndex;
-	
 	[mColumnLock release];
 	[mColumnsByName release];
 	
-	for (IdList::const_iterator it = mUniqueIndexes->begin (); mUniqueIndexes->end () != it; it++)
-		[*it release];
-	
+	delete mColumnsByIndex;
 	delete mUniqueIndexes;
 	
 	if (mInheritedOids)
 		delete mInheritedOids;
 	
 	[super dealloc];
-}
-
-- (void) finalize
-{
-	delete mColumnsByIndex;
-	delete mUniqueIndexes;
-	if (mInheritedOids)
-		delete mInheritedOids;
-	[super finalize];
 }
 
 - (NSString *) schemaQualifiedName: (PGTSConnection *) connection
@@ -99,8 +86,8 @@ using namespace PGTS;
 	Expect (mUniqueIndexes);
 	id retval = nil;
 	IdList::const_iterator it = mUniqueIndexes->begin ();
-	if (mUniqueIndexes->end () != it && [*it isPrimaryKey])
-		retval = *it;
+	if (mUniqueIndexes->end () != it && [**it isPrimaryKey])
+		retval = **it;
 	return retval;
 }
 
@@ -139,8 +126,7 @@ using namespace PGTS;
 - (void) addIndex: (PGTSIndexDescription *) anIndex
 {
 	ExpectV (anIndex);
-	
-	mUniqueIndexes->push_back ([anIndex retain]);
+	PushBack (mUniqueIndexes, anIndex);
 }
 
 - (void) addColumn: (PGTSColumnDescription *) column
@@ -156,8 +142,7 @@ using namespace PGTS;
 	[mColumnLock unlock];
 	
 	int idx = [column index];
-	if (! (* mColumnsByIndex) [idx])
-		(* mColumnsByIndex) [idx] = [column retain];
+	InsertConditionally (mColumnsByIndex, idx, column);
 }
 
 - (void) addInheritedOid: (Oid) anOid

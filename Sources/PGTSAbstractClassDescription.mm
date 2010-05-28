@@ -29,11 +29,13 @@
 #import "PGTSAbstractClassDescription.h"
 #import "PGTSACLItem.h"
 #import "PGTSRoleDescription.h"
+#import "BXCollectionFunctions.h"
 #import "BXEnumerate.h"
 #import "BXLogger.h"
 
 
 using namespace PGTS;
+using namespace BaseTen::CollectionFunctions;
 
 
 /** 
@@ -54,19 +56,10 @@ using namespace PGTS;
 
 - (void) dealloc
 {
-	for (OidMap::const_iterator it = mACLItemsByRoleOid->begin (); mACLItemsByRoleOid->end () != it; it++)
-		[it->second release];
-	
 	delete mACLItemsByRoleOid;
-
     [super dealloc];
 }
 
-- (void) finalize
-{
-	delete mACLItemsByRoleOid;	
-    [super finalize];
-}
 
 - (void) setACL: (NSArray *) ACL
 {
@@ -74,12 +67,13 @@ using namespace PGTS;
 		[self addACLItem: currentItem];
 }
 
+
 - (void) addACLItem: (PGTSACLItem *) item
 {
 	ExpectV (item);
 	Oid oid = [[item role] oid];
-	if (! (* mACLItemsByRoleOid) [oid])
-		(* mACLItemsByRoleOid) [oid] = [item retain];
+	if (! ContainsKey (mACLItemsByRoleOid, oid))
+		mACLItemsByRoleOid->insert (std::make_pair (oid, item));
 }
 
 - (char) kind
@@ -101,14 +95,21 @@ using namespace PGTS;
     //The owner has all the privileges.
     BOOL retval = (mOwner == aRole || [mOwner isEqual: aRole]);
     if (! retval)
-        (0 != (aPrivilege & [FindObject (mACLItemsByRoleOid, [aRole oid]) privileges]));
+	{
+		PGTSACLItem *item = FindObject (mACLItemsByRoleOid, [aRole oid]);
+        retval = (0 != (aPrivilege & [item privileges]));
+	}
+	
     if (! retval)
+	{
         retval = (0 != (aPrivilege & [FindObject (mACLItemsByRoleOid, kPGTSPUBLICOid) privileges]));
+	}
+	
     if (! retval)
     {
 		for (OidMap::const_iterator it = mACLItemsByRoleOid->begin (); mACLItemsByRoleOid->end () != it; it++)
 		{
-            if (aPrivilege & [it->second privileges] && [[it->second role] hasMember: aRole])
+            if (aPrivilege & [*it->second privileges] && [[*it->second role] hasMember: aRole])
             {
                 retval = YES;
                 break;

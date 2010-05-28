@@ -29,7 +29,7 @@
 #import <Foundation/Foundation.h>
 #import <BaseTen/libpq-fe.h>
 #import <BaseTen/PGTSAbstractObjectDescription.h>
-#import <BaseTen/PGTSCollections.h>
+#import <BaseTen/BXCollections.h>
 
 
 @class PGTSTableDescription;
@@ -37,7 +37,7 @@
 
 @interface PGTSSchemaDescription : PGTSAbstractObjectDescription 
 {
-	PGTS_IdMap* mTablesByName;
+	BX_IdMap* mTablesByName;
 	NSArray* mAllTables;
 	NSLock* mTableLock;
 }

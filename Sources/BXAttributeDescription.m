@@ -46,18 +46,9 @@
  * \ingroup descriptions
  */
 @implementation BXAttributeDescription
-- (void) finalize
-{
-	if (mRelationshipsUsing)
-		CFRelease (mRelationshipsUsing);
-	[super finalize];
-}
-
 - (void) dealloc
 {
-	if (mRelationshipsUsing)
-		CFRelease (mRelationshipsUsing);
-	
+	[mRelationshipsUsing release];
 	[mDatabaseTypeName release];
 	[super dealloc];
 }

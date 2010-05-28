@@ -30,20 +30,21 @@
 #import "BXDatabaseObjectIDPrivate.h"
 #import "BXLogger.h"
 #import "PGTSAdditions.h"
-#import "PGTSScannedMemoryAllocator.h"
+#import "BXScannedMemoryAllocator.h"
+#import "BXScannedMemoryObject.h"
 #import "PGTSOids.h"
 #import <tr1/unordered_map>
 
 
-struct lock_st 
-{
-	__strong NSMutableArray* l_for_update;
-	__strong NSMutableArray* l_for_delete;
+struct lock_st : public BaseTen::ScannedMemoryObject {
+	__strong NSMutableArray *l_for_update;
+	__strong NSMutableArray *l_for_delete;
 };
+
 typedef std::tr1::unordered_map <long, lock_st, 
 	std::tr1::hash <long>, 
 	std::equal_to <long>, 
-	PGTS::scanned_memory_allocator <std::pair <const long, lock_st> > > 
+	BaseTen::ScannedMemoryAllocator <std::pair <const long, lock_st> > > 
 	LockMap;
 
 
@@ -97,14 +98,14 @@ typedef std::tr1::unordered_map <long, lock_st,
 			[self setLastCheck: [res valueForKey: @"baseten_lock_timestamp"]];
 		
 		//Sort the locks by relation.
-		LockMap* locks = new LockMap ([res count]);
+		LockMap locks ([res count]);
 		while ([res advanceRow])
 		{
 			NSDictionary* row = [res currentRowAsDictionary];
 			unichar lockType = [[row valueForKey: @"baseten_lock_query_type"] characterAtIndex: 0];
 			long relid = [[row valueForKey: @"baseten_lock_relid"] longValue];
 			
-			struct lock_st ls = (* locks) [relid];
+			struct lock_st ls = locks [relid];
 			
 			NSMutableArray* ids = nil;
 			switch (lockType) 
@@ -136,16 +137,14 @@ typedef std::tr1::unordered_map <long, lock_st,
 		}
 		
 		//Send changes.
-		LockMap::const_iterator iterator = locks->begin ();
+		LockMap::const_iterator iterator = locks.begin ();
 		BXDatabaseContext* ctx = [mInterface databaseContext];
-		while (locks->end () != iterator)
+		while (locks.end () != iterator)
 		{
 			lock_st ls = iterator->second;
 			if (ls.l_for_update) [ctx lockedObjectsInDatabase: ls.l_for_update status: kBXObjectLockedStatus];
 			if (ls.l_for_delete) [ctx lockedObjectsInDatabase: ls.l_for_delete status: kBXObjectDeletedStatus];
 		}
-		
-		delete locks;
 	}
 }
 @end

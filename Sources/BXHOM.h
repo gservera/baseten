@@ -66,14 +66,14 @@
 
 
 
-@interface NSSet (BXHOM) <BXHOM>
+@protocol BXSetHOM <BXHOM>
 - (id) BX_SelectFunction: (int (*)(id)) fptr;
 - (id) BX_SelectFunction: (int (*)(id, void*)) fptr argument: (void *) arg;
 @end
 
 
 
-@interface NSArray (BXHOM) <BXHOM>
+@protocol BXArrayHOM <BXHOM>
 - (NSArray *) BX_Reverse;
 - (id) BX_SelectFunction: (int (*)(id)) fptr;
 - (id) BX_SelectFunction: (int (*)(id, void*)) fptr argument: (void *) arg;
@@ -81,7 +81,7 @@
 
 
 
-@interface NSDictionary (BXHOM) <BXHOM>
+@protocol BXDictionaryHOM <BXHOM>
 /**
  * \internal
  * \brief Make a dictionary of objects collected from keys.
@@ -93,4 +93,29 @@
 
 - (id) BX_ValueSelectFunction: (int (*)(id)) fptr;
 - (id) BX_ValueSelectFunction: (int (*)(id, void*)) fptr argument: (void *) arg;
+@end
+
+
+
+@interface NSSet (BXHOM) <BXSetHOM>
+@end
+
+
+
+@interface NSArray (BXHOM) <BXArrayHOM>
+@end
+
+
+
+@interface NSDictionary (BXHOM) <BXDictionaryHOM>
+@end
+
+
+
+@interface NSHashTable (BXHOM) <BXSetHOM>
+@end
+
+
+
+@interface NSMapTable (BXHOM) <BXDictionaryHOM>
 @end

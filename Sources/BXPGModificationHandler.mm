@@ -29,7 +29,7 @@
 #import "BXPGModificationHandler.h"
 #import "BXEntityDescriptionPrivate.h"
 #import "BXDatabaseObjectIDPrivate.h"
-#import "PGTSScannedMemoryAllocator.h"
+#import "BXScannedMemoryAllocator.h"
 #import "BXHOM.h"
 #import "BXEnumerate.h"
 #import <tr1/unordered_map>
@@ -37,8 +37,10 @@
 typedef std::tr1::unordered_map <unichar, NSMutableArray*,
 	std::tr1::hash <unichar>,
 	std::equal_to <unichar>,
-	PGTS::scanned_memory_allocator <std::pair <const unichar, NSMutableArray*> > > 
-	ChangeMap;
+	BaseTen::ScannedMemoryAllocator <std::pair <
+		const unichar, BaseTen::ObjCPtr <NSMutableArray *>
+	> > 
+> ChangeMap;
 
 
 @interface PGTSColumnDescription (BXPGModificationHandlerAdditions)
@@ -116,17 +118,17 @@ typedef std::tr1::unordered_map <unichar, NSMutableArray*,
 		[self setLastCheck: [res valueForKey: @"baseten_modification_timestamp"]];
 	
 	//Sort the changes by type.
-	ChangeMap* changes = new ChangeMap (3);
+	ChangeMap changes = ChangeMap (3);
 	NSMutableArray *changedAttrs = [NSMutableArray arrayWithCapacity: [res count]];
 	[res goBeforeFirstRow];
     while ([res advanceRow])
     {
 		unichar modificationType = [[res valueForKey: @"baseten_modification_type"] characterAtIndex: 0];                            
-		NSMutableArray* objectIDs = (* changes) [modificationType];
+		NSMutableArray *objectIDs = changes [modificationType];
 		if (! objectIDs)
 		{
 			objectIDs = [NSMutableArray arrayWithCapacity: [res count]];
-			(* changes) [modificationType] = objectIDs;
+			changes [modificationType] = objectIDs;
 		}
 		
 		BXDatabaseObjectID* objectID = [BXDatabaseObjectID IDWithEntity: mEntity primaryKeyFields: [res currentRowAsDictionary]];
@@ -148,8 +150,8 @@ typedef std::tr1::unordered_map <unichar, NSMutableArray*,
 	}
 	
 	//Send changes.
-	ChangeMap::const_iterator iterator = changes->begin ();
-    while (changes->end () != iterator)
+	ChangeMap::const_iterator iterator = changes.begin ();
+    while (changes.end () != iterator)
     {
 		unichar type = iterator->first;
 		NSArray* objectIDs = iterator->second;
@@ -171,10 +173,7 @@ typedef std::tr1::unordered_map <unichar, NSMutableArray*,
 				break;
 		}
         iterator++;
-    }
-	
-	//Contents have already been autoreleased.
-	delete changes;
+    }	
 }
 
 - (void) setIdentifier: (NSInteger) identifier

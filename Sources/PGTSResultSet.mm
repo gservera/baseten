@@ -39,22 +39,35 @@
 #import "PGTSTypeDescription.h"
 #import "PGTSFoundationObjects.h"
 #import "PGTSAdditions.h"
-#import "PGTSScannedMemoryAllocator.h"
-#import "PGTSCollections.h"
+#import "BXScannedMemoryAllocator.h"
+#import "BXCollections.h"
+#import "BXCollectionFunctions.h"
 #import "BXLogger.h"
 #import "BXArraySize.h"
 
 
-typedef std::tr1::unordered_map <NSString*, int, 
-	PGTS::ObjectHash, 
-	PGTS::ObjectCompare <NSString *>, 
-	PGTS::scanned_memory_allocator <std::pair <NSString * const, int> > > 
-	FieldIndexMap;
-typedef std::tr1::unordered_map <int, Class, 
+typedef std::tr1::unordered_map <
+	BaseTen::IdPtr, 
+	int,
+	std::tr1::hash <BaseTen::IdPtr>,
+	std::equal_to <BaseTen::IdPtr>,
+	BaseTen::ScannedMemoryAllocator <std::pair <
+		BaseTen::IdPtr const, int
+	> > 
+> FieldIndexMap;
+
+typedef std::tr1::unordered_map <
+	int,
+	Class, 
 	std::tr1::hash <int>, 
 	std::equal_to <int>, 
-	PGTS::scanned_memory_allocator <std::pair <const int, Class> > > 
-	FieldClassMap;
+	BaseTen::ScannedMemoryAllocator <std::pair <
+		const int, Class
+	> > 
+> FieldClassMap;
+
+
+using namespace BaseTen::CollectionFunctions;
 
 
 static NSString*
@@ -180,12 +193,6 @@ ErrorUserInfoKey (char fieldCode)
 {
 	PQclear (mResult);
     delete mFieldClasses;
-    FieldIndexMap::const_iterator iterator = mFieldIndices->begin ();
-    while (mFieldIndices->end () != iterator)
-    {
-		[iterator->first autorelease];
-        iterator++;
-    }
     delete mFieldIndices;
     [mConnection release];
     [super dealloc];
@@ -195,8 +202,6 @@ ErrorUserInfoKey (char fieldCode)
 - (void) finalize
 {
 	PQclear (mResult);
-    delete mFieldClasses;
-    delete mFieldIndices;
     [super finalize];
 }
 
@@ -254,7 +259,7 @@ ErrorUserInfoKey (char fieldCode)
                 break;
             }
 			NSString* stringName = [NSString stringWithUTF8String: fname];
-            (* mFieldIndices) [[stringName retain]] = i;
+			Insert (mFieldIndices, stringName, i);
         }
         mDeterminesFieldClassesFromDB = YES;
     }        
@@ -464,7 +469,7 @@ ErrorUserInfoKey (char fieldCode)
 		FieldIndexMap::const_iterator iterator = mFieldIndices->begin ();
 		while (mFieldIndices->end () != iterator)
 		{
-			NSString* fieldname = iterator->first;
+			NSString* fieldname = *iterator->first;
 			int index = iterator->second;
 			id value = [self valueForFieldAtIndex: index row: rowIndex];
 			if (! value)
@@ -672,7 +677,9 @@ KVCompare (PGTSResultSet* res, void* ctx)
     BOOL retval = NO;
 	@synchronized (self)
 	{
-		retval = [self setClass: aClass forFieldAtIndex: (* mFieldIndices) [aName]];
+		int idx = 0;
+		if (FindElement (mFieldIndices, aName, &idx))
+			retval = [self setClass: aClass forFieldAtIndex: idx];
 	}
 	return retval;
 }
@@ -735,8 +742,8 @@ KVCompare (PGTSResultSet* res, void* ctx)
 	id retval = nil;
 	@synchronized (self)
 	{
-		FieldIndexMap::const_iterator iter = mFieldIndices->find (aName);
-		if (mFieldIndices->end () == iter)
+		int columnIndex = 0;
+		if (! FindElement (mFieldIndices, aName, &columnIndex))
 		{
 			@throw [NSException exceptionWithName: kPGTSFieldNotFoundException reason: nil 
 										 userInfo: [NSDictionary dictionaryWithObjectsAndKeys:
@@ -744,7 +751,6 @@ KVCompare (PGTSResultSet* res, void* ctx)
 													self,  kPGTSResultSetKey,
 													nil]];
 		}
-		int columnIndex = iter->second;
 		retval = [self valueForFieldAtIndex: columnIndex row: rowIndex];
 	}
     return retval;

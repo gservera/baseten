@@ -1,11 +1,11 @@
 //
-// BXPGDatabaseDescription.h
+// BXScannedMemoryObject.h
 // BaseTen
 //
-// Copyright (C) 2006-2009 Marko Karppinen & Co. LLC.
+// Copyright (C) 2010 Marko Karppinen & Co. LLC.
 //
 // Before using this software, please review the available licensing options
-// by visiting http://basetenframework.org/licensing/ or by contacting
+// by visiting http://www.karppinen.fi/baseten/licensing/ or by contacting
 // us at sales@karppinen.fi. Without an additional license, this software
 // may be distributed only in compliance with the GNU General Public License.
 //
@@ -26,28 +26,15 @@
 // $Id$
 //
 
-#import <Foundation/Foundation.h>
-#import <BaseTen/PGTSDatabaseDescription.h>
-#import <BaseTen/BXCollections.h>
+
+#import <BaseTen/BXScannedMemoryAllocator.h>
 
 
-@class BXPGForeignKeyDescription;
-
-
-@interface BXPGDatabaseDescription : PGTSDatabaseDescription
-{
-	NSNumber* mSchemaVersion;
-	NSNumber* mSchemaCompatibilityVersion;
-	BOOL mHasBaseTenSchema;
-	BX_IndexMap* mForeignKeysByIdentifier;
+namespace BaseTen {
+	
+	class ScannedMemoryObject {
+	public:
+		void *operator new (size_t);
+		void  operator delete (void *);
+	};
 }
-- (BOOL) hasBaseTenSchema;
-- (NSNumber *) schemaVersion;
-- (NSNumber *) schemaCompatibilityVersion;
-- (BXPGForeignKeyDescription *) foreignKeyWithIdentifier: (NSInteger) identifier;
-
-- (void) setSchemaVersion: (NSNumber *) number;
-- (void) setSchemaCompatibilityVersion: (NSNumber *) number;
-- (void) setHasBaseTenSchema: (BOOL) aBool;
-- (void) addForeignKey: (BXPGForeignKeyDescription *) fkey;
-@end

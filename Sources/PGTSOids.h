@@ -39,7 +39,7 @@ BX_INTERNAL id PGTSOidAsObject (Oid o);
 
 #if defined (__cplusplus)
 #import <tr1/unordered_map>
-#import <BaseTen/PGTSScannedMemoryAllocator.h>
+#import <BaseTen/BXScannedMemoryAllocator.h>
 
 namespace PGTS 
 {
@@ -49,11 +49,15 @@ namespace PGTS
 	typedef std::tr1::unordered_set <Oid>
 		OidSet;
 	
-	typedef std::tr1::unordered_map <Oid, id, 
+	typedef std::tr1::unordered_map <
+		Oid,
+		BaseTen::IdPtr,
 		std::tr1::hash <Oid>, 
 		std::equal_to <Oid>, 
-		PGTS::scanned_memory_allocator <std::pair <const Oid, id> > > 
-		OidMap;
+		BaseTen::ScannedMemoryAllocator <std::pair <
+			const Oid, BaseTen::IdPtr
+		> >
+	> OidMap;
 }
 
 #define PGTS_OidList PGTS::OidList
@@ -63,5 +67,5 @@ namespace PGTS
 #else
 #define PGTS_OidList void
 #define PGTS_OidSet  void
-#define PGTS_OidMap  void
+#define PGTS_OidMap  __strong void
 #endif

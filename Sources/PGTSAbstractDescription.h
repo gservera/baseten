@@ -46,24 +46,21 @@
 
 
 #if defined (__cplusplus)
-#import <BaseTen/PGTSCollections.h>
+#import <BaseTen/BXCollections.h>
 #import <BaseTen/PGTSOids.h>
 namespace PGTS 
 {
-	//FIXME: this isn't very good but apparently partial function template specialization isn't easy.
-	template <typename T> NSMutableDictionary*
-	CreateCFMutableDictionaryWithNames (T *map)
+	template <typename T> 
+	NSMutableDictionary *CreateCFMutableDictionaryWithNames (T *map)
 	{
 		NSMutableDictionary* retval = [[NSMutableDictionary alloc] initWithCapacity: map->size ()];
 		for (typename T::const_iterator it = map->begin (), end = map->end (); end != it; it++)
 		{
-			id currentObject = it->second;
+			typename T::mapped_type::element_type currentObject = *it->second;
 			[retval setObject: currentObject forKey: [currentObject name]];
 		}
 		
 		return retval;				
 	}
-	
-	void InsertConditionally (IdMap* map, PGTSAbstractDescription* description);
 }
 #endif

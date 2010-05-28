@@ -30,7 +30,7 @@
 #import <BaseTen/libpq-fe.h>
 #import <BaseTen/PGTSAbstractDescription.h>
 #import <BaseTen/PGTSOids.h>
-#import <BaseTen/PGTSCollections.h>
+#import <BaseTen/BXCollections.h>
 
 @class PGTSSchemaDescription;
 @class PGTSTableDescription;

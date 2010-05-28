@@ -28,7 +28,7 @@
 
 #import <Foundation/Foundation.h>
 #import <BaseTen/PGTSAbstractClassDescription.h>
-#import <BaseTen/PGTSCollections.h>
+#import <BaseTen/BXCollections.h>
 
 
 @class PGTSColumnDescription;
@@ -41,8 +41,8 @@
 
 @interface PGTSTableDescription : PGTSAbstractClassDescription
 {
-	PGTS_IndexMap* mColumnsByIndex;
-	PGTS_IdList* mUniqueIndexes;
+	BX_IndexMap* mColumnsByIndex;
+	BX_IdList* mUniqueIndexes;
 	PGTS_OidList* mInheritedOids;
 
 	NSDictionary* mColumnsByName;

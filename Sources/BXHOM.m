@@ -268,6 +268,98 @@ Visit (NSInvocation* invocation, NSEnumerator* enumerator)
 
 
 
+@implementation NSHashTable (BXHOM)
+- (void) _BX_Collect: (NSInvocation *) invocation userInfo: (Class) retclass
+{
+	id retval = [[[retclass alloc] initWithCapacity: [self count]] autorelease];
+	CollectAndPerform (self, retval, invocation, [self objectEnumerator]);
+}
+
+
+- (void) _BX_CollectD: (NSInvocation *) invocation userInfo: (id) ignored
+{
+	id retval = [[[NSMutableDictionary alloc] initWithCapacity: [self count]] autorelease];
+	CollectAndPerformD (self, retval, invocation, [self objectEnumerator]);
+}
+
+
+- (void) _BX_CollectDK: (NSInvocation *) invocation userInfo: (id) ignored
+{
+	id retval = [[[NSMutableDictionary alloc] initWithCapacity: [self count]] autorelease];
+	CollectAndPerformDK (self, retval, invocation, [self objectEnumerator]);
+}
+
+
+- (void) _BX_Do: (NSInvocation *) invocation userInfo: (id) anObject
+{
+	Do (invocation, [self objectEnumerator]);
+}
+
+
+- (void) _BX_Visit: (NSInvocation *) invocation userInfo: (id) userInfo
+{
+	Visit (invocation, [self objectEnumerator]);
+}
+
+
+- (id) BX_Any
+{
+	return [self anyObject];
+}
+
+
+- (id) BX_Collect
+{
+	return [self BX_CollectReturning: [NSMutableSet class]];
+}
+
+
+- (id) BX_CollectReturning: (Class) aClass
+{
+	return HOMTrampoline (self, @selector (_BX_Collect:userInfo:), aClass);
+}
+
+
+- (id) BX_CollectD
+{
+	return HOMTrampoline (self, @selector (_BX_CollectD:userInfo:), nil);
+}
+
+
+- (id) BX_CollectDK
+{
+	return HOMTrampoline (self, @selector (_BX_CollectDK:userInfo:), nil);
+}
+
+
+- (id) BX_SelectFunction: (int (*)(id)) fptr
+{
+	id retval = [NSMutableSet setWithCapacity: [self count]];
+	return SelectFunction (self, retval, fptr);
+}
+
+
+- (id) BX_SelectFunction: (int (*)(id, void*)) fptr argument: (void *) arg
+{
+	id retval = [NSMutableSet setWithCapacity: [self count]];
+	return SelectFunction2 (self, retval, fptr, arg);
+}
+
+
+- (id) BX_Do
+{
+	return HOMTrampoline (self, @selector (_BX_Do:userInfo:), nil);
+}
+
+
+- (id) BX_Visit: (id) visitor
+{
+	return VisitorTrampoline (self, visitor, @selector (_BX_Visit:userInfo:), nil);
+}
+@end
+
+
+
 @implementation NSArray (BXHOM)
 - (void) _BX_Collect: (NSInvocation *) invocation userInfo: (Class) retclass
 {
@@ -367,6 +459,121 @@ Visit (NSInvocation* invocation, NSEnumerator* enumerator)
 
 
 @implementation NSDictionary (BXHOM)
+- (void) _BX_Collect: (NSInvocation *) invocation userInfo: (Class) retclass
+{
+	id retval = [[[retclass alloc] initWithCapacity: [self count]] autorelease];
+	CollectAndPerform (self, retval, invocation, [self objectEnumerator]);
+}
+
+
+- (void) _BX_CollectD: (NSInvocation *) invocation userInfo: (id) ignored
+{
+	id retval = [[[NSMutableDictionary alloc] initWithCapacity: [self count]] autorelease];
+	CollectAndPerformD (self, retval, invocation, [self objectEnumerator]);
+}
+
+
+- (void) _BX_CollectDK: (NSInvocation *) invocation userInfo: (id) ignored
+{
+	id retval = [[[NSMutableDictionary alloc] initWithCapacity: [self count]] autorelease];
+	CollectAndPerformDK (self, retval, invocation, [self objectEnumerator]);
+}
+
+
+- (void) _BX_KeyCollectD: (NSInvocation *) invocation userInfo: (id) ignored
+{
+	id retval = [[[NSMutableDictionary alloc] initWithCapacity: [self count]] autorelease];
+	BXEnumerate (currentKey, e, [self keyEnumerator])
+	{
+		id value = [self objectForKey: currentKey];
+		id newKey = nil;
+		[invocation invokeWithTarget: currentKey];
+		[invocation getReturnValue: &newKey];
+		if (newKey)
+			[retval setObject: value forKey: newKey];
+	}
+	retval = [[retval copy] autorelease];
+	[invocation setReturnValue: &retval];
+}
+
+
+- (void) _BX_Do: (NSInvocation *) invocation userInfo: (id) userInfo
+{
+	Do (invocation, [self objectEnumerator]);
+}
+
+
+- (void) _BX_Visit: (NSInvocation *) invocation userInfo: (id) userInfo
+{
+	Visit (invocation, [self objectEnumerator]);
+}
+
+
+- (id) BX_Any
+{
+	return [[self objectEnumerator] nextObject];
+}
+
+
+- (id) BX_Collect
+{
+	return [self BX_CollectReturning: [NSMutableArray class]];
+}
+
+
+- (id) BX_CollectReturning: (Class) aClass
+{
+	return HOMTrampoline (self, @selector (_BX_Collect:userInfo:), aClass);
+}
+
+
+- (id) BX_CollectD
+{
+	return HOMTrampoline (self, @selector (_BX_CollectD:userInfo:), nil);
+}
+
+
+- (id) BX_CollectDK
+{
+	return HOMTrampoline (self, @selector (_BX_CollectDK:userInfo:), nil);
+}
+
+
+- (id) BX_KeyCollectD
+{
+	return KeyTrampoline (self, @selector (_BX_KeyCollectD:userInfo:), nil);
+}
+
+
+- (id) BX_Do
+{
+	return HOMTrampoline (self, @selector (_BX_Do:userInfo:), nil);
+}
+
+
+- (id) BX_Visit: (id) visitor
+{
+	return VisitorTrampoline (self, visitor, @selector (_BX_Visit:userInfo:), nil);
+}
+
+
+- (id) BX_ValueSelectFunction: (int (*)(id)) fptr
+{
+	id retval = [NSMutableArray arrayWithCapacity: [self count]];
+	return SelectFunction (self, retval, fptr);
+}
+
+
+- (id) BX_ValueSelectFunction: (int (*)(id, void*)) fptr argument: (void *) arg
+{
+	id retval = [NSMutableArray arrayWithCapacity: [self count]];
+	return SelectFunction2 (self, retval, fptr, arg);
+}
+@end
+
+
+
+@implementation NSMapTable (BXHOM)
 - (void) _BX_Collect: (NSInvocation *) invocation userInfo: (Class) retclass
 {
 	id retval = [[[retclass alloc] initWithCapacity: [self count]] autorelease];

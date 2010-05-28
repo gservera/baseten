@@ -1,11 +1,11 @@
 //
-// BXPGDatabaseDescription.h
+// BXObjCPair.h
 // BaseTen
 //
-// Copyright (C) 2006-2009 Marko Karppinen & Co. LLC.
+// Copyright (C) 2008-2010 Marko Karppinen & Co. LLC.
 //
 // Before using this software, please review the available licensing options
-// by visiting http://basetenframework.org/licensing/ or by contacting
+// by visiting http://www.karppinen.fi/baseten/licensing/ or by contacting
 // us at sales@karppinen.fi. Without an additional license, this software
 // may be distributed only in compliance with the GNU General Public License.
 //
@@ -27,27 +27,46 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <BaseTen/PGTSDatabaseDescription.h>
-#import <BaseTen/BXCollections.h>
 
 
-@class BXPGForeignKeyDescription;
+#if defined(__cplusplus)
+#import <BaseTen/BXObjCPtr.h>
 
-
-@interface BXPGDatabaseDescription : PGTSDatabaseDescription
+namespace BaseTen
 {
-	NSNumber* mSchemaVersion;
-	NSNumber* mSchemaCompatibilityVersion;
-	BOOL mHasBaseTenSchema;
-	BX_IndexMap* mForeignKeysByIdentifier;
+	template <typename T, typename U>
+	struct ObjCPair
+	{
+		ObjCPtr <T> first;
+		ObjCPtr <U> second;
+		
+		explicit ObjCPair (T a, U b):
+			first (a), second (b) {}
+		
+		ObjCPair (const ObjCPair& p):
+			first (* p.first), second (* p.second) {}
+		
+		bool operator== (const ObjCPair <T, U> &other) const
+		{
+			return (first == other.first && second == other.second);
+		}		
+	};	
 }
-- (BOOL) hasBaseTenSchema;
-- (NSNumber *) schemaVersion;
-- (NSNumber *) schemaCompatibilityVersion;
-- (BXPGForeignKeyDescription *) foreignKeyWithIdentifier: (NSInteger) identifier;
 
-- (void) setSchemaVersion: (NSNumber *) number;
-- (void) setSchemaCompatibilityVersion: (NSNumber *) number;
-- (void) setHasBaseTenSchema: (BOOL) aBool;
-- (void) addForeignKey: (BXPGForeignKeyDescription *) fkey;
-@end
+
+namespace std {
+	
+	namespace tr1 {
+		
+		template <typename T, typename U>
+		struct hash <BaseTen::ObjCPair <T, U> > {
+			
+			std::size_t
+			operator() (BaseTen::ObjCPair <T, U> const &val) const
+			{
+				return (val.first.hash () ^ val.second.hash ());
+			}
+		};
+	}
+}
+#endif

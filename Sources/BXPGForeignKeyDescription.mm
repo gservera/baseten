@@ -29,10 +29,13 @@
 
 #import "BXPGForeignKeyDescription.h"
 #import "BXLogger.h"
+#import "BXCollections.h"
+#import "BXCollectionFunctions.h"
 #import <iterator>
 
 
-using namespace PGTS;
+using namespace BaseTen;
+using namespace BaseTen::CollectionFunctions;
 
 
 @implementation BXPGForeignKeyDescription
@@ -40,7 +43,7 @@ using namespace PGTS;
 {
 	if ((self = [super init]))
 	{
-		mFieldNames = new RetainingIdPairSet ();
+		mFieldNames = new IdPairSet ();
 		Expect (0 == pthread_rwlock_init (&mFieldNameLock, NULL));
 	}
 	return self;
@@ -55,7 +58,6 @@ using namespace PGTS;
 
 - (void) finalize
 {
-	delete mFieldNames;
 	pthread_rwlock_destroy (&mFieldNameLock);
 	[super finalize];
 }
@@ -63,7 +65,7 @@ using namespace PGTS;
 - (void) addSrcFieldName: (NSString *) srcFName dstFieldName: (NSString *) dstFName
 {
 	pthread_rwlock_wrlock (&mFieldNameLock);
-	mFieldNames->insert (RetainingIdPair (srcFName, dstFName));
+	mFieldNames->insert (IdPair (srcFName, dstFName));
 	pthread_rwlock_unlock (&mFieldNameLock);
 }
 
@@ -90,10 +92,10 @@ using namespace PGTS;
 - (void) iterateColumnNames: (void (*)(NSString* srcName, NSString* dstName, void* context)) callback context: (void *) context
 {
 	pthread_rwlock_rdlock (&mFieldNameLock);
-	for (RetainingIdPairSet::const_iterator it = mFieldNames->begin (), end = mFieldNames->end ();
+	for (IdPairSet::const_iterator it = mFieldNames->begin (), end = mFieldNames->end ();
 		 it != end; it++)
 	{
-		callback (it->first, it->second, context);
+		callback (*it->first, *it->second, context);
 	}
 	pthread_rwlock_unlock (&mFieldNameLock);
 }
@@ -101,10 +103,10 @@ using namespace PGTS;
 - (void) iterateReversedColumnNames: (void (*)(NSString* dstName, NSString* srcName, void* context)) callback context: (void *) context
 {
 	pthread_rwlock_rdlock (&mFieldNameLock);
-	for (RetainingIdPairSet::const_iterator it = mFieldNames->begin (), end = mFieldNames->end ();
+	for (IdPairSet::const_iterator it = mFieldNames->begin (), end = mFieldNames->end ();
 		 it != end; it++)
 	{
-		callback (it->second, it->first, context);
+		callback (*it->second, *it->first, context);
 	}
 	pthread_rwlock_unlock (&mFieldNameLock);
 }

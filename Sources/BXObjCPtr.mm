@@ -1,8 +1,8 @@
 //
-// BXPGDatabaseDescription.h
+// BXObjCPtr.mm
 // BaseTen
 //
-// Copyright (C) 2006-2009 Marko Karppinen & Co. LLC.
+// Copyright (C) 2010 Marko Karppinen & Co. LLC.
 //
 // Before using this software, please review the available licensing options
 // by visiting http://basetenframework.org/licensing/ or by contacting
@@ -26,28 +26,26 @@
 // $Id$
 //
 
-#import <Foundation/Foundation.h>
-#import <BaseTen/PGTSDatabaseDescription.h>
-#import <BaseTen/BXCollections.h>
+#import "BXObjCPtr.h"
+#import "BXScannedMemoryAllocator.h"
+#import <objc/objc-auto.h>
 
 
-@class BXPGForeignKeyDescription;
-
-
-@interface BXPGDatabaseDescription : PGTSDatabaseDescription
+void
+BaseTen::ObjCPtrBase::assign (id ptr)
 {
-	NSNumber* mSchemaVersion;
-	NSNumber* mSchemaCompatibilityVersion;
-	BOOL mHasBaseTenSchema;
-	BX_IndexMap* mForeignKeysByIdentifier;
+	if (BaseTen::ScannedMemoryAllocatorBase::collection_enabled)
+	{
+		// To make sure we manually set the write barrier.
+		objc_assign_strongCast (ptr, &mPtr);
+	}
+	else
+	{
+		// Use RR instead.
+		if (mPtr != ptr)
+		{
+			[mPtr release];
+			mPtr = [ptr retain];
+		}
+	}
 }
-- (BOOL) hasBaseTenSchema;
-- (NSNumber *) schemaVersion;
-- (NSNumber *) schemaCompatibilityVersion;
-- (BXPGForeignKeyDescription *) foreignKeyWithIdentifier: (NSInteger) identifier;
-
-- (void) setSchemaVersion: (NSNumber *) number;
-- (void) setSchemaCompatibilityVersion: (NSNumber *) number;
-- (void) setHasBaseTenSchema: (BOOL) aBool;
-- (void) addForeignKey: (BXPGForeignKeyDescription *) fkey;
-@end

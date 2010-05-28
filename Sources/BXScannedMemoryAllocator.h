@@ -1,8 +1,8 @@
 //
-// PGTSScannedMemoryAllocator.h
+// BXScannedMemoryAllocator.h
 // BaseTen
 //
-// Copyright (C) 2008 Marko Karppinen & Co. LLC.
+// Copyright (C) 2008-2010 Marko Karppinen & Co. LLC.
 //
 // Before using this software, please review the available licensing options
 // by visiting http://www.karppinen.fi/baseten/licensing/ or by contacting
@@ -27,25 +27,23 @@
 //
 
 
-#ifndef PGTS_SCANNED_MEMORY_ALLOCATOR_H
-#define PGTS_SCANNED_MEMORY_ALLOCATOR_H
-
 #import <Foundation/Foundation.h>
 #import <objc/objc-auto.h>
 #import <new>
 #import <limits>
 
 
-namespace PGTS 
-{		
-	class scanned_memory_allocator_env {
+namespace BaseTen {
+	class ScannedMemoryAllocatorBase {
 	public:
-		static BOOL allocate_scanned;
-	};			
+		static BOOL collection_enabled;
+		static void *allocate (size_t);
+		static void deallocate (void *);
+	};	
 	
 	
 	template <typename T> 
-	class scanned_memory_allocator {
+	class ScannedMemoryAllocator : private ScannedMemoryAllocatorBase {
 		
 	public:		
 		typedef T                 value_type;
@@ -56,37 +54,25 @@ namespace PGTS
 		typedef std::size_t       size_type;
 		typedef std::ptrdiff_t    difference_type;
 		
-		template <typename U> struct rebind { typedef scanned_memory_allocator <U> other; };
+		template <typename U> struct rebind { typedef ScannedMemoryAllocator <U> other; };
 		
-		explicit scanned_memory_allocator () {}
-		scanned_memory_allocator (const scanned_memory_allocator&) {}
-		template <typename U> scanned_memory_allocator (const scanned_memory_allocator <U> &) {}
-		~scanned_memory_allocator () {}
+		explicit ScannedMemoryAllocator () {}
+		ScannedMemoryAllocator (const ScannedMemoryAllocator&) {}
+		
+		template <typename U> ScannedMemoryAllocator (const ScannedMemoryAllocator <U> &) {}
+		~ScannedMemoryAllocator () {}
 		
 		pointer address (reference x) const { return &x; }
 		const_pointer address (const_reference x) const { return x; }
 		
 		pointer allocate (size_type n, const_pointer = 0) 
 		{
-			void* p = NULL;
-			
-#if defined (OBJC_NO_GC)
-			p = malloc (n * sizeof (T));
-#else
-			if (scanned_memory_allocator_env::allocate_scanned)
-				p = NSAllocateCollectable (n * sizeof (T), NSScannedOption | NSCollectorDisabledOption);
-			else
-				p = malloc (n * sizeof (T));
-#endif
-			
-			if (! p)
-				throw std::bad_alloc ();
-			return static_cast <pointer> (p);
+			return static_cast <pointer> (ScannedMemoryAllocatorBase::allocate (n * sizeof (T)));
 		}
 		
 		void deallocate (pointer p, size_type n) 
 		{
-			free (p);
+			ScannedMemoryAllocatorBase::deallocate (p);
 		}
 		
 		size_type max_size () const 
@@ -105,33 +91,44 @@ namespace PGTS
 		}
 		
 	private:
-		void operator= (const scanned_memory_allocator&);
+		void operator= (const ScannedMemoryAllocator&);
 	};
 	
 	
-	template <> class scanned_memory_allocator <void>
+	template <> class ScannedMemoryAllocator <void>
 	{
-		typedef void        value_type;
-		typedef void*       pointer;
-		typedef const void* const_pointer;
+	public:
+		typedef void			value_type;
+		typedef void*			pointer;
+		typedef const void*		const_pointer;
+		typedef std::size_t		size_type;
+		typedef std::ptrdiff_t	difference_type;
 		
 		template <typename U> 
-		struct rebind { typedef scanned_memory_allocator <U> other; };
+		struct rebind { typedef ScannedMemoryAllocator <U> other; };
+		
+		void *allocate (size_type n, const_pointer = 0)
+		{
+			return ScannedMemoryAllocatorBase::allocate (n);
+		}
+		
+		void deallocate (pointer p, size_type = 0)
+		{
+			ScannedMemoryAllocatorBase::deallocate (p);
+		}		
 	};
 	
 	
 	template <typename T> inline bool 
-	operator== (const scanned_memory_allocator <T> &, const scanned_memory_allocator <T> &)
+	operator== (const ScannedMemoryAllocator <T> &, const ScannedMemoryAllocator <T> &)
 	{
 		return true;
 	}
 	
 	
 	template <typename T> inline bool 
-	operator!= (const scanned_memory_allocator <T> &, const scanned_memory_allocator <T> &) 
+	operator!= (const ScannedMemoryAllocator <T> &, const ScannedMemoryAllocator <T> &) 
 	{
 		return false;
 	}
-}	
-	
-#endif //PGTS_SCANNED_MEMORY_ALLOCATOR_H
+}
