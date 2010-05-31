@@ -29,15 +29,14 @@
 #import <Foundation/Foundation.h>
 #import <BaseTen/PGTSAbstractDescription.h>
 #import <BaseTen/PGTSAbstractObjectDescription.h>
-#import <BaseTen/PGTSOids.h>
 
 
 @interface PGTSRoleDescription : PGTSAbstractObjectDescription
 {
-	PGTS_OidMap* mMembersByOid;
+	NSDictionary *mMembersByOid;
 }
 - (BOOL) hasMember: (PGTSRoleDescription *) role;
 
 //Thread un-safe methods.
-- (void) addMember: (PGTSRoleDescription *) role;
+- (void) setMembers: (NSArray *) roles;
 @end

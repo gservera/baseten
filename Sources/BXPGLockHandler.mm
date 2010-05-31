@@ -30,22 +30,59 @@
 #import "BXDatabaseObjectIDPrivate.h"
 #import "BXLogger.h"
 #import "PGTSAdditions.h"
-#import "BXScannedMemoryAllocator.h"
-#import "BXScannedMemoryObject.h"
-#import "PGTSOids.h"
-#import <tr1/unordered_map>
 
 
-struct lock_st : public BaseTen::ScannedMemoryObject {
-	__strong NSMutableArray *l_for_update;
-	__strong NSMutableArray *l_for_delete;
-};
 
-typedef std::tr1::unordered_map <long, lock_st, 
-	std::tr1::hash <long>, 
-	std::equal_to <long>, 
-	BaseTen::ScannedMemoryAllocator <std::pair <const long, lock_st> > > 
-	LockMap;
+@interface BXPGLockHandlerList : NSObject
+{
+	NSMutableArray *mForUpdate;
+	NSMutableArray *mForDelete;
+}
+- (void) addForUpdate: (BXDatabaseObjectID *) objectID;
+- (void) addForDelete: (BXDatabaseObjectID *) objectID;
+@end
+
+
+
+@implementation BXPGLockHandlerList
+- (void) dealloc
+{
+	[mForUpdate release];
+	[mForDelete release];
+	[super dealloc];
+}
+
+
+- (void) addForUpdate: (BXDatabaseObjectID *) objectID
+{
+	if (! mForUpdate)
+		mForUpdate = [[NSMutableArray alloc] init];
+	
+	[mForUpdate addObject: objectID];
+}
+
+
+- (void) addForDelete: (BXDatabaseObjectID *) objectID
+{
+	if (! mForDelete)
+		mForDelete = [[NSMutableArray alloc] init];
+
+	[mForDelete addObject: objectID];
+}
+
+
+- (NSArray *) forUpdate
+{
+	return [[mForUpdate copy] autorelease];
+}
+
+
+- (NSArray *) forDelete
+{
+	return [[mForDelete copy] autorelease];
+}
+@end
+
 
 
 @implementation BXPGLockHandler
@@ -98,52 +135,46 @@ typedef std::tr1::unordered_map <long, lock_st,
 			[self setLastCheck: [res valueForKey: @"baseten_lock_timestamp"]];
 		
 		//Sort the locks by relation.
-		LockMap locks ([res count]);
+		NSMutableDictionary *locksByRelation = [NSMutableDictionary dictionary];
 		while ([res advanceRow])
 		{
 			NSDictionary* row = [res currentRowAsDictionary];
 			unichar lockType = [[row valueForKey: @"baseten_lock_query_type"] characterAtIndex: 0];
-			long relid = [[row valueForKey: @"baseten_lock_relid"] longValue];
+			NSNumber *relid = [row valueForKey: @"baseten_lock_relid"];
 			
-			struct lock_st ls = locks [relid];
-			
-			NSMutableArray* ids = nil;
+			BXPGLockHandlerList *list = [locksByRelation objectForKey: relid];
+			if (! list)
+			{
+				list = [[BXPGLockHandlerList alloc] init];
+				[locksByRelation setObject: list forKey: relid];
+				[list release];
+			}
+						
+			BXDatabaseObjectID* objectID = [BXDatabaseObjectID IDWithEntity: mEntity primaryKeyFields: row];
 			switch (lockType) 
 			{
 				case 'U':
-					ids = ls.l_for_update;
+					[list addForUpdate: objectID];
 					break;
+					
 				case 'D':
-					ids = ls.l_for_delete;
+					[list addForDelete: objectID];
 					break;
 			}
-			
-			if (! ids)
-			{
-				ids = [NSMutableArray arrayWithCapacity: [res count]];
-				switch (lockType) 
-				{
-					case 'U':
-						ls.l_for_update = ids;
-						break;
-					case 'D':
-						ls.l_for_delete = ids;
-						break;
-				}
-			}
-			
-			BXDatabaseObjectID* objectID = [BXDatabaseObjectID IDWithEntity: mEntity primaryKeyFields: row];
-			[ids addObject: objectID];
 		}
 		
 		//Send changes.
-		LockMap::const_iterator iterator = locks.begin ();
 		BXDatabaseContext* ctx = [mInterface databaseContext];
-		while (locks.end () != iterator)
+		for (BXPGLockHandlerList *list in locksByRelation)
 		{
-			lock_st ls = iterator->second;
-			if (ls.l_for_update) [ctx lockedObjectsInDatabase: ls.l_for_update status: kBXObjectLockedStatus];
-			if (ls.l_for_delete) [ctx lockedObjectsInDatabase: ls.l_for_delete status: kBXObjectDeletedStatus];
+			NSArray *forUpdate = [list forUpdate];
+			NSArray *forDelete = [list forDelete];
+			
+			if ([forUpdate count])
+				[ctx lockedObjectsInDatabase: forUpdate status: kBXObjectLockedStatus];
+			
+			if ([forDelete count])
+				[ctx lockedObjectsInDatabase: forDelete status: kBXObjectDeletedStatus];
 		}
 	}
 }

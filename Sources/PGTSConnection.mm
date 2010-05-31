@@ -499,22 +499,19 @@ NoticeReceiver (void *connectionPtr, PGresult const *notice)
 
 - (void) _setSocketDescriptor: (BXSocketDescriptor *) desc
 {
-	BXSocketDescriptor *oldDescriptor = nil;
+	BXSocketDescriptor *oldDesc = nil;
 	@synchronized (self)
 	{
-		if (desc != mSocketDescriptor)
-		{
-			oldDescriptor = mSocketDescriptor;
-			
-			mSocketDescriptor = [desc retain];
-			[mSocketDescriptor setDelegate: self];
-			[mSocketDescriptor install];
-		}
+		oldDesc = mSocketDescriptor;
+		
+		mSocketDescriptor = [desc retain];
+		[mSocketDescriptor setDelegate: self];
+		[mSocketDescriptor install];
 	}
 	
-	[oldDescriptor invalidate];
-	[oldDescriptor setDelegate: nil];
-	[oldDescriptor release];
+	[oldDesc invalidate];
+	[oldDesc setDelegate: nil];
+	[oldDesc release];
 }
 
 
@@ -554,23 +551,24 @@ NoticeReceiver (void *connectionPtr, PGresult const *notice)
 }
 
 
-- (int) _sendNextQuery
+- (void) _sendNextQuery
 {
-	int retval = -1;
-	ExpectR ([mSocketDescriptor isLocked], retval);
+	ExpectV ([mSocketDescriptor isLocked]);
 
 	@synchronized (self)
 	{
-		PGTSQueryDescription* desc = [mQueue objectAtIndex: 0];
-		if (nil != desc)
+		if ([mQueue count])
 		{
-			BXAssertValueReturn (! [desc sent], retval, @"Expected %@ not to have been sent.", desc);	
-			retval = [desc sendForConnection: self];
-			
-			[self _checkConnectionStatus];
+			PGTSQueryDescription* desc = [mQueue objectAtIndex: 0];
+			if (nil != desc)
+			{
+				BXAssertVoidReturn (! [desc sent], @"Expected %@ not to have been sent.", desc);	
+				
+				[desc sendForConnection: self];
+				[self _checkConnectionStatus];
+			}
 		}
 	}
-    return retval;
 }
 
 
@@ -710,11 +708,11 @@ NoticeReceiver (void *connectionPtr, PGresult const *notice)
 
 
 @implementation PGTSConnection (BXSocketDescriptorDelegate)
-- (void) socketReadyForReading: (int) fd estimatedSize: (unsigned long) size
+- (void) socketDescriptor: (BXSocketDescriptor *) desc readyForReading: (int) fd estimatedSize: (unsigned long) size
 {
 	@synchronized (self)
 	{
-		ExpectV ([mSocketDescriptor isLocked]);
+		ExpectV ([desc isLocked]);
 
 		//When the socket is ready for read, send any available notifications and read results until 
 		//the socket blocks. If all results for the current query have been read, send the next query.
@@ -752,7 +750,7 @@ NoticeReceiver (void *connectionPtr, PGresult const *notice)
 }
 
 
-- (void) socketLocked: (int) fd userInfo: (id) userInfo
+- (void) socketDescriptor: (BXSocketDescriptor *) desc lockedSocket: (int) fd userInfo: (id) userInfo
 {
 	ExpectV ([userInfo isKindOfClass: [NSInvocation class]]);
 	[userInfo invoke];

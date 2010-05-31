@@ -30,7 +30,6 @@
 #import <BaseTen/libpq-fe.h>
 #import <BaseTen/PGTSSchemaObjectDescription.h>
 #import <BaseTen/PGTSConstants.h>
-#import <BaseTen/PGTSOids.h>
 
 
 @class PGTSRoleDescription;
@@ -39,7 +38,7 @@
 
 @interface PGTSAbstractClassDescription : PGTSSchemaObjectDescription
 {
-    PGTS_OidMap* mACLItemsByRoleOid;
+    NSDictionary *mACLItemsByRoleOid;
     char mRelkind;
 }
 //- (NSString *) qualifiedName;
@@ -51,5 +50,4 @@
 //Thread un-safe methods.
 - (void) setKind: (char) relkind;
 - (void) setACL: (NSArray *) ACL;
-- (void) addACLItem: (PGTSACLItem *) ACLItem;
 @end

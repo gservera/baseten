@@ -95,7 +95,7 @@
 {
 	[userInfo retain];
 	dispatch_async (mQueue, ^{
-		[mDelegate socketLocked: mSocket userInfo: userInfo];
+		[[self delegate] socketDescriptor: self lockedSocket: mSocket userInfo: userInfo];
 		[userInfo release];
 	});
 }
@@ -104,11 +104,11 @@
 - (void) lockAndWait: (id) userInfo
 {
 	if ([self isLocked])
-		[mDelegate socketLocked: mSocket userInfo: userInfo];
+		[[self delegate] socketDescriptor: self lockedSocket: mSocket userInfo: userInfo];
 	else
 	{
 		dispatch_sync (mQueue, ^{
-			[mDelegate socketLocked: mSocket userInfo: userInfo];
+			[[self delegate] socketDescriptor: self lockedSocket: mSocket userInfo: userInfo];
 		});
 	}
 }

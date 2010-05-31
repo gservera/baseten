@@ -29,7 +29,6 @@
 #import <Foundation/Foundation.h>
 #import <BaseTen/libpq-fe.h>
 #import <BaseTen/PGTSAbstractDescription.h>
-#import <BaseTen/PGTSOids.h>
 
 
 @class PGTSAbstractObjectDescription;

@@ -46,11 +46,14 @@
     return self;
 }
 
+
 - (void) dealloc
 {
 	[mDefaultValue release];
+	[mType release];
 	[super dealloc];
 }
+
 
 - (NSString *) description
 {
@@ -58,15 +61,18 @@
 			[self class], self, mName, mIndex];
 }
 
+
 - (void) setIndex: (NSInteger) anIndex
 {
     mIndex = anIndex;
 }
 
+
 - (NSString *) name
 {
     return mName;
 }
+
 
 - (NSString *) quotedName: (PGTSConnection *) connection
 {
@@ -76,20 +82,24 @@
     return retval;
 }
 
+
 - (NSInteger) index
 {
     return mIndex;
 }
+
 
 - (NSString *) defaultValue
 {
 	return mDefaultValue;
 }
 
+
 - (PGTSTypeDescription *) type
 {
 	return mType;
 }
+
 
 - (NSComparisonResult) indexCompare: (PGTSColumnDescription *) aCol
 {
@@ -102,15 +112,18 @@
     return result;
 }
 
+
 - (BOOL) isNotNull
 {
 	return mIsNotNull;
 }
 
+
 - (BOOL) isInherited
 {
 	return mIsInherited;
 }
+
 
 - (void) setType: (PGTSTypeDescription *) type
 {
@@ -121,15 +134,18 @@
 	}
 }
 
+
 - (void) setNotNull: (BOOL) aBool
 {
 	mIsNotNull = aBool;
 }
 
+
 - (void) setInherited: (BOOL) aBool
 {
 	mIsInherited = aBool;
 }
+
 
 - (void) setDefaultValue: (NSString *) anObject
 {
@@ -140,17 +156,20 @@
 	}
 }
 
+
 - (BOOL) requiresDocuments
 {
 	BXAssertLog (NO, @"Didn't expect %s to be called for %@.", _cmd, self);
 	return NO;
 }
 
+
 - (void) setRequiresDocuments: (BOOL) aBool
 {
 	BXAssertLog (NO, @"Didn't expect %s to be called for %@.", _cmd, self);
 }
 @end
+
 
 
 @implementation PGTSXMLColumnDescription

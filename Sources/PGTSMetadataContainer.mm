@@ -1,8 +1,8 @@
 //
-// PGTSMetadataContainer.m
+// PGTSMetadataContainer.mm
 // BaseTen
 //
-// Copyright (C) 2009 Marko Karppinen & Co. LLC.
+// Copyright (C) 2009-2010 Marko Karppinen & Co. LLC.
 //
 // Before using this software, please review the available licensing options
 // by visiting http://www.karppinen.fi/baseten/licensing/ or by contacting
@@ -39,8 +39,120 @@
 #import "PGTSColumnDescription.h"
 #import "PGTSIndexDescription.h"
 #import "PGTSRoleDescription.h"
-#import "PGTSOids.h"
 #import "BXEnumerate.h"
+#import "PGTSOids.h"
+#import "BXCollectionFunctions.h"
+
+
+using namespace BaseTen;
+
+
+
+@implementation PGTSMetadataContainerLoadState
+- (id) init
+{
+	if ((self = [super init]))
+	{
+		mSchemasByOid = [[NSMutableDictionary alloc] init];
+		mTablesByOid = [[NSMutableDictionary alloc] init];
+		mIndexesByRelid = [[NSMutableDictionary alloc] init];
+	}
+	return self;
+}
+
+
+- (void) dealloc
+{
+	[mSchemasByOid release];
+	[mTablesByOid release];
+	[mIndexesByRelid release];
+	[super dealloc];
+}
+
+
+- (PGTSSchemaDescription *) schemaWithOid: (Oid) oid
+{
+	PGTSSchemaDescription *retval = FindObject (mSchemasByOid, oid);
+	if (! retval)
+	{
+		retval = [[PGTSSchemaDescription alloc] init];
+		[retval setOid: oid];
+		Insert (mSchemasByOid, oid, retval);
+		[retval release];
+	}
+	return retval;
+}
+
+
+- (PGTSTableDescription *) tableWithOid: (Oid) oid
+{
+	return FindObject (mTablesByOid, oid);
+}
+
+
+- (PGTSTableDescription *) tableWithOid: (Oid) oid descriptionClass: (Class) descriptionClass
+{
+	PGTSTableDescription *retval = FindObject (mTablesByOid, oid);
+	if (! retval)
+	{
+		retval = [[descriptionClass alloc] init];
+		[retval setOid: oid];
+		Insert (mTablesByOid, oid, retval);
+	}
+	return retval;
+}
+
+
+- (PGTSIndexDescription *) addIndexForRelation: (Oid) relid
+{	
+	PGTSIndexDescription *retval = [[[PGTSIndexDescription alloc] init] autorelease];
+	NSMutableArray *indexes = FindObject (mIndexesByRelid, relid);
+	if (! indexes)
+	{
+		indexes = [NSMutableArray array];
+		Insert (mIndexesByRelid, relid, indexes);
+	}
+	[indexes addObject: retval];
+	return retval;
+}
+
+
+- (void) assignSchemas: (PGTSDatabaseDescription *) database
+{	
+	NSMutableDictionary *tablesBySchemaName = [NSMutableDictionary dictionaryWithCapacity: [mSchemasByOid count]];
+	for (PGTSTableDescription *table in [mTablesByOid objectEnumerator])
+	{
+		NSString *schemaName = [table schemaName];
+		NSMutableArray *tables = [tablesBySchemaName objectForKey: schemaName];
+		if (! tables)
+		{
+			tables = [NSMutableArray array];
+			[tablesBySchemaName setObject: tables forKey: schemaName];
+		}
+		[tables addObject: table];
+	}
+	
+	for (PGTSSchemaDescription *schema in [mSchemasByOid objectEnumerator])
+	{
+		NSArray *tables = [tablesBySchemaName objectForKey: [schema name]];
+		[schema setTables: tables];
+	}
+	
+	[database setSchemas: [mSchemasByOid objectEnumerator]];
+}
+
+
+- (void) assignUniqueIndexes: (PGTSDatabaseDescription *) database
+{
+	for (NSNumber *key in mIndexesByRelid)
+	{
+		PGTSTableDescription *table = [database tableWithOid: [key PGTSOidValue]];
+		id indexes = [mIndexesByRelid objectForKey: key];
+		[table setUniqueIndexes: indexes];
+	}
+	
+}
+@end
 
 
 
@@ -69,6 +181,13 @@
 	[mDatabase release];
 	[super dealloc];
 }
+
+
+- (Class) loadStateClass
+{
+	return [PGTSMetadataContainerLoadState class];
+}
+
 
 - (Class) databaseDescriptionClass
 {
@@ -101,12 +220,13 @@
 
 @implementation PGTSEFMetadataContainer
 //FIXME: come up with a better way to handle query problems than ExpectV.
-- (void) fetchTypes: (PGTSConnection *) connection
+- (void) fetchTypes: (PGTSConnection *) connection loadState: (PGTSMetadataContainerLoadState *) loadState
 {
 	ExpectV (connection);
 	NSString* query = 
 	@"SELECT t.oid, typname, typnamespace, typelem, typdelim, typtype, typlen "
 	@" FROM pg_type t ";
+	
 	PGTSResultSet* res = [connection executeQuery: query];
 	ExpectV ([res querySucceeded]);
 	
@@ -120,61 +240,57 @@
 		[res setClass: [NSString class] forKey: @"typtype"];
 		[res setClass: [NSNumber class] forKey: @"typlen"];
 		
+		NSMutableArray *types = [NSMutableArray arrayWithCapacity: [res count]];
+		
 		while ([res advanceRow])
 		{
-			PGTSTypeDescription* type = [[[PGTSTypeDescription alloc] init] autorelease];
+			PGTSTypeDescription* typeDesc = [[[PGTSTypeDescription alloc] init] autorelease];
 			
 			//Oid needs to be parsed manually to prevent infinite recursion.
 			//The type description of Oid might not be cached yet.
 			char* oidString = PQgetvalue ([res PGresult], [res currentRow], 0);
 			long oid = strtol (oidString, NULL, 10);
-			[type setOid: oid];
+			[typeDesc setOid: oid];
 			
-			[type setName: [res valueForKey: @"typname"]];
-			[type setElementOid: [[res valueForKey: @"typelem"] PGTSOidValue]];
+			[typeDesc setName: [res valueForKey: @"typname"]];
+			[typeDesc setElementOid: [[res valueForKey: @"typelem"] PGTSOidValue]];
 			unichar delimiter = [[res valueForKey: @"typdelim"] characterAtIndex: 0];
 			ExpectV (delimiter <= UCHAR_MAX);
-			[type setDelimiter: delimiter];
+			[typeDesc setDelimiter: delimiter];
 			unichar kind = [[res valueForKey: @"typtype"] characterAtIndex: 0];
 			ExpectV (kind <= UCHAR_MAX);
-			[type setKind: kind];
+			[typeDesc setKind: kind];
 			NSInteger length = [[res valueForKey: @"typlen"] integerValue];
-			[type setLength: length];
+			[typeDesc setLength: length];
 			
-			[type setSchema: [mDatabase schemaWithOid: [[res valueForKey: @"typnamespace"] PGTSOidValue]]];
-			
-			[mDatabase addType: type];
-		}		
+			[typeDesc setSchema: [loadState schemaWithOid: [[res valueForKey: @"typnamespace"] PGTSOidValue]]];
+			[types addObject: typeDesc];
+		}
+		
+		[mDatabase setTypes: types];
 	}
 }
 
 
-- (void) fetchSchemas: (PGTSConnection *) connection
+- (void) fetchSchemas: (PGTSConnection *) connection loadState: (PGTSMetadataContainerLoadState *) loadState
 {
 	ExpectV (connection);
-	NSString* query = 
-	@"SELECT oid, nspname "
-	@" FROM pg_namespace "
-	@" WHERE nspname NOT IN ('information_schema', 'baseten') AND "
-	@"  nspname NOT LIKE 'pg_%'";
+	NSString* query = @"SELECT oid, nspname FROM pg_namespace";
 	PGTSResultSet* res = [connection executeQuery: query];
 	ExpectV ([res querySucceeded]);
 	
 	{
 		while ([res advanceRow])
 		{
-			PGTSSchemaDescription* schema = [[[PGTSSchemaDescription alloc] init] autorelease];
 			NSNumber* oid = [res valueForKey: @"oid"];
-			[schema setOid: [oid PGTSOidValue]];
+			PGTSSchemaDescription *schema = [loadState schemaWithOid: [oid PGTSOidValue]];
 			[schema setName: [res valueForKey: @"nspname"]];
-			
-			[mDatabase addSchema: schema];
 		}
 	}
 }
 
 
-- (void) fetchRoles: (PGTSConnection *) connection
+- (void) fetchRoles: (PGTSConnection *) connection loadState: (PGTSMetadataContainerLoadState *) loadState
 {
 	ExpectV (connection);
 
@@ -186,15 +302,19 @@
 	ExpectV ([res querySucceeded]);
 	
 	{
-		while ([res advanceRow]) 
+		NSMutableArray *roles = [NSMutableArray arrayWithCapacity: [res count]];
+		
+		while ([res advanceRow])
 		{
 			PGTSRoleDescription* role = [[[PGTSRoleDescription alloc] init] autorelease];
 			NSNumber* oid = [res valueForKey: @"oid"];
 			[role setOid: [oid PGTSOidValue]];
 			[role setName: [res valueForKey: @"rolname"]];
 			
-			[mDatabase addRole: role];
+			[roles addObject: role];
 		}
+		
+		[mDatabase setRoles: roles];
 	}
 	
 	query = 
@@ -203,19 +323,33 @@
 	res = [connection executeQuery: query];
 	
 	{
+		NSMutableDictionary *membersByRoleOid = [NSMutableDictionary dictionary];
+		
 		while ([res advanceRow])
 		{
 			Oid roleOid = [[res valueForKey: @"roleid"] PGTSOidValue];
 			Oid memberOid = [[res valueForKey: @"member"] PGTSOidValue];
-			PGTSRoleDescription* role = [mDatabase roleWithOid: roleOid];
 			PGTSRoleDescription* member = [mDatabase roleWithOid: memberOid];
-			[role addMember: member];
+			
+			NSMutableArray *members = FindObject (membersByRoleOid, roleOid);
+			if (! members)
+			{
+				members = [NSMutableArray array];
+				Insert (membersByRoleOid, roleOid, members);
+			}
+			[members addObject: member];
+		}
+		
+		for (NSNumber *key in [membersByRoleOid keyEnumerator])
+		{
+			PGTSRoleDescription* role = [mDatabase roleWithOid: [key PGTSOidValue]];
+			[role setMembers: [membersByRoleOid objectForKey: key]];
 		}
 	}
 }
 
 
-- (void) fetchRelations: (PGTSConnection *) connection
+- (void) fetchRelations: (PGTSConnection *) connection loadState: (PGTSMetadataContainerLoadState *) loadState
 {
 	ExpectV (connection);
 	NSString* query = 
@@ -231,8 +365,8 @@
 	{
 		while ([res advanceRow]) 
 		{
-			PGTSTableDescription* table = [[[[self tableDescriptionClass] alloc] init] autorelease];
-			[table setOid: [[res valueForKey: @"oid"] PGTSOidValue]];
+			Oid oid = [[res valueForKey: @"oid"] PGTSOidValue];
+			PGTSTableDescription* table = [loadState tableWithOid: oid descriptionClass: [self tableDescriptionClass]];
 			[table setName: [res valueForKey: @"relname"]];
 			unichar kind = [[res valueForKey: @"relkind"] characterAtIndex: 0];
 			ExpectV (kind <= UCHAR_MAX);
@@ -240,15 +374,13 @@
 			[table setACL: [res valueForKey: @"relacl"]];
 			
 			[table setOwner: [mDatabase roleWithOid: [[res valueForKey: @"relowner"] PGTSOidValue]]];
-			[table setSchema: [mDatabase schemaWithOid: [[res valueForKey: @"relnamespace"] PGTSOidValue]]];
-			
-			[mDatabase addTable: table];
+			[table setSchema: [loadState schemaWithOid: [[res valueForKey: @"relnamespace"] PGTSOidValue]]];
 		}
 	}
 }
 
 
-- (void) fetchInheritance: (PGTSConnection *) connection
+- (void) fetchInheritance: (PGTSConnection *) connection loadState: (PGTSMetadataContainerLoadState *) loadState
 {
 	ExpectV (connection);
 	NSString* query =
@@ -257,21 +389,32 @@
 	ExpectV ([res querySucceeded]);
 	
 	{
+		NSMutableDictionary *inheritedOidsByTableOid = [NSMutableDictionary dictionary];
+		
 		while ([res advanceRow])
 		{
-			Oid currentOid = [[res valueForKey: @"inhrelid"] PGTSOidValue];
-			PGTSTableDescription* table = [mDatabase tableWithOid: currentOid];
-			if (table)
+			NSNumber *inhrelid = [res valueForKey: @"inhrelid"];
+			NSNumber *inhparent = [res valueForKey: @"inhparent"];
+			NSMutableArray *oids = [inheritedOidsByTableOid objectForKey: inhrelid];
+			if (! oids)
 			{
-				Oid parentOid = [[res valueForKey: @"inhparent"] PGTSOidValue];
-				[table addInheritedOid: parentOid];
+				oids = [NSMutableArray array];
+				[oids addObject: inhparent];
 			}
+		}
+		
+		for (NSNumber *key in inheritedOidsByTableOid)
+		{
+			Oid reloid = [key PGTSOidValue];
+			PGTSTableDescription* table = [loadState tableWithOid: reloid];
+			ExpectV (table);
+			[table setInheritedOids: [inheritedOidsByTableOid objectForKey: key]];
 		}
 	}
 }
 
 
-- (void) fetchColumns: (PGTSConnection *) connection
+- (void) fetchColumns: (PGTSConnection *) connection loadState: (PGTSMetadataContainerLoadState *) loadState
 {
 	ExpectV (connection);
 	
@@ -290,19 +433,21 @@
 		PGTSResultSet* res = [connection executeQuery: query];
 		ExpectV ([res querySucceeded]);
 		
+		NSMutableDictionary *columnsByTable = [NSMutableDictionary dictionary];
+		
 		while ([res advanceRow])
 		{
 			Oid typeOid = [[res valueForKey: @"atttypid"] PGTSOidValue];
 			Oid relid = [[res valueForKey: @"attrelid"] PGTSOidValue];
 			NSInteger inhcount = [[res valueForKey: @"attinhcount"] integerValue];
-			PGTSTypeDescription* type = [mDatabase typeWithOid: typeOid];
+			PGTSTypeDescription* typeDesc = [mDatabase typeWithOid: typeOid];
 			PGTSColumnDescription* column = nil;
-			if ([@"xml" isEqualToString: [type name]])
+			if ([@"xml" isEqualToString: [typeDesc name]])
 				column = [[[PGTSXMLColumnDescription alloc] init] autorelease];
 			else
 				column = [[[PGTSColumnDescription alloc] init] autorelease];
 			
-			[column setType: type];
+			[column setType: typeDesc];
 			[column setName: [res valueForKey: @"attname"]];
 			[column setIndex: [[res valueForKey: @"attnum"] integerValue]];
 			[column setNotNull: [[res valueForKey: @"attnotnull"] boolValue]];
@@ -310,7 +455,22 @@
 			[column setDefaultValue: [res valueForKey: @"default"]];
 			//FIXME: mark inherited columns.
 			
-			[[mDatabase tableWithOid: relid] addColumn: column];
+			NSMutableArray *columns = FindObject (columnsByTable, relid);
+			if (! columns)
+			{
+				columns = [NSMutableArray array];
+				Insert (columnsByTable, relid, columns);
+			}
+			[columns addObject: column];
+		}
+		
+		for (NSNumber *key in [columnsByTable keyEnumerator])
+		{
+			Oid relid = [key PGTSOidValue];
+			NSArray *columns = [columnsByTable objectForKey: key];
+			PGTSTableDescription *table = [loadState tableWithOid: relid];
+			ExpectV (table);
+			[table setColumns: columns];
 		}
 	}
 	
@@ -341,13 +501,15 @@
 		{
 			Oid relid = [[res valueForKey: @"conrelid"] PGTSOidValue];
 			NSInteger attnum = [[res valueForKey: @"conkey"] integerValue];
-			[[[mDatabase tableWithOid: relid] columnAtIndex: attnum] setRequiresDocuments: YES];
+			PGTSTableDescription *table = [loadState tableWithOid: relid];
+			ExpectV (table);
+			[[table columnAtIndex: attnum] setRequiresDocuments: YES];
 		}
 	}
 }
 
 
-- (void) fetchUniqueIndexes: (PGTSConnection *) connection
+- (void) fetchUniqueIndexes: (PGTSConnection *) connection loadState: (PGTSMetadataContainerLoadState *) loadState
 {
 	ExpectV (connection);
 	//indexrelid is oid of the index, indrelid of the table.
@@ -363,30 +525,35 @@
 	PGTSResultSet* res = [connection executeQuery: query];
 	ExpectV ([res querySucceeded]);
 
-	while ([res advanceRow]) 
 	{
-		PGTSIndexDescription* index = [[[PGTSIndexDescription alloc] init] autorelease];
-		PGTSTableDescription* table = [mDatabase tableWithOid: [[res valueForKey: @"indrelid"] PGTSOidValue]];
-		
-		[index setName: [res valueForKey: @"relname"]];
-		[index setOid: [[res valueForKey: @"indexrelid"] PGTSOidValue]];
-		[index setPrimaryKey: [[res valueForKey: @"indisprimary"] boolValue]];
-
-		NSArray* indices = [res valueForKey: @"indkey"];
-		NSMutableSet* columns = [NSMutableSet setWithCapacity: [indices count]];
-		BXEnumerate (currentIndex, e, [indices objectEnumerator])
+		while ([res advanceRow]) 
 		{
-			NSInteger i = [currentIndex integerValue];
-			if (0 < i)
+			NSNumber *relidObject = [res valueForKey: @"indrelid"];
+			Oid relid = [relidObject PGTSOidValue];
+			Oid oid = [[res valueForKey: @"indexrelid"] PGTSOidValue];
+			
+			PGTSIndexDescription *index = [loadState addIndexForRelation: relid];
+			PGTSTableDescription *table = [loadState tableWithOid: relid];
+			ExpectV (table);
+
+			[index setName: [res valueForKey: @"relname"]];
+			[index setOid: oid];
+			[index setPrimaryKey: [[res valueForKey: @"indisprimary"] boolValue]];
+			
+			NSArray* indkey = [res valueForKey: @"indkey"];
+			NSMutableSet* columns = [NSMutableSet setWithCapacity: [indkey count]];
+			BXEnumerate (currentIndex, e, [indkey objectEnumerator])
 			{
-				id column = [table columnAtIndex: i];
-				ExpectV (column);
-				[columns addObject: column];
+				NSInteger i = [currentIndex integerValue];
+				if (0 < i)
+				{
+					id column = [table columnAtIndex: i];
+					ExpectV (column);
+					[columns addObject: column];
+				}
 			}
+			[index setColumns: columns];
 		}
-		[index setColumns: columns];
-		
-		[table addIndex: index];
 	}
 }
 
@@ -407,15 +574,28 @@
 	[mDatabase release];
 	mDatabase = [[[self databaseDescriptionClass] alloc] init];
 	
-	//Order is important.
-	[self fetchTypes: connection];
-	[self fetchSchemas: connection];
-	[self fetchRoles: connection];
-	[self fetchRelations: connection];
-	[self fetchInheritance: connection];
-	[self fetchColumns: connection];
-	[self fetchUniqueIndexes: connection];	
+	PGTSMetadataContainerLoadState *loadState = [[[self loadStateClass] alloc] init];
+	
+	[self loadUsing: connection loadState: loadState];
+	[loadState assignSchemas: mDatabase];
+	[loadState assignUniqueIndexes: mDatabase];
+
+	[loadState release];
 }
+
+
+- (void) loadUsing: (PGTSConnection *) connection loadState: (PGTSMetadataContainerLoadState *) loadState
+{
+	//Order is important.
+	[self fetchTypes: connection loadState: loadState];
+	[self fetchRoles: connection loadState: loadState];	
+	[self fetchSchemas: connection loadState: loadState];	
+	[self fetchRelations: connection loadState: loadState];
+	[self fetchColumns: connection loadState: loadState];
+	[self fetchUniqueIndexes: connection loadState: loadState];
+	[self fetchInheritance: connection loadState: loadState];	
+}
+
 
 
 - (void) prepareForConnection: (PGTSConnection *) connection

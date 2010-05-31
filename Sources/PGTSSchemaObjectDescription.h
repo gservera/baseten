@@ -39,8 +39,8 @@
 
 @interface PGTSSchemaObjectDescription : PGTSAbstractObjectDescription
 {
-	PGTSSchemaDescription* mSchema; //Weak
-    PGTSRoleDescription* mOwner;
+	PGTSSchemaDescription *mSchema; //Weak
+    PGTSRoleDescription *mOwner;
 }
 - (PGTSSchemaDescription *) schema;
 - (PGTSRoleDescription *) owner;

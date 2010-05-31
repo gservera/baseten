@@ -28,7 +28,6 @@
 
 #import <Foundation/Foundation.h>
 #import <BaseTen/PGTSDatabaseDescription.h>
-#import <BaseTen/BXCollections.h>
 
 
 @class BXPGForeignKeyDescription;
@@ -36,12 +35,14 @@
 
 @interface BXPGDatabaseDescription : PGTSDatabaseDescription
 {
-	NSNumber* mSchemaVersion;
-	NSNumber* mSchemaCompatibilityVersion;
+	NSNumber *mSchemaVersion;
+	NSNumber *mSchemaCompatibilityVersion;
+	NSDictionary *mForeignKeysByIdentifier;
 	BOOL mHasBaseTenSchema;
-	BX_IndexMap* mForeignKeysByIdentifier;
+	BOOL mHasCompatibleBaseTenSchemaVersion;
 }
 - (BOOL) hasBaseTenSchema;
+- (BOOL) hasCompatibleBaseTenSchemaVersion;
 - (NSNumber *) schemaVersion;
 - (NSNumber *) schemaCompatibilityVersion;
 - (BXPGForeignKeyDescription *) foreignKeyWithIdentifier: (NSInteger) identifier;
@@ -49,5 +50,6 @@
 - (void) setSchemaVersion: (NSNumber *) number;
 - (void) setSchemaCompatibilityVersion: (NSNumber *) number;
 - (void) setHasBaseTenSchema: (BOOL) aBool;
-- (void) addForeignKey: (BXPGForeignKeyDescription *) fkey;
+- (void) setHasCompatibleBaseTenSchemaVersion: (BOOL) flag;
+- (void) setForeignKeys: (id <NSFastEnumeration>) foreignKeys;
 @end

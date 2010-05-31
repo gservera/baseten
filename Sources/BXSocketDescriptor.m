@@ -107,7 +107,7 @@ static volatile BOOL stUsesGCD = NO;
 {
 	if ([mValidationLock lockIfValid])
 	{
-		[[self delegate] socketReadyForReading: fd estimatedSize: size];
+		[[self delegate] socketDescriptor: self readyForReading: fd estimatedSize: size];
 		[mValidationLock unlock];
 	}
 }

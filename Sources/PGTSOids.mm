@@ -1,8 +1,8 @@
 //
-// BXScannedMemoryObject.mm
+// PGTSOids.mm
 // BaseTen
 //
-// Copyright (C) 2010 Marko Karppinen & Co. LLC.
+// Copyright (C) 2008 Marko Karppinen & Co. LLC.
 //
 // Before using this software, please review the available licensing options
 // by visiting http://www.karppinen.fi/baseten/licensing/ or by contacting
@@ -26,20 +26,35 @@
 // $Id$
 //
 
-#import "BXScannedMemoryObject.h"
+#import "PGTSOids.h"
+#import "BXCollectionFunctions.h"
 
 
-void *
-BaseTen::ScannedMemoryObject::operator new (size_t size)
+/**
+ * \internal
+ * \brief Return the value as an object.
+ *
+ * \sa PGTSOidValue
+ */
+id 
+PGTSOidAsObject (Oid o)
 {
-	BaseTen::ScannedMemoryAllocator <void> allocator;
-	return allocator.allocate (size);
+    //Methods inherited from NSValue seem to return an NSValue instead of an NSNumber.
+	//Thus, we use NSNumber.
+    return BaseTen::ObjectValue (o);
 }
 
 
-void
-BaseTen::ScannedMemoryObject::operator delete (void *ptr)
+@implementation NSNumber (PGTSOidAdditions)
+/**
+ * \internal
+ * \brief Return the value as Oid.
+ * \sa PGTSOidAsObject
+ */
+- (Oid) PGTSOidValue
 {
-	BaseTen::ScannedMemoryAllocator <void> allocator;
-	allocator.deallocate (ptr);
+	Oid retval = InvalidOid;
+	[self getValue: &retval];
+	return retval;
 }
+@end

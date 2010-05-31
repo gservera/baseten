@@ -27,179 +27,97 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <BaseTen/BXExport.h>
+
+
+BX_INTERNAL BOOL FindElement (id collection, id key, void *outValue);
+
 
 
 #if defined(__cplusplus)
 namespace BaseTen {
 	
-	namespace CollectionFunctions {
+	template <typename T>
+	inline id ObjectValue (T value)
+	{
+		return [NSValue valueWithBytes: &value objCType: @encode (T)];
+	}
+	
+	template <> id ObjectValue (float value);
+	template <> id ObjectValue (double value);
+	template <> id ObjectValue (char value);
+	template <> id ObjectValue (short value);
+	template <> id ObjectValue (int value);
+	template <> id ObjectValue (long value);
+	template <> id ObjectValue (long long value);
+	template <> id ObjectValue (unsigned char value);
+	template <> id ObjectValue (unsigned short value);
+	template <> id ObjectValue (unsigned int value);
+	template <> id ObjectValue (unsigned long value);
+	template <> id ObjectValue (unsigned long long value);
+	
+	
+	template <typename T>
+	inline id FindObject (NSDictionary *collection, T *key)
+	{
+		return [collection objectForKey: key];
+	}
 
-		template <typename T>
-		BOOL ContainsKey (T *container, typename T::key_type key)
-		{
-			BOOL retval = NO;
-			if (container)
-			{
-				typename T::const_iterator it = container->find (key);
-				if (container->end () != it)
-					retval = YES;
-			}
-			return retval;
-		}
-		
-		
-		template <typename T>
-		BOOL ContainsKey (T *container, typename T::key_type::element_type key)
-		{
-			BOOL retval = NO;
-			if (container)
-			{
-				BaseTen::ObjCPtr <typename T::key_type::element_type> keyPtr (key);
-				typename T::const_iterator it = container->find (keyPtr);
-				if (container->end () != it)
-					retval = YES;
-			}
-			return retval;
-		}		
-		
-		
-		template <typename T>
-		BOOL FindElement (T *container, typename T::key_type key, typename T::mapped_type *outVal)
-		{
-			BOOL retval = NO;
-			if (container && outVal)
-			{
-				typename T::const_iterator it = container->find (key);
-				if (container->end () != it)
-				{
-					*outVal = it->second;
-					retval = YES;
-				}
-			}
-			return retval;
-		}
-		
-		
-		template <typename T>
-		BOOL FindElement (T *container, typename T::key_type::element_type key, typename T::mapped_type *outVal)
-		{
-			BOOL retval = NO;
-			if (container && outVal)
-			{
-				BaseTen::ObjCPtr <typename T::key_type::element_type> keyPtr (key);
-				typename T::const_iterator it = container->find (keyPtr);
-				if (container->end () != it)
-				{
-					*outVal = it->second;
-					retval = YES;
-				}
-			}
-			return retval;
-		}		
-		
-		
-		template <typename T>
-		typename T::mapped_type::element_type FindObject (T *container, typename T::key_type key)
-		{
-			typename T::mapped_type::element_type retval = nil;
-			if (container)
-			{
-				typename T::const_iterator it = container->find (key);
-				if (container->end () != it)
-					retval = *it->second;
-			}
-			return retval;
-		}
-		
-		
-		template <typename T>
-		typename T::mapped_type::element_type FindObject (T *container, typename T::key_type::element_type key)
-		{
-			typename T::mapped_type::element_type retval = nil;
-			if (container)
-			{
-				BaseTen::ObjCPtr <typename T::key_type::element_type> keyPtr (key);
-				typename T::const_iterator it = container->find (keyPtr);
-				if (container->end () != it)
-					retval = *it->second;
-			}
-			return retval;
-		}		
-		
-		
-		template <typename T>
-		void Insert (T *container, typename T::key_type key, typename T::mapped_type val)
-		{
-			container->insert (std::make_pair (key, val));
-		}
-		
-		
-		template <typename T>
-		void Insert (T *container, typename T::key_type::element_type key, typename T::mapped_type val)
-		{
-			typename T::key_type keyPtr (key);
-			container->insert (std::make_pair (keyPtr, val));
-		}
-		
-		
-		template <typename T>
-		void Insert (T *container, typename T::key_type key, typename T::mapped_type::element_type val)
-		{
-			typename T::mapped_type valPtr (val);
-			container->insert (std::make_pair (key, valPtr));
-		}
-		
-		
-		template <typename T>
-		void Insert (T *container, typename T::key_type::element_type key, typename T::mapped_type::element_type val)
-		{
-			typename T::key_type keyPtr (key);
-			typename T::mapped_type valPtr (val);
-			container->insert (std::make_pair (keyPtr, valPtr));
-		}		
-		
-		
-		template <typename T>
-		void InsertConditionally (T *container, typename T::key_type key, typename T::mapped_type val)
-		{
-			if (! ContainsKey (container, key))
-				Insert (container, key, val);
-		}
-		
-		
-		template <typename T>
-		void InsertConditionally (T *container, typename T::key_type::element_type key, typename T::mapped_type val)
-		{
-			if (! ContainsKey (container, key))
-				Insert (container, key, val);
-		}		
-		
-		
-		template <typename T>
-		void InsertConditionally (T *container, typename T::key_type key, typename T::mapped_type::element_type val)
-		{
-			if (! ContainsKey (container, key))
-				Insert (container, key, val);
-		}
-		
-		
-		template <typename T>
-		void InsertConditionally (T *container, typename T::key_type::element_type key, typename T::mapped_type::element_type val)
-		{
-			if (! ContainsKey (container, key))
-				Insert (container, key, val);
-		}
-		
-		
-		template <typename T>
-		void PushBack (T *container, typename T::value_type::element_type val)
-		{
-			if (container)
-			{
-				typename T::value_type valPtr (val);
-				container->push_back (valPtr);
-			}
-		}
+	
+	template <typename T>
+	inline id FindObject (NSDictionary *collection, T key)
+	{
+		NSValue *keyObject = ObjectValue (key);
+		return FindObject (collection, keyObject);
+	}
+	
+	
+	template <typename T, typename U>
+	inline void Insert (NSMutableDictionary *collection, T key, U value)
+	{
+		NSValue *keyObject = ObjectValue (key);
+		NSValue *valueObject = ObjectValue (value);
+		Insert (collection, keyObject, valueObject);
+	}
+	
+	
+	template <typename T, typename U>
+	inline void Insert (NSMutableDictionary *collection, T *key, U *value)
+	{
+		[collection setObject: value forKey: key];
+	}	
+	
+	
+	template <typename T, typename U>
+	inline void Insert (NSMutableDictionary *collection, T *key, U value)
+	{
+		NSValue *valueObject = ObjectValue (value);
+		Insert (collection, key, valueObject);
+	}
+	
+	
+	template <typename T, typename U>
+	inline void Insert (NSMutableDictionary *collection, T key, U *value)
+	{
+		NSValue *keyObject = ObjectValue (key);
+		Insert (collection, keyObject, value);
+	}
+	
+	
+	template <typename T, typename U>
+	inline void InsertConditionally (NSMutableDictionary *collection, T key, U value)
+	{
+		NSValue *keyObject = ObjectValue (key);
+		if (! [collection objectForKey: keyObject])
+			Insert (collection, keyObject, value);
+	}
+	
+	
+	template <typename T, typename U>
+	inline void InsertConditionally (NSMutableDictionary *collection, T *key, U value)
+	{
+		if (! [collection objectForKey: key])
+			Insert (collection, key, value);
 	}
 }
 #endif

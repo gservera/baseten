@@ -43,24 +43,3 @@
 //Thread un-safe methods.
 - (void) setName: (NSString *) aName;
 @end
-
-
-#if defined (__cplusplus)
-#import <BaseTen/BXCollections.h>
-#import <BaseTen/PGTSOids.h>
-namespace PGTS 
-{
-	template <typename T> 
-	NSMutableDictionary *CreateCFMutableDictionaryWithNames (T *map)
-	{
-		NSMutableDictionary* retval = [[NSMutableDictionary alloc] initWithCapacity: map->size ()];
-		for (typename T::const_iterator it = map->begin (), end = map->end (); end != it; it++)
-		{
-			typename T::mapped_type::element_type currentObject = *it->second;
-			[retval setObject: currentObject forKey: [currentObject name]];
-		}
-		
-		return retval;				
-	}
-}
-#endif

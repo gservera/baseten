@@ -29,7 +29,6 @@
 #import <Foundation/Foundation.h>
 #import <BaseTen/libpq-fe.h>
 #import <BaseTen/PGTSAbstractObjectDescription.h>
-#import <BaseTen/BXCollections.h>
 
 
 @class PGTSTableDescription;
@@ -37,13 +36,11 @@
 
 @interface PGTSSchemaDescription : PGTSAbstractObjectDescription 
 {
-	BX_IdMap* mTablesByName;
-	NSArray* mAllTables;
-	NSLock* mTableLock;
+	NSDictionary *mTablesByName;
 }
 - (PGTSTableDescription *) tableNamed: (NSString *) name;
 - (NSArray *) allTables;
 
 //Thread un-safe methods.
-- (void) addTable: (PGTSTableDescription *) table;
+- (void) setTables: (id <NSFastEnumeration>) tables;
 @end

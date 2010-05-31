@@ -28,11 +28,32 @@
 
 
 #import <Foundation/Foundation.h>
+#import <PGTSOids.h>
 
 
 @class PGTSDatabaseDescription;
 @class PGTSConnection;
 @class PGTSMetadataStorage;
+@class PGTSSchemaDescription;
+@class PGTSTableDescription;
+@class PGTSIndexDescription;
+
+
+@interface PGTSMetadataContainerLoadState : NSObject
+{
+	NSMutableDictionary *mSchemasByOid;
+	NSMutableDictionary *mTablesByOid;
+	NSMutableDictionary *mIndexesByRelid;
+}
+- (PGTSSchemaDescription *) schemaWithOid: (Oid) oid;
+- (PGTSTableDescription *) tableWithOid: (Oid) oid;
+- (PGTSTableDescription *) tableWithOid: (Oid) oid descriptionClass: (Class) descriptionClass;
+- (PGTSIndexDescription *) addIndexForRelation: (Oid) relid;
+
+- (void) assignSchemas: (PGTSDatabaseDescription *) database;
+- (void) assignUniqueIndexes: (PGTSDatabaseDescription *) database;
+@end
+
 
 
 @interface PGTSMetadataContainer : NSObject
@@ -45,6 +66,7 @@
 - (id) databaseDescription;
 - (void) prepareForConnection: (PGTSConnection *) connection;
 - (void) reloadUsingConnection: (PGTSConnection *) connection;
+- (Class) loadStateClass;
 - (Class) databaseDescriptionClass;
 - (Class) tableDescriptionClass;
 @end
@@ -53,5 +75,6 @@
 @interface PGTSEFMetadataContainer : PGTSMetadataContainer
 {
 }
+- (void) loadUsing: (PGTSConnection *) connection loadState: (PGTSMetadataContainerLoadState *) loadState;
 - (void) loadUsing: (PGTSConnection *) connection;
 @end

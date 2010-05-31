@@ -32,23 +32,13 @@
 #import "BXLogger.h"
 
 
-using namespace PGTS;
-using namespace BaseTen::CollectionFunctions;
+using namespace BaseTen;
 
 
 @implementation PGTSRoleDescription
-- (id) init
-{
-	if ((self = [super init]))
-	{
-		mMembersByOid = new OidMap ();
-	}
-	return self;
-}
-
 - (void) dealloc
 {
-	delete mMembersByOid;    
+	[mMembersByOid release];
 	[super dealloc];
 }
 
@@ -62,9 +52,14 @@ using namespace BaseTen::CollectionFunctions;
 	return (FindObject (mMembersByOid, [aRole oid]) ? YES : NO);
 }
 
-- (void) addMember: (PGTSRoleDescription *) aRole
+
+- (void) setMembers: (NSArray *) roles
 {
-	ExpectV (aRole);
-	InsertConditionally (mMembersByOid, [aRole oid], aRole);
+	NSMutableDictionary *membersByOid = [[NSMutableDictionary alloc] initWithCapacity: [roles count]];
+	for (PGTSRoleDescription *role in roles)
+		InsertConditionally (mMembersByOid, [role oid], role);
+	
+	[mMembersByOid release];
+	mMembersByOid = [membersByOid copy];
 }
 @end

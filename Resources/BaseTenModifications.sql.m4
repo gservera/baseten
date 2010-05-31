@@ -28,8 +28,8 @@
 
 changequote(`{{', `}}')
 -- ' -- Fix for syntax coloring in SQL mode.
-define({{_bx_version_}}, {{0.939}})dnl
-define({{_bx_compat_version_}}, {{0.24}})dnl
+define({{_bx_version_}}, {{0.940}})dnl
+define({{_bx_compat_version_}}, {{0.25}})dnl
 
 
 \unset ON_ERROR_ROLLBACK
@@ -522,6 +522,25 @@ CREATE VIEW "baseten"._primary_key AS
 	ORDER BY r.id, a.attnum;
 REVOKE ALL PRIVILEGES ON "baseten"._primary_key FROM PUBLIC;
 GRANT SELECT ON "baseten"._primary_key TO basetenread;
+
+
+CREATE VIEW "baseten".relation_oids AS
+    SELECT c.oid, r.enabled
+    FROM "baseten".relation r
+    INNER JOIN pg_class c ON (c.relname = r.relname)
+    INNER JOIN pg_namespace n ON (n.nspname = r.nspname AND n.oid = c.relnamespace);
+REVOKE ALL PRIVILEGES ON "baseten".relation_oids FROM PUBLIC;
+GRANT SELECT ON "baseten".relation_oids TO basetenread;
+
+
+CREATE VIEW "baseten".view_pkey_oids AS
+    SELECT c.oid, "baseten".array_accum (v.attname) AS attnames
+    FROM "baseten".view_pkey v
+    INNER JOIN pg_class c ON (c.relname = v.relname)
+    INNER JOIN pg_namespace n ON (n.nspname = v.nspname AND n.oid = c.relnamespace)
+    GROUP BY c.oid;
+REVOKE ALL PRIVILEGES ON "baseten".view_pkey_oids FROM PUBLIC;
+GRANT SELECT ON "baseten".view_pkey_oids TO basetenread;
 
 
 CREATE FUNCTION "baseten"._fkey_columns_max () RETURNS INTEGER AS $$

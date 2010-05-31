@@ -28,7 +28,6 @@
 
 #import <stdlib.h>
 #import <limits.h>
-#import <tr1/unordered_map>
 #import <BaseTen/libpq-fe.h>
 #import "PGTSConnection.h"
 #import "PGTSResultSet.h"
@@ -39,35 +38,12 @@
 #import "PGTSTypeDescription.h"
 #import "PGTSFoundationObjects.h"
 #import "PGTSAdditions.h"
-#import "BXScannedMemoryAllocator.h"
-#import "BXCollections.h"
 #import "BXCollectionFunctions.h"
 #import "BXLogger.h"
 #import "BXArraySize.h"
 
 
-typedef std::tr1::unordered_map <
-	BaseTen::IdPtr, 
-	int,
-	std::tr1::hash <BaseTen::IdPtr>,
-	std::equal_to <BaseTen::IdPtr>,
-	BaseTen::ScannedMemoryAllocator <std::pair <
-		BaseTen::IdPtr const, int
-	> > 
-> FieldIndexMap;
-
-typedef std::tr1::unordered_map <
-	int,
-	Class, 
-	std::tr1::hash <int>, 
-	std::equal_to <int>, 
-	BaseTen::ScannedMemoryAllocator <std::pair <
-		const int, Class
-	> > 
-> FieldClassMap;
-
-
-using namespace BaseTen::CollectionFunctions;
+using namespace BaseTen;
 
 
 static NSString*
@@ -143,14 +119,14 @@ ErrorUserInfoKey (char fieldCode)
 {
     PGTSConnection *mConnection;
 	PGresult *mResult;
+    NSDictionary *mFieldIndexesByName;
+    NSMutableDictionary *mFieldClassesByIndex;
+	id mUserInfo;
+    Class mRowClass;
+    NSInteger mIdentifier;
 	int mCurrentRow;
     int mFields;
     int mTuples;
-    NSInteger mIdentifier;
-    FieldIndexMap *mFieldIndices;
-    FieldClassMap *mFieldClasses;
-    Class mRowClass;
-	id mUserInfo;
     
     BOOL mKnowsFieldClasses;
     BOOL mDeterminesFieldClassesFromDB;
@@ -192,8 +168,8 @@ ErrorUserInfoKey (char fieldCode)
 - (void) dealloc
 {
 	PQclear (mResult);
-    delete mFieldClasses;
-    delete mFieldIndices;
+	[mFieldClassesByIndex release];
+	[mFieldIndexesByName release];
     [mConnection release];
     [super dealloc];
 }
@@ -247,21 +223,25 @@ ErrorUserInfoKey (char fieldCode)
         mCurrentRow = -1;
         mTuples = PQntuples (result);
         mFields = PQnfields (result);
-    
-        mFieldIndices = new FieldIndexMap (mFields);
-        mFieldClasses = new FieldClassMap (mFields);
-        for (int i = 0; i < mFields; i++)
-        {
-            char* fname = PQfname (result, i);
-            if (!fname)
-            {
-                mFields = i;
-                break;
-            }
-			NSString* stringName = [NSString stringWithUTF8String: fname];
-			Insert (mFieldIndices, stringName, i);
-        }
-        mDeterminesFieldClassesFromDB = YES;
+		mDeterminesFieldClassesFromDB = YES;
+
+        mFieldClassesByIndex = [[NSMutableDictionary alloc] initWithCapacity: mFields];
+
+		{
+			NSMutableDictionary *fieldIndexesByName = [NSMutableDictionary dictionaryWithCapacity: mFields];
+			for (int i = 0; i < mFields; i++)
+			{
+				char* fname = PQfname (result, i);
+				if (!fname)
+				{
+					mFields = i;
+					break;
+				}
+				NSString* stringName = [NSString stringWithUTF8String: fname];
+				Insert (fieldIndexesByName, stringName, i);
+			}
+			mFieldIndexesByName = [fieldIndexesByName copy];
+		}
     }        
 	return self;
 }
@@ -464,27 +444,25 @@ ErrorUserInfoKey (char fieldCode)
 
 - (void) setValuesFromRow: (int) rowIndex target: (id) targetObject nullPlaceholder: (id) nullPlaceholder
 {
-	@synchronized (self)
+	for (NSString *fieldName in [mFieldIndexesByName keyEnumerator])
 	{
-		FieldIndexMap::const_iterator iterator = mFieldIndices->begin ();
-		while (mFieldIndices->end () != iterator)
+		int index = 0;
+		FindElement (mFieldIndexesByName, fieldName, &index);
+		id value = [self valueForFieldAtIndex: index row: rowIndex];
+		
+		if (! value)
+			value = nullPlaceholder;
+		
+		@try
 		{
-			NSString* fieldname = *iterator->first;
-			int index = iterator->second;
-			id value = [self valueForFieldAtIndex: index row: rowIndex];
-			if (! value)
-				value = nullPlaceholder;
-			@try
-			{
-				[targetObject setValue: value forKey: fieldname];
-			}
-			@catch (id e)
-			{
-			}
-			iterator++;
+			[targetObject setValue: value forKey: fieldName];
+		}
+		@catch (id e)
+		{
 		}
 	}
 }
+
 
 /**
  * \brief Current row with field names as keys.
@@ -675,12 +653,9 @@ KVCompare (PGTSResultSet* res, void* ctx)
 - (BOOL) setClass: (Class) aClass forKey: (NSString *) aName
 {
     BOOL retval = NO;
-	@synchronized (self)
-	{
-		int idx = 0;
-		if (FindElement (mFieldIndices, aName, &idx))
-			retval = [self setClass: aClass forFieldAtIndex: idx];
-	}
+	int idx = 0;
+	if (FindElement (mFieldIndexesByName, aName, &idx))
+		retval = [self setClass: aClass forFieldAtIndex: idx];
 	return retval;
 }
 
@@ -692,7 +667,7 @@ KVCompare (PGTSResultSet* res, void* ctx)
 	{
 		if (fieldIndex < mFields)
 		{
-			(* mFieldClasses) [fieldIndex] = aClass;
+			Insert (mFieldClassesByIndex, fieldIndex, aClass);
 			retval = YES;
 		}
 	}
@@ -714,7 +689,7 @@ KVCompare (PGTSResultSet* res, void* ctx)
 		
 		if (! PQgetisnull (mResult, rowIndex, columnIndex))
 		{
-			Class objectClass = (* mFieldClasses) [columnIndex];
+			Class objectClass = FindObject (mFieldClassesByIndex, columnIndex);
 			if (! objectClass)
 				objectClass = [NSData class];
 			char* value = PQgetvalue (mResult, rowIndex, columnIndex);
@@ -740,19 +715,16 @@ KVCompare (PGTSResultSet* res, void* ctx)
 - (id) valueForKey: (NSString *) aName row: (int) rowIndex
 {
 	id retval = nil;
-	@synchronized (self)
+	int columnIndex = 0;
+	if (! FindElement (mFieldIndexesByName, aName, &columnIndex))
 	{
-		int columnIndex = 0;
-		if (! FindElement (mFieldIndices, aName, &columnIndex))
-		{
-			@throw [NSException exceptionWithName: kPGTSFieldNotFoundException reason: nil 
-										 userInfo: [NSDictionary dictionaryWithObjectsAndKeys:
-													aName, kPGTSFieldnameKey,
-													self,  kPGTSResultSetKey,
-													nil]];
-		}
-		retval = [self valueForFieldAtIndex: columnIndex row: rowIndex];
+		@throw [NSException exceptionWithName: kPGTSFieldNotFoundException reason: nil 
+									 userInfo: [NSDictionary dictionaryWithObjectsAndKeys:
+												aName, kPGTSFieldnameKey,
+												self,  kPGTSResultSetKey,
+												nil]];
 	}
+	retval = [self valueForFieldAtIndex: columnIndex row: rowIndex];
     return retval;
 }
 

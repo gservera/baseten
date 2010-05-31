@@ -30,7 +30,6 @@
 #import "BXHOM.h"
 #import "PGTSDeleteRule.h"
 #import "PGTSConstants.h"
-#import "PGTSOids.h"
 #import "PGTSMetadataStorage.h"
 #import "BXArrayFunctions.h"
 
@@ -55,6 +54,7 @@
 #import "BXPGFromItem.h"
 #import "BXPGEFMetadataContainer.h"
 #import "BXPGForeignKeyDescription.h"
+#import "PGTSOids.h"
 
 #import "BXLocalizedString.h"
 #import "BXLogger.h"
@@ -1002,8 +1002,7 @@ static void FkeyOptionalityCallback (NSString* srcName, NSString* dstName, void*
 	NSMutableDictionary* currentRelationships = [NSMutableDictionary dictionary];
 	
 	BXPGDatabaseDescription* database = [mTransactionHandler databaseDescription];
-	NSNumber* currentCompatVersion = [BXPGVersion currentCompatibilityVersionNumber];
-	BOOL haveBaseTenSchema = ([currentCompatVersion isEqualToNumber: [database schemaCompatibilityVersion]]);
+	BOOL haveBaseTenSchema = [database hasCompatibleBaseTenSchemaVersion];
 	
 	BXEnumerate (entity, e, [entities objectEnumerator])
 	{

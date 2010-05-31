@@ -30,42 +30,10 @@
 #import <BaseTen/BXExport.h>
 #import <BaseTen/libpq-fe.h>
 
+
 BX_INTERNAL id PGTSOidAsObject (Oid o);
+
 
 @interface NSNumber (PGTSOidAdditions)
 - (Oid) PGTSOidValue;
 @end
-
-
-#if defined (__cplusplus)
-#import <tr1/unordered_map>
-#import <BaseTen/BXScannedMemoryAllocator.h>
-
-namespace PGTS 
-{
-	typedef std::list <Oid>
-		OidList;
-	
-	typedef std::tr1::unordered_set <Oid>
-		OidSet;
-	
-	typedef std::tr1::unordered_map <
-		Oid,
-		BaseTen::IdPtr,
-		std::tr1::hash <Oid>, 
-		std::equal_to <Oid>, 
-		BaseTen::ScannedMemoryAllocator <std::pair <
-			const Oid, BaseTen::IdPtr
-		> >
-	> OidMap;
-}
-
-#define PGTS_OidList PGTS::OidList
-#define PGTS_OidSet  PGTS::OidSet
-#define PGTS_OidMap  PGTS::OidMap
-
-#else
-#define PGTS_OidList void
-#define PGTS_OidSet  void
-#define PGTS_OidMap  __strong void
-#endif

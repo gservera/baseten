@@ -29,31 +29,17 @@
 #import "PGTSSchemaDescription.h"
 #import "BXHOM.h"
 #import "PGTSTableDescription.h"
-#import "BXCollections.h"
 #import "BXCollectionFunctions.h"
 #import "BXLogger.h"
 
 
-using namespace BaseTen::CollectionFunctions;
+using namespace BaseTen;
 
 
 @implementation PGTSSchemaDescription
-- (id) init
-{
-	if ((self = [super init]))
-	{
-		mTablesByName = new BaseTen::IdMap ();
-		mTableLock = [[NSLock alloc] init];
-	}
-	return self;
-}
-
-
 - (void) dealloc
 {
-	delete mTablesByName;	
-	[mAllTables release];
-	[mTableLock release];
+	[mTablesByName release];
 	[super dealloc];
 }
 
@@ -61,37 +47,24 @@ using namespace BaseTen::CollectionFunctions;
 - (PGTSTableDescription *) tableNamed: (NSString *) name
 {
 	Expect (name);
-	return FindObject (mTablesByName, name);
+	return [mTablesByName objectForKey: name];
 }
 
-
-- (void) addTable: (PGTSTableDescription *) table
-{
-	ExpectV (table);
-	[mTableLock lock];
-	if (mAllTables)
-	{
-		[mAllTables release];
-		mAllTables = nil;
-	}
-	[mTableLock unlock];
-	InsertConditionally (mTablesByName, [table name], table);
-}
 
 - (NSArray *) allTables
 {
-	[mTableLock lock];
-	if (! mAllTables)
-	{
-		NSMutableArray* tables = [NSMutableArray arrayWithCapacity: mTablesByName->size ()];
-		for (BaseTen::IdMap::const_iterator it = mTablesByName->begin (), end = mTablesByName->end ();
-			 it != end; it++)
-		{
-			[tables addObject: *it->second];
-		}
-		mAllTables = [tables copy];
-	}
-	[mTableLock unlock];
-	return [[mAllTables retain] autorelease];
+	return [mTablesByName allValues];
+}
+
+
+- (void) setTables: (id <NSFastEnumeration>) tables
+{
+	NSMutableDictionary *tablesByName = [NSMutableDictionary dictionary];
+	
+	for (PGTSTableDescription *table in tables)
+		Insert (tablesByName, [table name], table);
+	
+	[mTablesByName release];
+	mTablesByName = [tablesByName copy];
 }
 @end

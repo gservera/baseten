@@ -105,7 +105,7 @@ SocketReady (CFSocketRef socket, CFSocketCallBackType callbackType, CFDataRef ad
 - (void) _dispatchLockCallout: (id) userInfo
 {
 	ExpectL ([NSThread currentThread] == mThread);
-	[mDelegate socketLocked: CFSocketGetNative (mSocket) userInfo: userInfo];
+	[[self delegate] socketDescriptor: self lockedSocket: CFSocketGetNative (mSocket) userInfo: userInfo];
 }
 
 

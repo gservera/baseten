@@ -27,12 +27,14 @@
 //
 
 #import <Foundation/Foundation.h>
+@class BXSocketDescriptor;
 @class BXValidationLock;
 
 
+
 @protocol BXSocketDescriptorDelegate <NSObject>
-- (void) socketReadyForReading: (int) fd estimatedSize: (unsigned long) size;
-- (void) socketLocked: (int) fd userInfo: (id) userInfo;
+- (void) socketDescriptor: (BXSocketDescriptor *) desc readyForReading: (int) fd estimatedSize: (unsigned long) size;
+- (void) socketDescriptor: (BXSocketDescriptor *) desc lockedSocket: (int) fd userInfo: (id) userInfo;
 @end
 
 

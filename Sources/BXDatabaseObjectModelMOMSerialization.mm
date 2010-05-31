@@ -30,7 +30,6 @@
 #import <CoreData/CoreData.h>
 #import <tr1/unordered_map>
 #import "BXDatabaseObjectModel.h"
-#import "BXCollections.h"
 #import "BXEnumerate.h"
 #import "BXEntityDescription.h"
 #import "BXAttributeDescription.h"
@@ -43,22 +42,10 @@
 
 
 using namespace BaseTen;
-using namespace BaseTen::CollectionFunctions;
 
 
-typedef std::tr1::unordered_map <
-	IdPtr,
-	NSAttributeType,
-	std::tr1::hash <IdPtr>,
-	std::equal_to <IdPtr>,
-	BaseTen::ScannedMemoryAllocator <std::pair <
-		const IdPtr, NSAttributeType
-	> > 
-> IdentifierMap;
-
-
-static IdentifierMap gTypeMapping;
-__strong static NSDictionary* gNameMapping;
+__strong static NSDictionary *gTypeMapping;
+__strong static NSDictionary *gNameMapping;
 
 
 @implementation BXDatabaseObjectModelMOMSerialization
@@ -69,29 +56,30 @@ __strong static NSDictionary* gNameMapping;
 	{
 		tooLate = YES;
 		
-		gTypeMapping [IdPtr (@"bit")]         = NSStringAttributeType;
-		gTypeMapping [IdPtr (@"bool")]        = NSBooleanAttributeType;
-		gTypeMapping [IdPtr (@"bytea")]       = NSBinaryDataAttributeType;
-		gTypeMapping [IdPtr (@"char")]        = NSStringAttributeType;
-		gTypeMapping [IdPtr (@"date")]        = NSDateAttributeType;
-		gTypeMapping [IdPtr (@"float4")]      = NSFloatAttributeType;
-		gTypeMapping [IdPtr (@"float8")]      = NSDoubleAttributeType;
-		gTypeMapping [IdPtr (@"int2")]        = NSInteger16AttributeType;
-		gTypeMapping [IdPtr (@"int4")]        = NSInteger32AttributeType;
-		gTypeMapping [IdPtr (@"int8")]        = NSInteger64AttributeType;
-		gTypeMapping [IdPtr (@"name")]        = NSStringAttributeType;
-		gTypeMapping [IdPtr (@"numeric")]     = NSDecimalAttributeType;
-		gTypeMapping [IdPtr (@"oid")]         = NSInteger32AttributeType;
-		gTypeMapping [IdPtr (@"text")]        = NSStringAttributeType;
-		gTypeMapping [IdPtr (@"timestamp")]   = NSDateAttributeType;
-		gTypeMapping [IdPtr (@"timestamptz")] = NSDateAttributeType;
-		gTypeMapping [IdPtr (@"time")]        = NSDateAttributeType;
-		gTypeMapping [IdPtr (@"timetz")]      = NSDateAttributeType;
-		gTypeMapping [IdPtr (@"varbit")]      = NSStringAttributeType;
-		gTypeMapping [IdPtr (@"varchar")]     = NSStringAttributeType;
-		gTypeMapping [IdPtr (@"bpchar")]      = NSStringAttributeType;
-		gTypeMapping [IdPtr (@"uuid")]        = NSStringAttributeType;
-		
+		gTypeMapping = [[NSDictionary alloc] initWithObjectsAndKeys:
+						ObjectValue <NSAttributeType> (NSStringAttributeType),		@"bit",
+						ObjectValue <NSAttributeType> (NSBooleanAttributeType),		@"bool",
+						ObjectValue <NSAttributeType> (NSBinaryDataAttributeType),	@"bytea",
+						ObjectValue <NSAttributeType> (NSStringAttributeType),		@"char",
+						ObjectValue <NSAttributeType> (NSDateAttributeType),		@"date",
+						ObjectValue <NSAttributeType> (NSFloatAttributeType),		@"float4",
+						ObjectValue <NSAttributeType> (NSDoubleAttributeType),		@"float8",
+						ObjectValue <NSAttributeType> (NSInteger16AttributeType),	@"int2",
+						ObjectValue <NSAttributeType> (NSInteger32AttributeType),	@"int4",
+						ObjectValue <NSAttributeType> (NSInteger64AttributeType),	@"int8",
+						ObjectValue <NSAttributeType> (NSStringAttributeType),		@"name",
+						ObjectValue <NSAttributeType> (NSDecimalAttributeType),		@"numeric",
+						ObjectValue <NSAttributeType> (NSInteger32AttributeType),	@"oid",
+						ObjectValue <NSAttributeType> (NSStringAttributeType),		@"text",
+						ObjectValue <NSAttributeType> (NSDateAttributeType),		@"timestamp",
+						ObjectValue <NSAttributeType> (NSDateAttributeType),		@"timestamptz",
+						ObjectValue <NSAttributeType> (NSDateAttributeType),		@"time",
+						ObjectValue <NSAttributeType> (NSDateAttributeType),		@"timetz",
+						ObjectValue <NSAttributeType> (NSStringAttributeType),		@"varbit",
+						ObjectValue <NSAttributeType> (NSStringAttributeType),		@"varchar",
+						ObjectValue <NSAttributeType> (NSStringAttributeType),		@"bpchar",
+						ObjectValue <NSAttributeType> (NSStringAttributeType),		@"uuid",
+						nil];
 		gNameMapping = [[NSDictionary alloc] initWithObjectsAndKeys:
 						@"modelDescription", @"description",
 						@"modelObjectID", @"objectID",
@@ -311,7 +299,7 @@ static NSInteger CompareAttrIndices (id lhs, id rhs, void* ctx)
 				[attr setOptional: [bxAttr isOptional]];
 				
 				NSAttributeType attributeType = NSUndefinedAttributeType;
-				FindElement (&gTypeMapping, [bxAttr databaseTypeName], &attributeType);
+				FindElement (gTypeMapping, [bxAttr databaseTypeName], &attributeType);
 				[attr setAttributeType: attributeType];
 				
 				NSDictionary* userInfo = [NSDictionary dictionaryWithObject: [bxAttr databaseTypeName] forKey: @"Database type"];

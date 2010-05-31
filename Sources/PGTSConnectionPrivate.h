@@ -30,7 +30,7 @@
 @interface PGTSConnection (PGTSConnectionPrivate)
 - (void) _setConnector: (PGTSConnector *) anObject;
 - (void) _setSocketDescriptor: (BXSocketDescriptor *) desc;
-- (int) _sendNextQuery;
+- (void) _sendNextQuery;
 - (void) _sendOrEnqueueQuery: (PGTSQueryDescription *) query;
 - (void) _processNotifications;
 - (void) _checkConnectionStatus;

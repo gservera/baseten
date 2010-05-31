@@ -35,16 +35,15 @@
 
 @interface BXPGForeignKeyDescription : PGTSAbstractDescription <BXForeignKey>
 {
+	NSArray *mFieldNames;
 	NSInteger mIdentifier;
-	BX_IdPairSet* mFieldNames;
-	pthread_rwlock_t mFieldNameLock;
 	NSDeleteRule mDeleteRule;
 }
 - (NSInteger) identifier;
 - (NSDeleteRule) deleteRule;
-- (void) addSrcFieldName: (NSString *) srcFName dstFieldName: (NSString *) dstFName;
 
 //Thread-unsafe methods
 - (void) setIdentifier: (NSInteger) identifier;
 - (void) setDeleteRule: (NSDeleteRule) aRule;
+- (void) setSrcFieldNames: (NSArray *) srcFields dstFieldNames: (NSArray *) dstFields;
 @end

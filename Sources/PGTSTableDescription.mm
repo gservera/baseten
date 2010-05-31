@@ -29,43 +29,25 @@
 #import "PGTSTableDescription.h"
 #import "PGTSColumnDescription.h"
 #import "PGTSIndexDescription.h"
-#import "BXCollections.h"
 #import "BXCollectionFunctions.h"
-#import "BXScannedMemoryAllocator.h"
 #import "BXLogger.h"
 #import "NSString+PGTSAdditions.h"
+#import "PGTSOids.h"
 
 
 using namespace BaseTen;
-using namespace BaseTen::CollectionFunctions;
-using namespace PGTS;
 
 
 @implementation PGTSTableDescription
-- (id) init
-{
-	if ((self = [super init]))
-	{
-		mColumnsByIndex = new IndexMap ();
-		mUniqueIndexes = new IdList ();
-		mColumnLock = [[NSLock alloc] init];
-	}
-	return self;
-}
-
 - (void) dealloc
 {
-	[mColumnLock release];
 	[mColumnsByName release];
-	
-	delete mColumnsByIndex;
-	delete mUniqueIndexes;
-	
-	if (mInheritedOids)
-		delete mInheritedOids;
-	
+	[mColumnsByIndex release];
+	[mUniqueIndexes release];
+	[mInheritedOids release];
 	[super dealloc];
 }
+
 
 - (NSString *) schemaQualifiedName: (PGTSConnection *) connection
 {
@@ -75,19 +57,22 @@ using namespace PGTS;
     return [NSString stringWithFormat: @"\"%@\".\"%@\"", schemaName, name];
 }
 
+
 - (NSString *) schemaName
 {
 	Expect (mSchema);
 	return [mSchema name];
 }
 
+
 - (PGTSIndexDescription *) primaryKey
 {
-	Expect (mUniqueIndexes);
 	id retval = nil;
-	IdList::const_iterator it = mUniqueIndexes->begin ();
-	if (mUniqueIndexes->end () != it && [**it isPrimaryKey])
-		retval = **it;
+	for (PGTSIndexDescription *desc in mUniqueIndexes)
+	{
+		if ([desc isPrimaryKey])
+			retval = desc;
+	}
 	return retval;
 }
 
@@ -98,59 +83,54 @@ using namespace PGTS;
 
 - (NSDictionary *) columns
 {
-	id retval = nil;
-	[mColumnLock lock];
-	if (! mColumnsByName)
-		mColumnsByName = [[CreateCFMutableDictionaryWithNames (mColumnsByIndex) autorelease] copy];
-	
-	retval = [[mColumnsByName retain] autorelease];
-	[mColumnLock unlock];
-	
-	return retval;
+	return [[mColumnsByName retain] autorelease];
 }
 
 
 - (void) iterateInheritedOids: (void (*)(Oid currentOid, void* context)) callback context: (void *) context
 {
-	if (mInheritedOids)
+	for (id oidValue in mInheritedOids)
 	{
-		for (OidList::const_iterator it = mInheritedOids->begin (), end = mInheritedOids->end ();
-			it != end; it++)
-		{
-			callback (*it, context);
-		}
+		Oid oid = [oidValue PGTSOidValue];
+		callback (oid, context);
 	}
 }
 
 
-- (void) addIndex: (PGTSIndexDescription *) anIndex
+- (void) setColumns: (NSArray *) columns
 {
-	ExpectV (anIndex);
-	PushBack (mUniqueIndexes, anIndex);
-}
-
-- (void) addColumn: (PGTSColumnDescription *) column
-{
-	ExpectV (column);
+	NSMutableDictionary *columnsByIndex = [NSMutableDictionary dictionary];
+	NSMutableDictionary *columnsByName = [NSMutableDictionary dictionary];
 	
-	[mColumnLock lock];
-	if (mColumnsByName)
+	for (PGTSColumnDescription *column in columns)
 	{
-		[mColumnsByName release];
-		mColumnsByName = nil;
+		Insert (columnsByIndex, [column index], column);
+		Insert (columnsByName, [column name], column);
 	}
-	[mColumnLock unlock];
 	
-	int idx = [column index];
-	InsertConditionally (mColumnsByIndex, idx, column);
+	[mColumnsByIndex release];
+	[mColumnsByName release];
+	mColumnsByIndex = [columnsByIndex copy];
+	mColumnsByName = [columnsByName copy];
 }
 
-- (void) addInheritedOid: (Oid) anOid
+
+- (void) setUniqueIndexes: (NSArray *) indices
 {
-	ExpectV (InvalidOid != anOid)
-	
-	if (! mInheritedOids)
-		mInheritedOids = new OidList ();
-	mInheritedOids->push_back (anOid);
+	if (indices != mUniqueIndexes)
+	{
+		[mUniqueIndexes release];
+		mUniqueIndexes = [indices copy];
+	}
+}
+
+
+- (void) setInheritedOids: (NSArray *) oids
+{
+	if (oids != mInheritedOids)
+	{
+		[mInheritedOids release];
+		mInheritedOids = [oids copy];
+	}
 }
 @end

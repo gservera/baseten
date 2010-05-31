@@ -28,7 +28,6 @@
 
 #import <Foundation/Foundation.h>
 #import <BaseTen/PGTSAbstractClassDescription.h>
-#import <BaseTen/BXCollections.h>
 
 
 @class PGTSColumnDescription;
@@ -41,12 +40,10 @@
 
 @interface PGTSTableDescription : PGTSAbstractClassDescription
 {
-	BX_IndexMap* mColumnsByIndex;
-	BX_IdList* mUniqueIndexes;
-	PGTS_OidList* mInheritedOids;
-
+	NSDictionary *mColumnsByIndex;
 	NSDictionary* mColumnsByName;
-	NSLock* mColumnLock;
+	NSArray *mUniqueIndexes;
+	NSArray *mInheritedOids;
 }
 - (NSString *) schemaQualifiedName: (PGTSConnection *) connection;
 - (NSString *) schemaName;
@@ -58,7 +55,7 @@
 - (void) iterateInheritedOids: (void (*)(Oid currentOid, void* context)) callback context: (void *) context;
 
 //Thread un-safe methods.
-- (void) addIndex: (PGTSIndexDescription *) anIndex;
-- (void) addColumn: (PGTSColumnDescription *) aColumn;
-- (void) addInheritedOid: (Oid) anOid;
+- (void) setColumns: (NSArray *) columns;
+- (void) setUniqueIndexes: (NSArray *) indexes;
+- (void) setInheritedOids: (NSArray *) oids;
 @end

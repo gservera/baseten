@@ -37,9 +37,9 @@
 
 @interface PGTSColumnDescription : PGTSAbstractDescription
 {
+    PGTSTypeDescription *mType;
+	NSString *mDefaultValue;
     NSInteger mIndex;
-	NSString* mDefaultValue;
-    PGTSTypeDescription* mType;
 	BOOL mIsNotNull;
 	BOOL mIsInherited;
 }
@@ -64,8 +64,8 @@
 //Stubs for sub classes' methods.
 - (BOOL) requiresDocuments;
 - (void) setRequiresDocuments: (BOOL) aBool;
-
 @end
+
 
 
 @interface PGTSXMLColumnDescription : PGTSColumnDescription

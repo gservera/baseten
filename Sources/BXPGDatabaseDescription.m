@@ -35,24 +35,15 @@
 #import "BXCollectionFunctions.h"
 
 
-using namespace BaseTen::CollectionFunctions;
+using namespace BaseTen;
 
 
 @implementation BXPGDatabaseDescription
-- (id) init
-{
-	if ((self = [super init]))
-	{
-		mForeignKeysByIdentifier = new BaseTen::IndexMap ();
-	}
-	return self;
-}
-
 - (void) dealloc
 {
 	[mSchemaVersion release];
 	[mSchemaCompatibilityVersion release];
-	delete mForeignKeysByIdentifier;
+	[mForeignKeysByIdentifier release];
 	[super dealloc];
 }
 
@@ -60,6 +51,13 @@ using namespace BaseTen::CollectionFunctions;
 {
 	return mHasBaseTenSchema;
 }
+
+
+- (BOOL) hasCompatibleBaseTenSchemaVersion
+{
+	return mHasCompatibleBaseTenSchemaVersion;
+}
+
 
 - (NSNumber *) schemaVersion
 {
@@ -94,10 +92,23 @@ using namespace BaseTen::CollectionFunctions;
 	mHasBaseTenSchema = aBool;
 }
 
-- (void) addForeignKey: (BXPGForeignKeyDescription *) fkey
+
+- (void) setHasCompatibleBaseTenSchemaVersion: (BOOL) flag
 {
-	InsertConditionally (mForeignKeysByIdentifier, [fkey identifier], fkey);
+	mHasCompatibleBaseTenSchemaVersion = flag;
 }
+
+
+- (void) setForeignKeys: (id <NSFastEnumeration>) foreignKeys
+{
+	NSMutableDictionary *foreignKeysByIdentifier = [NSMutableDictionary dictionary];
+	for (BXPGForeignKeyDescription *fkey in foreignKeys)
+		Insert (foreignKeysByIdentifier, [fkey identifier], fkey);
+	
+	[mForeignKeysByIdentifier release];
+	mForeignKeysByIdentifier = [foreignKeysByIdentifier copy];
+}
+
 
 - (BXPGForeignKeyDescription *) foreignKeyWithIdentifier: (NSInteger) identifier
 {

@@ -28,35 +28,32 @@
 
 
 #import "PGTSDatabaseDescription.h"
-#import "PGTSOids.h"
-#import "BXScannedMemoryAllocator.h"
 #import "PGTSAbstractDescription.h"
 #import "PGTSAbstractObjectDescription.h"
 #import "PGTSTableDescription.h"
 #import "PGTSSchemaDescription.h"
 #import "PGTSTypeDescription.h"
 #import "PGTSRoleDescription.h"
-#import "BXCollections.h"
+#import "BXCollectionFunctions.h"
 #import "BXLogger.h"
 #import "BXArraySize.h"
 #import "BXCollectionFunctions.h"
 
 
-using namespace PGTS;
-using namespace BaseTen::CollectionFunctions;
+using namespace BaseTen;
 
 
 static NSArray*
-FindUsingOidVector (const Oid* oidVector, OidMap* map)
+FindUsingOidVector (const Oid* oidVector, NSDictionary *dict)
 {
 	NSMutableArray* retval = [NSMutableArray array];
 	for (unsigned int i = 0; InvalidOid != oidVector [i]; i++)
 	{
-		id type = FindObject (map, oidVector [i]);
+		id type = FindObject (dict, oidVector [i]);
 		if (type)
 			[retval addObject: type];
 	}
-	return retval;
+	return [[retval copy] autorelease];
 }
 
 
@@ -81,79 +78,13 @@ FindUsingOidVector (const Oid* oidVector, OidMap* map)
 
 - (void) dealloc
 {
-	delete mSchemasByOid;
-	delete mTablesByOid;
-	delete mTypesByOid;
-	delete mRolesByOid;
-	
+	[mSchemasByOid release];
+	[mTablesByOid release];
+	[mTypesByOid release];
+	[mRolesByOid release];
 	[mSchemasByName release];
-	[mRolesByName release];
-	
-	[mSchemaLock release];
-	[mRoleLock release];
-		
+	[mRolesByName release];	
 	[super dealloc];
-}
-
-
-- (id) init
-{
-	if ((self = [super init]))
-	{
-		mSchemasByOid = new OidMap ();
-		mTablesByOid = new OidMap ();
-		mTypesByOid = new OidMap ();
-		mRolesByOid = new OidMap ();
-		mSchemaLock = [[NSLock alloc] init];
-		mRoleLock = [[NSLock alloc] init];
-	}
-	return self;
-}
-
-
-- (void) addTable: (PGTSTableDescription *) table
-{
-	ExpectV (table);
-	InsertConditionally (mTablesByOid, [table oid], table);
-	
-	PGTSSchemaDescription* schema = [table schema];
-	ExpectV (schema);
-	[schema addTable: table];
-}
-
-
-- (void) addSchema: (PGTSSchemaDescription *) schema
-{
-	ExpectV (schema);
-	[mSchemaLock lock];
-	if (mSchemasByName)
-	{
-		[mSchemasByName release];
-		mSchemasByName = nil;
-	}
-	[mSchemaLock unlock];
-	InsertConditionally (mSchemasByOid, [schema oid], schema);
-}
-
-
-- (void) addType: (PGTSTypeDescription *) type
-{
-	ExpectV (type);
-	InsertConditionally (mTypesByOid, [type oid], type);
-}
-
-
-- (void) addRole: (PGTSRoleDescription *) role
-{
-	ExpectV (role);
-	[mRoleLock lock];
-	if (mRolesByName)
-	{
-		[mRolesByName release];
-		mRolesByName = nil;
-	}	
-	[mRoleLock unlock];
-	InsertConditionally (mRolesByOid, [role oid], role);
 }
 
 
@@ -184,39 +115,19 @@ FindUsingOidVector (const Oid* oidVector, OidMap* map)
 - (PGTSSchemaDescription *) schemaNamed: (NSString *) name
 {
 	Expect (name);
-
-	[mSchemaLock lock];
-	if (! mSchemasByName)
-		mSchemasByName = [[CreateCFMutableDictionaryWithNames (mSchemasByOid) autorelease] copy];
-	[mSchemaLock unlock];
-
-	//We assume that external locking is used if schemas are added while this method may be called.
 	return [mSchemasByName objectForKey: name];
 }
 
 
 - (NSDictionary *) schemasByName
 {
-	id retval = nil;
-	[mSchemaLock lock];
-	if (! mSchemasByName)
-		mSchemasByName = [[CreateCFMutableDictionaryWithNames (mSchemasByOid) autorelease] copy];
-	retval = [[mSchemasByName retain] autorelease];
-	[mSchemaLock unlock];
-	return retval;
+	return [[mSchemasByName retain] autorelease];
 }
 
 
 - (PGTSRoleDescription *) roleNamed: (NSString *) name
 {
 	Expect (name);
-	
-	[mRoleLock lock];
-	if (! mRolesByName)
-		mRolesByName = [[CreateCFMutableDictionaryWithNames (mRolesByOid) autorelease] copy];
-	[mRoleLock unlock];
-	
-	//We assume that external locking is used if schemas are added while this method may be called.
 	return [mRolesByName objectForKey: name];
 }
 
@@ -241,5 +152,58 @@ FindUsingOidVector (const Oid* oidVector, OidMap* map)
 	Expect (schemaName);
 		
 	return [[self schemaNamed: schemaName] tableNamed: tableName];
+}
+
+
+- (void) setSchemas: (id <NSFastEnumeration>) schemas
+{
+	NSMutableDictionary *schemasByName = [NSMutableDictionary dictionary];
+	NSMutableDictionary *tablesByOid = [NSMutableDictionary dictionary];
+	
+	for (PGTSSchemaDescription *schema in schemas)
+	{
+		NSString *name = [schema name];
+		if ([name length])
+		{
+			Insert (schemasByName, [schema name], schema);
+		
+			for (PGTSTableDescription *table in [schema allTables])
+				Insert (tablesByOid, [table oid], table);
+		}
+	}
+	
+	[mSchemasByName release];
+	[mTablesByOid release];
+	mSchemasByName = [schemasByName copy];
+	mTablesByOid = [tablesByOid copy];
+}
+
+
+- (void) setTypes: (id <NSFastEnumeration>) types
+{
+	NSMutableDictionary *typesByOid = [NSMutableDictionary dictionary];
+	for (PGTSTypeDescription *typeDesc in types)
+		Insert (typesByOid, [typeDesc oid], typeDesc);
+	
+	[mTypesByOid release];
+	mTypesByOid = [typesByOid copy];
+}
+
+
+- (void) setRoles: (id <NSFastEnumeration>) roles
+{
+	NSMutableDictionary *rolesByName = [NSMutableDictionary dictionary];
+	NSMutableDictionary *rolesByOid = [NSMutableDictionary dictionary];
+	
+	for (PGTSRoleDescription *role in roles)
+	{
+		Insert (rolesByName, [role name], role);
+		Insert (rolesByOid, [role oid], role);
+	}
+	
+	[mRolesByName release];
+	[mRolesByOid release];
+	mRolesByName = [rolesByName copy];
+	mRolesByOid = [rolesByOid copy];
 }
 @end

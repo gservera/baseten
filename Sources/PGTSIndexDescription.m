@@ -37,17 +37,6 @@
  * \brief Table index
  */
 @implementation PGTSIndexDescription
-
-- (id) init
-{
-    if ((self = [super init]))
-    {
-        mIsUnique = NO;
-        mIsPrimaryKey = NO;
-    }
-    return self;
-}
-
 - (void) dealloc
 {
     [mColumns release];

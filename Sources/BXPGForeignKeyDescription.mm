@@ -29,45 +29,92 @@
 
 #import "BXPGForeignKeyDescription.h"
 #import "BXLogger.h"
-#import "BXCollections.h"
 #import "BXCollectionFunctions.h"
-#import <iterator>
 
 
-using namespace BaseTen;
-using namespace BaseTen::CollectionFunctions;
-
-
-@implementation BXPGForeignKeyDescription
-- (id) init
+@interface BXPGForeignKeyDescriptionKeyPair : NSObject
 {
-	if ((self = [super init]))
-	{
-		mFieldNames = new IdPairSet ();
-		Expect (0 == pthread_rwlock_init (&mFieldNameLock, NULL));
-	}
-	return self;
+	NSString *mSrcKey;
+	NSString *mDstKey;
 }
+- (NSString *) srcKey;
+- (NSString *) dstKey;
+- (void) setSrcKey: (NSString *) key;
+- (void) setDstKey: (NSString *) key;
+@end
 
+
+
+@implementation BXPGForeignKeyDescriptionKeyPair
 - (void) dealloc
 {
-	delete mFieldNames;
-	pthread_rwlock_destroy (&mFieldNameLock);
+	[mSrcKey release];
+	[mDstKey release];
 	[super dealloc];
 }
 
-- (void) finalize
+
+- (NSString *) srcKey
 {
-	pthread_rwlock_destroy (&mFieldNameLock);
-	[super finalize];
+	return [[mSrcKey retain] autorelease];
 }
 
-- (void) addSrcFieldName: (NSString *) srcFName dstFieldName: (NSString *) dstFName
+
+- (NSString *) dstKey
 {
-	pthread_rwlock_wrlock (&mFieldNameLock);
-	mFieldNames->insert (IdPair (srcFName, dstFName));
-	pthread_rwlock_unlock (&mFieldNameLock);
+	return [[mDstKey retain] autorelease];
 }
+
+
+- (void) setSrcKey: (NSString *) srcKey
+{
+	if (mSrcKey != srcKey)
+	{
+		[mSrcKey release];
+		mSrcKey = [srcKey retain];
+	}
+}
+
+
+- (void) setDstKey: (NSString *) dstKey
+{
+	if (mDstKey != dstKey)
+	{
+		[mDstKey release];
+		mDstKey = [dstKey retain];
+	}
+}
+@end
+
+
+
+@implementation BXPGForeignKeyDescription
+- (void) dealloc
+{
+	[mFieldNames release];
+	[super dealloc];
+}
+
+
+- (void) setSrcFieldNames: (NSArray *) srcFields dstFieldNames: (NSArray *) dstFields
+{
+	NSUInteger count = [srcFields count];
+	ExpectV ([dstFields count] == count);
+	
+	NSMutableArray *keyPairs = [NSMutableArray arrayWithCapacity: count];
+	for (NSUInteger i = 0; i < count; i++)
+	{
+		BXPGForeignKeyDescriptionKeyPair *pair = [[BXPGForeignKeyDescriptionKeyPair alloc] init];
+		[pair setSrcKey: [srcFields objectAtIndex: i]];
+		[pair setDstKey: [dstFields objectAtIndex: i]];
+		[keyPairs addObject: pair];
+		[pair release];
+	}
+	
+	[mFieldNames release];
+	mFieldNames = [keyPairs copy];
+}
+
 
 - (NSDeleteRule) deleteRule
 {
@@ -91,32 +138,18 @@ using namespace BaseTen::CollectionFunctions;
 
 - (void) iterateColumnNames: (void (*)(NSString* srcName, NSString* dstName, void* context)) callback context: (void *) context
 {
-	pthread_rwlock_rdlock (&mFieldNameLock);
-	for (IdPairSet::const_iterator it = mFieldNames->begin (), end = mFieldNames->end ();
-		 it != end; it++)
-	{
-		callback (*it->first, *it->second, context);
-	}
-	pthread_rwlock_unlock (&mFieldNameLock);
+	for (BXPGForeignKeyDescriptionKeyPair *pair in mFieldNames)
+		callback ([pair srcKey], [pair dstKey], context);
 }
 
 - (void) iterateReversedColumnNames: (void (*)(NSString* dstName, NSString* srcName, void* context)) callback context: (void *) context
 {
-	pthread_rwlock_rdlock (&mFieldNameLock);
-	for (IdPairSet::const_iterator it = mFieldNames->begin (), end = mFieldNames->end ();
-		 it != end; it++)
-	{
-		callback (*it->second, *it->first, context);
-	}
-	pthread_rwlock_unlock (&mFieldNameLock);
+	for (BXPGForeignKeyDescriptionKeyPair *pair in mFieldNames)
+		callback ([pair dstKey], [pair srcKey], context);
 }
 
 - (NSUInteger) numberOfColumns
 {
-	NSUInteger retval = 0;
-	pthread_rwlock_rdlock (&mFieldNameLock);
-	retval = mFieldNames->size ();
-	pthread_rwlock_unlock (&mFieldNameLock);
-	return retval;
+	return [mFieldNames count];
 }
 @end

@@ -34,8 +34,7 @@
 #import "BXLogger.h"
 
 
-using namespace PGTS;
-using namespace BaseTen::CollectionFunctions;
+using namespace BaseTen;
 
 
 /** 
@@ -43,38 +42,35 @@ using namespace BaseTen::CollectionFunctions;
  * \brief Abstract base class for database class objects.
  */
 @implementation PGTSAbstractClassDescription
-
 - (id) init
 {
     if ((self = [super init]))
     {
 		mRelkind = '\0';
-        mACLItemsByRoleOid = new OidMap ();
     }
     return self;
 }
 
 - (void) dealloc
 {
-	delete mACLItemsByRoleOid;
+	[mACLItemsByRoleOid release];
     [super dealloc];
 }
 
 
 - (void) setACL: (NSArray *) ACL
 {
-	BXEnumerate (currentItem, e, [ACL objectEnumerator])
-		[self addACLItem: currentItem];
+	NSMutableDictionary *ACLItemsByRoleOid = [[NSMutableDictionary alloc] initWithCapacity: [ACL count]];
+	for (PGTSACLItem *item in ACL)
+	{
+		Oid oid = [[item role] oid];
+		InsertConditionally (ACLItemsByRoleOid, oid, item);		
+	}
+	
+	[mACLItemsByRoleOid release];
+	mACLItemsByRoleOid = [ACLItemsByRoleOid copy];
 }
 
-
-- (void) addACLItem: (PGTSACLItem *) item
-{
-	ExpectV (item);
-	Oid oid = [[item role] oid];
-	if (! ContainsKey (mACLItemsByRoleOid, oid))
-		mACLItemsByRoleOid->insert (std::make_pair (oid, item));
-}
 
 - (char) kind
 {
@@ -107,9 +103,9 @@ using namespace BaseTen::CollectionFunctions;
 	
     if (! retval)
     {
-		for (OidMap::const_iterator it = mACLItemsByRoleOid->begin (); mACLItemsByRoleOid->end () != it; it++)
+		for (PGTSACLItem *item in mACLItemsByRoleOid)
 		{
-            if (aPrivilege & [*it->second privileges] && [[*it->second role] hasMember: aRole])
+			if (aPrivilege & [item privileges] && [[item role] hasMember: aRole])
             {
                 retval = YES;
                 break;

@@ -241,8 +241,8 @@ BXLog_v (char const *fileName, char const *functionName, void const *functionAdd
 	NSString *message = [[[NSString alloc] initWithFormat: messageFmt arguments: args] autorelease];
 		
 	const char isMain = ([NSThread isMainThread] ? 'm' : 's');
-	fprintf (stderr, "%23s  %s (%s) [%d]  %s:%d  %s [%p%c] \t%8s %s\n", 
-		[date UTF8String], executable, library ?: "???", getpid (), file, line, functionName, [NSThread currentThread], isMain, LogLevel (level), [message UTF8String]);
+	fprintf (stderr, "%23s  %s (%s) [%d %p%c]  %s:%d  %s \t%8s %s\n", 
+		[date UTF8String], executable, library ?: "???", getpid (), [NSThread currentThread], isMain, file, line, functionName, LogLevel (level), [message UTF8String]);
 	fflush (stderr);
 	
 	//For GC.

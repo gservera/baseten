@@ -29,23 +29,19 @@
 #import "BXPGModificationHandler.h"
 #import "BXEntityDescriptionPrivate.h"
 #import "BXDatabaseObjectIDPrivate.h"
-#import "BXScannedMemoryAllocator.h"
 #import "BXHOM.h"
 #import "BXEnumerate.h"
-#import <tr1/unordered_map>
+#import "BXCollectionFunctions.h"
 
-typedef std::tr1::unordered_map <unichar, NSMutableArray*,
-	std::tr1::hash <unichar>,
-	std::equal_to <unichar>,
-	BaseTen::ScannedMemoryAllocator <std::pair <
-		const unichar, BaseTen::ObjCPtr <NSMutableArray *>
-	> > 
-> ChangeMap;
+
+using namespace BaseTen;
+
 
 
 @interface PGTSColumnDescription (BXPGModificationHandlerAdditions)
 - (NSString *) columnDefinition;
 @end
+
 
 
 @implementation PGTSColumnDescription (BXPGModificationHandlerAdditions)
@@ -62,6 +58,7 @@ typedef std::tr1::unordered_map <unichar, NSMutableArray*,
 	return retval;
 }
 @end
+
 
 
 @implementation BXPGModificationHandler
@@ -118,17 +115,17 @@ typedef std::tr1::unordered_map <unichar, NSMutableArray*,
 		[self setLastCheck: [res valueForKey: @"baseten_modification_timestamp"]];
 	
 	//Sort the changes by type.
-	ChangeMap changes = ChangeMap (3);
+	NSMutableDictionary *changes = [NSMutableDictionary dictionaryWithCapacity: 4];
 	NSMutableArray *changedAttrs = [NSMutableArray arrayWithCapacity: [res count]];
 	[res goBeforeFirstRow];
     while ([res advanceRow])
     {
 		unichar modificationType = [[res valueForKey: @"baseten_modification_type"] characterAtIndex: 0];                            
-		NSMutableArray *objectIDs = changes [modificationType];
+		NSMutableArray *objectIDs = FindObject (changes, modificationType);
 		if (! objectIDs)
 		{
 			objectIDs = [NSMutableArray arrayWithCapacity: [res count]];
-			changes [modificationType] = objectIDs;
+			Insert (changes, modificationType, objectIDs);
 		}
 		
 		BXDatabaseObjectID* objectID = [BXDatabaseObjectID IDWithEntity: mEntity primaryKeyFields: [res currentRowAsDictionary]];
@@ -150,12 +147,13 @@ typedef std::tr1::unordered_map <unichar, NSMutableArray*,
 	}
 	
 	//Send changes.
-	ChangeMap::const_iterator iterator = changes.begin ();
-    while (changes.end () != iterator)
+	for (NSValue *key in [changes keyEnumerator])
     {
-		unichar type = iterator->first;
-		NSArray* objectIDs = iterator->second;
-		switch (type)
+		unichar changeType = '\0';
+		[key getValue: &changeType];		
+		NSArray* objectIDs = [changes objectForKey: key];
+		
+		switch (changeType)
 		{
 			case 'I':
 				[[mInterface databaseContext] addedObjectsToDatabase: objectIDs];
@@ -172,7 +170,6 @@ typedef std::tr1::unordered_map <unichar, NSMutableArray*,
 			default:
 				break;
 		}
-        iterator++;
     }	
 }
 

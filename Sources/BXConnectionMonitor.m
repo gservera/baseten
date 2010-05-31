@@ -183,7 +183,6 @@ DictionaryKeys (NSMapTable *dict)
 		[mMonitorThread setName: @"org.basetenframework.ConnectionMonitorThread"];
 		[mMonitorThread start];
 		
-		OSMemoryBarrier (); // Make sure that the variables get written.
 		[self performSelector: @selector (_scheduleSystemEventNotifier:)
 					 onThread: mMonitorThread 
 				   withObject: mSystemEventNotifier

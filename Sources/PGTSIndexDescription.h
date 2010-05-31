@@ -32,7 +32,7 @@
 
 @interface PGTSIndexDescription : PGTSAbstractClassDescription
 {
-    NSSet* mColumns;
+    NSSet *mColumns;
     BOOL mIsPrimaryKey;
     BOOL mIsUnique;
 }

@@ -29,7 +29,6 @@
 #import "PGTS.h"
 #import "PGTSAdditions.h"
 #import "BXHOM.h"
-#import "PGTSOids.h"
 
 #import "BXInterface.h"
 #import "BXLogger.h"
@@ -50,6 +49,7 @@
 #import "BXPGInterface.h"
 #import "BXPGCertificateVerificationDelegate.h"
 #import "BXLocalizedString.h"
+#import "PGTSOids.h"
 
 #import "BXEntityDescriptionPrivate.h"
 

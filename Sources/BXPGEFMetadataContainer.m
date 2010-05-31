@@ -45,12 +45,14 @@
 	return [BXPGDatabaseDescription class];
 }
 
+
 - (Class) tableDescriptionClass
 {
 	return [BXPGTableDescription class];
 }
 
-- (void) fetchSchemaVersion: (PGTSConnection *) connection
+
+- (void) fetchSchemaVersion: (PGTSConnection *) connection loadState: (PGTSMetadataContainerLoadState *) loadState
 {
 	NSString* query =
 	@"SELECT baseten.version () AS version "
@@ -65,49 +67,50 @@
 	[mDatabase setSchemaCompatibilityVersion: [res valueForKey: @"version"]];	
 }
 
-- (void) fetchPreparedRelations: (PGTSConnection *) connection
+
+- (void) fetchPreparedRelations: (PGTSConnection *) connection loadState: (PGTSMetadataContainerLoadState *) loadState
 {
-	NSString* query = @"SELECT nspname, relname FROM baseten.relation WHERE enabled = true";
+	NSString* query = @"SELECT oid FROM baseten.relation_oids WHERE enabled = true";
 	PGTSResultSet* res = [connection executeQuery: query];
 	ExpectV ([res querySucceeded]);
 	
 	while ([res advanceRow])
 	{
-		NSString* nspname = [res valueForKey: @"nspname"];
-		NSString* relname = [res valueForKey: @"relname"];
-		id table = [mDatabase table: relname inSchema: nspname];
+		Oid oid = [[res valueForKey: @"oid"] PGTSOidValue];
+		id table = [loadState tableWithOid: oid];
 		[table setEnabled: YES];
 	}	
 }
 
-- (void) fetchViewPrimaryKeys: (PGTSConnection *) connection
+
+- (void) fetchViewPrimaryKeys: (PGTSConnection *) connection loadState: (PGTSMetadataContainerLoadState *) loadState
 {
-	NSString* query =
-	@"SELECT nspname, relname, baseten.array_accum (attname) AS attnames "
-	@" FROM baseten.view_pkey "
-	@" GROUP BY nspname, relname";
+	NSString* query = @"SELECT oid, attnames FROM baseten.view_pkey_oids";
 	PGTSResultSet* res = [connection executeQuery: query];
 	ExpectV ([res querySucceeded]);
 	
-	while ([res advanceRow])
 	{
-		NSString* nspname = [res valueForKey: @"nspname"];
-		NSString* relname = [res valueForKey: @"relname"];
-		PGTSTableDescription* view = [mDatabase table: relname inSchema: nspname];
-		PGTSIndexDescription* index = [[[PGTSIndexDescription alloc] init] autorelease];
-		
-		NSDictionary* columns = [view columns];
-		NSMutableSet* indexFields = [NSMutableSet set];
-		BXEnumerate (currentCol, e, [[res valueForKey: @"attnames"] objectEnumerator])
-			[indexFields addObject: [columns objectForKey: currentCol]];
-		
-		[index setPrimaryKey: YES];
-		[index setColumns: indexFields];
-		[view addIndex: index];
+		while ([res advanceRow])
+		{
+			Oid oid = [[res valueForKey: @"oid"] PGTSOidValue];
+			PGTSTableDescription *view = [loadState tableWithOid: oid];
+			PGTSIndexDescription *index = [loadState addIndexForRelation: oid];
+			ExpectV (view);
+			ExpectV (index);
+			
+			NSDictionary* columns = [view columns];
+			NSMutableSet* indexFields = [NSMutableSet set];
+			BXEnumerate (currentCol, e, [[res valueForKey: @"attnames"] objectEnumerator])
+				[indexFields addObject: [columns objectForKey: currentCol]];
+			
+			[index setPrimaryKey: YES];
+			[index setColumns: indexFields];
+		}
 	}
 }
 
-- (void) fetchForeignKeys: (PGTSConnection *) connection
+
+- (void) fetchForeignKeys: (PGTSConnection *) connection loadState: (PGTSMetadataContainerLoadState *) loadState
 {
 	NSString* query = 
 	@"SELECT conid, conname, conkey, confkey, confdeltype "
@@ -115,6 +118,7 @@
 	PGTSResultSet* res = [connection executeQuery: query];
 	ExpectV ([res querySucceeded]);
 	
+	NSMutableArray *foreignKeys = [NSMutableArray arrayWithCapacity: [res count]];
 	while ([res advanceRow])
 	{
 		BXPGForeignKeyDescription* fkey = [[[BXPGForeignKeyDescription alloc] init] autorelease];
@@ -123,8 +127,7 @@
 		
 		NSArray* srcfnames = [res valueForKey: @"conkey"];
 		NSArray* dstfnames = [res valueForKey: @"confkey"];
-		for (NSUInteger i = 0, count = [srcfnames count]; i < count; i++)
-			[fkey addSrcFieldName: [srcfnames objectAtIndex: i] dstFieldName: [dstfnames objectAtIndex: i]];
+		[fkey setSrcFieldNames: srcfnames dstFieldNames: dstfnames];
 		
 		NSDeleteRule deleteRule = NSDenyDeleteRule;
 		enum PGTSDeleteRule pgDeleteRule = PGTSDeleteRule ([[res valueForKey: @"confdeltype"] characterAtIndex: 0]);
@@ -151,11 +154,13 @@
 		}
 		[fkey setDeleteRule: deleteRule];
 		
-		[mDatabase addForeignKey: fkey];
+		[foreignKeys addObject: fkey];
 	}
+	[mDatabase setForeignKeys: foreignKeys];
 }
 
-- (void) fetchBXSpecific: (PGTSConnection *) connection
+
+- (void) fetchBXSpecific: (PGTSConnection *) connection loadState: (PGTSMetadataContainerLoadState *) loadState
 {
 	NSString* query = @"SELECT EXISTS (SELECT n.oid FROM pg_namespace n WHERE nspname = 'baseten') AS exists";
 	PGTSResultSet* res = [connection executeQuery: query];
@@ -167,14 +172,15 @@
 	
 	if (hasSchema)
 	{
-		[self fetchSchemaVersion: connection];
+		[self fetchSchemaVersion: connection loadState: loadState];
 		
 		NSNumber* currentCompatVersion = [BXPGVersion currentCompatibilityVersionNumber];
 		if ([currentCompatVersion isEqualToNumber: [mDatabase schemaCompatibilityVersion]])
 		{
-			[self fetchPreparedRelations: connection];
-			[self fetchViewPrimaryKeys: connection];
-			[self fetchForeignKeys: connection];
+			[mDatabase setHasCompatibleBaseTenSchemaVersion: YES];
+			[self fetchPreparedRelations: connection loadState: loadState];
+			[self fetchViewPrimaryKeys: connection loadState: loadState];
+			[self fetchForeignKeys: connection loadState: loadState];
 		}
 		else
 		{
@@ -184,9 +190,10 @@
 	}
 }
 
-- (void) loadUsing: (PGTSConnection *) connection
+
+- (void) loadUsing: (PGTSConnection *) connection loadState: (PGTSMetadataContainerLoadState *) loadState
 {
-	[super loadUsing: connection];
-	[self fetchBXSpecific: connection];
+	[super loadUsing: connection loadState: loadState];
+	[self fetchBXSpecific: connection loadState: loadState];
 }
 @end

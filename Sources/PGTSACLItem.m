@@ -48,12 +48,14 @@
     return self;
 }
 
+
 - (void) dealloc
 {
     [mRole release];
     [mGrantingRole release];
     [super dealloc];
 }
+
 
 - (PGTSRoleDescription *) role
 {

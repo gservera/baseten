@@ -29,8 +29,6 @@
 #import <Foundation/Foundation.h>
 #import <BaseTen/libpq-fe.h>
 #import <BaseTen/PGTSAbstractDescription.h>
-#import <BaseTen/PGTSOids.h>
-#import <BaseTen/BXCollections.h>
 
 @class PGTSSchemaDescription;
 @class PGTSTableDescription;
@@ -41,14 +39,12 @@
 
 @interface PGTSDatabaseDescription : NSObject <NSCopying>
 {
-	PGTS_OidMap* mSchemasByOid;
-	PGTS_OidMap* mTablesByOid;
-	PGTS_OidMap* mTypesByOid;
-	PGTS_OidMap* mRolesByOid;	
-	NSDictionary* mSchemasByName;
-	NSDictionary* mRolesByName;
-	NSLock* mSchemaLock;
-	NSLock* mRoleLock;
+	NSDictionary *mSchemasByOid;
+	NSDictionary *mTablesByOid;
+	NSDictionary *mTypesByOid;
+	NSDictionary *mRolesByOid;	
+	NSDictionary *mSchemasByName;
+	NSDictionary *mRolesByName;
 }
 - (PGTSSchemaDescription *) schemaWithOid: (Oid) anOid;
 - (PGTSSchemaDescription *) schemaNamed: (NSString *) name;
@@ -66,8 +62,7 @@
 
 
 //Thread un-safe methods.
-- (void) addTable: (PGTSTableDescription *) table;
-- (void) addSchema: (PGTSSchemaDescription *) schema;
-- (void) addType: (PGTSTypeDescription *) type;
-- (void) addRole: (PGTSRoleDescription *) role;
+- (void) setSchemas: (id <NSFastEnumeration>) schemas;
+- (void) setTypes: (id <NSFastEnumeration>) types;
+- (void) setRoles: (id <NSFastEnumeration>) roles;
 @end
