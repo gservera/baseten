@@ -2142,16 +2142,13 @@ ModTypeToObject (enum BXModificationType value)
     return [[self executeFetchForEntity: anEntity withPredicate: predicate returningFaults: YES error: error] valueForKey: @"objectID"];
 }
 
-/**
- * \name Getting entity descriptions
- */
-//@{
 /** 
  * \brief Entity for a table in the given schema.
  * \note Unlike PostgreSQL, leaving \em schemaName unspecified does not cause the search path to be used but 
  *       instead will search the \em public schema.
  * \note Entities are associated with a database URI. Thus the database context needs an URI containing a host and 
  *       the database name before entities may be received.
+ * \deprecated This method has been deprecated in BaseTen 1.8. BXDatabaseObjectModel should be used instead.
  */
 - (BXEntityDescription *) entityForTable: (NSString *) name inSchema: (NSString *) schemaName error: (NSError **) outError
 {
@@ -2167,6 +2164,7 @@ ModTypeToObject (enum BXModificationType value)
  * \brief Entity for a table in the schema \em public
  * \note Entities are associated with a database URI. Thus the database context needs an URI containing a host and 
  *       the database name before entities may be received.
+ * \deprecated This method has been deprecated in BaseTen 1.8. BXDatabaseObjectModel should be used instead.
  */
 - (BXEntityDescription *) entityForTable: (NSString *) name error: (NSError **) outError
 {
@@ -2183,6 +2181,7 @@ ModTypeToObject (enum BXModificationType value)
  * \return An NSDicionary with NSStrings corresponding to schema names as keys and NSDictionarys as objects. 
  *         Each of them will have NSStrings corresponding to relation names as keys and BXEntityDescriptions
  *         as objects.
+ * \deprecated This method has been deprecated in BaseTen 1.8. BXDatabaseObjectModel should be used instead.
  */
 - (NSDictionary *) entitiesBySchemaAndName: (BOOL) reload error: (NSError **) outError
 {
@@ -2192,7 +2191,6 @@ ModTypeToObject (enum BXModificationType value)
 	BXHandleError (outError, localError);
 	return retval;
 }
-//@}
 
 
 - (BOOL) entity: (NSEntityDescription *) entity existsInSchema: (NSString *) schemaName error: (NSError **) error

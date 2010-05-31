@@ -221,9 +221,7 @@ ImportError (NSString* message, NSString* reason)
 	if (outArray)
 		*outArray = enabledRelations;
 
-    if (handledRelationships)
-        CFRelease (handledRelationships);
-	
+	[handledRelationships release];
 	return retval;
 }
 
