@@ -31,6 +31,7 @@
 #import <BaseTen/BXLogger.h>
 #import <BaseTen/BXSocketDescriptor.h>
 #import "MKCSenTestCaseAdditions.h"
+#import "BXGarbageCollectionRunner.h"
 
 #import "PGTSInvocationRecorderTests.h"
 #import "BXHOMTests.h"
@@ -74,6 +75,9 @@
 {
 	BXLogSetLevel (kBXLogLevelWarning);
 	BXLogSetAbortsOnAssertionFailure (YES);
+	[BXGarbageCollectionRunner install];
+	//NSLog (@"waiting");
+	//sleep (10);
 	
 	NSArray* testClasses = [NSArray arrayWithObjects:
 							[PGTSInvocationRecorderTests class],
@@ -113,7 +117,7 @@
 							[ToOneChangeNotificationTests class],
 							nil];
 	
-	//testClasses = [NSArray arrayWithObject: [BXHostResolverTests class]];
+	//testClasses = [NSArray arrayWithObject: [BXSQLTests class]];
 	
 	for (int i = 0; i < 2; i++)
 	{

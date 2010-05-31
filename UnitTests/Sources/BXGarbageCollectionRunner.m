@@ -39,7 +39,14 @@ NSTimeInterval gRunningInterval = 0.01;
 	{
 		tooLate = YES;
 		if ([NSGarbageCollector defaultCollector])
+		{
+			NSLog (@"Garbage collection is enabled; installing GC runner.");
 			[NSThread detachNewThreadSelector: @selector (run) toTarget: self withObject: nil];
+		}
+		else
+		{
+			NSLog (@"Garbage collection is disabled; not installing GC runner.");
+		}
 	}
 }
 

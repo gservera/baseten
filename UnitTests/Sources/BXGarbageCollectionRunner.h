@@ -32,4 +32,6 @@
 @interface BXGarbageCollectionRunner : NSObject 
 {
 }
++ (void) install;
++ (void) run;
 @end

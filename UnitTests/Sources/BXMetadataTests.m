@@ -63,7 +63,13 @@
 }
 
 
-- (void) test0SchemaVersion
+- (void) test1Compatibility
+{
+	MKCAssertTrue ([mDatabaseDescription hasCompatibleBaseTenSchemaVersion]);
+}
+
+
+- (void) test2SchemaVersion
 {
 	NSNumber *currentVersion = [BXPGVersion currentVersionNumber];
 	NSNumber *currentCompatVersion = [BXPGVersion currentCompatibilityVersionNumber];
@@ -73,7 +79,7 @@
 }
 
 
-- (void) test1ViewPkey
+- (void) test3ViewPkey
 {
 	MKCAssertNotNil (mDatabaseDescription);
 	PGTSTableDescription* table = [mDatabaseDescription table: @"test_v" inSchema: @"public"];
