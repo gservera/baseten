@@ -73,6 +73,7 @@ enum BXEntityFlag
 - (NSArray *) fields;
 - (BOOL) isView;
 - (NSArray *) objectIDs;
+- (NSComparisonResult) compare: (BXEntityDescription *) anotherEntity;
 - (NSComparisonResult) caseInsensitiveCompare: (BXEntityDescription *) anotherEntity;
 - (BOOL) isValidated;
 - (NSDictionary *) relationshipsByName;

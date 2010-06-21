@@ -1,4 +1,4 @@
-#include "../../common-xcconfig/10.5.xcconfig"
+#include "../../common-xcconfig/MacOSX10.5-6.xcconfig"
 #include "../../common-xcconfig/common.xcconfig"
 #include "../../common-xcconfig/framework.xcconfig"
 
@@ -12,3 +12,4 @@ HEADER_SEARCH_PATHS = $(BUILT_PRODUCTS_DIR)
 LIBRARY_SEARCH_PATHS = $(BUILT_PRODUCTS_DIR)
 USER_HEADER_SEARCH_PATHS = $(PROJECT_DIR)
 GCC_PREFIX_HEADER = Sources/BaseTenAppKit_Prefix.pch
+ARCHS = ppc ppc64 i386 x86_64

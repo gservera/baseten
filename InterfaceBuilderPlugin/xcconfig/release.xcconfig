@@ -1,3 +1,2 @@
 #include "../../common-xcconfig/release.xcconfig"
 #include "common.xcconfig"
-ARCHS = ppc i386 x86_64

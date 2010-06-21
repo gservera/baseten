@@ -1,5 +1,5 @@
 #include "../common-xcconfig/non-gc.xcconfig"
 #include "../common-xcconfig/release.xcconfig"
-#include "common.xcconfig"
+#include "../common-xcconfig/MacOSX10.5.xcconfig"
 
-INSTALL_PATH = @executable_path/../Frameworks
+ARCHS = ppc ppc64 i386 x86_64

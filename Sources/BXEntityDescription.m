@@ -265,6 +265,22 @@ FilterPkeyAttributes (id attribute, void* arg)
     return (mFlags & kBXEntityIsView) ? YES : NO;
 }
 
+
+- (NSComparisonResult) compare: (BXEntityDescription *) anotherEntity
+{
+    NSComparisonResult retval = NSOrderedSame;
+    if (self != anotherEntity)
+    {
+        retval = [[self schemaName] compare: [anotherEntity schemaName]];
+        if (NSOrderedSame == retval)
+        {
+            retval = [[self name] compare: [anotherEntity name]];
+        }
+    }
+    return retval;
+}
+
+
 - (NSComparisonResult) caseInsensitiveCompare: (BXEntityDescription *) anotherEntity
 {
     NSComparisonResult retval = NSOrderedSame;

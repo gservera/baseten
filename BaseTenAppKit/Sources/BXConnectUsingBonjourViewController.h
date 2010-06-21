@@ -30,7 +30,7 @@
 #import <BaseTenAppKit/BXConnectionViewController.h>
 
 
-@interface BXConnectUsingBonjourViewController : BXConnectionViewController <NSNetServiceBrowserDelegate, NSNetServiceDelegate>
+@interface BXConnectUsingBonjourViewController : BXConnectionViewController
 {
 	IBOutlet NSTableView* mAddressTable;
 	IBOutlet NSArrayController* mBonjourArrayController;
@@ -42,4 +42,19 @@
 
 - (void) startDiscovery;
 - (void) stopDiscovery;
+@end
+
+
+@interface BXConnectUsingBonjourViewController (NSNetServiceDelegate)
+#if defined(MAC_OS_X_VERSION_10_6) && MAC_OS_X_VERSION_10_6 <= MAC_OS_X_VERSION_MAX_ALLOWED
+<NSNetServiceDelegate>
+#endif
+@end
+
+
+
+@interface BXConnectUsingBonjourViewController (NSNetServiceBrowserDelegate)
+#if defined(MAC_OS_X_VERSION_10_6) && MAC_OS_X_VERSION_10_6 <= MAC_OS_X_VERSION_MAX_ALLOWED
+<NSNetServiceBrowserDelegate>
+#endif
 @end

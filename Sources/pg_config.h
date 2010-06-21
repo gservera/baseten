@@ -1,8 +1,8 @@
 //
-// PGTSOids.h
+// pg_config.h
 // BaseTen
 //
-// Copyright (C) 2008 Marko Karppinen & Co. LLC.
+// Copyright (C) 2010 Marko Karppinen & Co. LLC.
 //
 // Before using this software, please review the available licensing options
 // by visiting http://www.karppinen.fi/baseten/licensing/ or by contacting
@@ -26,14 +26,16 @@
 // $Id$
 //
 
-#import <Foundation/Foundation.h>
-#import <BaseTen/BXExport.h>
-#import <BaseTen/postgresql/libpq-fe.h>
-
-
-BX_INTERNAL id PGTSOidAsObject (Oid o);
-
-
-@interface NSNumber (PGTSOidAdditions)
-- (Oid) PGTSOidValue;
-@end
+#if defined (__ppc__) && __ppc__
+#include <BaseTen/postgresql/ppc/pg_config.h>
+#elif defined (__ppc64__) && __ppc64__
+#include <BaseTen/postgresql/ppc64/pg_config.h>
+#elif defined (__i386__) && __i386__
+#include <BaseTen/postgresql/i386/pg_config.h>
+#elif defined (__x86_64__) && __x86_64__
+#include <BaseTen/postgresql/x86_64/pg_config.h>
+#elif defined (__arm__) && __arm__
+#include <BaseTen/postgresql/armv6/pg_config.h>
+#else
+#error "Unsupported architecture."
+#endif

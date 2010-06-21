@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5373A1580CEC8F5C006B581B /* ExceptionHandling.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5373A1570CEC8F5C006B581B /* ExceptionHandling.framework */; };
 		5373A2180CEC9894006B581B /* BXDatabaseContext.classdescription in Resources */ = {isa = PBXBuildFile; fileRef = 53978F5D0CEC640200B93B3C /* BXDatabaseContext.classdescription */; };
 		5373A2190CEC9895006B581B /* BXSynchronizedArrayController.classdescription in Resources */ = {isa = PBXBuildFile; fileRef = 53978F5C0CEC640200B93B3C /* BXSynchronizedArrayController.classdescription */; };
 		5373A24D0CECA493006B581B /* BXDatabaseContextInspector.m in Sources */ = {isa = PBXBuildFile; fileRef = 5373A24C0CECA493006B581B /* BXDatabaseContextInspector.m */; };
@@ -23,11 +22,11 @@
 		53978F8D0CEC709200B93B3C /* BXArrayController.png in Resources */ = {isa = PBXBuildFile; fileRef = 53978F8A0CEC709200B93B3C /* BXArrayController.png */; };
 		53978F8E0CEC709200B93B3C /* BXDatabaseObject.png in Resources */ = {isa = PBXBuildFile; fileRef = 53978F8B0CEC709200B93B3C /* BXDatabaseObject.png */; };
 		53978F8F0CEC709200B93B3C /* Palette5.icns in Resources */ = {isa = PBXBuildFile; fileRef = 53978F8C0CEC709200B93B3C /* Palette5.icns */; };
+		53F5573A11CD6BE900E52F6E /* InterfaceBuilderKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0D069550A49DF9100C95564 /* InterfaceBuilderKit.framework */; };
 		53F749640E362DFA003C2E55 /* BaseTen.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5373CC8D0D65B9710084BD9D /* BaseTen.framework */; };
 		53F749680E362DFD003C2E55 /* BaseTenAppKit.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5373CC900D65B9710084BD9D /* BaseTenAppKit.framework */; };
 		8D1AC9700486D14A00FE50C9 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD92D38A0106425D02CA0E72 /* Cocoa.framework */; };
 		8D1AC9800486D23B00FE50C9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D1AC97F0486D23B00FE50C9 /* InfoPlist.strings */; };
-		C0D069560A49DF9100C95564 /* InterfaceBuilderKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0D069550A49DF9100C95564 /* InterfaceBuilderKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -122,10 +121,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D1AC9700486D14A00FE50C9 /* Cocoa.framework in Frameworks */,
-				C0D069560A49DF9100C95564 /* InterfaceBuilderKit.framework in Frameworks */,
-				5373A1580CEC8F5C006B581B /* ExceptionHandling.framework in Frameworks */,
 				5373CD8D0D65C31D0084BD9D /* BaseTen.framework in Frameworks */,
 				5373CD8E0D65C31E0084BD9D /* BaseTenAppKit.framework in Frameworks */,
+				53F5573A11CD6BE900E52F6E /* InterfaceBuilderKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -174,9 +172,9 @@
 			children = (
 				53978FCC0CEC764300B93B3C /* BaseTen.xcodeproj */,
 				53978FA50CEC763800B93B3C /* BaseTenAppKit.xcodeproj */,
-				5373A1570CEC8F5C006B581B /* ExceptionHandling.framework */,
 				DD92D38A0106425D02CA0E72 /* Cocoa.framework */,
 				C0D069550A49DF9100C95564 /* InterfaceBuilderKit.framework */,
+				5373A1570CEC8F5C006B581B /* ExceptionHandling.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

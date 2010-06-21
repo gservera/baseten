@@ -34,13 +34,13 @@
 
 
 @interface BXSocketReachabilityObserver ()
-- (void) _networkStatusChanged: (SCNetworkReachabilityFlags) flags;
+- (void) _networkStatusChanged: (SCNetworkConnectionFlags) flags;
 @end
 
 
 
 static void
-NetworkStatusChanged (SCNetworkReachabilityRef target, SCNetworkReachabilityFlags flags, void *observerPtr)
+NetworkStatusChanged (SCNetworkReachabilityRef target, SCNetworkConnectionFlags flags, void *observerPtr)
 {
 	BXSocketReachabilityObserver* observer = (BXSocketReachabilityObserver *) observerPtr;
 	[observer _networkStatusChanged: flags];
@@ -162,7 +162,7 @@ bail:
 }
 
 
-- (void) _networkStatusChanged: (SCNetworkReachabilityFlags) flags
+- (void) _networkStatusChanged: (SCNetworkConnectionFlags) flags
 {
 	if ([mValidationLock lockIfValid])
 	{
@@ -239,7 +239,7 @@ bail:
 }
 
 
-- (BOOL) getReachabilityFlags: (SCNetworkReachabilityFlags *) flags
+- (BOOL) getReachabilityFlags: (SCNetworkConnectionFlags *) flags
 {
 	ExpectR (flags, NO);
 	BOOL retval = NO;

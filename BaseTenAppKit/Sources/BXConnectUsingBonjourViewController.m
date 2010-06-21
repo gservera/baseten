@@ -97,7 +97,8 @@ __strong static NSNib* gNib = nil;
 @end
 
 
-@implementation BXConnectUsingBonjourViewController (NetServiceBrowserDelegate)
+
+@implementation BXConnectUsingBonjourViewController (NSNetServiceBrowserDelegate)
 - (void) netServiceBrowser: (NSNetServiceBrowser *) netServiceBrowser 
 			didFindService: (NSNetService *) netService moreComing: (BOOL) moreServicesComing
 {
@@ -108,11 +109,16 @@ __strong static NSNib* gNib = nil;
 		[netService setDelegate: self];
 	}
 }
+@end
 
+
+
+@implementation BXConnectUsingBonjourViewController (NSNetServiceDelegate)
 - (void) netServiceDidResolveAddress: (NSNetService *) netService
 {
 	[mBonjourArrayController addObject: netService];
 }
+
 
 - (void) netService: (NSNetService *) netService didNotResolve: (NSDictionary *) errorDict
 {

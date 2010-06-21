@@ -27,34 +27,25 @@
 //
 
 
-//By adding the methods to NSObject we don't override NSMapTable's and NSPointerArray's implementation if one gets made.
-@implementation NSObject (BaseTenAdditions)
-#pragma mark NSPointerArray additions
+@implementation NSPointerArray (BaseTenAdditions)
 - (void) addObject: (id) anObject
 {
-	if ([self respondsToSelector: @selector (addPointer:)])
-		[(id) self addPointer: anObject];
-	else
-		[self doesNotRecognizeSelector: _cmd];
+	[self addPointer: anObject];
 }
 
 
 - (NSEnumerator *) objectEnumerator
 {
-	id retval = nil;
-	if ([self respondsToSelector: @selector (allObjects)])
-		retval = [[(id) self allObjects] objectEnumerator];
-	else
-		[self doesNotRecognizeSelector: _cmd];
-	return retval;
+	return [[self allObjects] objectEnumerator];
 }
+@end
 
 
-#pragma mark NSMapTable additions
 
+@implementation NSMapTable (BaseTenAdditions)
 - (void) makeObjectsPerformSelector: (SEL) selector withObject: (id) object
 {
-	NSEnumerator* e = [(id) self objectEnumerator];
+	NSEnumerator *e = [self objectEnumerator];
 	id currentObject = nil;
 	while ((currentObject = [e nextObject]))
 		[currentObject performSelector: selector withObject: object];
@@ -63,12 +54,12 @@
 
 - (NSArray *) objectsForKeys: (NSArray *) keys notFoundMarker: (id) marker
 {
-	NSMutableArray* retval = [NSMutableArray arrayWithCapacity: [keys count]];
-	NSEnumerator* e = [keys objectEnumerator];
+	NSMutableArray *retval = [NSMutableArray arrayWithCapacity: [keys count]];
+	NSEnumerator *e = [keys objectEnumerator];
 	id currentKey = nil;
 	while ((currentKey = [e nextObject]))
 	{
-		id object = [(id) self objectForKey: currentKey];
+		id object = [self objectForKey: currentKey];
 		if (! object)
 			object = marker;
 		[retval addObject: object];

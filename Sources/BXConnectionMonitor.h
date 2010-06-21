@@ -41,7 +41,7 @@
 - (void) connectionMonitorSystemWillSleep: (BXConnectionMonitor *) monitor;
 - (void) connectionMonitorSystemDidWake: (BXConnectionMonitor *) monitor;
 - (void) connectionMonitor: (BXConnectionMonitor *) monitor
-	  networkStatusChanged: (SCNetworkReachabilityFlags) flags;
+	  networkStatusChanged: (SCNetworkConnectionFlags) flags;
 @end
 
 

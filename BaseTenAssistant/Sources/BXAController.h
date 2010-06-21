@@ -39,7 +39,10 @@
 @class MKCStackView;
 
 
-@interface BXAController : NSObject <NSNetServiceBrowserDelegate, NSNetServiceDelegate>
+@interface BXAController : NSObject
+#if defined(MAC_OS_X_VERSION_10_6) && MAC_OS_X_VERSION_10_6 <= MAC_OS_X_VERSION_MAX_ALLOWED
+<NSNetServiceBrowserDelegate, NSNetServiceDelegate>
+#endif
 {
 	struct bx_regular_expression_st mCompilationErrorRegex;
 	struct bx_regular_expression_st mCompilationFailedRegex;

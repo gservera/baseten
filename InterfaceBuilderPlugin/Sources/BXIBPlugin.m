@@ -28,9 +28,9 @@
 
 #import "BXIBPlugin.h"
 
-//#define BXIB_USE_EXCEPTION_HANDLER
+//#define BXIB_USE_EXCEPTION_HANDLER 1
 
-#ifdef BXIB_USE_EXCEPTION_HANDLER
+#if defined(BXIB_USE_EXCEPTION_HANDLER) && BXIB_USE_EXCEPTION_HANDLER
 #import <ExceptionHandling/ExceptionHandling.h>
 #endif
 
@@ -53,7 +53,7 @@
     return [NSArray arrayWithObjects: baseTenBundle, baseTenAppKitBundle, nil];
 }
 
-#ifdef BXIB_USE_EXCEPTION_HANDLER
+#if defined(BXIB_USE_EXCEPTION_HANDLER) && BXIB_USE_EXCEPTION_HANDLER
 - (void) didLoad
 {
 	[super didLoad];

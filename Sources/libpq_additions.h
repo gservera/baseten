@@ -26,7 +26,7 @@
 // $Id$
 //
 
-#import <BaseTen/libpq-fe.h>
+#import <BaseTen/postgresql/libpq-fe.h>
 #import <BaseTen/BXExport.h>
 
 

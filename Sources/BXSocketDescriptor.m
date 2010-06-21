@@ -30,7 +30,10 @@
 #import "BXDispatchSocketDescriptor.h"
 #import "BXRunLoopSocketDesciptor.h"
 #import "BXValidationLock.h"
+
+#if defined(MAC_OS_X_VERSION_10_6) && MAC_OS_X_VERSION_10_6 <= MAC_OS_X_VERSION_MAX_ALLOWED
 #import <dispatch/dispatch.h>
+#endif
 
 
 static volatile BOOL stUsesGCD = NO;
@@ -72,10 +75,14 @@ static volatile BOOL stUsesGCD = NO;
 	id retval = nil;
 	@synchronized (self)
 	{
+#if defined(MAC_OS_X_VERSION_10_6) && MAC_OS_X_VERSION_10_6 <= MAC_OS_X_VERSION_MAX_ALLOWED
 		if (NULL != dispatch_get_current_queue && stUsesGCD)
 			retval = [[BXDispatchSocketDescriptor alloc] initWithSocket: socket];
 		else
 			retval = [[BXRunLoopSocketDesciptor alloc] initWithSocket: socket];
+#else
+		retval = [[BXRunLoopSocketDesciptor alloc] initWithSocket: socket];
+#endif
 	}
 	
 	return retval;

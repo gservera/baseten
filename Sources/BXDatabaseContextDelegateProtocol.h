@@ -158,5 +158,5 @@
  * \note The default implementation does nothing but this might change in the future.
  */
 - (void) databaseContext: (BXDatabaseContext *) context
-	networkStatusChanged: (SCNetworkReachabilityFlags) newFlags;
+	networkStatusChanged: (SCNetworkConnectionFlags) newFlags;
 @end

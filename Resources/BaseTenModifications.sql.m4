@@ -1697,7 +1697,7 @@ BEGIN
 	rel := "baseten".reltype (relid);
 	-- Trigger functions cannot be written in SQL
 	fdecl :=
-		'CREATE OR REPLACE FUNCTION "baseten".' || quote_ident (fname) || ' () RETURNS TRIGGER AS $$ ' ||
+		'CREATE OR REPLACE FUNCTION ' || "baseten".quote_ident_bx (fname) || ' () RETURNS TRIGGER AS $$ ' ||
 		'BEGIN ' ||
 			'INSERT INTO ' || "baseten".quote_ident_bx (mtable) || ' (' ||
 				'"baseten_modification_type", "baseten_modification_cols", ' || array_to_string (pkey, ', ') ||

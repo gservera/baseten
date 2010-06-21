@@ -59,7 +59,7 @@
 	NSXMLElement* root = [NSXMLElement elementWithName: @"objectModel"];
 	NSXMLDocument* retval = [NSXMLDocument documentWithRootElement: root];
 	
-	NSArray* entities = [objectModel entities];
+	NSArray* entities = [[objectModel entities] sortedArrayUsingSelector: @selector (compare:)];
 	BXEnumerate (currentEntity, e, [entities objectEnumerator])
 	{
 		NSXMLElement* entity = [NSXMLElement elementWithName: @"entity"];
@@ -75,7 +75,8 @@
 		[entity addChild: name];
 		
 		NSXMLElement* attrs = [NSXMLElement elementWithName: @"attributes"];
-		BXEnumerate (currentAttr, e, [[currentEntity attributesByName] objectEnumerator])
+		NSArray *attrDescs = [[[currentEntity attributesByName] allValues] sortedArrayUsingSelector: @selector (compare:)];
+		BXEnumerate (currentAttr, e, [attrDescs objectEnumerator])
 		{
 			if (! [currentAttr isExcluded])
 			{
@@ -96,7 +97,8 @@
 		if ((exportFkeyRelationships || exportRelNameRelationships) && [currentEntity hasCapability: kBXEntityCapabilityRelationships])
 		{
 			NSXMLElement* rels = [NSXMLElement elementWithName: @"relationships"];
-			BXEnumerate (currentRel, e, [[currentEntity relationshipsByName] objectEnumerator])
+			NSArray *relDescs = [[[currentEntity relationshipsByName] allValues] sortedArrayUsingSelector: @selector (compare:)];
+			BXEnumerate (currentRel, e, [relDescs objectEnumerator])
 			{
 				BOOL usesRelNames = [currentRel usesRelationNames];
 				if (((usesRelNames && exportRelNameRelationships) ||

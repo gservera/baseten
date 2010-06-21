@@ -192,7 +192,7 @@
 {
 }
 
-- (void) PGTSConnection: (PGTSConnection *) connection networkStatusChanged: (SCNetworkReachabilityFlags) newFlags
+- (void) PGTSConnection: (PGTSConnection *) connection networkStatusChanged: (SCNetworkConnectionFlags) newFlags
 {
 }
 @end

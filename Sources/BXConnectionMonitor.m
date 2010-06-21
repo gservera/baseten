@@ -286,11 +286,11 @@ DictionaryKeys (NSMapTable *dict)
 		}
 		else
 		{
-			SCNetworkReachabilityFlags flags = 0;
+			SCNetworkConnectionFlags flags = 0;
 			if ([observer getReachabilityFlags: &flags])
 			{
-				if (kSCNetworkReachabilityFlagsReachable & flags ||
-					kSCNetworkReachabilityFlagsConnectionAutomatic & flags)
+				if (kSCNetworkFlagsReachable & flags ||
+					kSCNetworkFlagsConnectionAutomatic & flags)
 				{
 					retval = YES;
 				}				
@@ -305,7 +305,7 @@ DictionaryKeys (NSMapTable *dict)
 
 @implementation BXConnectionMonitor (BXSocketReachabilityObserverDelegate)
 - (void) socketReachabilityObserver: (BXSocketReachabilityObserver *) observer 
-			   networkStatusChanged: (SCNetworkReachabilityFlags) flags
+			   networkStatusChanged: (SCNetworkConnectionFlags) flags
 {
 	[(id <BXConnectionMonitorClient>) [observer userInfo] connectionMonitor: self networkStatusChanged: flags];
 }

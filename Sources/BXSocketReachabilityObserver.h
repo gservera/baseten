@@ -35,7 +35,7 @@
 
 @protocol BXSocketReachabilityObserverDelegate <NSObject>
 - (void) socketReachabilityObserver: (BXSocketReachabilityObserver *) observer 
-			   networkStatusChanged: (SCNetworkReachabilityFlags) flags;
+			   networkStatusChanged: (SCNetworkConnectionFlags) flags;
 @end
 
 
@@ -59,7 +59,7 @@
 - (BOOL) install;
 - (void) invalidate;
 
-- (BOOL) getReachabilityFlags: (SCNetworkReachabilityFlags *) flags;
+- (BOOL) getReachabilityFlags: (SCNetworkConnectionFlags *) flags;
 - (void) setRunLoop: (CFRunLoopRef) runLoop;
 - (CFRunLoopRef) runLoop;
 - (void) setDelegate: (id <BXSocketReachabilityObserverDelegate>) delegate;

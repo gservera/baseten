@@ -34,7 +34,7 @@
 #import "PGTSProbes.h"
 #import "BXLogger.h"
 #import "BXSocketDescriptor.h"
-#import <BaseTen/libpq-fe.h>
+#import <BaseTen/postgresql/libpq-fe.h>
 #import <libkern/OSAtomic.h>
 
 

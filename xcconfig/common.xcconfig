@@ -1,15 +1,16 @@
-#include "../common-xcconfig/10.5.xcconfig"
+#include "../common-xcconfig/MacOSX10.5-6.xcconfig"
 #include "../common-xcconfig/common.xcconfig"
 #include "../common-xcconfig/framework.xcconfig"
 
+ARCHS = ppc ppc64 i386 x86_64
 DYLIB_COMPATIBILITY_VERSION = 1
 DYLIB_CURRENT_VERSION = 1
 FRAMEWORK_SEARCH_PATHS = $(BUILT_PRODUCTS_DIR) $(BUILD_DIR)/Release
 FRAMEWORK_VERSION = A
 GCC_PREFIX_HEADER = Sources/BaseTen_Prefix.pch
-HEADER_SEARCH_PATHS = $(BUILT_PRODUCTS_DIR) $(BUILT_PRODUCTS_DIR)/BaseTen-PostgreSQL/$(CURRENT_ARCH)/include $(BUILT_PRODUCTS_DIR)/BaseTen-PostgreSQL/$(CURRENT_ARCH)/include/internal $(BUILT_PRODUCTS_DIR)/BaseTen-PostgreSQL/$(CURRENT_ARCH)/include/server $(BUILT_PRODUCTS_DIR)/BaseTen-PostgreSQL/$(CURRENT_ARCH)/include/server/libpq $(BUILT_PRODUCTS_DIR)/BaseTen-PostgreSQL/$(CURRENT_ARCH)/include/postgresql $(BUILT_PRODUCTS_DIR)/BaseTen-PostgreSQL/$(CURRENT_ARCH)/include/postgresql/internal $(BUILT_PRODUCTS_DIR)/BaseTen-PostgreSQL/$(CURRENT_ARCH)/include/postgresql/server $(BUILT_PRODUCTS_DIR)/BaseTen-PostgreSQL/$(CURRENT_ARCH)/include/postgresql/server/libpq .
 INFOPLIST_FILE = Resources/Info.plist
-LIBRARY_SEARCH_PATHS = $(BUILT_PRODUCTS_DIR) $(BUILT_PRODUCTS_DIR)/BaseTen-PostgreSQL/$(CURRENT_ARCH)/lib $(BUILD_DIR)/Release/pcre-7.6/lib .
-OTHER_LDFLAGS = $(COVERAGE_LDFLAGS) -ObjC -headerpad_max_install_names -lpq
+HEADER_SEARCH_PATHS  = $(BUILT_PRODUCTS_DIR) $(BUILD_DIR)/Release/BaseTen-PostgreSQL/universal/postgresql $(BUILD_DIR)/Release/BaseTen-PostgreSQL/universql/postgresql/internal $(BUILD_DIR)/Release/BaseTen-PostgreSQL/universal/postgresql/server $(BUILD_DIR)/Release/BaseTen-PostgreSQL/universal/postgresql/server/libpq $(BUILD_DIR)/Release/BaseTen-PostgreSQL/universal/postgresql/postgresql $(BUILD_DIR)/Release/BaseTen-PostgreSQL/universal/postgresql/postgresql/internal $(BUILD_DIR)/Release/BaseTen-PostgreSQL/universal/postgresql/postgresql/server $(BUILD_DIR)/Release/BaseTen-PostgreSQL/universal/postgresql/postgresql/server/libpq .
+LIBRARY_SEARCH_PATHS = $(BUILT_PRODUCTS_DIR) $(BUILD_DIR)/Release/BaseTen-pcre/universal/lib $(BUILD_DIR)/Release/BaseTen-PostgreSQL/universal/lib .
+OTHER_LDFLAGS = $(COVERAGE_LDFLAGS) -ObjC -headerpad_max_install_names
 PRODUCT_NAME = BaseTen
 WRAPPER_EXTENSION = framework
