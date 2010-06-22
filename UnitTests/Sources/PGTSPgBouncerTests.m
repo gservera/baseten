@@ -26,7 +26,7 @@
 #import "PGTSPgBouncerTests.h"
 #import "PGTSTypeTests.h"
 #import "MKCSenTestCaseAdditions.h"
-#import "libpq-fe.h"
+#import <BaseTen/postgresql/libpq-fe.h>
 
 
 @implementation PGTSPgBouncerTests

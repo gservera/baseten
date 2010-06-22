@@ -127,7 +127,6 @@
 /* Begin PBXFileReference section */
 		3FC3D13011918C3D00D3CA68 /* PGTSPgBouncerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PGTSPgBouncerTests.h; path = Sources/PGTSPgBouncerTests.h; sourceTree = "<group>"; };
 		3FC3D13111918C3D00D3CA68 /* PGTSPgBouncerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PGTSPgBouncerTests.m; path = Sources/PGTSPgBouncerTests.m; sourceTree = "<group>"; };
-		3FC3D243119190D000D3CA68 /* libpq-fe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "libpq-fe.h"; path = "../Sources/libpq-fe.h"; sourceTree = SOURCE_ROOT; };
 		5304521C119D9BC5000B89CF /* BXHostResolverTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXHostResolverTests.h; path = Sources/BXHostResolverTests.h; sourceTree = "<group>"; };
 		5304521D119D9BC5000B89CF /* BXHostResolverTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BXHostResolverTests.m; path = Sources/BXHostResolverTests.m; sourceTree = "<group>"; };
 		530925270FA89023000DC21C /* BXDataModelTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXDataModelTests.h; path = Sources/BXDataModelTests.h; sourceTree = "<group>"; };
@@ -361,7 +360,6 @@
 		536C46370F2E1CC7003A8231 /* PGTS */ = {
 			isa = PBXGroup;
 			children = (
-				3FC3D243119190D000D3CA68 /* libpq-fe.h */,
 				536C46380F2E1CED003A8231 /* PGTSMetadataTests.h */,
 				536C46390F2E1CED003A8231 /* PGTSMetadataTests.m */,
 				53BCC1D60F5EE90D00BD717A /* PGTSTypeTests.h */,
