@@ -66,6 +66,7 @@
 #define BXCAssertLog(...) BXAssertLog(__VA_ARGS__)
 #define BXCAssertValueReturn(...) BXAssertValueReturn(__VA_ARGS__)
 #define BXCAssertVoidReturn(...) BXAssertVoidReturn(__VA_ARGS__)
+#define BXCLogAssertionFailure(...) BXLogAssertionFailure(__VA_ARGS__)
 #define BXCDeprecationLogSpecific(...) BXDeprecationLogSpecific(__VA_ARGS__)
 #define BXCDeprecationLog() BXDeprecationLog()
 
