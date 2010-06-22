@@ -162,7 +162,7 @@
 		535443D00D634A47002A6C47 /* BXEntityDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = 533229E40A024C2500BDB151 /* BXEntityDescription.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		535443D10D634A47002A6C47 /* BXArrayProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 531E2B2A0A5A70D900A3BB37 /* BXArrayProxy.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		535443D20D634A47002A6C47 /* BXException.h in Headers */ = {isa = PBXBuildFile; fileRef = 5339AB910A7542EC00994B1A /* BXException.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		535443D30D634A47002A6C47 /* BXContainerProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 537E98370AAF538B00542F9C /* BXContainerProxy.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		535443D30D634A47002A6C47 /* BXContainerProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 537E98370AAF538B00542F9C /* BXContainerProxy.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		535443D40D634A47002A6C47 /* BXSetProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 537E98650AAF57E100542F9C /* BXSetProxy.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		535443D50D634A47002A6C47 /* BXSetRelationProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 537E987D0AAF71D000542F9C /* BXSetRelationProxy.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		535443D60D634A47002A6C47 /* BXSetHelperTableRelationProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 5321C0560AD4FD780011D0C8 /* BXSetHelperTableRelationProxy.h */; settings = {ATTRIBUTES = (Private, ); }; };

@@ -38,6 +38,7 @@
 #import <BaseTen/BXAttributeDescription.h>
 #import <BaseTen/BXRelationshipDescription.h>
 #import <BaseTen/BXException.h>
+#import <BaseTen/BXContainerProxy.h>
 
 /*
  * Helpful breakpoints:
