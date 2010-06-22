@@ -68,7 +68,7 @@ DictionaryKeys (NSMapTable *dict)
 	while (1)
 	{
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		SInt32 res = CFRunLoopRunInMode (kCFRunLoopDefaultMode, 0, false);
+		SInt32 res = CFRunLoopRunInMode (kCFRunLoopDefaultMode, DBL_MAX, false);
 		[pool drain];
 
 		if (kCFRunLoopRunStopped == res || kCFRunLoopRunFinished == res)
