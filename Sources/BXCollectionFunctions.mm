@@ -31,22 +31,16 @@
 #import "BXLogger.h"
 
 
-BOOL
-FindElement (id collection, id key, void *outValue)
+NSValue *
+FindElementValue (id collection, id key)
 {
-	ExpectR (outValue, NO);
-	ExpectR ([collection respondsToSelector: @selector (objectForKey:)], NO);
-
-	BOOL retval = NO;
-	id value = [collection objectForKey: key];
-	if (value)
+	NSValue *retval = nil;
+	if (collection)
 	{
-		ExpectR ([value isKindOfClass: [NSValue class]], NO);
-		
-		retval = YES;
-		[value getValue: outValue];
+		Expect ([collection respondsToSelector: @selector (objectForKey:)]);
+		retval = [collection objectForKey: key];
+		Expect ([retval isKindOfClass: [NSValue class]]);
 	}
-	
 	return retval;
 }
 

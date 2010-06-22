@@ -54,6 +54,8 @@
 	do { if (! (assertion)) { BXLogError (message , ##__VA_ARGS__); BXAssertionDebug (); return; }} while (0)
 #define BXAssertValueReturn(assertion, retval, message, ...) \
 	do { if (! (assertion)) { BXLogError (message , ##__VA_ARGS__); BXAssertionDebug (); return (retval); }} while (0)
+#define BXLogAssertionFailure(message, ...) \
+	do { BXLogError (message , ##__VA_ARGS__); BXAssertionDebug (); } while (0)
 
 #define BXDeprecationLogSpecific(...) \
 	do { BXLogWarning (__VA_ARGS__); BXDeprecationWarning (); } while (0)

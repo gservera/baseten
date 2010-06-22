@@ -28,6 +28,7 @@
 
 
 #import <BaseTen/postgresql/libpq-fe.h>
+#import <limits.h>
 #import "PGTSFoundationObjects.h"
 #import "PGTSConnection.h"
 #import "PGTSConnectionPrivate.h"
@@ -450,9 +451,24 @@ EscapeAndAppendByte (IMP appendImpl, NSMutableData *target, char const *src)
 	return [self description];
 }
 
-+ (id) copyForPGTSResultSet: (PGTSResultSet *) set withCharacters: (char const *) value type: (PGTSTypeDescription *) typeInfo
++ (id) copyForPGTSResultSet: (PGTSResultSet *) set withCharacters: (char const * const) value type: (PGTSTypeDescription *) typeInfo
 {
-    return [[NSNumber alloc] initWithLongLong: strtoll (value, NULL, 10)];
+	id retval = nil;
+	if (value)
+	{
+		long long l = strtoll (value, NULL, 10);
+		if (SHRT_MIN <= l && l <= SHRT_MAX)
+			retval = [[NSNumber alloc] initWithShort: l];
+		else if (INT_MIN <= l && l <= INT_MAX)
+			retval = [[NSNumber alloc] initWithInt: l];
+		else if (LONG_MIN <= l && l <= LONG_MAX)
+			retval = [[NSNumber alloc] initWithLong: l];
+		else if (LLONG_MIN <= l && l <= LLONG_MAX)
+			retval = [[NSNumber alloc] initWithLongLong: l];
+		else
+			BXLogError (@"Unable to create NSNumber representation for '%s'.", value);
+	}
+    return retval;
 }
 
 - (id) PGTSExpressionOfType: (NSAttributeType) attrType connection: (PGTSConnection *) connection

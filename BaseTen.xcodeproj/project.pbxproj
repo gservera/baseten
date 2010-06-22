@@ -559,6 +559,13 @@
 		5392053D11AEDB4F000E2BEC /* BXCollectionFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5392053C11AEDB4F000E2BEC /* BXCollectionFunctions.h */; };
 		53937B670EFD097700510DBD /* PGTSInvocationRecorder.h in Headers */ = {isa = PBXBuildFile; fileRef = 53937B650EFD097700510DBD /* PGTSInvocationRecorder.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		53937B680EFD097700510DBD /* PGTSInvocationRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 53937B660EFD097700510DBD /* PGTSInvocationRecorder.m */; };
+		539506F211CFAFBA0049F36C /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5395061611CFAD680049F36C /* AppKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		53950A0811CFBD730049F36C /* NSNumber+BaseTenAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 53950A0611CFBD730049F36C /* NSNumber+BaseTenAdditions.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		53950A0911CFBD730049F36C /* NSNumber+BaseTenAdditions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 53950A0711CFBD730049F36C /* NSNumber+BaseTenAdditions.mm */; };
+		53950A0C11CFBDAE0049F36C /* NSValue+BaseTenAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 53950A0A11CFBDAE0049F36C /* NSValue+BaseTenAdditions.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		53950A0D11CFBDAE0049F36C /* NSValue+BaseTenAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 53950A0B11CFBDAE0049F36C /* NSValue+BaseTenAdditions.m */; };
+		53950AC711CFD6840049F36C /* BXValueGetter.h in Headers */ = {isa = PBXBuildFile; fileRef = 53950AC511CFD6840049F36C /* BXValueGetter.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		53950AC811CFD6840049F36C /* BXValueGetter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 53950AC611CFD6840049F36C /* BXValueGetter.mm */; };
 		5395E7260E2F77DF006E8441 /* BXPGEntityImporter.h in Headers */ = {isa = PBXBuildFile; fileRef = 5395E7240E2F77DF006E8441 /* BXPGEntityImporter.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		5395E7270E2F77DF006E8441 /* BXPGEntityImporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5395E7250E2F77DF006E8441 /* BXPGEntityImporter.m */; };
 		539758520E1E86200042120A /* BXDataModelCompiler.h in Headers */ = {isa = PBXBuildFile; fileRef = 539758500E1E86200042120A /* BXDataModelCompiler.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1065,6 +1072,13 @@
 		53933EF409EBD082001D00BB /* BXInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = BXInterface.h; path = Sources/BXInterface.h; sourceTree = "<group>"; };
 		53937B650EFD097700510DBD /* PGTSInvocationRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PGTSInvocationRecorder.h; path = Sources/PGTSInvocationRecorder.h; sourceTree = "<group>"; };
 		53937B660EFD097700510DBD /* PGTSInvocationRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PGTSInvocationRecorder.m; path = Sources/PGTSInvocationRecorder.m; sourceTree = "<group>"; };
+		5395061611CFAD680049F36C /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		53950A0611CFBD730049F36C /* NSNumber+BaseTenAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSNumber+BaseTenAdditions.h"; path = "Sources/NSNumber+BaseTenAdditions.h"; sourceTree = "<group>"; };
+		53950A0711CFBD730049F36C /* NSNumber+BaseTenAdditions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "NSNumber+BaseTenAdditions.mm"; path = "Sources/NSNumber+BaseTenAdditions.mm"; sourceTree = "<group>"; };
+		53950A0A11CFBDAE0049F36C /* NSValue+BaseTenAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSValue+BaseTenAdditions.h"; path = "Sources/NSValue+BaseTenAdditions.h"; sourceTree = "<group>"; };
+		53950A0B11CFBDAE0049F36C /* NSValue+BaseTenAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSValue+BaseTenAdditions.m"; path = "Sources/NSValue+BaseTenAdditions.m"; sourceTree = "<group>"; };
+		53950AC511CFD6840049F36C /* BXValueGetter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXValueGetter.h; path = Sources/BXValueGetter.h; sourceTree = "<group>"; };
+		53950AC611CFD6840049F36C /* BXValueGetter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BXValueGetter.mm; path = Sources/BXValueGetter.mm; sourceTree = "<group>"; };
 		5395E7240E2F77DF006E8441 /* BXPGEntityImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXPGEntityImporter.h; path = Sources/BXPGEntityImporter.h; sourceTree = "<group>"; };
 		5395E7250E2F77DF006E8441 /* BXPGEntityImporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BXPGEntityImporter.m; path = Sources/BXPGEntityImporter.m; sourceTree = "<group>"; };
 		539758500E1E86200042120A /* BXDataModelCompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXDataModelCompiler.h; path = Sources/BXDataModelCompiler.h; sourceTree = "<group>"; };
@@ -1165,17 +1179,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				535444090D634A47002A6C47 /* Foundation.framework in Frameworks */,
 				5354440A0D634A47002A6C47 /* libcrypto.dylib in Frameworks */,
-				5354440B0D634A47002A6C47 /* libssl.dylib in Frameworks */,
-				5354440C0D634A47002A6C47 /* Security.framework in Frameworks */,
-				538678D40DE31BA0000C9A78 /* IOKit.framework in Frameworks */,
-				538679880DE31C1D000C9A78 /* libstdc++.6.dylib in Frameworks */,
-				537920580E3F519000423965 /* CoreData.framework in Frameworks */,
-				53D69A880EAE072A00C4C22D /* SystemConfiguration.framework in Frameworks */,
 				535B3E1E1038146500A5FB7E /* libpcre.a in Frameworks */,
 				5314FA1F11CC3B0F000D213B /* libpq.a in Frameworks */,
+				5354440B0D634A47002A6C47 /* libssl.dylib in Frameworks */,
+				538679880DE31C1D000C9A78 /* libstdc++.6.dylib in Frameworks */,
+				539506F211CFAFBA0049F36C /* AppKit.framework in Frameworks */,
+				537920580E3F519000423965 /* CoreData.framework in Frameworks */,
 				53E8522611CE2D7700588B12 /* CoreServices.framework in Frameworks */,
+				535444090D634A47002A6C47 /* Foundation.framework in Frameworks */,
+				538678D40DE31BA0000C9A78 /* IOKit.framework in Frameworks */,
+				5354440C0D634A47002A6C47 /* Security.framework in Frameworks */,
+				53D69A880EAE072A00C4C22D /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1215,6 +1230,7 @@
 				53DBE8010B666C3B00C3D20A /* libcrypto.dylib */,
 				53DBE8120B666C7900C3D20A /* libssl.dylib */,
 				538679870DE31C1D000C9A78 /* libstdc++.6.dylib */,
+				5395061611CFAD680049F36C /* AppKit.framework */,
 				D2F7E79907B2D74100F64583 /* CoreData.framework */,
 				53E8522511CE2D7700588B12 /* CoreServices.framework */,
 				0867D69BFE84028FC02AAC07 /* Foundation.framework */,
@@ -1355,8 +1371,14 @@
 			children = (
 				53666CC20E1CD8D20028DBEA /* BXHOM.h */,
 				53666CC30E1CD8D20028DBEA /* BXHOM.m */,
+				53950AC511CFD6840049F36C /* BXValueGetter.h */,
+				53950AC611CFD6840049F36C /* BXValueGetter.mm */,
 				539204D011AEC944000E2BEC /* NSObject+BaseTenAdditions.h */,
 				539204D111AEC944000E2BEC /* NSObject+BaseTenAdditions.m */,
+				53950A0A11CFBDAE0049F36C /* NSValue+BaseTenAdditions.h */,
+				53950A0B11CFBDAE0049F36C /* NSValue+BaseTenAdditions.m */,
+				53950A0611CFBD730049F36C /* NSNumber+BaseTenAdditions.h */,
+				53950A0711CFBD730049F36C /* NSNumber+BaseTenAdditions.mm */,
 				535661CC0F025DD800920008 /* NSURL+BaseTenAdditions.h */,
 				535661CB0F025DD800920008 /* NSURL+BaseTenAdditions.m */,
 				535661CD0F025DD800920008 /* NSArray+BaseTenAdditions.h */,
@@ -2086,6 +2108,9 @@
 				5392053D11AEDB4F000E2BEC /* BXCollectionFunctions.h in Headers */,
 				53F9D04C11B0828900600413 /* PGTSOids.h in Headers */,
 				534F122011CC302E00DC4F62 /* postgresql in Headers */,
+				53950A0811CFBD730049F36C /* NSNumber+BaseTenAdditions.h in Headers */,
+				53950A0C11CFBDAE0049F36C /* NSValue+BaseTenAdditions.h in Headers */,
+				53950AC711CFD6840049F36C /* BXValueGetter.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2756,6 +2781,9 @@
 				539204DA11AECE07000E2BEC /* BXDictionaryFunctions.m in Sources */,
 				534369C811AFEF8700ADD6C1 /* BXCollectionFunctions.mm in Sources */,
 				53F9D04D11B0828900600413 /* PGTSOids.mm in Sources */,
+				53950A0911CFBD730049F36C /* NSNumber+BaseTenAdditions.mm in Sources */,
+				53950A0D11CFBDAE0049F36C /* NSValue+BaseTenAdditions.m in Sources */,
+				53950AC811CFD6840049F36C /* BXValueGetter.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

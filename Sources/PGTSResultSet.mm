@@ -718,11 +718,12 @@ KVCompare (PGTSResultSet* res, void* ctx)
 	int columnIndex = 0;
 	if (! FindElement (mFieldIndexesByName, aName, &columnIndex))
 	{
+		NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+								  aName, kPGTSFieldnameKey,
+								  self,  kPGTSResultSetKey,
+								  nil];
 		@throw [NSException exceptionWithName: kPGTSFieldNotFoundException reason: nil 
-									 userInfo: [NSDictionary dictionaryWithObjectsAndKeys:
-												aName, kPGTSFieldnameKey,
-												self,  kPGTSResultSetKey,
-												nil]];
+									 userInfo: userInfo];
 	}
 	retval = [self valueForFieldAtIndex: columnIndex row: rowIndex];
     return retval;

@@ -28,14 +28,32 @@
 
 #import <Foundation/Foundation.h>
 #import <BaseTen/BXExport.h>
+#import <BaseTen/BXLogger.h>
+#import <BaseTen/BXValueGetter.h>
 
 
-BX_INTERNAL BOOL FindElement (id collection, id key, void *outValue);
-
+BX_EXPORT NSValue *FindElementValue (id collection, id key);
 
 
 #if defined(__cplusplus)
-namespace BaseTen {
+
+namespace BaseTen {	
+
+	template <typename T>
+	inline BOOL FindElement (id collection, id key, T *outValue)
+	{
+		ExpectR (outValue, NO);
+		
+		BOOL retval = NO;
+		NSValue *value = FindElementValue (collection, key);
+		if (value)
+		{
+			ValueGetter <T> getter;
+			retval = getter (value, outValue);
+		}
+		return retval;
+	}
+
 	
 	template <typename T>
 	inline id ObjectValue (T value)

@@ -1,8 +1,8 @@
 //
-// PGTSOids.mm
+// NSNumber+BaseTenAdditions.mm
 // BaseTen
 //
-// Copyright (C) 2008 Marko Karppinen & Co. LLC.
+// Copyright (C) 2010 Marko Karppinen & Co. LLC.
 //
 // Before using this software, please review the available licensing options
 // by visiting http://www.karppinen.fi/baseten/licensing/ or by contacting
@@ -26,39 +26,29 @@
 // $Id$
 //
 
-#import "PGTSOids.h"
-#import "BXCollectionFunctions.h"
-#import "BXLogger.h"
+#import "NSNumber+BaseTenAdditions.h"
+#import "NSValue+BaseTenAdditions.h"
 
 
-/**
- * \internal
- * \brief Return the value as an object.
- *
- * \sa PGTSOidValue
- */
-id 
-PGTSOidAsObject (Oid o)
+@implementation NSNumber (BaseTenAdditions)
+- (size_t) BXValueSize
 {
-    //Methods inherited from NSValue seem to return an NSValue instead of an NSNumber.
-	//Thus, we use NSNumber.
-    return BaseTen::ObjectValue (o);
+	return CFNumberGetByteSize ((CFNumberRef) self);
 }
 
 
-@implementation NSNumber (PGTSOidAdditions)
-/**
- * \internal
- * \brief Return the value as Oid.
- * \sa PGTSOidAsObject
- */
-- (Oid) PGTSOidValue
+- (BOOL) BXGetValue: (void *) buffer 
+			 length: (size_t) bufferLength
+		 numberType: (CFNumberType) expectedNumberType 
+		   encoding: (const char *) expectedEncoding
 {
-	Oid retval = InvalidOid;
-	BaseTen::ValueGetter <Oid> getter;
-	BOOL status = getter (self, &retval);
+	BOOL retval = NO;
 	
-	ExpectR (status, InvalidOid);
+	if (expectedNumberType)
+		retval = CFNumberGetValue ((CFNumberRef) self, expectedNumberType, buffer);
+	else
+		retval = [super BXGetValue: buffer length: bufferLength numberType: expectedNumberType encoding: expectedEncoding];
+	
 	return retval;
 }
 @end

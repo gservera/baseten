@@ -33,8 +33,9 @@
 
 #if (TARGET_OS_MAC)
 #import <AppKit/AppKit.h>
+#else
+static id NSApp = nil;
 #endif
-id NSApp WEAK_IMPORT_ATTRIBUTE;
 
 
 

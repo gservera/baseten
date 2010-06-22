@@ -41,10 +41,10 @@
 		535444780D634D9C002A6C47 /* BXDatabaseContextAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 53D0D15A0B6F896200D2D101 /* BXDatabaseContextAdditions.m */; };
 		5354447C0D634D9C002A6C47 /* BXPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 53E9BB090B909EA000DDB9BE /* BXPanel.m */; };
 		5354447D0D634D9C002A6C47 /* BXNetServiceConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = 532D60E00B944D8C0028E90B /* BXNetServiceConnector.m */; };
-		535444800D634D9C002A6C47 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
 		535444820D634D9C002A6C47 /* SecurityInterface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 531650C30B72040700785454 /* SecurityInterface.framework */; };
 		5355C15311A8744700C5DEAF /* BXAppKitSystemEventNotifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 5355C15111A8744700C5DEAF /* BXAppKitSystemEventNotifier.h */; };
 		5355C15411A8744700C5DEAF /* BXAppKitSystemEventNotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 5355C15211A8744700C5DEAF /* BXAppKitSystemEventNotifier.m */; };
+		539505FC11CFAC360049F36C /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 539505FB11CFAC360049F36C /* Cocoa.framework */; };
 		53ED303F0E1ACBA80095BE8B /* BaseTen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5354443E0D634CA4002A6C47 /* BaseTen.framework */; };
 		53F137CD0EB074C400D0F517 /* WaitForNetworkWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = 53F137CB0EB074C400D0F517 /* WaitForNetworkWindow.nib */; };
 /* End PBXBuildFile section */
@@ -75,7 +75,6 @@
 
 /* Begin PBXFileReference section */
 		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		32DBCF5E0370ADEE00C91783 /* BaseTenAppKit_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BaseTenAppKit_Prefix.pch; path = Sources/BaseTenAppKit_Prefix.pch; sourceTree = "<group>"; };
 		5303D5FF0A39E6CD00917C22 /* BXControllerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXControllerProtocol.h; path = Sources/BXControllerProtocol.h; sourceTree = "<group>"; };
 		531650C30B72040700785454 /* SecurityInterface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SecurityInterface.framework; path = System/Library/Frameworks/SecurityInterface.framework; sourceTree = SDKROOT; };
@@ -112,6 +111,7 @@
 		537E484B0A14B7BA00A22080 /* BXSynchronizedArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BXSynchronizedArrayController.m; path = Sources/BXSynchronizedArrayController.m; sourceTree = "<group>"; };
 		537E48D10A14BFE800A22080 /* BaseTen.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BaseTen.xcodeproj; path = ../BaseTen.xcodeproj; sourceTree = SOURCE_ROOT; };
 		537E4A6D0A14C82200A22080 /* BaseTenAppKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BaseTenAppKit.h; path = Sources/BaseTenAppKit.h; sourceTree = "<group>"; };
+		539505FB11CFAC360049F36C /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		53AE2CB70B1721F2000E6EF1 /* BaseTen.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = BaseTen.icns; path = ../Resources/BaseTen.icns; sourceTree = SOURCE_ROOT; };
 		53D0D1590B6F896200D2D101 /* BXDatabaseContextAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXDatabaseContextAdditions.h; path = Sources/BXDatabaseContextAdditions.h; sourceTree = "<group>"; };
 		53D0D15A0B6F896200D2D101 /* BXDatabaseContextAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BXDatabaseContextAdditions.m; path = Sources/BXDatabaseContextAdditions.m; sourceTree = "<group>"; };
@@ -129,9 +129,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				535444800D634D9C002A6C47 /* Cocoa.framework in Frameworks */,
 				535444820D634D9C002A6C47 /* SecurityInterface.framework in Frameworks */,
 				53ED303F0E1ACBA80095BE8B /* BaseTen.framework in Frameworks */,
+				539505FC11CFAC360049F36C /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,7 +163,7 @@
 			isa = PBXGroup;
 			children = (
 				537E48D10A14BFE800A22080 /* BaseTen.xcodeproj */,
-				1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */,
+				539505FB11CFAC360049F36C /* Cocoa.framework */,
 				531650C30B72040700785454 /* SecurityInterface.framework */,
 			);
 			name = "External Frameworks and Libraries";

@@ -147,11 +147,14 @@ using namespace BaseTen;
 	}
 	
 	//Send changes.
+	BaseTen::ValueGetter <unichar> getter;
 	for (NSValue *key in [changes keyEnumerator])
     {
-		unichar changeType = '\0';
-		[key getValue: &changeType];		
 		NSArray* objectIDs = [changes objectForKey: key];
+
+		unichar changeType = '\0';
+		BOOL status = getter (key, &changeType);
+		ExpectV (status);
 		
 		switch (changeType)
 		{
