@@ -369,7 +369,7 @@ ErrorUserInfoKey (char fieldCode)
 	NSError *retval = nil;
 	@synchronized (self)
 	{
-		[[self class] errorForPGresult: mResult];
+		retval = [[self class] errorForPGresult: mResult];
 	}
 	return retval;
 }
