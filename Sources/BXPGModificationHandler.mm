@@ -68,25 +68,63 @@ using namespace BaseTen;
 	[super dealloc];
 }
 
+
+- (void) setObservingOptions: (enum BXObservingOption) options
+{
+	if (mOptions < options)
+	{
+		mOptions = options;
+		[self prepare];
+	}
+}
+
+
 - (void) prepare
 {
 	[super prepare];
 	
-	BXPGTableDescription* rel = [mInterface tableForEntity: mEntity];
-	PGTSIndexDescription* pkey = [rel primaryKey];
-	NSArray* columns = [[[pkey columns] allObjects] sortedArrayUsingSelector: @selector (indexCompare:)];
-	NSString* pkeyString = [(id) [[columns BX_Collect] columnDefinition] componentsJoinedByString: @", "];
+	NSString *queryString = nil;
+	switch (mOptions) 
+	{
+		case kBXObservingOptionObjectIDs:
+		{
+			BXPGTableDescription* rel = [mInterface tableForEntity: mEntity];
+			PGTSIndexDescription* pkey = [rel primaryKey];
+			NSArray* columns = [[[pkey columns] allObjects] sortedArrayUsingSelector: @selector (indexCompare:)];
+			NSString* pkeyString = [(id) [[columns BX_Collect] columnDefinition] componentsJoinedByString: @", "];
+			
+			NSString* queryFormat = 
+			@"SELECT * FROM \"baseten\".modification ($1, $2, $3, $4) "
+			@"AS m ( "
+			@"\"baseten_modification_type\" CHARACTER (1), "
+			@"\"baseten_modification_cols\" INT2 [], "
+			@"\"baseten_modification_timestamp\" TIMESTAMP (6) WITHOUT TIME ZONE, "
+			@"\"baseten_modification_insert_timestamp\" TIMESTAMP (6) WITHOUT TIME ZONE, "
+			@"%@)";
+			queryString = [NSString stringWithFormat: queryFormat, pkeyString];
+			
+			break;
+		}
+			
+		case kBXObservingOptionNotificationOnly:
+		case kBXObservingOptionNone:
+		default:
+			break;
+	}
 	
-	NSString* queryFormat = 
-	@"SELECT * FROM \"baseten\".modification ($1, $2, $3, $4) "
-	@"AS m ( "
-	@"\"baseten_modification_type\" CHARACTER (1), "
-	@"\"baseten_modification_cols\" INT2 [], "
-	@"\"baseten_modification_timestamp\" TIMESTAMP (6) WITHOUT TIME ZONE, "
-	@"\"baseten_modification_insert_timestamp\" TIMESTAMP (6) WITHOUT TIME ZONE, "
-	@"%@)";
-    mQueryString = [[NSString alloc] initWithFormat: queryFormat, pkeyString];
+	[self setQueryString: queryString];
 }
+
+
+- (void) setQueryString: (NSString *) queryString
+{
+	if (mQueryString != queryString)
+	{
+		[mQueryString release];
+		mQueryString = [queryString copy];
+	}
+}
+
 
 - (void) handleNotification: (PGTSNotification *) notification
 {
@@ -94,86 +132,105 @@ using namespace BaseTen;
 	if (![mEntity getsChangedByTriggers] && [mInterface currentlyChangedEntity] == mEntity)
 		backendPID = [mConnection backendPID];
 
-	[self checkModifications: backendPID];
+	if ([notification backendPID] != backendPID)
+		[self checkModifications: backendPID];
 }
+
 
 - (void) checkModifications: (int) backendPID
 {
-    //When observing self-generated modifications, also the ones that still have NULL values for 
-    //pgts_modification_timestamp should be included in the query.	
-	BOOL isIdle = (PQTRANS_IDLE == [mConnection transactionStatus]);
-	
-	PGTSResultSet* res = [mConnection executeQuery: mQueryString parameters: 
-						  [NSNumber numberWithInteger: mIdentifier], [NSNumber numberWithBool: isIdle], 
-						  mLastCheck, [NSNumber numberWithInt: backendPID]];
-	BXPGTableDescription *rel = [mInterface tableForEntity: mEntity];
-	NSDictionary *attributesByName = [mEntity attributesByName];
-	BXAssertVoidReturn ([res querySucceeded], @"Expected query to succeed: %@", [res error]);
-	
-	//Update the timestamp.
-	while ([res advanceRow]) 
-		[self setLastCheck: [res valueForKey: @"baseten_modification_timestamp"]];
-	
-	//Sort the changes by type.
-	NSMutableDictionary *changes = [NSMutableDictionary dictionaryWithCapacity: 4];
-	NSMutableArray *changedAttrs = [NSMutableArray arrayWithCapacity: [res count]];
-	[res goBeforeFirstRow];
-    while ([res advanceRow])
-    {
-		unichar modificationType = [[res valueForKey: @"baseten_modification_type"] characterAtIndex: 0];                            
-		NSMutableArray *objectIDs = FindObject (changes, modificationType);
-		if (! objectIDs)
+	switch (mOptions) 
+	{
+		case kBXObservingOptionObjectIDs:
 		{
-			objectIDs = [NSMutableArray arrayWithCapacity: [res count]];
-			Insert (changes, modificationType, objectIDs);
-		}
-		
-		BXDatabaseObjectID* objectID = [BXDatabaseObjectID IDWithEntity: mEntity primaryKeyFields: [res currentRowAsDictionary]];
-		[objectIDs addObject: objectID];
-		
-		if ('U' == modificationType)
-		{
-			NSArray *columnIndices = [res valueForKey: @"baseten_modification_cols"];
-			NSMutableArray *attrs = [NSMutableArray arrayWithCapacity: [columnIndices count]];
-			BXEnumerate (currentIndex, e, [columnIndices objectEnumerator])
+			//When observing self-generated modifications, also the ones that still have NULL values for 
+			//pgts_modification_timestamp should be included in the query.	
+			BOOL isIdle = (PQTRANS_IDLE == [mConnection transactionStatus]);
+			
+			PGTSResultSet* res = [mConnection executeQuery: mQueryString parameters: 
+								  [NSNumber numberWithInteger: mIdentifier], [NSNumber numberWithBool: isIdle], 
+								  mLastCheck, [NSNumber numberWithInt: backendPID]];
+			BXPGTableDescription *rel = [mInterface tableForEntity: mEntity];
+			NSDictionary *attributesByName = [mEntity attributesByName];
+			BXAssertVoidReturn ([res querySucceeded], @"Expected query to succeed: %@", [res error]);
+			
+			//Update the timestamp.
+			while ([res advanceRow]) 
+				[self setLastCheck: [res valueForKey: @"baseten_modification_timestamp"]];
+			
+			//Sort the changes by type.
+			NSMutableDictionary *changes = [NSMutableDictionary dictionaryWithCapacity: 4];
+			NSMutableArray *changedAttrs = [NSMutableArray arrayWithCapacity: [res count]];
+			[res goBeforeFirstRow];
+			while ([res advanceRow])
 			{
-				PGTSColumnDescription *col = [rel columnAtIndex: [currentIndex integerValue]];
-				BXAttributeDescription *attr = [attributesByName objectForKey: [col name]];
-				[attrs addObject: attr];
+				unichar modificationType = [[res valueForKey: @"baseten_modification_type"] characterAtIndex: 0];                            
+				NSMutableArray *objectIDs = FindObject (changes, modificationType);
+				if (! objectIDs)
+				{
+					objectIDs = [NSMutableArray arrayWithCapacity: [res count]];
+					Insert (changes, modificationType, objectIDs);
+				}
+				
+				BXDatabaseObjectID* objectID = [BXDatabaseObjectID IDWithEntity: mEntity primaryKeyFields: [res currentRowAsDictionary]];
+				[objectIDs addObject: objectID];
+				
+				if ('U' == modificationType)
+				{
+					NSArray *columnIndices = [res valueForKey: @"baseten_modification_cols"];
+					NSMutableArray *attrs = [NSMutableArray arrayWithCapacity: [columnIndices count]];
+					BXEnumerate (currentIndex, e, [columnIndices objectEnumerator])
+					{
+						PGTSColumnDescription *col = [rel columnAtIndex: [currentIndex integerValue]];
+						BXAttributeDescription *attr = [attributesByName objectForKey: [col name]];
+						[attrs addObject: attr];
+					}
+					
+					[changedAttrs addObject: attrs];
+				}
 			}
 			
-			[changedAttrs addObject: attrs];
+			//Send changes.
+			BaseTen::ValueGetter <unichar> getter;
+			for (NSValue *key in [changes keyEnumerator])
+			{
+				NSArray* objectIDs = [changes objectForKey: key];
+				
+				unichar changeType = '\0';
+				BOOL status = getter (key, &changeType);
+				ExpectV (status);
+				
+				switch (changeType)
+				{
+					case 'I':
+						[[mInterface databaseContext] addedObjectsToDatabase: objectIDs];
+						break;
+						
+					case 'U':
+						[[mInterface databaseContext] updatedObjectsInDatabase: objectIDs attributes: changedAttrs faultObjects: YES];
+						break;
+						
+					case 'D':
+						[[mInterface databaseContext] deletedObjectsFromDatabase: objectIDs];
+						break;
+						
+					default:
+						break;
+				}
+			}
+			
+			// Fall through.
 		}
-	}
-	
-	//Send changes.
-	BaseTen::ValueGetter <unichar> getter;
-	for (NSValue *key in [changes keyEnumerator])
-    {
-		NSArray* objectIDs = [changes objectForKey: key];
 
-		unichar changeType = '\0';
-		BOOL status = getter (key, &changeType);
-		ExpectV (status);
-		
-		switch (changeType)
+		case kBXObservingOptionNotificationOnly:
 		{
-			case 'I':
-				[[mInterface databaseContext] addedObjectsToDatabase: objectIDs];
-				break;
-								
-			case 'U':
-				[[mInterface databaseContext] updatedObjectsInDatabase: objectIDs attributes: changedAttrs faultObjects: YES];
-				break;
-				
-			case 'D':
-				[[mInterface databaseContext] deletedObjectsFromDatabase: objectIDs];
-				break;
-				
-			default:
-				break;
+			[[mInterface databaseContext] changedEntity: mEntity];
+			break;
 		}
-    }	
+			
+		default:
+			break;
+	}
 }
 
 - (void) setIdentifier: (NSInteger) identifier

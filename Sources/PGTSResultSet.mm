@@ -329,7 +329,7 @@ ErrorUserInfoKey (char fieldCode)
 			[retval addObject: [self currentRowAsDictionary]];
 		}
 	}
-	return retval;
+	return [[retval copy] autorelease];
 }
 
 

@@ -373,8 +373,8 @@ bail:
 		{
 			NSString* entityName = nil;
 			NSString* schemaName = nil;
-			BXAssertValueReturn ([[self class] parseURI: anURI entity: &entityName schema: &schemaName primaryKeyFields: NULL],
-								   nil, @"Expected object URI to be parseable.");
+			BOOL status = [[self class] parseURI: anURI entity: &entityName schema: &schemaName primaryKeyFields: NULL];
+			BXAssertValueReturn (status, nil, @"Expected object URI to be parseable.");
 			BXAssertValueReturn ([[anEntity name] isEqualToString: entityName], nil, @"Expected entity names to match.");
 			BXAssertValueReturn ([[anEntity schemaName] isEqualToString: schemaName], nil, @"Expected schema names to match.");
 		}

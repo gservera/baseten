@@ -45,6 +45,7 @@ BX_EXPORT NSString* const kBXPGUnableToObserveModificationsException;
 BX_EXPORT NSString* const kBXDatabaseContextKey;
 BX_EXPORT NSString* const kBXURIKey;
 BX_EXPORT NSString* const kBXObjectIDsKey;
+BX_EXPORT NSString* const kBXEntityChangeNotification;
 BX_EXPORT NSString* const kBXInsertNotification;
 BX_EXPORT NSString* const kBXDeleteNotification;
 BX_EXPORT NSString* const kBXUpdateNotification;
@@ -155,6 +156,13 @@ enum BXDatabaseObjectKeyType
 	kBXDatabaseObjectPrimaryKey,
 	kBXDatabaseObjectKnownKey,
 	kBXDatabaseObjectForeignKey
+};
+
+enum BXObservingOption
+{
+	kBXObservingOptionNone = 0,
+	kBXObservingOptionNotificationOnly,
+	kBXObservingOptionObjectIDs
 };
 
 /** \brief Property kind. */

@@ -47,6 +47,7 @@ struct BXTrustResult
 @interface BXDatabaseContext (DBInterfaces)
 - (BOOL) connectedToDatabase: (BOOL) connected async: (BOOL) async error: (NSError **) error;
 - (void) connectionLost: (NSError *) error;
+- (void) changedEntity: (BXEntityDescription *) entity;
 - (void) addedObjectsToDatabase: (NSArray *) objectIDs;
 - (void) updatedObjectsInDatabase: (NSArray *) objectIDs attributes: (NSArray *) changedAttributes faultObjects: (BOOL) shouldFault;
 - (void) deletedObjectsFromDatabase: (NSArray *) objectIDs;
@@ -147,4 +148,7 @@ struct BXTrustResult
 - (void) reloadDatabaseMetadata;
 - (void) prepareForEntityValidation;
 - (BOOL) validateEntities: (NSArray *) entities error: (NSError **) outError;
+- (BOOL) observeEntity: (BXEntityDescription *) entity 
+			   options: (enum BXObservingOption) options 
+				 error: (NSError **) error;
 @end

@@ -584,6 +584,13 @@ error:
 }
 
 
+- (BOOL) observeEntity: (BXEntityDescription *) entity options: (enum BXObservingOption) options error: (NSError **) error
+{
+	// FIXME: set an error if transaction handler isn't set.
+	return [mTransactionHandler observeEntity: entity options: options error: error];
+}
+
+
 - (id) createObjectForEntity: (BXEntityDescription *) entity 
              withFieldValues: (NSDictionary *) valueDict
                        class: (Class) aClass 
@@ -603,7 +610,7 @@ error:
 		goto error;
 	}
 	if ([entity hasCapability: kBXEntityCapabilityAutomaticUpdate])
-		if (! [mTransactionHandler observeIfNeeded: entity error: error]) goto error;
+		if (! [mTransactionHandler observeEntity: entity options: kBXObservingOptionObjectIDs error: error]) goto error;
 	
 	[self setCurrentlyChangedEntity: entity];
 	
@@ -671,7 +678,7 @@ error:
 	PGTSTableDescription* table = [self tableForEntity: entity];
 	Expect (table);
 	if ([entity hasCapability: kBXEntityCapabilityAutomaticUpdate])
-		if (! [mTransactionHandler observeIfNeeded: entity error: error]) goto error;
+		if (! [mTransactionHandler observeEntity: entity options: kBXObservingOptionObjectIDs error: error]) goto error;
 	
 	PGTSConnection* connection = [mTransactionHandler connection];
 	[mQueryBuilder reset];
@@ -842,7 +849,7 @@ error:
 	PGTSTableDescription* table = [self tableForEntity: entity];
 	Expect (table);
 	if ([entity hasCapability: kBXEntityCapabilityAutomaticUpdate])
-		if (! [mTransactionHandler observeIfNeeded: entity error: error]) goto error;
+		if (! [mTransactionHandler observeEntity: entity options: kBXObservingOptionObjectIDs error: error]) goto error;
 
 	[self setCurrentlyChangedEntity: entity];
 	

@@ -1047,13 +1047,16 @@ ModTypeToObject (enum BXModificationType value)
 	NSUInteger groupingLevel = [mUndoManager groupingLevel];
 	NSUInteger currentLevel = NSNotFound;
 	BOOL shouldEstablishSavepoint = NO;
-	while (NSNotFound != (currentLevel = [mUndoGroupingLevels lastIndex]))
+	if (mUndoGroupingLevels)
 	{
-		if (currentLevel < groupingLevel)
-			break;
-		
-		shouldEstablishSavepoint = YES;
-		[mUndoGroupingLevels removeIndex: currentLevel];
+		while (NSNotFound != (currentLevel = [mUndoGroupingLevels lastIndex]))
+		{
+			if (currentLevel < groupingLevel)
+				break;
+			
+			shouldEstablishSavepoint = YES;
+			[mUndoGroupingLevels removeIndex: currentLevel];
+		}
 	}
 	
 	if (shouldEstablishSavepoint)
@@ -1587,6 +1590,30 @@ ModTypeToObject (enum BXModificationType value)
     return retval;
 }
 
+
+- (BOOL) observeEntity: (BXEntityDescription *) entity options: (enum BXObservingOption) options error: (NSError **) error
+{
+	NSError *localError = nil;
+	BOOL retval = NO;
+	if ([self checkErrorHandling])
+	{
+		if ([entity hasCapability: kBXEntityCapabilityAutomaticUpdate])
+			retval = [mDatabaseInterface observeEntity: entity options: options error: &localError];
+		else
+		{
+			// FIXME: set an error if no observing capability.
+		}
+		
+		BXHandleError (error, localError);
+	}
+	else
+	{
+		retval = YES;
+	}
+	return retval;
+}
+
+
 /** \name Deleting database objects */
 //@{
 /**
@@ -2050,6 +2077,15 @@ ModTypeToObject (enum BXModificationType value)
                                                userInfo: userInfo];
     }
 }
+
+
+- (void) changedEntity: (BXEntityDescription *) entity
+{
+	NSNotificationCenter *nc = [self notificationCenter];
+	NSDictionary *userInfo = [NSDictionary dictionaryWithObject: self forKey: kBXDatabaseContextKey];
+	[nc postNotificationName: kBXEntityChangeNotification object: entity userInfo: userInfo];
+}
+
 
 - (BOOL) handleInvalidTrust: (SecTrustRef) trust result: (SecTrustResultType) result
 {

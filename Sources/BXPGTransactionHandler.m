@@ -170,8 +170,8 @@ SSLMode (enum BXSSLMode mode)
 {
 	[self disconnect];
 	[mCertificateVerificationDelegate release];
-	[mObservedEntities release];
-	[mObservers release];
+	[mModificationHandlersByEntity release];
+	[mEntityObserversByNotificationName release];
 	[mChangeHandlers release];
 	[mLockHandlers release];
 	[mDatabaseIdentifiers release];
@@ -292,8 +292,8 @@ SSLMode (enum BXSSLMode mode)
 
 - (void) didDisconnect
 {
-	[mObservedEntities removeAllObjects];
-	[mObservers removeAllObjects];
+	[mModificationHandlersByEntity removeAllObjects];
+	[mEntityObserversByNotificationName removeAllObjects];
 	[mChangeHandlers removeAllObjects];
 	[mLockHandlers removeAllObjects];
 }
@@ -606,28 +606,35 @@ SSLMode (enum BXSSLMode mode)
 #pragma mark Observing
 
 
-- (BOOL) observeIfNeeded: (BXEntityDescription *) entity error: (NSError **) error
+- (BOOL) observeEntity: (BXEntityDescription *) entity options: (enum BXObservingOption) options error: (NSError **) error
 {
 	[self doesNotRecognizeSelector: _cmd];
 	return NO;
 }
 
 
-- (BOOL) observeIfNeeded: (BXEntityDescription *) entity connection: (PGTSConnection *) connection error: (NSError **) error
+- (BOOL) observeEntity: (BXEntityDescription *) entity 
+			connection: (PGTSConnection *) connection 
+			   options: (enum BXObservingOption) options 
+				 error: (NSError **) error
 {
 	ExpectR (error, NO);
 	ExpectR (entity, NO);
 	
 	BOOL retval = NO;
 	
-	if ([mObservedEntities containsObject: entity])
+	BXPGModificationHandler* handler = [mModificationHandlersByEntity objectForKey: entity];
+	if (handler)
+	{
 		retval = YES;
+		[handler setObservingOptions: options];
+	}
 	else
 	{
-		if (! mObservedEntities)
-			mObservedEntities = [[NSMutableSet alloc] init];
-		if (! mObservers)
-			mObservers = [[NSMutableDictionary alloc] init];
+		if (! mModificationHandlersByEntity)
+			mModificationHandlersByEntity = [[NSMutableDictionary alloc] init];
+		if (! mEntityObserversByNotificationName)
+			mEntityObserversByNotificationName = [[NSMutableDictionary alloc] init];
 		if (! mChangeHandlers)
 			mChangeHandlers = [[NSMutableDictionary alloc] init];
 		if (! mLockHandlers)
@@ -664,7 +671,7 @@ SSLMode (enum BXSSLMode mode)
 					[res advanceRow];
 					NSString* notificationName = [res valueForKey: @"n_name"];
 					NSNumber* dbIdentifier = [res valueForKey: @"relid"];
-					BXPGModificationHandler* handler = [[[BXPGModificationHandler alloc] init] autorelease];
+					handler = [[[BXPGModificationHandler alloc] init] autorelease];
 					
 					[handler setInterface: mInterface];
 					[handler setConnection: connection];
@@ -672,11 +679,12 @@ SSLMode (enum BXSSLMode mode)
 					[handler setEntity: entity];
 					[handler setNotificationName: notificationName];
 					[handler setIdentifier: [[res valueForKey: @"relid"] integerValue]];
-					[handler prepare];
+					[handler setObservingOptions: options]; // Calls -prepare.
 					
-					[mObservers setObject: handler forKey: notificationName];
+					[mEntityObserversByNotificationName setObject: handler forKey: notificationName];
 					[mChangeHandlers setObject: handler forKey: entity];
 					[mDatabaseIdentifiers setObject: dbIdentifier forKey: entity];
+					[mModificationHandlersByEntity setObject: handler forKey: entity];
 				}
 				
 				{
@@ -695,11 +703,10 @@ SSLMode (enum BXSSLMode mode)
 					[handler setLockTableName: tableName];
 					[handler prepare];
 					
-					[mObservers setObject: handler forKey: notificationName];
+					[mEntityObserversByNotificationName setObject: handler forKey: notificationName];
 					[mLockHandlers setObject: handler forKey: entity];
 				}
-								
-				[mObservedEntities addObject: entity];			
+				
 				retval = YES;
 			}
 			else
@@ -714,7 +721,7 @@ SSLMode (enum BXSSLMode mode)
 	{
 		if (! retval)
 			break;
-		retval = [self observeIfNeeded: currentEntity connection: connection error: error];
+		retval = [self observeEntity: currentEntity connection: connection options: options error: error];
 	}
 	
     return retval;
@@ -728,7 +735,7 @@ SSLMode (enum BXSSLMode mode)
 	
 	BOOL retval = NO;
 	NSString* nname = [BXPGClearLocksHandler notificationName];
-	if ([mObservers objectForKey: nname])
+	if ([mEntityObserversByNotificationName objectForKey: nname])
 		retval = YES;
 	else
 	{
@@ -740,7 +747,7 @@ SSLMode (enum BXSSLMode mode)
 			[handler setInterface: mInterface];
 			[handler setConnection: connection];
 			[handler prepare];
-			[mObservers setObject: handler forKey: nname];
+			[mEntityObserversByNotificationName setObject: handler forKey: nname];
 			
 			retval = YES;
 		}
@@ -775,8 +782,8 @@ SSLMode (enum BXSSLMode mode)
 
 - (NSArray *) observedOids
 {
-	NSMutableArray* retval = [NSMutableArray arrayWithCapacity: [mObservedEntities count]];
-	BXEnumerate (currentEntity, e, [mObservedEntities objectEnumerator])
+	NSMutableArray* retval = [NSMutableArray arrayWithCapacity: [mModificationHandlersByEntity count]];
+	BXEnumerate (currentEntity, e, [mModificationHandlersByEntity keyEnumerator])
 	{
 		NSString* name = [currentEntity name];
 		NSString* schemaName = [currentEntity schemaName];
@@ -810,7 +817,7 @@ SSLMode (enum BXSSLMode mode)
 {
 	NSString* notificationName = [notification notificationName];
 	BXLogDebug (@"Got notification (from %p): %@", connection, notificationName);
-	[[mObservers objectForKey: notificationName] handleNotification: notification];
+	[[mEntityObserversByNotificationName objectForKey: notificationName] handleNotification: notification];
 }
 
 

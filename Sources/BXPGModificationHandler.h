@@ -35,7 +35,10 @@
 {
 	NSString* mQueryString;
 	NSInteger mIdentifier;
+	enum BXObservingOption mOptions;
 }
 - (void) checkModifications: (int) backendPID;
 - (void) setIdentifier: (NSInteger) identifier;
+- (void) setObservingOptions: (enum BXObservingOption) options;
+- (void) setQueryString: (NSString *) queryString;
 @end

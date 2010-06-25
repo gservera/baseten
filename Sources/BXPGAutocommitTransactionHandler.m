@@ -56,9 +56,9 @@
 
 
 @implementation BXPGAutocommitTransactionHandler (Observing)
-- (BOOL) observeIfNeeded: (BXEntityDescription *) entity error: (NSError **) error
+- (BOOL) observeEntity: (BXEntityDescription *) entity options: (enum BXObservingOption) options error: (NSError **) error
 {
-	return [self observeIfNeeded: entity connection: mConnection error: error];
+	return [self observeEntity: entity connection: mConnection options: options error: error];
 }
 
 - (void) checkSuperEntities: (BXEntityDescription *) entity

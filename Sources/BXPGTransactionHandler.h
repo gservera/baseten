@@ -59,8 +59,8 @@ BX_EXPORT NSString* kBXPGCallbackSelectorStringKey;
 	BXPGCertificateVerificationDelegate* mCertificateVerificationDelegate;
 	PGTSConnection* mConnection;
 	
-	NSMutableSet* mObservedEntities;
-	NSMutableDictionary* mObservers;
+	NSMutableDictionary *mModificationHandlersByEntity;
+	NSMutableDictionary* mEntityObserversByNotificationName;
 	NSMutableDictionary* mChangeHandlers;
 	NSMutableDictionary* mLockHandlers;
 	NSMutableDictionary* mDatabaseIdentifiers;
@@ -101,8 +101,11 @@ BX_EXPORT NSString* kBXPGCallbackSelectorStringKey;
 - (void) handleConnectionErrorFor: (PGTSConnection *) failedConnection;
 - (void) handleSuccess;
 
-- (BOOL) observeIfNeeded: (BXEntityDescription *) entity error: (NSError **) error;
-- (BOOL) observeIfNeeded: (BXEntityDescription *) entity connection: (PGTSConnection *) connection error: (NSError **) error;
+- (BOOL) observeEntity: (BXEntityDescription *) entity options: (enum BXObservingOption) options error: (NSError **) error;
+- (BOOL) observeEntity: (BXEntityDescription *) entity 
+			connection: (PGTSConnection *) connection 
+			   options: (enum BXObservingOption) options 
+				 error: (NSError **) error;
 - (BOOL) addClearLocksHandler: (PGTSConnection *) connection error: (NSError **) outError;
 
 - (void) checkSuperEntities: (BXEntityDescription *) entity;

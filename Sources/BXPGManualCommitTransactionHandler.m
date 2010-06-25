@@ -148,9 +148,9 @@
 
 
 @implementation BXPGManualCommitTransactionHandler (Observing)
-- (BOOL) observeIfNeeded: (BXEntityDescription *) entity error: (NSError **) error
+- (BOOL) observeEntity: (BXEntityDescription *) entity options: (enum BXObservingOption) options error: (NSError **) error
 {
-	return [self observeIfNeeded: entity connection: mNotifyConnection error: error];
+	return [self observeEntity: entity connection: mNotifyConnection options: options error: error];
 }
 
 - (void) checkSuperEntities: (BXEntityDescription *) entity
