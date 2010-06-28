@@ -548,12 +548,7 @@ bx_error_during_rollback (id self, NSError* error)
 	if (YES == [res querySucceeded])
 		retval = [res resultAsArray];
 	else
-	{
-        //FIXME: reason for error!
-		*error = [BXError errorWithDomain: kBXErrorDomain
-									 code: kBXErrorUnsuccessfulQuery
-								 userInfo: nil];
-	}
+		*error = [mContext packQueryError: [res error]];
 	
 error:
 	return retval;
@@ -572,12 +567,7 @@ error:
 	if (YES == [res querySucceeded])
 		retval = [res numberOfRowsAffectedByCommand];
 	else
-	{
-        //FIXME: reason for error?
-		*error = [BXError errorWithDomain: kBXErrorDomain
-									 code: kBXErrorUnsuccessfulQuery
-								 userInfo: nil];		
-	}
+		*error = [mContext packQueryError: [res error]];
 	
 error:
 	return retval;
