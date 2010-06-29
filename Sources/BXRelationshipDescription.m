@@ -366,8 +366,8 @@ AddRelToAttribute (NSString* srcKey, NSString* dstKey, void* context)
 	
 	if (mIsDeprecated) 
 	{
-		BXDeprecationLogSpecific (@"The relationship name %@ in %@.%@ has been deprecated.",
-								  mName, [mEntity schemaName], [mEntity name]);
+		BXDeprecationLogSpecific (@"The relationship name '%@' in %@.%@ has been deprecated (inverse relationship is '%@').",
+								  mName, [mEntity schemaName], [mEntity name], [[self inverseRelationship] name]);
 	}
 	
 	id retval = nil;
