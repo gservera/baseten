@@ -886,10 +886,11 @@ ModTypeToObject (enum BXModificationType value)
 	if (! (password && [mDatabaseInterface usedPassword]))
     	password = "";
     
-	SecKeychainItemRef item = NULL;
-
-	if (NULL == mKeychainPasswordItem)
+	if (mKeychainPasswordItem)
+		status = SecKeychainItemModifyAttributesAndData (mKeychainPasswordItem, NULL, strlen (password), password);
+	else
 	{
+		SecKeychainItemRef item = NULL;
 		status = SecKeychainAddInternetPassword (NULL, //Default keychain
 												 strlen (serverName), serverName,
 												 0, NULL,
@@ -899,18 +900,26 @@ ModTypeToObject (enum BXModificationType value)
 												 0, kSecAuthenticationTypeDefault,
 												 strlen (password), password, 
 												 &item);
-		[self setKeychainPasswordItem: item];
+		
+		if (noErr == status)
+			[self setKeychainPasswordItem: item];
+		else if (errSecDuplicateItem == status)
+		{
+			status = SecKeychainFindInternetPassword (NULL, 
+													  strlen (serverName), serverName, 
+													  0, NULL, 
+													  strlen (username), username, 
+													  strlen (path), path, 
+													  port, 
+													  0, kSecAuthenticationTypeDefault, 
+													  0, NULL,
+													  &item);
+			if (noErr == status)
+				status = SecKeychainItemModifyAttributesAndData (item, NULL, strlen (password), password);
+		}
 	}
 	
-	if (errSecDuplicateItem == status || (NULL == item && NULL != mKeychainPasswordItem))
-	{
-		status = SecKeychainItemModifyAttributesAndData (mKeychainPasswordItem, NULL, strlen (password), password);
-	}
-	
-	if (noErr == status)
-	{
-		[self setKeychainPasswordItem: NULL];
-	}
+	[self setKeychainPasswordItem: NULL];
 }
 
 /** \name Faulting database objects */
