@@ -2632,7 +2632,7 @@ bail:
 	if (nil == mUndoGroupingLevels)
 		mUndoGroupingLevels = [[NSMutableIndexSet alloc] init];
 	
-	if (YES == mUsesKeychain)
+	if (mUsesKeychain && ![[mDatabaseURI password] length])
         [self fetchPasswordFromKeychain];	    
 }
 
