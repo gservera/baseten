@@ -82,16 +82,12 @@ using namespace BaseTen;
 	Expect (optionDisplayNameKeyPath);
 	Expect (displayName);
 	
-	NSMutableArray *initialLeftExpressions = [NSMutableArray arrayWithCapacity: [options count]];
-	for (BXDatabaseObject *object in options)
-		[initialLeftExpressions addObject: [NSExpression expressionForConstantValue: object]];
-	
 	id operators [] = {
 		ObjectValue <NSPredicateOperatorType> (NSEqualToPredicateOperatorType),
 		ObjectValue <NSPredicateOperatorType> (NSNotEqualToPredicateOperatorType)
 	};
 	
-	if ((self = [super initWithLeftExpressions: initialLeftExpressions 
+	if ((self = [super initWithLeftExpressions: [NSArray array] 
 							  rightExpressions: [NSArray arrayWithObject: rightExpression]
 									  modifier: modifier
 									 operators: [NSArray arrayWithObjects: operators count: BXArraySize (operators)]
@@ -100,7 +96,7 @@ using namespace BaseTen;
 		[self setDisplayName: displayName];
 		[self setOptionDisplayNameKeyPath: optionDisplayNameKeyPath];
 		[self setOptionObjects: options];
-		[self addObserver: self forKeyPath: @"optionObjects" options: 0 context: kKVOCtx];
+		[self addObserver: self forKeyPath: @"optionObjects" options: NSKeyValueObservingOptionInitial context: kKVOCtx];
 	}
 	return self;
 }
@@ -154,8 +150,8 @@ using namespace BaseTen;
 {
 	NSArray *retval = [super templateViews];
 	
-	[[[[retval objectAtIndex: 0] itemArray] objectAtIndex: 0] setTitle: mDisplayName];
-	for (NSMenuItem* item in [[retval objectAtIndex: 2] itemArray])
+	[[[[retval objectAtIndex: 2] itemArray] objectAtIndex: 0] setTitle: mDisplayName];
+	for (NSMenuItem* item in [[retval objectAtIndex: 0] itemArray])
 	{
 		BXDatabaseObject *optionValue = [[item representedObject] constantValue];
 		[item setTitle: [optionValue valueForKeyPath: mOptionDisplayNameKeyPath]];

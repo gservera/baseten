@@ -378,7 +378,7 @@ using namespace BaseTen;
 	NSDictionary *optionDisplayNameKeyPathsByRelKeyPath = [NSDictionary dictionaryWithObjects: displayNameKeyPaths forKeys: keyPaths];
 	NSMutableDictionary *sortedKeyPaths = [NSMutableDictionary dictionary];
 	
-	for (NSString *keyPath in sortedKeyPaths)
+	for (NSString *keyPath in keyPaths)
 	{
 		BXEntityDescription *currentEntity = originalEntity;
 		NSComparisonPredicateModifier modifier = NSDirectPredicateModifier;
@@ -422,13 +422,6 @@ using namespace BaseTen;
 	NSMutableArray *templates = [NSMutableArray array];
 	for (BXEntityDescription *entity in sortedKeyPaths)
 	{
-		BXRelationshipKeyPathValue *val = [sortedKeyPaths objectForKey: entity];
-		NSString *keyPath = [val keyPath];
-		NSComparisonPredicateModifier modifier = [val modifier];
-		NSExpression *rightExpression = [NSExpression expressionForKeyPath: keyPath];
-		NSString *optionDisplayNameKeyPath = [optionDisplayNameKeyPathsByRelKeyPath objectForKey: keyPath];
-		NSString *displayName = [displayNamesByRelKeyPath objectForKey: keyPath];
-		
 		id res = [ctx executeFetchForEntity: entity 
 							  withPredicate: nil 
 							returningFaults: NO 
@@ -438,15 +431,24 @@ using namespace BaseTen;
 		if (! res)
 			goto bail;
 		
-		BXMultipleChoicePredicateEditorRowTemplate *rowTemplate = nil;
-		rowTemplate = [[BXMultipleChoicePredicateEditorRowTemplate alloc] initWithLeftExpressionOptions: res
-																						rightExpression: rightExpression
-																			   optionDisplayNameKeyPath: optionDisplayNameKeyPath
-																			 rightExpressionDisplayName: displayName
-																							   modifier: modifier];
-		
-		[templates addObject: rowTemplate];
-		[rowTemplate release];
+		for (BXRelationshipKeyPathValue *val in [sortedKeyPaths objectForKey: entity])
+		{
+			NSString *keyPath = [val keyPath];
+			NSComparisonPredicateModifier modifier = [val modifier];
+			NSExpression *rightExpression = [NSExpression expressionForKeyPath: keyPath];
+			NSString *optionDisplayNameKeyPath = [optionDisplayNameKeyPathsByRelKeyPath objectForKey: keyPath];
+			NSString *displayName = [displayNamesByRelKeyPath objectForKey: keyPath];		
+			
+			BXMultipleChoicePredicateEditorRowTemplate *rowTemplate = nil;
+			rowTemplate = [[BXMultipleChoicePredicateEditorRowTemplate alloc] initWithLeftExpressionOptions: res
+																							rightExpression: rightExpression
+																				   optionDisplayNameKeyPath: optionDisplayNameKeyPath
+																				 rightExpressionDisplayName: displayName
+																								   modifier: modifier];
+			
+			[templates addObject: rowTemplate];
+			[rowTemplate release];			
+		}
 	}
 	
 	retval = [[templates copy] autorelease];
