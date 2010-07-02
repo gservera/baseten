@@ -28,6 +28,7 @@
 
 #import <BaseTenAppKit/BXSynchronizedArrayController.h>
 #import <BaseTenAppKit/BXObjectStatusToColorTransformer.h>
+#import <BaseTenAppKit/BXPredicateEditorRowTemplateFactory.h>
 
 /**
  * \defgroup baseten_appkit BaseTenAppKit

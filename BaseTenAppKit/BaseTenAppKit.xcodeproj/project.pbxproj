@@ -19,9 +19,9 @@
 		53174F670F52182700551EBC /* BXConnectionViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 53174F650F52182700551EBC /* BXConnectionViewController.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		53174F680F52182700551EBC /* BXConnectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53174F660F52182700551EBC /* BXConnectionViewController.m */; };
 		532861C30F54DB6D00F294A0 /* MessageView.nib in Resources */ = {isa = PBXBuildFile; fileRef = 532861C10F54DB6D00F294A0 /* MessageView.nib */; };
-		5353EF3311DD3C22000E8E4E /* BXPredicateEditorRowTemplateFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 5353EF3111DD3C22000E8E4E /* BXPredicateEditorRowTemplateFactory.h */; };
+		5353EF3311DD3C22000E8E4E /* BXPredicateEditorRowTemplateFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 5353EF3111DD3C22000E8E4E /* BXPredicateEditorRowTemplateFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5353EF3411DD3C22000E8E4E /* BXPredicateEditorRowTemplateFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5353EF3211DD3C22000E8E4E /* BXPredicateEditorRowTemplateFactory.mm */; };
-		5353F04411DE1180000E8E4E /* BXMultipleChoicePredicateEditorRowTemplate.h in Headers */ = {isa = PBXBuildFile; fileRef = 5353F04211DE1180000E8E4E /* BXMultipleChoicePredicateEditorRowTemplate.h */; };
+		5353F04411DE1180000E8E4E /* BXMultipleChoicePredicateEditorRowTemplate.h in Headers */ = {isa = PBXBuildFile; fileRef = 5353F04211DE1180000E8E4E /* BXMultipleChoicePredicateEditorRowTemplate.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		5353F04511DE1180000E8E4E /* BXMultipleChoicePredicateEditorRowTemplate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5353F04311DE1180000E8E4E /* BXMultipleChoicePredicateEditorRowTemplate.mm */; };
 		5354445D0D634D9C002A6C47 /* BXSynchronizedArrayController.h in Headers */ = {isa = PBXBuildFile; fileRef = 537E484A0A14B7BA00A22080 /* BXSynchronizedArrayController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5354445E0D634D9C002A6C47 /* BaseTenAppKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 537E4A6D0A14C82200A22080 /* BaseTenAppKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
