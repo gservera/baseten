@@ -32,7 +32,7 @@
 #import "BXValidationLock.h"
 
 #import "../BaseTenAppKit/Sources/BXAppKitSystemEventNotifier.h"
-Class BXAppKitSystemEventNotifierClass WEAK_IMPORT_ATTRIBUTE;
+Class BXAppKitSystemEventNotifierClass;
 
 
 
@@ -43,6 +43,17 @@ NSString * const kBXSystemEventNotifierSystemDidWakeNotification   = @"kBXSystem
 
 
 @implementation BXSystemEventNotifier
++ (void) initialize
+{
+	static BOOL tooLate = NO;
+	if (! tooLate)
+	{
+		tooLate = YES;
+		BXAppKitSystemEventNotifierClass = NSClassFromString (@"BXAppKitSystemEventNotifierClass");
+	}
+}
+
+
 + (id) copyNotifier
 {
 	id retval = nil;

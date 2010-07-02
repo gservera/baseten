@@ -556,7 +556,7 @@
 		539204DA11AECE07000E2BEC /* BXDictionaryFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 539204D811AECE07000E2BEC /* BXDictionaryFunctions.m */; };
 		539204DD11AECEAF000E2BEC /* BXArrayFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = 539204DB11AECEAF000E2BEC /* BXArrayFunctions.h */; };
 		539204DE11AECEAF000E2BEC /* BXDictionaryFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = 539204DC11AECEAF000E2BEC /* BXDictionaryFunctions.h */; };
-		5392053D11AEDB4F000E2BEC /* BXCollectionFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5392053C11AEDB4F000E2BEC /* BXCollectionFunctions.h */; };
+		5392053D11AEDB4F000E2BEC /* BXCollectionFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5392053C11AEDB4F000E2BEC /* BXCollectionFunctions.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		53937B670EFD097700510DBD /* PGTSInvocationRecorder.h in Headers */ = {isa = PBXBuildFile; fileRef = 53937B650EFD097700510DBD /* PGTSInvocationRecorder.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		53937B680EFD097700510DBD /* PGTSInvocationRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 53937B660EFD097700510DBD /* PGTSInvocationRecorder.m */; };
 		539506F211CFAFBA0049F36C /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5395061611CFAD680049F36C /* AppKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };

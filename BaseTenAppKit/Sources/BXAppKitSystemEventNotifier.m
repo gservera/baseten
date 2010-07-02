@@ -31,13 +31,6 @@
 #import <AppKit/AppKit.h>
 
 
-static void __attribute__((constructor))
-Constructor ()
-{
-	BXAppKitSystemEventNotifierClass = [BXAppKitSystemEventNotifier class];
-}
-
-
 
 @implementation BXAppKitSystemEventNotifier
 - (void) _applicationWillTerminate: (NSNotification *) notification

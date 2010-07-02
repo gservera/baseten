@@ -1,5 +1,5 @@
 //
-// BXAppKitSystemEventNotifier.h
+// BXMultipleChoicePredicateEditorRowTemplate.h
 // BaseTen
 //
 // Copyright (C) 2010 Marko Karppinen & Co. LLC.
@@ -26,10 +26,21 @@
 // $Id$
 //
 
-#import <BaseTen/BXSystemEventNotifier.h>
+#import <Cocoa/Cocoa.h>
+@class BXEntityDescription;
+@class BXDatabaseContext;
 
 
-@interface BXAppKitSystemEventNotifier : BXSystemEventNotifier
+@interface BXMultipleChoicePredicateEditorRowTemplate : NSPredicateEditorRowTemplate
 {
+	id mOptions;
+	NSArray *mLeftExpressions;
+	NSString *mDisplayName;
+	NSString *mOptionDisplayNameKeyPath;
 }
+- (id) initWithLeftExpressionOptions: (id) options 
+					 rightExpression: (NSExpression *) rightExpression
+			optionDisplayNameKeyPath: (NSString *) optionDisplayNameKeyPath
+		  rightExpressionDisplayName: (NSString *) displayName
+							modifier: (NSComparisonPredicateModifier) modifier;
 @end

@@ -19,6 +19,10 @@
 		53174F670F52182700551EBC /* BXConnectionViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 53174F650F52182700551EBC /* BXConnectionViewController.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		53174F680F52182700551EBC /* BXConnectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53174F660F52182700551EBC /* BXConnectionViewController.m */; };
 		532861C30F54DB6D00F294A0 /* MessageView.nib in Resources */ = {isa = PBXBuildFile; fileRef = 532861C10F54DB6D00F294A0 /* MessageView.nib */; };
+		5353EF3311DD3C22000E8E4E /* BXPredicateEditorRowTemplateFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 5353EF3111DD3C22000E8E4E /* BXPredicateEditorRowTemplateFactory.h */; };
+		5353EF3411DD3C22000E8E4E /* BXPredicateEditorRowTemplateFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5353EF3211DD3C22000E8E4E /* BXPredicateEditorRowTemplateFactory.mm */; };
+		5353F04411DE1180000E8E4E /* BXMultipleChoicePredicateEditorRowTemplate.h in Headers */ = {isa = PBXBuildFile; fileRef = 5353F04211DE1180000E8E4E /* BXMultipleChoicePredicateEditorRowTemplate.h */; };
+		5353F04511DE1180000E8E4E /* BXMultipleChoicePredicateEditorRowTemplate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5353F04311DE1180000E8E4E /* BXMultipleChoicePredicateEditorRowTemplate.mm */; };
 		5354445D0D634D9C002A6C47 /* BXSynchronizedArrayController.h in Headers */ = {isa = PBXBuildFile; fileRef = 537E484A0A14B7BA00A22080 /* BXSynchronizedArrayController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5354445E0D634D9C002A6C47 /* BaseTenAppKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 537E4A6D0A14C82200A22080 /* BaseTenAppKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5354445F0D634D9C002A6C47 /* BXObjectStatusToColorTransformer.h in Headers */ = {isa = PBXBuildFile; fileRef = 5364C8C90A222FA600AD8AAF /* BXObjectStatusToColorTransformer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -95,6 +99,10 @@
 		53438E2A0A384EE600BEDCFF /* NSController+BXAppKitAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSController+BXAppKitAdditions.m"; path = "Sources/NSController+BXAppKitAdditions.m"; sourceTree = "<group>"; };
 		53438E540A384FE500BEDCFF /* BXController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXController.h; path = Sources/BXController.h; sourceTree = "<group>"; };
 		53438E550A384FE500BEDCFF /* BXController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BXController.m; path = Sources/BXController.m; sourceTree = "<group>"; };
+		5353EF3111DD3C22000E8E4E /* BXPredicateEditorRowTemplateFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXPredicateEditorRowTemplateFactory.h; path = Sources/BXPredicateEditorRowTemplateFactory.h; sourceTree = "<group>"; };
+		5353EF3211DD3C22000E8E4E /* BXPredicateEditorRowTemplateFactory.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = BXPredicateEditorRowTemplateFactory.mm; path = Sources/BXPredicateEditorRowTemplateFactory.mm; sourceTree = "<group>"; };
+		5353F04211DE1180000E8E4E /* BXMultipleChoicePredicateEditorRowTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXMultipleChoicePredicateEditorRowTemplate.h; path = Sources/BXMultipleChoicePredicateEditorRowTemplate.h; sourceTree = "<group>"; };
+		5353F04311DE1180000E8E4E /* BXMultipleChoicePredicateEditorRowTemplate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BXMultipleChoicePredicateEditorRowTemplate.mm; path = Sources/BXMultipleChoicePredicateEditorRowTemplate.mm; sourceTree = "<group>"; };
 		535444490D634D63002A6C47 /* debug-gc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "debug-gc.xcconfig"; path = "xcconfig/debug-gc.xcconfig"; sourceTree = "<group>"; };
 		5354444A0D634D63002A6C47 /* debug-non-gc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "debug-non-gc.xcconfig"; path = "xcconfig/debug-non-gc.xcconfig"; sourceTree = "<group>"; };
 		5354444B0D634D63002A6C47 /* release-gc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "release-gc.xcconfig"; path = "xcconfig/release-gc.xcconfig"; sourceTree = "<group>"; };
@@ -191,6 +199,7 @@
 				53D0D15A0B6F896200D2D101 /* BXDatabaseContextAdditions.m */,
 				5355C15111A8744700C5DEAF /* BXAppKitSystemEventNotifier.h */,
 				5355C15211A8744700C5DEAF /* BXAppKitSystemEventNotifier.m */,
+				5353F04711DE1187000E8E4E /* Predicate editor */,
 				531060190B905E44009329AD /* NSController Subclasses */,
 				5310601A0B905E59009329AD /* Connection views and panels */,
 				53726DAD0A30E8FD0086BB60 /* Transformers */,
@@ -254,6 +263,17 @@
 			name = "Connection views and panels";
 			sourceTree = "<group>";
 		};
+		5353F04711DE1187000E8E4E /* Predicate editor */ = {
+			isa = PBXGroup;
+			children = (
+				5353EF3111DD3C22000E8E4E /* BXPredicateEditorRowTemplateFactory.h */,
+				5353EF3211DD3C22000E8E4E /* BXPredicateEditorRowTemplateFactory.mm */,
+				5353F04211DE1180000E8E4E /* BXMultipleChoicePredicateEditorRowTemplate.h */,
+				5353F04311DE1180000E8E4E /* BXMultipleChoicePredicateEditorRowTemplate.mm */,
+			);
+			name = "Predicate editor";
+			sourceTree = "<group>";
+		};
 		53726DAD0A30E8FD0086BB60 /* Transformers */ = {
 			isa = PBXGroup;
 			children = (
@@ -297,6 +317,8 @@
 				53174F000F5209E300551EBC /* BXHostPanel.h in Headers */,
 				53174F670F52182700551EBC /* BXConnectionViewController.h in Headers */,
 				5355C15311A8744700C5DEAF /* BXAppKitSystemEventNotifier.h in Headers */,
+				5353EF3311DD3C22000E8E4E /* BXPredicateEditorRowTemplateFactory.h in Headers */,
+				5353F04411DE1180000E8E4E /* BXMultipleChoicePredicateEditorRowTemplate.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -435,6 +457,8 @@
 				53174F680F52182700551EBC /* BXConnectionViewController.m in Sources */,
 				5302F39F0F536C4500105ECD /* BXAuthenticationPanel.m in Sources */,
 				5355C15411A8744700C5DEAF /* BXAppKitSystemEventNotifier.m in Sources */,
+				5353EF3411DD3C22000E8E4E /* BXPredicateEditorRowTemplateFactory.mm in Sources */,
+				5353F04511DE1180000E8E4E /* BXMultipleChoicePredicateEditorRowTemplate.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
