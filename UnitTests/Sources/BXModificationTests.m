@@ -35,6 +35,15 @@
 
 
 @implementation BXModificationTests
++ (BOOL) automaticallyNotifiesObserversForKey: (NSString *) key
+{
+	if ([key isEqualToString: @"collection"])
+		return NO;
+	else
+		return [super automaticallyNotifiesObserversForKey: key];
+}
+
+
 - (void) test1PkeyModification
 {    
     BXEntityDescription* pkeytest = [[mContext databaseObjectModel] entityForTable: @"Pkeytest"];
@@ -157,9 +166,16 @@
 	MKCAssertNotNil (entity);
 	
     NSError *error = nil;
-	NSArray *array = [mContext executeFetchForEntity: entity withPredicate: nil returningFaults: NO 
-								 updateAutomatically: YES error: &error];
-    STAssertNotNil (array, [error description]);
+	id res = [mContext executeFetchForEntity: entity 
+							   withPredicate: nil 
+							 returningFaults: NO 
+						 updateAutomatically: YES 
+									   error: &error];
+    STAssertNotNil (res, [error description]);
+	[res setOwner: self];
+	[res setKey: @"collection"];
+	
+	NSArray *array = res;
     NSUInteger count = [array count];
     
     //Create an object into the array using another connection.
