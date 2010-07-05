@@ -1,5 +1,5 @@
 //
-// BXMultipleChoicePredicateEditorRowTemplate.h
+// BXAttributeValuePredicateEditorRowTemplateFactory.h
 // BaseTen
 //
 // Copyright (C) 2010 Marko Karppinen & Co. LLC.
@@ -26,26 +26,23 @@
 // $Id$
 //
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 @class BXEntityDescription;
-@class BXDatabaseContext;
+@class BXAttributeDescription;
 
 
-@interface BXMultipleChoicePredicateEditorRowTemplate : NSPredicateEditorRowTemplate
+@interface BXAttributeValuePredicateEditorRowTemplateFactory : NSObject
 {
-	id mOptions;
-	NSArray *mRightExpressions;
-	NSString *mDisplayName;
-	NSString *mOptionDisplayNameKeyPath;
+	NSDictionary *mTypeMapping;
 }
-- (id) initWithLeftExpression: (NSExpression *) leftExpression
-	   rightExpressionOptions: (id) options 
-	 optionDisplayNameKeyPath: (NSString *) optionDisplayNameKeyPath
-	leftExpressionDisplayName: (NSString *) displayName
-					 modifier: (NSComparisonPredicateModifier) modifier;
-@end
+- (NSArray *) templatesWithDisplayNames: (NSArray *) displayNames
+				   forAttributeKeyPaths: (NSArray *) keyPaths
+					inEntityDescription: (BXEntityDescription *) entityDescription;
 
-
-
-@interface BXMultipleChoicePredicateEditorRowTemplate (NSCopying) <NSCopying>
+- (Class) rowTemplateClass;
+- (NSAttributeType) attributeTypeForAttributeDescription: (BXAttributeDescription *) desc;
+- (NSArray *) operatorsForAttributeType: (NSAttributeType) attributeType 
+				   attributeDescription: (BXAttributeDescription *) desc;
+- (NSUInteger) comparisonOptionsForAttributeType: (NSAttributeType) attributeType
+							attributeDescription: (BXAttributeDescription *) desc;
 @end

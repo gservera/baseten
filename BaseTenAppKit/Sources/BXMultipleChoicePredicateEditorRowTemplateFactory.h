@@ -1,5 +1,5 @@
 //
-// BXPredicateEditorRowTemplateFactory.h
+// BXMultipleChoicePredicateEditorRowTemplateFactory.h
 // BaseTen
 //
 // Copyright (C) 2010 Marko Karppinen & Co. LLC.
@@ -27,18 +27,13 @@
 //
 
 #import <Foundation/Foundation.h>
-@class BXDatabaseContext;
 @class BXEntityDescription;
-@class BXAttributeDescription;
+@class BXDatabaseContext;
 
 
-@interface BXPredicateEditorRowTemplateFactory : NSObject
+@interface BXMultipleChoicePredicateEditorRowTemplateFactory : NSObject
 {
-	NSDictionary *mTypeMapping;
 }
-- (NSArray *) templatesWithDisplayNames: (NSArray *) displayNames
-				   forAttributeKeyPaths: (NSArray *) keyPaths
-					inEntityDescription: (BXEntityDescription *) entityDescription;
 - (NSArray *) multipleChoiceTemplatesWithDisplayNames: (NSArray *) displayNames
 						 andOptionDisplayNameKeyPaths: (NSArray *) displayNameKeyPaths
 							  forRelationshipKeyPaths: (NSArray *) keyPaths
@@ -46,9 +41,5 @@
 									  databaseContext: (BXDatabaseContext *) ctx
 												error: (NSError **) error;
 
-- (NSAttributeType) attributeTypeForAttributeDescription: (BXAttributeDescription *) desc;
-- (NSArray *) operatorsForAttributeType: (NSAttributeType) attributeType 
-				   attributeDescription: (BXAttributeDescription *) desc;
-- (NSUInteger) comparisonOptionsForAttributeType: (NSAttributeType) attributeType
-							attributeDescription: (BXAttributeDescription *) desc;
+- (Class) rowTemplateClass;
 @end

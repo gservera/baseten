@@ -1,5 +1,5 @@
 //
-// BXMultipleChoicePredicateEditorRowTemplate.h
+// BXAttributeValuePredicateEditorRowTemplate.h
 // BaseTen
 //
 // Copyright (C) 2010 Marko Karppinen & Co. LLC.
@@ -27,25 +27,9 @@
 //
 
 #import <Cocoa/Cocoa.h>
-@class BXEntityDescription;
-@class BXDatabaseContext;
 
 
-@interface BXMultipleChoicePredicateEditorRowTemplate : NSPredicateEditorRowTemplate
+@interface BXAttributeValuePredicateEditorRowTemplate : NSPredicateEditorRowTemplate
 {
-	id mOptions;
-	NSArray *mRightExpressions;
-	NSString *mDisplayName;
-	NSString *mOptionDisplayNameKeyPath;
 }
-- (id) initWithLeftExpression: (NSExpression *) leftExpression
-	   rightExpressionOptions: (id) options 
-	 optionDisplayNameKeyPath: (NSString *) optionDisplayNameKeyPath
-	leftExpressionDisplayName: (NSString *) displayName
-					 modifier: (NSComparisonPredicateModifier) modifier;
-@end
-
-
-
-@interface BXMultipleChoicePredicateEditorRowTemplate (NSCopying) <NSCopying>
 @end

@@ -1,5 +1,5 @@
 //
-// BXPredicateEditorRowTemplateFactory.mm
+// BXAttributeValuePredicateEditorRowTemplateFactory.mm
 // BaseTen
 //
 // Copyright (C) 2010 Marko Karppinen & Co. LLC.
@@ -26,8 +26,8 @@
 // $Id$
 //
 
-#import "BXPredicateEditorRowTemplateFactory.h"
-#import "BXMultipleChoicePredicateEditorRowTemplate.h"
+#import "BXAttributeValuePredicateEditorRowTemplateFactory.h"
+#import "BXAttributeValuePredicateEditorRowTemplate.h"
 #import <BaseTen/BaseTen.h>
 #import <BaseTen/BXCollectionFunctions.h>
 #import <BaseTen/BXArraySize.h>
@@ -52,19 +52,6 @@ using namespace BaseTen;
 		   attributeType: (NSAttributeType) attributeType 
 				modifier: (NSComparisonPredicateModifier) modifier 
 				 options: (NSUInteger) options;
-@end
-
-
-
-@interface BXRelationshipKeyPathValue : NSObject
-{
-	NSString *mKeyPath;
-	NSComparisonPredicateModifier mModifier;
-}
-@property (readonly, nonatomic) NSString *keyPath;
-@property (readonly, nonatomic) NSComparisonPredicateModifier modifier;
-- (id) initWithKeyPath: (NSString *) keyPath
-			  modifier: (NSComparisonPredicateModifier) modifier;
 @end
 
 
@@ -129,31 +116,7 @@ using namespace BaseTen;
 
 
 
-@implementation BXRelationshipKeyPathValue
-@synthesize keyPath = mKeyPath;
-@synthesize modifier = mModifier;
-
-- (id) initWithKeyPath: (NSString *) keyPath modifier: (NSComparisonPredicateModifier) modifier
-{
-	if ((self = [super init]))
-	{
-		mKeyPath = [keyPath copy];
-		mModifier = modifier;
-	}
-	return self;
-}
-
-
-- (void) dealloc
-{
-	[mKeyPath release];
-	[super dealloc];
-}
-@end
-
-
-
-@implementation BXPredicateEditorRowTemplateFactory
+@implementation BXAttributeValuePredicateEditorRowTemplateFactory
 - (id) init
 {
 	if ((self = [super init]))
@@ -177,6 +140,12 @@ using namespace BaseTen;
 						nil];
 	}
 	return self;
+}
+
+
+- (Class) rowTemplateClass
+{
+	return [BXAttributeValuePredicateEditorRowTemplate class];
 }
 
 
@@ -343,12 +312,12 @@ using namespace BaseTen;
 			[expressions addObject: [NSExpression expressionForKeyPath: keyPath]];
 		
 		NSPredicateEditorRowTemplate *rowTemplate = nil;
-		rowTemplate = [[[NSPredicateEditorRowTemplate alloc] initWithLeftExpressions: expressions
-														rightExpressionAttributeType: [sortKey attributeType]
-																			modifier: [sortKey modifier]
-																		   operators: [sortKey operators]
-																			 options: [sortKey options]] autorelease];
-
+		rowTemplate = [[[[self rowTemplateClass] alloc] initWithLeftExpressions: expressions
+												   rightExpressionAttributeType: [sortKey attributeType]
+																	   modifier: [sortKey modifier]
+																	  operators: [sortKey operators]
+																		options: [sortKey options]] autorelease];
+		
 		for (NSMenuItem *item in [[[rowTemplate templateViews] objectAtIndex: 0] itemArray])
 		{
 			NSString *keyPath = [[item representedObject] keyPath];
@@ -359,101 +328,5 @@ using namespace BaseTen;
 	}
 	
 	return [[templates copy] autorelease];
-}
-
-
-- (NSArray *) multipleChoiceTemplatesWithDisplayNames: (NSArray *) displayNames
-						 andOptionDisplayNameKeyPaths: (NSArray *) displayNameKeyPaths
-							  forRelationshipKeyPaths: (NSArray *) keyPaths
-								  inEntityDescription: (BXEntityDescription *) originalEntity
-									  databaseContext: (BXDatabaseContext *) ctx
-												error: (NSError **) error
-{
-	// Fetch all objects from the entity at the relationship key path end.
-	// For each object just the corresponding display name key path for the display name.
-	// Instead of display names etc., compare the primary key and the foreign key.
-	
-	NSArray *retval = nil;
-	NSDictionary *displayNamesByRelKeyPath = [NSDictionary dictionaryWithObjects: displayNames forKeys: keyPaths];
-	NSDictionary *optionDisplayNameKeyPathsByRelKeyPath = [NSDictionary dictionaryWithObjects: displayNameKeyPaths forKeys: keyPaths];
-	NSMutableDictionary *sortedKeyPaths = [NSMutableDictionary dictionary];
-	
-	for (NSString *keyPath in keyPaths)
-	{
-		BXEntityDescription *currentEntity = originalEntity;
-		NSComparisonPredicateModifier modifier = NSDirectPredicateModifier;
-		NSArray *components = BXKeyPathComponents (keyPath);
-		BXRelationshipDescription *rel = nil;
-		
-		for (NSString *component in components)
-		{			
-			if ((rel = [[currentEntity relationshipsByName] objectForKey: component]))
-			{
-				currentEntity = [rel destinationEntity];
-				if ([rel isToMany])
-					modifier = NSAnyPredicateModifier;
-			}
-			else if ([[currentEntity attributesByName] objectForKey: component])
-			{
-				[NSException raise: NSInvalidArgumentException format:
-				 @"The component '%@' (key path '%@') points to an attribute, but a relationship was expected.",
-				 component, keyPath];				
-			}
-			else
-			{
-				[NSException raise: NSInvalidArgumentException format: 
-				 @"Didn't find property '%@' (key path '%@') in entity %@.%@.", 
-				 component, keyPath, [currentEntity schemaName], [currentEntity name]];
-			}
-		}
-		
-		NSMutableArray *keyPaths = [sortedKeyPaths objectForKey: currentEntity];
-		if (! keyPaths)
-		{
-			keyPaths = [NSMutableArray array];
-			[sortedKeyPaths setObject: keyPaths forKey: currentEntity];
-		}
-		
-		BXRelationshipKeyPathValue *val = [[BXRelationshipKeyPathValue alloc] initWithKeyPath: keyPath modifier: modifier];
-		[keyPaths addObject: val];
-		[val release];
-	}
-	
-	NSMutableArray *templates = [NSMutableArray array];
-	for (BXEntityDescription *entity in sortedKeyPaths)
-	{
-		id res = [ctx executeFetchForEntity: entity 
-							  withPredicate: nil 
-							returningFaults: NO 
-						updateAutomatically: YES 
-									  error: error];
-		
-		if (! res)
-			goto bail;
-		
-		for (BXRelationshipKeyPathValue *val in [sortedKeyPaths objectForKey: entity])
-		{
-			NSString *keyPath = [val keyPath];
-			NSComparisonPredicateModifier modifier = [val modifier];
-			NSExpression *rightExpression = [NSExpression expressionForKeyPath: keyPath];
-			NSString *optionDisplayNameKeyPath = [optionDisplayNameKeyPathsByRelKeyPath objectForKey: keyPath];
-			NSString *displayName = [displayNamesByRelKeyPath objectForKey: keyPath];		
-			
-			BXMultipleChoicePredicateEditorRowTemplate *rowTemplate = nil;
-			rowTemplate = [[BXMultipleChoicePredicateEditorRowTemplate alloc] initWithLeftExpressionOptions: res
-																							rightExpression: rightExpression
-																				   optionDisplayNameKeyPath: optionDisplayNameKeyPath
-																				 rightExpressionDisplayName: displayName
-																								   modifier: modifier];
-			
-			[templates addObject: rowTemplate];
-			[rowTemplate release];			
-		}
-	}
-	
-	retval = [[templates copy] autorelease];
-	
-bail:
-	return retval;
 }
 @end

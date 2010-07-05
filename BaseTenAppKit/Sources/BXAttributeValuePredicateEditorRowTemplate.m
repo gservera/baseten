@@ -1,5 +1,5 @@
 //
-// BXMultipleChoicePredicateEditorRowTemplate.h
+// BXAttributeValuePredicateEditorRowTemplate.m
 // BaseTen
 //
 // Copyright (C) 2010 Marko Karppinen & Co. LLC.
@@ -26,26 +26,33 @@
 // $Id$
 //
 
-#import <Cocoa/Cocoa.h>
-@class BXEntityDescription;
-@class BXDatabaseContext;
+#import "BXAttributeValuePredicateEditorRowTemplate.h"
 
 
-@interface BXMultipleChoicePredicateEditorRowTemplate : NSPredicateEditorRowTemplate
+@implementation BXAttributeValuePredicateEditorRowTemplate
+- (NSArray *) rightExpressions
 {
-	id mOptions;
-	NSArray *mRightExpressions;
-	NSString *mDisplayName;
-	NSString *mOptionDisplayNameKeyPath;
+	id retval = nil;
+	if ([self rightExpressionAttributeType] == NSBooleanAttributeType)
+		retval = [NSArray arrayWithObject: [NSExpression expressionForConstantValue: [NSNumber numberWithBool: NO]]];
+	else
+		retval = [super rightExpressions];
+	return retval;
 }
-- (id) initWithLeftExpression: (NSExpression *) leftExpression
-	   rightExpressionOptions: (id) options 
-	 optionDisplayNameKeyPath: (NSString *) optionDisplayNameKeyPath
-	leftExpressionDisplayName: (NSString *) displayName
-					 modifier: (NSComparisonPredicateModifier) modifier;
-@end
 
 
-
-@interface BXMultipleChoicePredicateEditorRowTemplate (NSCopying) <NSCopying>
+- (NSArray *) templateViews
+{
+	id retval = [super templateViews];
+	if ([self rightExpressionAttributeType] == NSBooleanAttributeType)
+	{
+		retval = [[retval mutableCopy] autorelease];
+		
+		[retval removeObjectAtIndex: 2];
+		NSPopUpButton* button = [retval objectAtIndex: 1];
+		[[button itemAtIndex: 0] setTitle: @"is false"]; // FIXME: localization.
+		[[button itemAtIndex: 1] setTitle: @"is true"];
+	}
+	return retval;
+}
 @end

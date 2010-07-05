@@ -28,7 +28,9 @@
 
 #import <BaseTenAppKit/BXSynchronizedArrayController.h>
 #import <BaseTenAppKit/BXObjectStatusToColorTransformer.h>
-#import <BaseTenAppKit/BXPredicateEditorRowTemplateFactory.h>
+#import <BaseTenAppKit/BXAttributeValuePredicateEditorRowTemplateFactory.h>
+#import <BaseTenAppKit/BXMultipleChoicePredicateEditorRowTemplateFactory.h>
+
 
 /**
  * \defgroup baseten_appkit BaseTenAppKit

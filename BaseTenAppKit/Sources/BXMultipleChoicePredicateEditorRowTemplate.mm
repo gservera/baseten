@@ -37,7 +37,7 @@ using namespace BaseTen;
 
 
 @interface BXMultipleChoicePredicateEditorRowTemplate ()
-@property (readwrite, copy) NSArray *leftExpressions;
+@property (readwrite, copy) NSArray *rightExpressions;
 @property (readwrite, retain, nonatomic) id optionObjects;
 @property (readwrite, copy) NSString *displayName;
 @property (readwrite, copy) NSString *optionDisplayNameKeyPath;
@@ -46,7 +46,7 @@ using namespace BaseTen;
 
 
 @implementation BXMultipleChoicePredicateEditorRowTemplate
-@synthesize leftExpressions = mLeftExpressions;
+@synthesize rightExpressions = mRightExpressions;
 @synthesize displayName = mDisplayName;
 @synthesize optionDisplayNameKeyPath = mOptionDisplayNameKeyPath;
 
@@ -67,18 +67,18 @@ using namespace BaseTen;
 
 + (NSSet *) keyPathsForValuesAffectingTemplateViews
 {
-	return [NSSet setWithObject: @"leftExpressions"];
+	return [NSSet setWithObject: @"rightExpressions"];
 }
 
 
-- (id) initWithLeftExpressionOptions: (id) options 
-					 rightExpression: (NSExpression *) rightExpression
-			optionDisplayNameKeyPath: (NSString *) optionDisplayNameKeyPath
-		  rightExpressionDisplayName: (NSString *) displayName
-							modifier: (NSComparisonPredicateModifier) modifier
+- (id) initWithLeftExpression: (NSExpression *) leftExpression
+	   rightExpressionOptions: (id) options 
+	 optionDisplayNameKeyPath: (NSString *) optionDisplayNameKeyPath
+	leftExpressionDisplayName: (NSString *) displayName
+					 modifier: (NSComparisonPredicateModifier) modifier
 {
+	Expect (leftExpression);
 	Expect (options);
-	Expect (rightExpression);
 	Expect (optionDisplayNameKeyPath);
 	Expect (displayName);
 	
@@ -87,8 +87,9 @@ using namespace BaseTen;
 		ObjectValue <NSPredicateOperatorType> (NSNotEqualToPredicateOperatorType)
 	};
 	
-	if ((self = [super initWithLeftExpressions: [NSArray array] 
-							  rightExpressions: [NSArray arrayWithObject: rightExpression]
+	NSExpression *exp = [NSExpression expressionForConstantValue: [NSNumber numberWithBool: NO]];
+	if ((self = [super initWithLeftExpressions: [NSArray arrayWithObject: leftExpression]
+							  rightExpressions: [NSArray arrayWithObject: exp] 
 									  modifier: modifier
 									 operators: [NSArray arrayWithObjects: operators count: BXArraySize (operators)]
 									   options: 0]))
@@ -105,7 +106,7 @@ using namespace BaseTen;
 - (void) dealloc
 {
 	[mOptions release];
-	[mLeftExpressions release];
+	[mRightExpressions release];
 	[mDisplayName release];
 	[mOptionDisplayNameKeyPath release];
 	[super dealloc];
@@ -132,11 +133,18 @@ using namespace BaseTen;
 	{
 		if ([keyPath isEqualToString: @"optionObjects"])
 		{
-			NSMutableArray *leftExpressions = [NSMutableArray arrayWithCapacity: [mOptions count]];
-			for (BXDatabaseObject *object in [self optionObjects])
-				[leftExpressions addObject: [NSExpression expressionForConstantValue: object]];
-			
-			[self setLeftExpressions: leftExpressions];
+			NSUInteger count = [mOptions count];
+			if (count)
+			{
+				NSMutableArray *rightExpressions = [NSMutableArray arrayWithCapacity: [mOptions count]];
+				for (BXDatabaseObject *object in [self optionObjects])
+					[rightExpressions addObject: [NSExpression expressionForConstantValue: object]];
+				[self setRightExpressions: rightExpressions];
+			}
+			else
+			{
+				[self setRightExpressions: [super rightExpressions]];
+			}
 		}
 	}
 	else
@@ -150,11 +158,35 @@ using namespace BaseTen;
 {
 	NSArray *retval = [super templateViews];
 	
-	[[[[retval objectAtIndex: 2] itemArray] objectAtIndex: 0] setTitle: mDisplayName];
-	for (NSMenuItem* item in [[retval objectAtIndex: 0] itemArray])
+	[[[[retval objectAtIndex: 0] itemArray] objectAtIndex: 0] setTitle: mDisplayName];
+	
+	NSPopUpButton *optionsButton = [retval objectAtIndex: 2];
+	NSMenu *optionsMenu = [optionsButton menu];
+	
+	[optionsMenu removeAllItems];
+	if ([mOptions count])
 	{
-		BXDatabaseObject *optionValue = [[item representedObject] constantValue];
-		[item setTitle: [optionValue valueForKeyPath: mOptionDisplayNameKeyPath]];
+		for (NSExpression *currentExp in mRightExpressions)
+		{
+			NSMenuItem *currentItem = [[NSMenuItem alloc] init];
+			[currentItem setEnabled: YES];
+			[currentItem setTitle: [[currentExp constantValue] valueForKeyPath: mOptionDisplayNameKeyPath]];
+			[currentItem setRepresentedObject: currentExp];
+			[optionsMenu addItem: currentItem];
+			[currentItem release];
+		}
+	}
+	else
+	{
+		NSExpression *exp = [mRightExpressions lastObject];
+		Expect (exp);
+		
+		NSMenuItem *noValuesItem = [[NSMenuItem alloc] init];
+		[noValuesItem setEnabled: NO];
+		[noValuesItem setTitle: @"No values"]; // FIXME: localization.
+		[noValuesItem setRepresentedObject: exp];
+		[optionsMenu addItem: noValuesItem];
+		[noValuesItem release];
 	}
 	
 	return retval;
@@ -178,5 +210,22 @@ using namespace BaseTen;
 		[mOptions setOwner: self];
 		[self didChangeValueForKey: @"optionObjects"];
 	}
+}
+@end
+
+
+
+@implementation BXMultipleChoicePredicateEditorRowTemplate (NSCopying)
+- (id) copyWithZone: (NSZone *) zone
+{
+	BXMultipleChoicePredicateEditorRowTemplate *retval = [super copyWithZone: zone];
+	Expect ([retval isKindOfClass: [self class]]);
+	
+	[retval setDisplayName: mDisplayName];
+	[retval setOptionDisplayNameKeyPath: mOptionDisplayNameKeyPath];
+	[retval setOptionObjects: mOptions];
+	[retval addObserver: retval forKeyPath: @"optionObjects" options: NSKeyValueObservingOptionInitial context: kKVOCtx];
+	
+	return retval;
 }
 @end
