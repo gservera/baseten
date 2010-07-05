@@ -65,14 +65,3 @@
 	return retval;
 }
 @end
-
-
-@implementation NSNumber (PGTSAdditions)
-- (id) PGTSConstantExpressionValue: (NSDictionary *) context
-{
-	id retval = self;
-	if (0 == strcmp ("c", [self objCType]))
-		retval = ([self boolValue] ? @"true" : @"false");
-    return retval;
-}
-@end

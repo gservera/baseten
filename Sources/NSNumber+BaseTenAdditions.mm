@@ -28,6 +28,7 @@
 
 #import "NSNumber+BaseTenAdditions.h"
 #import "NSValue+BaseTenAdditions.h"
+#import "BXLogger.h"
 
 
 @implementation NSNumber (BaseTenAdditions)
@@ -50,5 +51,21 @@
 		retval = [super BXGetValue: buffer length: bufferLength numberType: expectedNumberType encoding: expectedEncoding];
 	
 	return retval;
+}
+@end
+
+
+
+@implementation NSNumber (BXExpressionValue)
+- (enum BXExpressionValueType) getBXExpressionValue: (id *) outValue usingContext: (NSMutableDictionary *) context;
+{
+	ExpectR (outValue, kBXExpressionValueTypeUndefined);
+	
+	if (0 == strcmp ("c", [self objCType]))
+		*outValue = ([self boolValue] ? @"true" : @"false");
+	else
+		*outValue = self;
+	
+	return kBXExpressionValueTypeConstant;
 }
 @end

@@ -45,6 +45,7 @@
 #import "BXPGQueryHandler.h"
 #import "BXPGIdentityExpressionValueType.h"
 #import "BXEnumerate.h"
+#import "BXPGSQLExpressionValueType.h"
 
 
 enum ComparisonType
@@ -992,21 +993,38 @@ NormalizeForIdentityTest (BXPGExpressionValueType** lval, BXPGExpressionValueTyp
 {
 	BXPGExpressionValueType* retval = nil;
 	id constantValue = [expression constantValue];
-    if (YES == [constantValue respondsToSelector: @selector (PGTSConstantExpressionValue:)])
-    {
+	if ([constantValue conformsToProtocol: @protocol (BXExpressionValue)])
+	{
 		//If we need some special behaviour, like translating boolean NSNumbers to true or false
 		//instead of 1 or 0, this is the place to do it.
-        id value = [constantValue PGTSConstantExpressionValue: mContext];
-		if ([value isKindOfClass: [NSExpression class]])
-			retval = [value BXPGVisitExpression: self];
-		else
-			retval = [BXPGExpressionValueType valueTypeForObject: value];
-    }
+		id value = nil;
+		enum BXExpressionValueType valueType = [constantValue getBXExpressionValue: &value usingContext: mContext];
+		switch (valueType)
+		{
+			case kBXExpressionValueTypeEvaluated:
+				retval = [value BXPGVisitExpression: self];
+				break;
+				
+			case kBXExpressionValueTypeConstant:
+				retval = [BXPGExpressionValueType valueTypeForObject: value];
+				break;
+								
+			case kBXExpressionValueTypeVerbatim:
+				retval = [BXPGSQLExpressionValueType typeWithValue: value];
+				break;
+				
+			default:
+				BXLogAssertionFailure (@"Unexpected expression value type: %d", valueType);
+				break;
+		}
+		
+		Expect (value);
+	}
 	else
 	{
 		retval = [self evaluateExpression: expression];
 	}
-	return retval;
+	return retval;	
 }
 
 - (BXPGExpressionValueType *) visitEvaluatedObjectExpression: (NSExpression *) expression

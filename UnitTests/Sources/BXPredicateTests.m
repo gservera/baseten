@@ -66,12 +66,14 @@
 	mConnection = [[handler connection] retain];
 }
 
+
 - (void) tearDown
 {
 	[mQueryBuilder release];
 	[mConnection release];
 	[super tearDown];
 }
+
 
 - (void) testAddition
 {
@@ -83,6 +85,7 @@
 	MKCAssertEqualObjects (parameters, expected);
 }
 
+
 - (void) testSubtraction
 {
 	NSPredicate* predicate = [NSPredicate predicateWithFormat: @"3 - 2 == 1"];
@@ -92,6 +95,7 @@
 	NSArray* expected = [NSArray arrayWithObjects: [NSNumber numberWithInt: 1], [NSNumber numberWithInt: 3], [NSNumber numberWithInt: 2], nil];
 	MKCAssertEqualObjects (parameters, expected);
 }
+
 
 - (void) testBegins
 {
@@ -103,6 +107,7 @@
 	MKCAssertEqualObjects (parameters, expected);
 }
 
+
 - (void) testEndsCase
 {
 	NSPredicate* predicate = [NSPredicate predicateWithFormat: @"'foobar' ENDSWITH[c] 'b%a_r'"];
@@ -112,6 +117,7 @@
 	NSArray* expected = [NSArray arrayWithObjects: @"foobar", @"b%a_r", nil];
 	MKCAssertEqualObjects (parameters, expected);
 }
+
 
 - (void) testBetween
 {
@@ -127,6 +133,7 @@
 	MKCAssertEqualObjects (parameters, expected);
 }
 
+
 - (void) testGt
 {
 	NSPredicate* predicate = [NSPredicate predicateWithFormat: @"1 < 2"];
@@ -139,6 +146,7 @@
 						 nil];
 	MKCAssertEqualObjects (parameters, expected);
 }
+
 
 - (void) testContains
 {
@@ -155,6 +163,7 @@
 	MKCAssertEqualObjects (parameters, expected);
 }
 
+
 - (void) testIn
 {
 	NSPredicate* predicate = [NSPredicate predicateWithFormat: @"2 IN {1, 2, 3}"];
@@ -170,6 +179,7 @@
 	MKCAssertEqualObjects (parameters, expected);
 }
 
+
 - (void) testIn2
 {
 	NSPredicate* predicate = [NSPredicate predicateWithFormat: @"'bb' IN 'aabbccdd'"];
@@ -180,6 +190,7 @@
 	MKCAssertEqualObjects (parameters, expected);
 }
 
+
 - (void) testIn3
 {
 	NSPredicate* predicate = [NSPredicate predicateWithFormat: @"'bb' IN[c] 'aabbccdd'"];
@@ -189,6 +200,7 @@
 	NSArray* expected = [NSArray arrayWithObjects: @"aabbccdd", @"bb", nil];
 	MKCAssertEqualObjects (parameters, expected);
 }
+
 
 - (void) testAndOr
 {
@@ -207,6 +219,7 @@
 	MKCAssertEqualObjects (parameters, expected);
 }
 
+
 - (void) testNull
 {
 	NSPredicate* predicate = [NSPredicate predicateWithFormat: @"1 == %@", [NSNull null]];
@@ -216,6 +229,7 @@
 	NSArray* expected = [NSArray arrayWithObject: [NSNumber numberWithInt: 1]];
 	MKCAssertEqualObjects (parameters, expected);
 }
+
 
 - (void) testAdditionWithKeyPath
 {
@@ -229,6 +243,7 @@
 	MKCAssertEqualObjects (parameters, expected);	
 }
 
+
 - (void) testDiacriticInsensitivity
 {
 	NSPredicate* predicate = [NSPredicate predicateWithFormat: @"'a' LIKE[cd] 'b'"];
@@ -240,4 +255,22 @@
 }
 
 
+- (void) testCustomExpression
+{
+	BXVerbatimExpressionValue *val = [BXVerbatimExpressionValue valueWithString: @"SESSION_USER"];
+	NSExpression *lhs = [NSExpression expressionForConstantValue: val];
+	NSExpression *rhs = [NSExpression expressionForConstantValue: @"tsnorri"];
+	
+	NSPredicate *predicate = [NSComparisonPredicate predicateWithLeftExpression: lhs
+																rightExpression: rhs
+																	   modifier: NSDirectPredicateModifier
+																		   type: NSEqualToPredicateOperatorType
+																		options: 0];
+	
+	[mQueryBuilder setQueryType: kBXPGQueryTypeSelect];
+	NSString *whereClause = [mQueryBuilder whereClauseForPredicate: predicate entity: nil connection: mConnection].p_where_clause;
+	MKCAssertEqualObjects (whereClause, @"$1 = SESSION_USER");
+	NSArray *parameters = [mQueryBuilder parameters];
+	MKCAssertEqualObjects (parameters, [NSArray arrayWithObject: @"tsnorri"]);
+}
 @end

@@ -110,6 +110,11 @@
 		5338E5540E5EE69E0045B6D7 /* BXPGInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 530132E109D460230037C485 /* BXPGInterface.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		533BAACB0F2C000A0030CD05 /* PGTSDatabaseDescription.mm in Sources */ = {isa = PBXBuildFile; fileRef = 533BAAC90F2C000A0030CD05 /* PGTSDatabaseDescription.mm */; };
 		533BAACC0F2C000A0030CD05 /* PGTSTableDescription.mm in Sources */ = {isa = PBXBuildFile; fileRef = 533BAACA0F2C000A0030CD05 /* PGTSTableDescription.mm */; };
+		533C1A6E11E227D100C11E86 /* BXPGSQLExpressionValueType.h in Headers */ = {isa = PBXBuildFile; fileRef = 533C1A6C11E227D100C11E86 /* BXPGSQLExpressionValueType.h */; };
+		533C1A6F11E227D100C11E86 /* BXPGSQLExpressionValueType.m in Sources */ = {isa = PBXBuildFile; fileRef = 533C1A6D11E227D100C11E86 /* BXPGSQLExpressionValueType.m */; };
+		533C1D3111E243D300C11E86 /* BXVerbatimExpressionValue.h in Headers */ = {isa = PBXBuildFile; fileRef = 533C1D2F11E243D300C11E86 /* BXVerbatimExpressionValue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		533C1D3211E243D300C11E86 /* BXVerbatimExpressionValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 533C1D3011E243D300C11E86 /* BXVerbatimExpressionValue.m */; };
+		533C1D7811E2478300C11E86 /* BXExpressionValue.h in Headers */ = {isa = PBXBuildFile; fileRef = 533C1D7711E2478300C11E86 /* BXExpressionValue.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		533F88410F35482000041C02 /* BXForeignKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 536892570F30B9E800AAC65D /* BXForeignKey.m */; };
 		534369C811AFEF8700ADD6C1 /* BXCollectionFunctions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 534369C711AFEF8700ADD6C1 /* BXCollectionFunctions.mm */; };
 		5348B7110F575A3C00B2655E /* BXKeyPathParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 53680C0D0E59922C00A53B26 /* BXKeyPathParser.m */; };
@@ -130,7 +135,6 @@
 		5348B8160F575E4A00B2655E /* PGTSResultSet.mm in Sources */ = {isa = PBXBuildFile; fileRef = 53666CCE0E1CD8D20028DBEA /* PGTSResultSet.mm */; };
 		5348B81E0F575E8700B2655E /* BXPGVisitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 53B143E50E65A7F80043B75D /* BXPGVisitor.m */; };
 		5348B8260F575E9000B2655E /* BXPGConstantParameterMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 53B143F40E65AC4B0043B75D /* BXPGConstantParameterMapper.m */; };
-		5348B82E0F575E9900B2655E /* PGTSConstantValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 53877EAC0E27667B0097C35F /* PGTSConstantValue.m */; };
 		5348B8440F575ED400B2655E /* BXPropertyDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 53B86FF90A0A1D6F007315BC /* BXPropertyDescription.m */; };
 		5348B8460F575ED700B2655E /* BXAttributeDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 539EDD740C46218B00B6E5EC /* BXAttributeDescription.m */; };
 		5348B84A0F575EE100B2655E /* BXDatabaseObjectModelStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 535736CA0F333CCD00DB3D0B /* BXDatabaseObjectModelStorage.m */; };
@@ -514,7 +518,6 @@
 		53857ABA11921BA100426CEA /* BXPGFromItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 539A84DA0E5B3AFF00A2625C /* BXPGFromItem.h */; };
 		53857ABB11921BA200426CEA /* BXPGSQLFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 5338E5C90E62CEAE0045B6D7 /* BXPGSQLFunction.m */; };
 		53857ABE11921BA700426CEA /* BXPGSQLFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 5338E5C80E62CEAE0045B6D7 /* BXPGSQLFunction.h */; };
-		53857ABF11921BA800426CEA /* PGTSConstantValue.h in Headers */ = {isa = PBXBuildFile; fileRef = 53877EAB0E27667B0097C35F /* PGTSConstantValue.h */; };
 		53857AC211921BAB00426CEA /* BXPGQueryHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 53CE796A0E87F29C00D5A310 /* BXPGQueryHandler.m */; };
 		53857AC311921BAC00426CEA /* BXPGQueryHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 53CE79690E87F29C00D5A310 /* BXPGQueryHandler.h */; };
 		53857ACC11921C1F00426CEA /* BXOpenSSLCompatibility.h in Headers */ = {isa = PBXBuildFile; fileRef = 538FA0240F576278005EBFAC /* BXOpenSSLCompatibility.h */; };
@@ -531,8 +534,6 @@
 		53877E930E26AE920097C35F /* NSEntityDescription+BXPGAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 53877E910E26AE920097C35F /* NSEntityDescription+BXPGAdditions.h */; };
 		53877E940E26AE920097C35F /* NSEntityDescription+BXPGAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 53877E920E26AE920097C35F /* NSEntityDescription+BXPGAdditions.m */; };
 		53877E990E26B3F00097C35F /* NSAttributeDescription+BXPGAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 53877E970E26B3F00097C35F /* NSAttributeDescription+BXPGAdditions.h */; };
-		53877EAD0E27667B0097C35F /* PGTSConstantValue.h in Headers */ = {isa = PBXBuildFile; fileRef = 53877EAB0E27667B0097C35F /* PGTSConstantValue.h */; };
-		53877EAE0E27667B0097C35F /* PGTSConstantValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 53877EAC0E27667B0097C35F /* PGTSConstantValue.m */; };
 		53877EEB0E2773E30097C35F /* NSRelationshipDescription+BXPGAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 53877EE90E2773E30097C35F /* NSRelationshipDescription+BXPGAdditions.h */; };
 		53877EEC0E2773E30097C35F /* NSRelationshipDescription+BXPGAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 53877EEA0E2773E30097C35F /* NSRelationshipDescription+BXPGAdditions.m */; };
 		538E031C11A4A5F700C3447F /* BXSocketDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = 538E031A11A4A5F700C3447F /* BXSocketDescriptor.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -852,6 +853,11 @@
 		5339AB920A7542EC00994B1A /* BXException.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BXException.m; path = Sources/BXException.m; sourceTree = "<group>"; };
 		533BAAC90F2C000A0030CD05 /* PGTSDatabaseDescription.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = PGTSDatabaseDescription.mm; path = Sources/PGTSDatabaseDescription.mm; sourceTree = "<group>"; };
 		533BAACA0F2C000A0030CD05 /* PGTSTableDescription.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = PGTSTableDescription.mm; path = Sources/PGTSTableDescription.mm; sourceTree = "<group>"; };
+		533C1A6C11E227D100C11E86 /* BXPGSQLExpressionValueType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXPGSQLExpressionValueType.h; path = Sources/BXPGSQLExpressionValueType.h; sourceTree = "<group>"; };
+		533C1A6D11E227D100C11E86 /* BXPGSQLExpressionValueType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BXPGSQLExpressionValueType.m; path = Sources/BXPGSQLExpressionValueType.m; sourceTree = "<group>"; };
+		533C1D2F11E243D300C11E86 /* BXVerbatimExpressionValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXVerbatimExpressionValue.h; path = Sources/BXVerbatimExpressionValue.h; sourceTree = "<group>"; };
+		533C1D3011E243D300C11E86 /* BXVerbatimExpressionValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BXVerbatimExpressionValue.m; path = Sources/BXVerbatimExpressionValue.m; sourceTree = "<group>"; };
+		533C1D7711E2478300C11E86 /* BXExpressionValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXExpressionValue.h; path = Sources/BXExpressionValue.h; sourceTree = "<group>"; };
 		534369C711AFEF8700ADD6C1 /* BXCollectionFunctions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BXCollectionFunctions.mm; path = Sources/BXCollectionFunctions.mm; sourceTree = "<group>"; };
 		5347BB510B37F78000D963E7 /* BXDatabaseObjectIDPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = BXDatabaseObjectIDPrivate.h; path = Sources/BXDatabaseObjectIDPrivate.h; sourceTree = "<group>"; };
 		534A14AE0F0FBBE6002A9F68 /* BaseTenModifications.sql.m4 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = BaseTenModifications.sql.m4; path = Resources/BaseTenModifications.sql.m4; sourceTree = "<group>"; };
@@ -1042,8 +1048,6 @@
 		53877E920E26AE920097C35F /* NSEntityDescription+BXPGAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSEntityDescription+BXPGAdditions.m"; path = "Sources/NSEntityDescription+BXPGAdditions.m"; sourceTree = "<group>"; };
 		53877E970E26B3F00097C35F /* NSAttributeDescription+BXPGAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSAttributeDescription+BXPGAdditions.h"; path = "Sources/NSAttributeDescription+BXPGAdditions.h"; sourceTree = "<group>"; };
 		53877E980E26B3F00097C35F /* NSAttributeDescription+BXPGAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSAttributeDescription+BXPGAdditions.m"; path = "Sources/NSAttributeDescription+BXPGAdditions.m"; sourceTree = "<group>"; };
-		53877EAB0E27667B0097C35F /* PGTSConstantValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PGTSConstantValue.h; path = Sources/PGTSConstantValue.h; sourceTree = "<group>"; };
-		53877EAC0E27667B0097C35F /* PGTSConstantValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PGTSConstantValue.m; path = Sources/PGTSConstantValue.m; sourceTree = "<group>"; };
 		53877EE90E2773E30097C35F /* NSRelationshipDescription+BXPGAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSRelationshipDescription+BXPGAdditions.h"; path = "Sources/NSRelationshipDescription+BXPGAdditions.h"; sourceTree = "<group>"; };
 		53877EEA0E2773E30097C35F /* NSRelationshipDescription+BXPGAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSRelationshipDescription+BXPGAdditions.m"; path = "Sources/NSRelationshipDescription+BXPGAdditions.m"; sourceTree = "<group>"; };
 		5389E1A20C464107002714B8 /* BXRelationshipDescriptionPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXRelationshipDescriptionPrivate.h; path = Sources/BXRelationshipDescriptionPrivate.h; sourceTree = "<group>"; };
@@ -1602,6 +1606,7 @@
 		53666D860E1CE01A0028DBEA /* SQL Generation */ = {
 			isa = PBXGroup;
 			children = (
+				533C1D7711E2478300C11E86 /* BXExpressionValue.h */,
 				53B144B10E65BD460043B75D /* BXPGQueryBuilder.h */,
 				53B144B20E65BD460043B75D /* BXPGQueryBuilder.m */,
 				53B143E40E65A7F80043B75D /* BXPGVisitor.h */,
@@ -1620,10 +1625,10 @@
 				539A84DB0E5B3AFF00A2625C /* BXPGFromItem.m */,
 				5338E5C80E62CEAE0045B6D7 /* BXPGSQLFunction.h */,
 				5338E5C90E62CEAE0045B6D7 /* BXPGSQLFunction.m */,
-				53877EAB0E27667B0097C35F /* PGTSConstantValue.h */,
-				53877EAC0E27667B0097C35F /* PGTSConstantValue.m */,
 				53CE79690E87F29C00D5A310 /* BXPGQueryHandler.h */,
 				53CE796A0E87F29C00D5A310 /* BXPGQueryHandler.m */,
+				533C1D2F11E243D300C11E86 /* BXVerbatimExpressionValue.h */,
+				533C1D3011E243D300C11E86 /* BXVerbatimExpressionValue.m */,
 				537A23C00E84055F002AAE95 /* Expression value types */,
 				53B143F90E65B08D0043B75D /* Visited classes */,
 			);
@@ -1700,6 +1705,8 @@
 				537A23B80E840544002AAE95 /* BXPGAggregateExpressionValueType.m */,
 				537A23BB0E840556002AAE95 /* BXPGPredefinedFunctionExpressionValueType.h */,
 				537A23BC0E840556002AAE95 /* BXPGPredefinedFunctionExpressionValueType.m */,
+				533C1A6C11E227D100C11E86 /* BXPGSQLExpressionValueType.h */,
+				533C1A6D11E227D100C11E86 /* BXPGSQLExpressionValueType.m */,
 			);
 			name = "Expression value types";
 			sourceTree = "<group>";
@@ -2019,7 +2026,6 @@
 				53B24CFA0E223C8C007AED76 /* BXPGTableDescription.h in Headers */,
 				53877E930E26AE920097C35F /* NSEntityDescription+BXPGAdditions.h in Headers */,
 				53877E990E26B3F00097C35F /* NSAttributeDescription+BXPGAdditions.h in Headers */,
-				53877EAD0E27667B0097C35F /* PGTSConstantValue.h in Headers */,
 				53877EEB0E2773E30097C35F /* NSRelationshipDescription+BXPGAdditions.h in Headers */,
 				53D9DDED0E2B4F310009D370 /* BXPGEntityConverter.h in Headers */,
 				5395E7260E2F77DF006E8441 /* BXPGEntityImporter.h in Headers */,
@@ -2111,6 +2117,9 @@
 				53950A0811CFBD730049F36C /* NSNumber+BaseTenAdditions.h in Headers */,
 				53950A0C11CFBDAE0049F36C /* NSValue+BaseTenAdditions.h in Headers */,
 				53950AC711CFD6840049F36C /* BXValueGetter.h in Headers */,
+				533C1A6E11E227D100C11E86 /* BXPGSQLExpressionValueType.h in Headers */,
+				533C1D3111E243D300C11E86 /* BXVerbatimExpressionValue.h in Headers */,
+				533C1D7811E2478300C11E86 /* BXExpressionValue.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2229,7 +2238,6 @@
 				53857AB611921B9D00426CEA /* BXPGRelationAliasMapper.h in Headers */,
 				53857ABA11921BA100426CEA /* BXPGFromItem.h in Headers */,
 				53857ABE11921BA700426CEA /* BXPGSQLFunction.h in Headers */,
-				53857ABF11921BA800426CEA /* PGTSConstantValue.h in Headers */,
 				53857AC311921BAC00426CEA /* BXPGQueryHandler.h in Headers */,
 				53857ACC11921C1F00426CEA /* BXOpenSSLCompatibility.h in Headers */,
 				53857ACD11921C2000426CEA /* BXExport.h in Headers */,
@@ -2557,7 +2565,6 @@
 				5348B8160F575E4A00B2655E /* PGTSResultSet.mm in Sources */,
 				5348B81E0F575E8700B2655E /* BXPGVisitor.m in Sources */,
 				5348B8260F575E9000B2655E /* BXPGConstantParameterMapper.m in Sources */,
-				5348B82E0F575E9900B2655E /* PGTSConstantValue.m in Sources */,
 				5348B8440F575ED400B2655E /* BXPropertyDescription.m in Sources */,
 				5348B8460F575ED700B2655E /* BXAttributeDescription.m in Sources */,
 				5348B84A0F575EE100B2655E /* BXDatabaseObjectModelStorage.m in Sources */,
@@ -2690,7 +2697,6 @@
 				53B24CF50E223A14007AED76 /* BXPGDatabaseDescription.m in Sources */,
 				53B24CFB0E223C8C007AED76 /* BXPGTableDescription.m in Sources */,
 				53877E940E26AE920097C35F /* NSEntityDescription+BXPGAdditions.m in Sources */,
-				53877EAE0E27667B0097C35F /* PGTSConstantValue.m in Sources */,
 				53877EEC0E2773E30097C35F /* NSRelationshipDescription+BXPGAdditions.m in Sources */,
 				53D9DDEC0E2B4F300009D370 /* BXPGEntityConverter.m in Sources */,
 				5395E7270E2F77DF006E8441 /* BXPGEntityImporter.m in Sources */,
@@ -2784,6 +2790,8 @@
 				53950A0911CFBD730049F36C /* NSNumber+BaseTenAdditions.mm in Sources */,
 				53950A0D11CFBDAE0049F36C /* NSValue+BaseTenAdditions.m in Sources */,
 				53950AC811CFD6840049F36C /* BXValueGetter.mm in Sources */,
+				533C1A6F11E227D100C11E86 /* BXPGSQLExpressionValueType.m in Sources */,
+				533C1D3211E243D300C11E86 /* BXVerbatimExpressionValue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

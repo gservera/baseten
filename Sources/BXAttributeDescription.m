@@ -274,3 +274,21 @@
 	return retval;
 }
 @end
+
+
+
+@implementation BXAttributeDescription (BXExpressionValue)
+- (enum BXExpressionValueType) getBXExpressionValue: (id *) outValue usingContext: (NSMutableDictionary *) ctx;
+{
+	ExpectR (outValue, kBXExpressionValueTypeUndefined);
+	
+	BXEntityDescription* myEntity = [self entity];
+	BXEntityDescription* primaryRelation = [ctx objectForKey: kBXEntityDescriptionKey];
+	ExpectR (primaryRelation, kBXExpressionValueTypeUndefined);
+	BXAssertValueReturn ([myEntity isEqual: primaryRelation], kBXExpressionValueTypeUndefined, 
+						 @"BXAttributeDescription as expression value is required to be one of the primary relation's attributes.");
+	NSString* key = [self name];
+	*outValue = [NSExpression expressionForKeyPath: key];
+	return kBXExpressionValueTypeEvaluated;
+}
+@end

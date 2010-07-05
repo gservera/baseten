@@ -1,8 +1,8 @@
 //
-// NSNumber+BaseTenAdditions.h
+// BXVerbatimExpressionValue.m
 // BaseTen
 //
-// Copyright (C) 2010 Marko Karppinen & Co. LLC.
+// Copyright (C) 2006-2010 Marko Karppinen & Co. LLC.
 //
 // Before using this software, please review the available licensing options
 // by visiting http://www.karppinen.fi/baseten/licensing/ or by contacting
@@ -26,15 +26,36 @@
 // $Id$
 //
 
-#import <Foundation/Foundation.h>
-#import <BaseTen/BXExpressionValue.h>
+#import "BXVerbatimExpressionValue.h"
+#import "BXLogger.h"
 
 
+@implementation BXVerbatimExpressionValue
++ (id) valueWithString: (NSString *) aString
+{
+	id retval = [[[self alloc] initWithString: aString] autorelease];
+	return retval;
+}
 
-@interface NSNumber (BaseTenAdditions)
-@end
+- (id) initWithString: (NSString *) aString
+{
+	if ((self = [super init]))
+	{
+		mValue = [aString retain];
+	}
+	return self;
+}
 
+- (void) dealloc
+{
+	[mValue release];
+	[super dealloc];
+}
 
-
-@interface NSNumber (BXExpressionValue) <BXExpressionValue>
+- (enum BXExpressionValueType) getBXExpressionValue: (id *) outValue usingContext: (NSMutableDictionary *) context
+{
+	ExpectR (outValue, kBXExpressionValueTypeUndefined);
+	*outValue = mValue;
+    return kBXExpressionValueTypeVerbatim;
+}
 @end

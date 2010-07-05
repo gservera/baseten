@@ -209,6 +209,8 @@
     //Post notifications since modifying a self-updating collection won't cause
     //value cache to be changed.
 	NSString* key = [self key];
+	ExpectL (mOwner && key);
+	
     [mOwner willChangeValueForKey: key];    
     [self handleAddedObjects: objects];
     [mOwner didChangeValueForKey: key];
@@ -221,6 +223,8 @@
     //Post notifications since modifying a self-updating collection won't cause
     //value cache to be changed.
 	NSString* key = [self key];
+	ExpectL (mOwner && key);
+
     [mOwner willChangeValueForKey: key];    
     [self handleRemovedObjects: [mContext registeredObjectsWithIDs: ids]];
     [mOwner didChangeValueForKey: key];
@@ -255,6 +259,8 @@
 	if (changed)
 	{
 		NSString* key = [self key];
+		ExpectL (mOwner && key);
+
 		[mOwner willChangeValueForKey: key];    
 		[self handleRemovedObjects: removedObjects];
 		[self handleAddedObjects: addedObjects];
@@ -322,7 +328,7 @@
 
 - (void) setEntity: (BXEntityDescription *) entity
 {
-    BXAssertVoidReturn (nil != mContext, @"Expected mContext not to be nil.");
+	ExpectV (mContext);
     
     //Set up the modification notification
     if (mEntity != entity) 
@@ -331,6 +337,7 @@
         mEntity = [entity retain];
         
         NSNotificationCenter* nc = [mContext notificationCenter];
+		ExpectV (nc);
         [nc removeObserver: self];
         
         SEL addSelector = @selector (addedObjects:);

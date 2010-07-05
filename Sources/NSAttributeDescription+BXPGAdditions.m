@@ -29,7 +29,7 @@
 #import "NSAttributeDescription+BXPGAdditions.h"
 #import "NSPredicate+PGTSAdditions.h"
 #import "BXHOM.h"
-#import "PGTSConstantValue.h"
+#import "BXVerbatimExpressionValue.h"
 #import "BXLogger.h"
 #import "PGTSFoundationObjects.h"
 #import "PGTSConstants.h"
@@ -191,7 +191,7 @@ static NSExpression*
 CharLengthExpression (NSString* name)
 {
 	NSString* fcall = [NSString stringWithFormat: @"char_length (\"%@\")", name];
-	PGTSConstantValue* value = [PGTSConstantValue valueWithString: fcall];
+	BXVerbatimExpressionValue* value = [BXVerbatimExpressionValue valueWithString: fcall];
 	NSExpression* retval = [NSExpression expressionForConstantValue: value];
 	return retval;
 }

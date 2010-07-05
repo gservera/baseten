@@ -39,6 +39,7 @@
 #import <BaseTen/BXRelationshipDescription.h>
 #import <BaseTen/BXException.h>
 #import <BaseTen/BXContainerProxy.h>
+#import <BaseTen/BXVerbatimExpressionValue.h>
 
 /*
  * Helpful breakpoints:

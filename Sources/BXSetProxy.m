@@ -83,6 +83,8 @@
 	{
 		NSSet* change = [NSSet setWithArray: objects];
 		NSString* key = [self key];
+		ExpectL (mOwner && key);
+
 		[mOwner willChangeValueForKey: key
 					  withSetMutation: NSKeyValueUnionSetMutation 
 						 usingObjects: change];
@@ -101,6 +103,8 @@
 	if (0 < [change count])
 	{
 		NSString* key = [self key];
+		ExpectL (mOwner && key);
+
 		[mOwner willChangeValueForKey: key
 					  withSetMutation: NSKeyValueMinusSetMutation 
 						 usingObjects: change];
@@ -154,6 +158,8 @@
     if (changed)
     {
 		NSString* key = [self key];
+		ExpectL (mOwner && key);
+
         [mOwner willChangeValueForKey: key withSetMutation: mutation usingObjects: changed];
         switch (mutation)
         {

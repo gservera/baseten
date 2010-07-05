@@ -60,7 +60,7 @@
 		NSString* predicateString = *ioValue;
 		NSPredicate* predicate = nil;		
 		if ([predicateString length] > 0)
-			predicate = [NSPredicate predicateWithFormat:predicateString];
+			predicate = [NSPredicate predicateWithFormat: predicateString argumentArray: nil];
 		*ioValue = predicate;
 		retval = YES;
 	}

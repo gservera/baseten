@@ -166,12 +166,14 @@ AddParameter (id parameter, NSMutableDictionary* context)
         case NSConstantValueExpressionType:
         {
             id constantValue = [self constantValue];
-            if (YES == [constantValue respondsToSelector: @selector (PGTSConstantExpressionValue:)])
-            {
-                retval = [constantValue PGTSConstantExpressionValue: context];
-                break;
-            }
-            //Otherwise continue.
+			if ([constantValue conformsToProtocol: @protocol (BXExpressionValue)])
+			{
+				enum BXExpressionValueType retvalType = [constantValue getBXExpressionValue: &retval usingContext: context];
+				if (kBXExpressionValueTypeEvaluated != retvalType)
+					break;
+
+				//Otherwise continue.
+			}
         }
 
         case NSEvaluatedObjectExpressionType:

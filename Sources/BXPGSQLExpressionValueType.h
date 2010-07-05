@@ -1,8 +1,8 @@
 //
-// PGTSConstantValue.m
+// BXPGSQLExpressionValueType.h
 // BaseTen
 //
-// Copyright (C) 2006-2008 Marko Karppinen & Co. LLC.
+// Copyright (C) 2010 Marko Karppinen & Co. LLC.
 //
 // Before using this software, please review the available licensing options
 // by visiting http://www.karppinen.fi/baseten/licensing/ or by contacting
@@ -26,33 +26,11 @@
 // $Id$
 //
 
-#import "PGTSConstantValue.h"
+#import <Foundation/Foundation.h>
+#import <BaseTen/BXPGObjectExpressionValueType.h>
 
 
-@implementation PGTSConstantValue
-+ (id) valueWithString: (NSString *) aString
+@interface BXPGSQLExpressionValueType : BXPGObjectExpressionValueType
 {
-	id retval = [[[self alloc] initWithString: aString] autorelease];
-	return retval;
-}
-
-- (id) initWithString: (NSString *) aString
-{
-	if ((self = [super init]))
-	{
-		mValue = [aString retain];
-	}
-	return self;
-}
-
-- (void) dealloc
-{
-	[mValue release];
-	[super dealloc];
-}
-
-- (id) PGTSConstantExpressionValue: (id) context
-{
-    return mValue;
 }
 @end

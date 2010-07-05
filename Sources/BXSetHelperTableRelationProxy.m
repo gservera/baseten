@@ -126,6 +126,8 @@ SetPkeyFValues (NSString* helperFName, NSString* fName, void* ctx)
 		//Post notifications since modifying a self-updating collection won't cause
 		//value cache to be changed.
 		NSString* key = [self key];
+		ExpectL (mOwner && key);
+
 		[mOwner willChangeValueForKey: key];
         [self handleAddedObjects: [mContext faultsWithIDs: objectIDs]];
 		[mOwner didChangeValueForKey: key];
@@ -139,6 +141,8 @@ SetPkeyFValues (NSString* helperFName, NSString* fName, void* ctx)
 	{
 		//See above.
 		NSString* key = [self key];
+		ExpectL (mOwner && key);
+
 		[mOwner willChangeValueForKey: key];
         [self handleRemovedObjects: [mContext registeredObjectsWithIDs: objectIDs]];
 		[mOwner didChangeValueForKey: key];
@@ -153,6 +157,8 @@ SetPkeyFValues (NSString* helperFName, NSString* fName, void* ctx)
 	{
 		//See above.
 		NSString* key = [self key];
+		ExpectL (mOwner && key);
+
 		[mOwner willChangeValueForKey: key];
 		if (0 < [removedIDs count])
 			[self handleRemovedObjects: [mContext registeredObjectsWithIDs: removedIDs]];

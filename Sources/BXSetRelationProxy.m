@@ -169,6 +169,8 @@
         mContainer = oldValue;
         mForwardToHelper = NO;
 		NSString* key = [self key];
+		ExpectL (mOwner && key);
+
         [mOwner willChangeValueForKey: key
                       withSetMutation: mutationKind
                          usingObjects: changed];

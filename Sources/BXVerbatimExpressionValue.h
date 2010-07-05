@@ -1,8 +1,8 @@
 //
-// NSNumber+BaseTenAdditions.h
+// BXVerbatimExpressionValue.h
 // BaseTen
 //
-// Copyright (C) 2010 Marko Karppinen & Co. LLC.
+// Copyright (C) 2006-2010 Marko Karppinen & Co. LLC.
 //
 // Before using this software, please review the available licensing options
 // by visiting http://www.karppinen.fi/baseten/licensing/ or by contacting
@@ -30,11 +30,10 @@
 #import <BaseTen/BXExpressionValue.h>
 
 
-
-@interface NSNumber (BaseTenAdditions)
-@end
-
-
-
-@interface NSNumber (BXExpressionValue) <BXExpressionValue>
+@interface BXVerbatimExpressionValue : NSObject <BXExpressionValue>
+{
+	id mValue;
+}
++ (id) valueWithString: (NSString *) aString;
+- (id) initWithString: (NSString *) aString;
 @end

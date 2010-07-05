@@ -1947,7 +1947,7 @@ ModTypeToObject (enum BXModificationType value)
 			if (0 < [rels count])
 			{
 				oldTargets = [self targetsByObject: objects forRelationships: rels fireFaults: NO];
-				newTargets= [self targetsByObject: objects forRelationships: rels fireFaults: YES];
+				newTargets = [self targetsByObject: objects forRelationships: rels fireFaults: YES];
 				BXEnumerate (currentObject, e, [objects objectEnumerator])
 					[currentObject willChangeInverseToOneRelationships: rels from: oldTargets to: newTargets];
 			}

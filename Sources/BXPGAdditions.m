@@ -75,17 +75,6 @@
 	return [[self name] BXPGEscapedName: connection];
 }
 
-- (id) PGTSConstantExpressionValue: (NSMutableDictionary *) ctx
-{
-	BXEntityDescription* myEntity = [self entity];
-	BXEntityDescription* primaryRelation = [ctx objectForKey: kBXEntityDescriptionKey];
-	Expect (primaryRelation);
-	BXAssertValueReturn ([myEntity isEqual: primaryRelation], nil, 
-						 @"BXAttributeDescription as expression value is required to be one of the primary relation's attributes.");
-	NSString* key = [self name];
-	return [NSExpression expressionForKeyPath: key];
-}
-
 - (void) BXPGVisitKeyPathComponent: (id <BXPGExpressionVisitor>) visitor
 {
 	[visitor visitAttribute: self];

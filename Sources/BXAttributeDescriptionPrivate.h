@@ -27,6 +27,8 @@
 //
 
 #import <BaseTen/BXAttributeDescription.h>
+#import <BaseTen/BXExpressionValue.h>
+
 
 @class BXRelationshipDescription;
 @class BXDatabaseObject;
@@ -47,4 +49,8 @@
 - (void) addDependentRelationship: (BXRelationshipDescription *) rel;
 - (void) removeDependentRelationship: (BXRelationshipDescription *) rel;
 - (NSSet *) dependentRelationships;
+@end
+
+
+@interface BXAttributeDescription (BXExpressionValue) <BXExpressionValue>
 @end

@@ -1,8 +1,8 @@
 //
-// PGTSConstantValue.h
+// BXExpressionValue.h
 // BaseTen
 //
-// Copyright (C) 2006-2008 Marko Karppinen & Co. LLC.
+// Copyright (C) 2010 Marko Karppinen & Co. LLC.
 //
 // Before using this software, please review the available licensing options
 // by visiting http://www.karppinen.fi/baseten/licensing/ or by contacting
@@ -29,10 +29,15 @@
 #import <Foundation/Foundation.h>
 
 
-@interface PGTSConstantValue : NSObject 
+enum BXExpressionValueType
 {
-	id mValue;
-}
-+ (id) valueWithString: (NSString *) aString;
-- (id) initWithString: (NSString *) aString;
+	kBXExpressionValueTypeUndefined = 0,
+	kBXExpressionValueTypeConstant,
+	kBXExpressionValueTypeEvaluated,
+	kBXExpressionValueTypeVerbatim
+};
+
+
+@protocol BXExpressionValue
+- (enum BXExpressionValueType) getBXExpressionValue: (id *) outValue usingContext: (NSMutableDictionary *) context;
 @end

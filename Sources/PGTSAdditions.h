@@ -32,11 +32,6 @@
 @class PGTSConnection;
 
 
-@interface NSObject (PGTSOptionalAdditions)
-- (id) PGTSConstantExpressionValue: (NSDictionary *) context;
-@end
-
-
 @interface NSObject (PGTSAdditions)
 - (NSString *) PGTSEscapedObjectParameter: (PGTSConnection *) connection;
 - (NSString *) PGTSEscapedName: (PGTSConnection *) connection;

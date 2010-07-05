@@ -1,5 +1,5 @@
 //
-// NSNumber+BaseTenAdditions.h
+// BXPGSQLExpressionValueType.m
 // BaseTen
 //
 // Copyright (C) 2010 Marko Karppinen & Co. LLC.
@@ -26,15 +26,13 @@
 // $Id$
 //
 
-#import <Foundation/Foundation.h>
-#import <BaseTen/BXExpressionValue.h>
+#import "BXPGSQLExpressionValueType.h"
+#import "BXLogger.h"
 
 
-
-@interface NSNumber (BaseTenAdditions)
-@end
-
-
-
-@interface NSNumber (BXExpressionValue) <BXExpressionValue>
+@implementation BXPGSQLExpressionValueType
+- (NSString *) expressionSQL: (id <BXPGExpressionHandler>) visitor
+{
+	return [mValue description];
+}
 @end
