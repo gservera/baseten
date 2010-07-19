@@ -214,6 +214,12 @@ SSLMode (enum BXSSLMode mode)
 	return ([mConnection SSLStruct] ? YES : NO);
 }
 
+- (void) receivedLockQueryResult: (PGTSResultSet *) res
+{
+	if (! [res querySucceeded])
+		BXLogWarning (@"Unable to send lock query: %@", [res error]);
+}
+
 - (void) markLocked: (BXEntityDescription *) entity 
 	  relationAlias: (NSString *) alias
 		 fromClause: (NSString *) fromClause
@@ -241,9 +247,9 @@ SSLMode (enum BXSSLMode mode)
 		NSString* funcname = [[mLockHandlers objectForKey: entity] lockFunctionName];
 		
 		//Lock type
-		NSString* format = @"SELECT %@ ('U', %u, %@) FROM %@ WHERE %@";
+		NSString* format = @"SELECT \"baseten\".\"%@\" ('U', %u, %@) FROM %@ WHERE %@";
 		if (willDelete)
-			format = @"SELECT %@ ('D', %u, %@) FROM %@ WHERE %@";
+			format = @"SELECT \"baseten\".\"%@\" ('D', %u, %@) FROM %@ WHERE %@";
 		
 		//Table
 		NSError* localError = nil;
@@ -260,7 +266,7 @@ SSLMode (enum BXSSLMode mode)
 		
 		//Execute the query.
 		NSString* query = [NSString stringWithFormat: format, funcname, 0, fieldList, fromClause, whereClause];
-		[notifyConnection sendQuery: query delegate: nil callback: NULL parameterArray: parameters]; 			
+		[notifyConnection sendQuery: query delegate: self callback: @selector (receivedLockQueryResult:) parameterArray: parameters]; 			
 	}
 }
 
