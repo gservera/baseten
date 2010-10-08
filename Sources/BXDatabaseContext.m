@@ -2232,7 +2232,7 @@ ModTypeToObject (enum BXModificationType value)
 {
 	BXDeprecationLog ();
 	NSError* localError = nil;
-	NSDictionary* retval = [mObjectModel entitiesBySchemaAndName: mDatabaseInterface reload: reload error: &localError];
+	NSDictionary* retval = [mObjectModel entitiesBySchemaAndName: self reload: reload error: &localError];
 	BXHandleError (outError, localError);
 	return retval;
 }

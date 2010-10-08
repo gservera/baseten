@@ -1,3 +1,5 @@
+#include "gcc.xcconfig"
+
 GCC_VERSION_ppc = 4.0
 GCC_VERSION_i386 = 4.0
 GCC_VERSION_ppc64 = 4.2

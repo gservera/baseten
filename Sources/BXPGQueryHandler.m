@@ -87,7 +87,7 @@ NSString* kBXPGExceptionInternalInconsistency = @"kBXPGExceptionInternalInconsis
 	BXPGRelationshipFromItem* fromItem = [mapper firstFromItem];
 	
 	BXRelationshipDescription* rel = [fromItem relationship];	
-	NSArray* conditions = [rel BXPGVisitRelationship: self fromItem: fromItem];
+	NSArray* conditions = [rel BXPGVisitRelationship: (id) self fromItem: fromItem];
 	[[visitor currentFrame] addObjectsFromArray: conditions];
 	NSString* joined = [[visitor currentFrame] componentsJoinedByString: @" AND "];
 	[visitor removeFrame];

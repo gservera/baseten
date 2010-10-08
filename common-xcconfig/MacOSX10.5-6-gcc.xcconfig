@@ -1,3 +1,5 @@
+#include "gcc.xcconfig"
+
 // Architecture specifics are required by the PostgreSQL build script.
 GCC_VERSION_ppc = 4.2
 GCC_VERSION_i386 = 4.2

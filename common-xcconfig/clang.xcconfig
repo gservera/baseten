@@ -1,0 +1,2 @@
+OTHER_CFLAGS = $(DOCUMENTATION_CFLAGS) -fblocks //-fcatch-undefined-behavior
+CLANG_WARNING_CFLAGS = -Werror -Wno-format

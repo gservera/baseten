@@ -1,4 +1,6 @@
 #include "../common-xcconfig/gc.xcconfig"
 #include "../common-xcconfig/debug.xcconfig"
-#include "../common-xcconfig/MacOSX10.5-6-gcc.xcconfig"
+#include "../common-xcconfig/MacOSX10.5-6-clang.xcconfig"
 #include "common.xcconfig"
+
+DOCUMENTATION_CFLAGS = -emit-ast

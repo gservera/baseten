@@ -32,7 +32,7 @@
 #import "BXValidationLock.h"
 
 #import "../BaseTenAppKit/Sources/BXAppKitSystemEventNotifier.h"
-Class BXAppKitSystemEventNotifierClass;
+Class BXAppKitSystemEventNotifierClass = Nil;
 
 
 
@@ -49,7 +49,7 @@ NSString * const kBXSystemEventNotifierSystemDidWakeNotification   = @"kBXSystem
 	if (! tooLate)
 	{
 		tooLate = YES;
-		BXAppKitSystemEventNotifierClass = NSClassFromString (@"BXAppKitSystemEventNotifierClass");
+		BXAppKitSystemEventNotifierClass = NSClassFromString (@"BXAppKitSystemEventNotifier");
 	}
 }
 
