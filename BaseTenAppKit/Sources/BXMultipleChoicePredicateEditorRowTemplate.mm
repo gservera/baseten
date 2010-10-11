@@ -163,7 +163,9 @@ using namespace BaseTen;
 	NSPopUpButton *optionsButton = [retval objectAtIndex: 2];
 	NSMenu *optionsMenu = [optionsButton menu];
 	
-	[optionsMenu removeAllItems];
+	for (NSInteger i = 0, count = [optionsMenu numberOfItems]; i < count; i++)
+		[optionsMenu removeItemAtIndex: 0];
+	
 	if ([mOptions count])
 	{
 		for (NSExpression *currentExp in mRightExpressions)

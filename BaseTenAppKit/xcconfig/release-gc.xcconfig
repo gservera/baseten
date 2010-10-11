@@ -1,5 +1,6 @@
 #include "../../common-xcconfig/gc.xcconfig"
 #include "../../common-xcconfig/release.xcconfig"
+#include "../../common-xcconfig/MacOSX10.5-6-gcc.xcconfig"
 #include "common.xcconfig"
 
 INSTALL_PATH = @executable_path/../Frameworks
