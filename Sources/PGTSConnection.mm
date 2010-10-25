@@ -645,12 +645,27 @@ NoticeReceiver (void *connectionPtr, PGresult const *notice)
 		"SET standard_conforming_strings TO true",
 		"SET datestyle TO 'ISO, YMD'",
 		"SET timezone TO 'UTC'",
-		"SET transaction_isolation TO 'read committed'",
-		"SET regex_flavor TO 'advanced'"
+		"SET transaction_isolation TO 'read committed'"
 	};
 	for (int i = 0, count = BXArraySize (queries); i < count; i++)
 	{
 		PGresult* res = [self execQuery: queries [i]];
+		if (PGRES_COMMAND_OK != PQresultStatus (res))
+		{
+			shouldContinue = NO;
+			BXLogError (@"Expected setting run-time parameters for connection to succeed. Error:\n%s",
+						PQresultErrorMessage (res) ?: "<no error message>");
+			
+			PGTSResultSet* result = [[[PGTSResultSet alloc] initWithPGResult: res connection: self] autorelease];
+			NSError* error = [result error];
+			[mConnector setConnectionError: error];
+		}
+	}
+	
+	int const serverVersion = PQserverVersion (connection);
+	if (serverVersion < 90000)
+	{
+		PGresult* res = [self execQuery: "SET regex_flavor TO 'advanced'"];
 		if (PGRES_COMMAND_OK != PQresultStatus (res))
 		{
 			shouldContinue = NO;
