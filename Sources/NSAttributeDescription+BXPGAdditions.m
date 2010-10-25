@@ -106,9 +106,6 @@
 		[parentPredicates addObjectsFromArray: [parentAttribute validationPredicates]];
 	}
 	
-	if (! [parentPredicates count])
-		parentPredicates = nil;
-	
 	return parentPredicates;
 }
 
@@ -180,7 +177,7 @@
 	NSAttributeType attrType = [self attributeType];
 	NSInteger maxLength = NSIntegerMax;
 	if (NSStringAttributeType == attrType && NSIntegerMax != (maxLength = [self BXPGMaxLength]))
-		retval = [NSString stringWithFormat: @"varchar (%d)", maxLength];
+		retval = [NSString stringWithFormat: @"VARCHAR (%d)", maxLength];
 	else
 		retval = [[self class] BXPGNameForAttributeType: attrType];
 	return retval;
@@ -212,22 +209,49 @@ CharLengthExpression (NSString* name)
 				NSComparisonPredicate* predicate = (NSComparisonPredicate *) givenPredicate;
 				NSExpression* lhs = [predicate leftExpression];
 				NSExpression* rhs = [predicate rightExpression];
+				NSPredicateOperatorType op = [predicate predicateOperatorType];
 				NSExpression* lenghtExp = [NSExpression expressionForKeyPath: @"length"];
 				if ([lhs isEqual: lenghtExp])
 				{
-					NSExpression* lhs = CharLengthExpression ([self name]);
-					retval = [NSComparisonPredicate predicateWithLeftExpression: lhs rightExpression: rhs 
-																	   modifier: [predicate comparisonPredicateModifier] 
-																		   type: [predicate predicateOperatorType] 
-																		options: [predicate options]];
+					switch (op)
+					{
+						case NSEqualToPredicateOperatorType:
+						case NSGreaterThanPredicateOperatorType:
+						case NSGreaterThanOrEqualToPredicateOperatorType:
+						{
+							NSExpression* lhs = CharLengthExpression ([self name]);
+							retval = [NSComparisonPredicate predicateWithLeftExpression: lhs rightExpression: rhs 
+																			   modifier: [predicate comparisonPredicateModifier] 
+																				   type: op
+																				options: [predicate options]];
+							break;
+						}
+							
+						default:
+							retval = nil;
+							break;
+					}
 				}
 				else if ([rhs isEqual: lenghtExp])
 				{
-					NSExpression* rhs = CharLengthExpression ([self name]);
-					retval = [NSComparisonPredicate predicateWithLeftExpression: lhs rightExpression: rhs 
-																	   modifier: [predicate comparisonPredicateModifier] 
-																		   type: [predicate predicateOperatorType] 
-																		options: [predicate options]];
+					switch (op)
+					{
+						case NSEqualToPredicateOperatorType:
+						case NSLessThanPredicateOperatorType:
+						case NSLessThanOrEqualToPredicateOperatorType:
+						{
+							NSExpression* rhs = CharLengthExpression ([self name]);
+							retval = [NSComparisonPredicate predicateWithLeftExpression: lhs rightExpression: rhs 
+																			   modifier: [predicate comparisonPredicateModifier] 
+																				   type: op
+																				options: [predicate options]];
+							break;
+						}
+							
+						default:
+							retval = nil;
+							break;
+					}
 				}
 				else
 				{

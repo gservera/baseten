@@ -255,7 +255,7 @@
 									error: (NSError **) outError
 {
 	BXEntityDescription *retval = [[mContext databaseObjectModel] matchingEntity: importedEntity inSchema: schemaName];
-	ExpectL ([retval isValidated]);
+	ExpectL (! retval || [retval isValidated]);
 	return retval;
 }
 
