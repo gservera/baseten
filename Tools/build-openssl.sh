@@ -1,4 +1,5 @@
 source "${SRCROOT}/Tools/defines.sh"
+my_build_dir="${BUILT_PRODUCTS_DIR}/BaseTen-PostgreSQL"
 openssl_source_file=openssl-1.0.0.tar.gz
 openssl_dir=openssl-1.0.0
 openssl_root="$my_build_dir/$openssl_dir"
@@ -45,6 +46,8 @@ then
 	make distclean || echo "Continuing..."
 	./Configure darwin-arm-gcc no-asm no-shared threads zlib-dynamic no-gost
 	exit_on_error
+	#make depend
+	#exit_on_error
 	make
 	exit_on_error
 	popd
