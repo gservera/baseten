@@ -29,6 +29,7 @@
 #import "BXDictionaryFunctions.h"
 
 
+#if defined (TARGET_OS_IPHONE) && TARGET_OS_IPHONE
 static CFDictionaryValueCallBacks stNonRetainedValueCallbacks = {
 	0,
 	NULL,
@@ -36,6 +37,7 @@ static CFDictionaryValueCallBacks stNonRetainedValueCallbacks = {
 	NULL,
 	&CFEqual
 };
+#endif
 
 
 id

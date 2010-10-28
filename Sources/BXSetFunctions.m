@@ -66,6 +66,7 @@ EqualRelationship (void const * const value1, void const * const value2, NSUInte
 }
 
 
+#if defined (TARGET_OS_IPHONE) && TARGET_OS_IPHONE
 static Boolean
 EqualRelationshipSetFn (void const * const value1, void const * const value2)
 {
@@ -92,6 +93,7 @@ static CFSetCallBacks stNSRDSetCallbacks = {
 	&EqualRelationshipSetFn,
 	&CFHash
 };
+#endif
 
 
 id

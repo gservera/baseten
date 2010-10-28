@@ -29,6 +29,7 @@
 #import "BXArrayFunctions.h"
 
 
+#if defined (TARGET_OS_IPHONE) && TARGET_OS_IPHONE
 static CFArrayCallBacks stNonRetainedArrayCallbacks = {
     0,
     NULL,
@@ -36,6 +37,7 @@ static CFArrayCallBacks stNonRetainedArrayCallbacks = {
     NULL,
     &CFEqual
 };
+#endif
 
 
 id
