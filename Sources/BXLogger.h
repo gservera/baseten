@@ -139,7 +139,11 @@ BX_EXPORT void BXAssertionDebug () BX_ANALYZER_NORETURN;
 BX_EXPORT void BXDeprecationWarning ();
 
 
+#if ! (defined (TARGET_OS_IPHONE) && TARGET_OS_IPHONE)
 BX_EXPORT void BXLogSetLogFile (NSBundle *bundle);
+#endif
+
+
 BX_EXPORT void BXLog (char const *fileName, 
 					  char const *functionName, 
 					  void const *functionAddress, 

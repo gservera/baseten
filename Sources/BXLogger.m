@@ -28,8 +28,10 @@
 
 
 #import "BXLogger.h"
+#import "BXArraySize.h"
 #import <dlfcn.h>
 #import <unistd.h>
+#import <sys/time.h>
 
 
 enum BXLogLevel BXLogLevel = kBXLogLevelWarning;
@@ -40,6 +42,7 @@ static const unsigned long long kLogFileMaxSize = 1024 * 1024;
 static const unsigned long long kLogFileTruncateSize = 1024 * 128; 
 
 
+#if ! (defined (TARGET_OS_IPHONE) && TARGET_OS_IPHONE)
 static void TruncateLogFile (NSString *filePath)
 {
 	NSFileManager *fm = [[NSFileManager alloc] init];
@@ -79,6 +82,7 @@ static void TruncateLogFile (NSString *filePath)
 	}	
 	[fm release];
 }
+#endif
 
 
 static inline
@@ -150,6 +154,7 @@ CopyExecutableName ()
 }
 
 
+#if ! (defined (TARGET_OS_IPHONE) && TARGET_OS_IPHONE)
 void
 BXLogSetLogFile (NSBundle *bundle)
 {
@@ -181,6 +186,7 @@ BXLogSetLogFile (NSBundle *bundle)
 					GetMacOSStatusCommentString (err));
 	}
 }
+#endif
 
 
 void BXSetLogLevel (enum BXLogLevel level)
@@ -232,21 +238,26 @@ BXLog (const char *fileName, const char *functionName, const void *functionAddre
 void
 BXLog_v (char const *fileName, char const *functionName, void const *functionAddress, int line, enum BXLogLevel level, NSString * const messageFmt, va_list args)
 {
+	char dateBuffer [32] = {};
+	struct timeval tv = {};
+	struct tm tm = {};
+	gettimeofday (&tv, NULL);
+	gmtime_r (&tv.tv_sec, &tm);
+	strftime (dateBuffer, BXArraySize (dateBuffer), "%Y-%m-%d %H:%M:%S", &tm);
+	
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+
 	char *executable = CopyExecutableName ();
 	char *library = CopyLibraryName (functionAddress);
 	const char *file = LastPathComponent (fileName);
-	
-	NSString *date = [[NSDate date] descriptionWithCalendarFormat: @"%Y-%m-%d %H:%M:%S.%F" timeZone: nil locale: nil];
-	NSString *message = [[[NSString alloc] initWithFormat: messageFmt arguments: args] autorelease];
-		
 	const char isMain = ([NSThread isMainThread] ? 'm' : 's');
-	fprintf (stderr, "%23s  %s (%s) [%d %p%c]  %s:%d  %s \t%8s %s\n", 
-		[date UTF8String], executable, library ?: "???", getpid (), [NSThread currentThread], isMain, file, line, functionName, LogLevel (level), [message UTF8String]);
+	
+	NSString *message = [[[NSString alloc] initWithFormat: messageFmt arguments: args] autorelease];
+	fprintf (stderr, "%19s.%.lf %s (%s) [%d %p%c]  %s:%d  %s \t%8s %s\n", 
+		dateBuffer, 1000.0 * tv.tv_usec, executable, library ?: "???", getpid (), [NSThread currentThread], isMain, file, line, functionName, LogLevel (level), [message UTF8String]);
 	fflush (stderr);
 	
 	//For GC.
-	[date self];
 	[message self];
 	
 	if (executable)
