@@ -1,5 +1,9 @@
 . "$SRCROOT"/Tools/defines.sh
 my_architecture="$1"
+my_availcpu=`/usr/sbin/sysctl -n hw.availcpu`
+postgresql_version="8.3.11"
+postgresql_source_file="postgresql-${postgresql_version}.tar.bz2"
+postgresql_root="${my_build_dir}/postgresql-${postgresql_version}"
 
 
 function extract
