@@ -93,8 +93,10 @@
         }
         else
         {
+#if ! (defined (TARGET_OS_IPHONE) && TARGET_OS_IPHONE)
             //Just use NSData
             valueForURL = [NSString BXURLEncodedData: [NSArchiver archivedDataWithRootObject: currentValue]];            
+#endif
         }
         
         [parts addObject: [NSString stringWithFormat: @"%@,%c=%@", 
@@ -158,10 +160,12 @@
 			}
 			case 'd':
 			{
+#if ! (defined (TARGET_OS_IPHONE) && TARGET_OS_IPHONE)
 				NSString* encodedString = nil;
 				[queryScanner scanUpToString: @"&" intoString: &encodedString];
 				NSData* archivedData = [encodedString BXURLDecodedData];
 				value = [NSUnarchiver unarchiveObjectWithData: archivedData];
+#endif
 				break;
 			}
 			default:

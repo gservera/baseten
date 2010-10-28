@@ -29,8 +29,21 @@
 #import "BXArrayFunctions.h"
 
 
+static CFArrayCallBacks stNonRetainedArrayCallbacks = {
+    0,
+    NULL,
+    NULL,
+    NULL,
+    &CFEqual
+};
+
+
 id
 BXArrayCreateMutableWeakNonretaining ()
 {
+#if defined (TARGET_OS_IPHONE) && TARGET_OS_IPHONE
+	return (id) CFArrayCreateMutable (kCFAllocatorDefault, 0, &stNonRetainedArrayCallbacks);
+#else
 	return [[NSPointerArray pointerArrayWithWeakObjects] retain];
+#endif
 }

@@ -32,6 +32,7 @@
 @class BXConnectionMonitor;
 @class BXSystemEventNotifier;
 @class BXConnectionMonitorThread;
+@class NSMapTable;
 
 
 

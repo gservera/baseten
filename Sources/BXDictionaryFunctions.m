@@ -29,8 +29,21 @@
 #import "BXDictionaryFunctions.h"
 
 
+static CFDictionaryValueCallBacks stNonRetainedValueCallbacks = {
+	0,
+	NULL,
+	NULL,
+	NULL,
+	&CFEqual
+};
+
+
 id
 BXDictionaryCreateMutableWeakNonretainedObjects ()
 {
+#if defined (TARGET_OS_IPHONE) && TARGET_OS_IPHONE
+	return (id) CFDictionaryCreateMutable (kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &stNonRetainedValueCallbacks);
+#else
 	return [[NSMapTable mapTableWithStrongToWeakObjects] retain];
+#endif
 }

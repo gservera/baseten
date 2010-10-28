@@ -268,6 +268,7 @@ Visit (NSInvocation* invocation, NSEnumerator* enumerator)
 
 
 
+#if ! (defined (TARGET_OS_IPHONE) && TARGET_OS_IPHONE)
 @implementation NSHashTable (BXHOM)
 - (void) _BX_Collect: (NSInvocation *) invocation userInfo: (Class) retclass
 {
@@ -357,6 +358,7 @@ Visit (NSInvocation* invocation, NSEnumerator* enumerator)
 	return VisitorTrampoline (self, visitor, @selector (_BX_Visit:userInfo:), nil);
 }
 @end
+#endif
 
 
 
@@ -573,6 +575,7 @@ Visit (NSInvocation* invocation, NSEnumerator* enumerator)
 
 
 
+#if ! (defined (TARGET_OS_IPHONE) && TARGET_OS_IPHONE)
 @implementation NSMapTable (BXHOM)
 - (void) _BX_Collect: (NSInvocation *) invocation userInfo: (Class) retclass
 {
@@ -685,3 +688,4 @@ Visit (NSInvocation* invocation, NSEnumerator* enumerator)
 	return SelectFunction2 (self, retval, fptr, arg);
 }
 @end
+#endif

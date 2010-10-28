@@ -112,10 +112,14 @@
 
 
 
+#if ! (defined (TARGET_OS_IPHONE) && TARGET_OS_IPHONE)
 @interface NSHashTable (BXHOM) <BXSetHOM>
 @end
+#endif
 
 
 
+#if ! (defined (TARGET_OS_IPHONE) && TARGET_OS_IPHONE)
 @interface NSMapTable (BXHOM) <BXDictionaryHOM>
 @end
+#endif

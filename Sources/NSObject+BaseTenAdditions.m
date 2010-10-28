@@ -27,6 +27,10 @@
 //
 
 
+#import "NSObject+BaseTenAdditions.h"
+
+
+#if ! (defined (TARGET_OS_IPHONE) && TARGET_OS_IPHONE)
 @implementation NSPointerArray (BaseTenAdditions)
 - (void) addObject: (id) anObject
 {
@@ -39,9 +43,11 @@
 	return [[self allObjects] objectEnumerator];
 }
 @end
+#endif
 
 
 
+#if ! (defined (TARGET_OS_IPHONE) && TARGET_OS_IPHONE)
 @implementation NSMapTable (BaseTenAdditions)
 - (void) makeObjectsPerformSelector: (SEL) selector withObject: (id) object
 {
@@ -67,3 +73,4 @@
 	return retval;
 }
 @end
+#endif

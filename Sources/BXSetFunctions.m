@@ -66,16 +66,51 @@ EqualRelationship (void const * const value1, void const * const value2, NSUInte
 }
 
 
+static Boolean
+EqualRelationshipSetFn (void const * const value1, void const * const value2)
+{
+	return (EqualRelationship (value1, value2, NULL) ? true : false);
+}
+
+
+
+static CFSetCallBacks stNonRetainedSetCallbacks = {
+	0,
+	NULL,
+	NULL,
+	NULL,
+	&CFEqual,
+	&CFHash
+};
+
+
+static CFSetCallBacks stNSRDSetCallbacks = {
+	0,
+	NULL,
+	NULL,
+	NULL,
+	&EqualRelationshipSetFn,
+	&CFHash
+};
+
+
 id
 BXSetCreateMutableWeakNonretaining ()
 {
+#if defined (TARGET_OS_IPHONE) && TARGET_OS_IPHONE
+	return (id) CFSetCreateMutable (kCFAllocatorDefault, 0, &stNonRetainedSetCallbacks);
+#else
 	return [[NSHashTable hashTableWithWeakObjects] retain];
+#endif
 }
 
 
 id
 BXSetCreateMutableStrongRetainingForNSRD ()
 {
+#if defined (TARGET_OS_IPHONE) && TARGET_OS_IPHONE
+	return (id) CFSetCreateMutable (kCFAllocatorDefault, 0, &stNSRDSetCallbacks);
+#else
 	NSPointerFunctionsOptions options = NSPointerFunctionsStrongMemory | NSPointerFunctionsObjectPersonality;
 	NSPointerFunctions *functions = [[NSPointerFunctions alloc] initWithOptions: options];
 	[functions setIsEqualFunction: &EqualRelationship];
@@ -84,4 +119,5 @@ BXSetCreateMutableStrongRetainingForNSRD ()
 	[functions release];
 	
 	return retval;
+#endif
 }

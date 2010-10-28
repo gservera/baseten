@@ -28,6 +28,7 @@
 
 #import <Foundation/Foundation.h>
 #import <BaseTen/BXDatabaseObject.h>
+@class NSProtocolChecker;
 
 
 @interface BXObjectStatusInfo : NSProxy

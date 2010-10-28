@@ -29,14 +29,18 @@
 #import <Foundation/Foundation.h>
 
 
+#if ! (defined (TARGET_OS_IPHONE) && TARGET_OS_IPHONE)
 @interface NSPointerArray (BaseTenAdditions)
 - (void) addObject: (id) anObject;
 - (NSEnumerator *) objectEnumerator;
 @end
+#endif
 
 
 
+#if ! (defined (TARGET_OS_IPHONE) && TARGET_OS_IPHONE)
 @interface NSMapTable (BaseTenAdditions)
 - (void) makeObjectsPerformSelector: (SEL) selector withObject: (id) object;
 - (NSArray *) objectsForKeys: (NSArray *) keys notFoundMarker: (id) marker;
 @end
+#endif

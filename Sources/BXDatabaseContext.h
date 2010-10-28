@@ -43,6 +43,11 @@
 #define BXHiddenId id
 
 
+#if defined (TARGET_OS_IPHONE) && TARGET_OS_IPHONE
+#define SecKeychainItemRef void*
+#endif
+
+
 @class NSWindow;
 
 

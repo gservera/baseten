@@ -29,6 +29,7 @@
 
 #import <BaseTen/pcre.h>
 #import <BaseTen/BXExport.h>
+#import <Foundation/Foundation.h>
 
 
 struct bx_regular_expression_st 
