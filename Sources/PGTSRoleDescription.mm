@@ -48,7 +48,7 @@ using namespace BaseTen;
 {
 	NSMutableDictionary *membersByOid = [[NSMutableDictionary alloc] initWithCapacity: [roles count]];
 	for (PGTSRoleDescription *role in roles)
-		InsertConditionally (mMembersByOid, [role oid], role);
+		InsertConditionally (membersByOid, [role oid], role);
 	
 	[mMembersByOid release];
 	mMembersByOid = [membersByOid copy];
