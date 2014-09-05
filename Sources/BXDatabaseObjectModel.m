@@ -134,7 +134,7 @@
 	@synchronized (mEntitiesBySchemaAndName)
 	{
 		BXEnumerate (currentSchema, e, [mEntitiesBySchemaAndName objectEnumerator])
-			[retval addObjectsFromArray: currentSchema];
+			[retval addObjectsFromArray: [currentSchema allValues]];
 	}
 	return [[retval copy] autorelease];
 }

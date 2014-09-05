@@ -115,7 +115,7 @@ static NSNib *stickyNib;
 - (BOOL)windowShouldClose:(id)sender
 {
     [stickyController setContent: nil];
-	[[NSApp delegate] removeSticky:self];
+	[(StickiesAppDelegate*)[NSApp delegate] removeSticky:self];
 	return YES;
 }
 
