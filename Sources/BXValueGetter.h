@@ -27,9 +27,10 @@
 namespace BaseTen {
 	
 	class ValueGetterBase {
-		
+		public:
 		template <typename T>
-		struct NumberType {
+    
+        struct NumberType {
 			static CFNumberType const numberType = 0;
 		};
 		
@@ -45,7 +46,7 @@ namespace BaseTen {
 		
 	public:
 		BOOL operator() (id value, T *outValue);
-	};
+    };
 	
 	
 	

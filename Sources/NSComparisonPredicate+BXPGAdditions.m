@@ -187,7 +187,7 @@ MarkUnused (NSComparisonPredicate* predicate, NSMutableDictionary* ctx)
 #endif
 			
 		default:
-			[NSException raise: NSInvalidArgumentException format: @"Unsupported predicate operator: %d.", type];
+			[NSException raise: NSInvalidArgumentException format: @"Unsupported predicate operator: %lu.", type];
 			break;
 	}
 	NSAssert (operator, @"Expected operator not to be nil.");
@@ -218,7 +218,7 @@ MarkUnused (NSComparisonPredicate* predicate, NSMutableDictionary* ctx)
 				operator = [operator stringByAppendingString: @" ANY"];
 				break;
 			default:
-				[NSException raise: NSInvalidArgumentException format: @"Unexpected predicate modifier: %d.", modifier];
+				[NSException raise: NSInvalidArgumentException format: @"Unexpected predicate modifier: %lu.", modifier];
 				break;
 		}
 	}	

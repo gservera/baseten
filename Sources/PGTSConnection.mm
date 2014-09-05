@@ -18,7 +18,7 @@
 //
 
 #import <CoreFoundation/CoreFoundation.h>
-#import <BaseTen/postgresql/libpq-fe.h>
+#import <BaseTen/libpq-fe.h>
 
 #import "PGTSConnection.h"
 #import "PGTSConnectionPrivate.h"
@@ -482,7 +482,7 @@ NoticeReceiver (void *connectionPtr, PGresult const *notice)
 			[mConnector release];
 			
 			mConnector = [anObject retain];
-			[mConnector setDelegate: self];
+			[(PGTSConnector*)mConnector setDelegate: (id <PGTSConnectorDelegate>)self];
 		}
 	}
 }

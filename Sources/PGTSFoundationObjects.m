@@ -18,7 +18,7 @@
 //
 
 
-#import <BaseTen/postgresql/libpq-fe.h>
+#import <BaseTen/libpq-fe.h>
 #import <limits.h>
 #import "PGTSFoundationObjects.h"
 #import "PGTSConnection.h"

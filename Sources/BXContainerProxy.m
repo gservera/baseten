@@ -258,7 +258,7 @@
 		[mOwner didChangeValueForKey: key];
 	}
 	
-	BXLogDebug (@"Count after operation:\t%d", [mContainer count]);
+	BXLogDebug (@"Count after operation:\t%lu", [mContainer count]);
 }
 
 - (void) handleAddedObjects: (NSArray *) objectArray

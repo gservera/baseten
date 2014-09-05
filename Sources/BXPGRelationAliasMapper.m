@@ -125,7 +125,7 @@ BXPGConditions (NSString* alias1, NSString* alias2, id <BXForeignKey> fkey, BOOL
 	if (mPrimaryRelation != item)
 	{
 		[mPrimaryRelation release];
-		mPrimaryRelation = [item retain];
+		mPrimaryRelation = (BXPGPrimaryRelationFromItem*)[item retain];
 	}
 }
 

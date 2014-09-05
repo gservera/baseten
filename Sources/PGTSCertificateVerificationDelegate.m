@@ -67,6 +67,8 @@ __strong static id <PGTSCertificateVerificationDelegate> gDefaultCertDelegate = 
 	[super finalize];
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 - (CSSM_CERT_TYPE) x509Version: (X509 *) x509Cert
 {
 	CSSM_CERT_TYPE retval = CSSM_CERT_X_509v3;
@@ -84,6 +86,7 @@ __strong static id <PGTSCertificateVerificationDelegate> gDefaultCertDelegate = 
 	}
 	return retval;
 }
+#pragma clang diagnostic pop
 
 /**
  * \brief Get search policies.
@@ -101,32 +104,27 @@ __strong static id <PGTSCertificateVerificationDelegate> gDefaultCertDelegate = 
 			
 			CFMutableArrayRef policies = CFArrayCreateMutable (NULL, 0, &kCFTypeArrayCallBacks);
 			const CSSM_OID* currentOidPtr = NULL;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 			const CSSM_OID* oidPtrs [] = {&CSSMOID_APPLE_TP_SSL, &CSSMOID_APPLE_TP_REVOCATION_CRL};
+#pragma clang diagnostic pop
 			for (int i = 0, count = BXArraySize (oidPtrs); i < count; i++)
 			{
 				currentOidPtr = oidPtrs [i];
-				SecPolicySearchRef criteria = NULL;
-				SecPolicyRef policy = NULL;
-				status = SecPolicySearchCreate (CSSM_CERT_X_509v3, currentOidPtr, NULL, &criteria);
-				if (noErr != status)
-				{
-					SafeCFRelease (criteria);
-					CFArrayRemoveAllValues (policies);
-					break;
-				}
-				
-				//SecPolicySearchCopyNext should only return noErr or errSecPolicyNotFound.
-				while (noErr == SecPolicySearchCopyNext (criteria, &policy))
-				{
-					CFArrayAppendValue (policies, policy);
-					CFRelease (policy);
-				}
-				SafeCFRelease (criteria);
+                
+				SecPolicyRef policy = SecPolicyCreateWithOID(currentOidPtr);
+                if (policy == NULL) {
+                    CFArrayRemoveAllValues(policies);
+                    break;
+                }
+                
+                CFArrayAppendValue(policies, policy);
+                CFRelease(policy);
 			}
 			
-			if (noErr == status)
+            if (noErr == status) {
 				mPolicies = CFArrayCreateCopy (NULL, policies);
-			
+            }
 			SafeCFRelease (policies);
 			
 		}
@@ -138,27 +136,22 @@ __strong static id <PGTSCertificateVerificationDelegate> gDefaultCertDelegate = 
  * \brief Create a SecCertificateRef from an OpenSSL certificate.
  * \param bioOutput A memory buffer so we don't have to allocate one.
  */
-- (SecCertificateRef) copyCertificateFromX509: (X509 *) opensslCert bioOutput: (BIO *) bioOutput
-{
+- (SecCertificateRef) copyCertificateFromX509: (X509 *) opensslCert bioOutput: (BIO *) bioOutput {
 	SecCertificateRef cert = NULL;
 	
 	if (bioOutput && opensslCert)
 	{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 		(void) BIO_reset (bioOutput);
 		if (i2d_X509_bio (bioOutput, opensslCert))
 		{
 			BUF_MEM* bioBuffer = NULL;
 			BIO_get_mem_ptr (bioOutput, &bioBuffer);
-			CSSM_DATA* cssmCert = alloca (sizeof (CSSM_DATA));
-			cssmCert->Data = (uint8 *) bioBuffer->data;
-			cssmCert->Length = bioBuffer->length;
-			
-			OSStatus status = SecCertificateCreateFromData (cssmCert, [self x509Version: opensslCert], CSSM_CERT_ENCODING_DER, &cert);
-			if (noErr != status)
-			{
-				SafeCFRelease (cert);
-				cert = NULL;
-			}
+#pragma clang diagnostic pop
+            NSData *data = [[NSData alloc] initWithBytesNoCopy:bioBuffer->data length:bioBuffer->length freeWhenDone:NO];
+            cert = SecCertificateCreateWithData(kCFAllocatorDefault, (CFDataRef)data);
+            [data release];
 		}
 	}
 	return cert;
@@ -227,7 +220,10 @@ error:
 - (CFArrayRef) copyCertificateArrayFromOpenSSLCertificates: (X509_STORE_CTX *) x509_ctx
 {
 	CFMutableArrayRef certs = NULL;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 	BIO* bioOutput = BIO_new (BIO_s_mem ());
+#pragma clang diagnostic pop
 	
 	if (bioOutput)
 	{
@@ -256,7 +252,10 @@ error:
 				}
 			}
 		}
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 		BIO_free (bioOutput);
+#pragma clang diagnostic pop
 	}
 	
 	CFArrayRef retval = NULL;

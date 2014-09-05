@@ -27,15 +27,13 @@
 @class BXAttributeDescription;
 
 
-enum BXObjectDeletionStatus
-{
+typedef NS_ENUM(int, BXObjectDeletionStatus) {
 	kBXObjectExists = 0,
 	kBXObjectDeletePending,
 	kBXObjectDeleted
 };
 
-enum BXObjectLockStatus
-{
+typedef NS_ENUM(int, BXObjectLockStatus) {
 	kBXObjectNoLockStatus = 0,
 	kBXObjectLockedStatus,
 	kBXObjectDeletedStatus
@@ -73,8 +71,8 @@ enum BXObjectLockStatus
     BXDatabaseContext*			mContext; //Weak
     BXDatabaseObjectID*			mObjectID;
     NSMutableDictionary*		mValues;
-	enum BXObjectDeletionStatus	mDeleted;
-	enum BXObjectLockStatus		mLocked;
+    BXObjectDeletionStatus      mDeleted;
+    BXObjectLockStatus          mLocked;
 	BOOL						mCreatedInCurrentTransaction;
 	BOOL						mNeedsToAwake;
 }
@@ -112,7 +110,6 @@ enum BXObjectLockStatus
 
 @interface BXDatabaseObject (Subclassing)
 - (id) init;
-- (void) dealloc;
 
 - (void) awakeFromFetch;
 - (void) awakeFromInsert;

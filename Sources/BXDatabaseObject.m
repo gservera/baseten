@@ -836,6 +836,18 @@ DatabaseError (NSInteger errorCode, NSString* localizedTitle, NSString* localize
 	return [[self objectID] entity];
 }
 
+/** \brief For subclassing. */
+- (void) dealloc
+{
+    [mContext BXDatabaseObjectWillDealloc: self];
+    @synchronized (mValues)
+    {
+        [mValues release];
+    }
+    [mObjectID release];
+    [super dealloc];
+}
+
 @end
 
 
@@ -893,16 +905,7 @@ DatabaseError (NSInteger errorCode, NSString* localizedTitle, NSString* localize
     return self;
 }
 
-- (void) dealloc
-{
-    [mContext BXDatabaseObjectWillDealloc: self];
-    @synchronized (mValues)
-    {
-        [mValues release];
-    }
-    [mObjectID release];
-    [super dealloc];
-}
+
 //@}
 
 /** \brief Returns NO. */

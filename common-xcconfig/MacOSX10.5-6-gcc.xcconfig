@@ -1,9 +1,7 @@
 #include "gcc.xcconfig"
 
 // Architecture specifics are required by the PostgreSQL build script.
-GCC_VERSION_ppc = com.apple.compilers.llvm.clang.1_0
 GCC_VERSION_i386 = com.apple.compilers.llvm.clang.1_0
-GCC_VERSION_ppc64 = com.apple.compilers.llvm.clang.1_0
 GCC_VERSION_x86_64 = com.apple.compilers.llvm.clang.1_0
 GCC_VERSION = com.apple.compilers.llvm.clang.1_0
 

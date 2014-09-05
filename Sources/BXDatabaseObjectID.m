@@ -402,7 +402,7 @@ bail:
 }
 #endif
 
-- (void) setStatus: (enum BXObjectDeletionStatus) status forObjectRegisteredInContext: (BXDatabaseContext *) context
+- (void) setStatus: (BXObjectDeletionStatus) status forObjectRegisteredInContext: (BXDatabaseContext *) context
 {
 	[[context registeredObjectWithID: self] setDeleted: status];
 }

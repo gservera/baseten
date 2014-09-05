@@ -409,13 +409,13 @@ SSLMode (enum BXSSLMode mode)
 - (NSString *) savepointQuery
 {
     mSavepointIndex++;
-    return [NSString stringWithFormat: @"SAVEPOINT BXPGSavepoint%u", mSavepointIndex];
+    return [NSString stringWithFormat: @"SAVEPOINT BXPGSavepoint%lu", (unsigned long)mSavepointIndex];
 }
 
 - (NSString *) rollbackToSavepointQuery
 {
 	mSavepointIndex--;
-    return [NSString stringWithFormat: @"ROLLBACK TO SAVEPOINT BXPGSavepoint%u", mSavepointIndex];
+    return [NSString stringWithFormat: @"ROLLBACK TO SAVEPOINT BXPGSavepoint%lu", (unsigned long)mSavepointIndex];
 }
 
 - (void) resetSavepointIndex

@@ -261,7 +261,7 @@ ModTypeToObject (enum BXModificationType value)
 		mSendsLockQueries = YES;
 		mUsesKeychain = YES;
 		
-		mDelegateProxy = [[BXDelegateProxy alloc] initWithDelegateDefaultImplementation:
+		mDelegateProxy = (id <BXDatabaseContextDelegate>)[[BXDelegateProxy alloc] initWithDelegateDefaultImplementation:
 						  [[[BXDatabaseContextDelegateDefaultImplementation alloc] init] autorelease]];
     }
     return self;
@@ -2982,6 +2982,8 @@ AddKeychainAttribute (SecItemAttr tag, void* value, UInt32 length, NSMutableData
         .count = ([attributeBuffer length] / sizeof (SecKeychainAttribute)), 
         .attr = (void *) [attributeBuffer bytes]
     };
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     SecKeychainSearchRef search = NULL;
     status = SecKeychainSearchCreateFromAttributes (NULL, //Default keychain
                                                     kSecInternetPasswordItemClass,
@@ -2995,7 +2997,7 @@ AddKeychainAttribute (SecItemAttr tag, void* value, UInt32 length, NSMutableData
             [retval addObject: (id) item];
         CFRelease (search);
     }
-	
+#pragma clang diagnostic pop //FIXME: Remove deprecated methods!
 	//For GC.
 	[attributeBuffer self];
 	

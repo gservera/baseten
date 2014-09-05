@@ -21,7 +21,7 @@
 #import <Foundation/Foundation.h>
 #import <SystemConfiguration/SystemConfiguration.h>
 #import <BaseTen/BXOpenSSLCompatibility.h>
-#import <BaseTen/postgresql/libpq-fe.h>
+#import <BaseTen/libpq-fe.h>
 #import <BaseTen/PGTSCertificateVerificationDelegate.h>
 #import <BaseTen/BXConnectionMonitor.h>
 @class PGTSConnection;
@@ -33,7 +33,7 @@
 @class PGTSNotification;
 @class PGTSQuery;
 @class BXSocketDescriptor;
-@protocol PGTSConnectorDelegate;
+
 
 
 @protocol PGTSConnectionDelegate <NSObject>

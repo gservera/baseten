@@ -55,8 +55,12 @@ static int
 SSLConnectionExIndex ()
 {
 	static volatile int sslConnectionExIndex = -1;
-	if (-1 == sslConnectionExIndex)
+    if (-1 == sslConnectionExIndex) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 		sslConnectionExIndex = SSL_get_ex_new_index (0, NULL, NULL, NULL, NULL);
+#pragma clang diagnostic pop
+    }
 	return sslConnectionExIndex;
 }
 
@@ -69,8 +73,11 @@ static int
 VerifySSLCertificate (int preverify_ok, X509_STORE_CTX *x509_ctx)
 {
 	int retval = 0;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 	SSL* ssl = X509_STORE_CTX_get_ex_data (x509_ctx, SSL_get_ex_data_X509_STORE_CTX_idx ());
 	PGTSConnector* connector = SSL_get_ex_data (ssl, SSLConnectionExIndex ());
+#pragma clang diagnostic pop
 	id <PGTSConnectorDelegate> delegate = [connector delegate];
 
 	if ([delegate allowSSLForConnector: connector context: x509_ctx preverifyStatus: preverify_ok])
@@ -247,19 +254,20 @@ VerifySSLCertificate (int preverify_ok, X509_STORE_CTX *x509_ctx)
 }
 
 
-- (void) setUpSSL
-{
+- (void)setUpSSL {
 #ifdef USE_SSL
 	ConnStatusType status = PQstatus (mConnection);
-	if (! mSSLSetUp && CONNECTION_SSL_CONTINUE == status)
-	{
+	if (! mSSLSetUp && CONNECTION_SSL_CONTINUE == status) {
 		mSSLSetUp = YES;
 		SSL* ssl = PQgetssl (mConnection);
 		BXAssertVoidReturn (ssl, @"Expected ssl struct not to be NULL.");
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 		SSL_set_verify (ssl, SSL_VERIFY_PEER, &VerifySSLCertificate);
 		SSL_set_ex_data (ssl, SSLConnectionExIndex (), self);
+#pragma clang diagnostic pop
 	}
-#endif	
+#endif
 }
 
 

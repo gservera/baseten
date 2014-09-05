@@ -80,7 +80,7 @@
 					break;
 				default:
 					[NSException raise: NSInvalidArgumentException 
-								format: @"Unexpected compound predicate type: %d.", type];
+								format: @"Unexpected compound predicate type: %lu.", type];
 					break;
 			}
 			retval = [NSString stringWithFormat: @"(%@)", [parts componentsJoinedByString: glue]];

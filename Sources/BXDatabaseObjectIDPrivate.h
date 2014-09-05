@@ -22,13 +22,13 @@
 
 #import <Foundation/Foundation.h>
 #import <BaseTen/BXDatabaseObjectID.h>
-
+#import <BaseTen/BXDatabaseObject.h>
 
 @interface BXDatabaseObjectID (PrivateMethods)
 + (void) verifyPkey: (NSDictionary *) pkeyDict entity: (BXEntityDescription *) entity;
 + (id) IDWithEntity: (BXEntityDescription *) aDesc primaryKeyFields: (NSDictionary *) pkeyFValues;
 - (id) initWithEntity: (BXEntityDescription *) anEntity objectURI: (NSURL *) anURI;
-- (void) setStatus: (enum BXObjectDeletionStatus) status forObjectRegisteredInContext: (BXDatabaseContext *) context;
+- (void) setStatus: (BXObjectDeletionStatus) status forObjectRegisteredInContext: (BXDatabaseContext *) context;
 - (NSDictionary *) allValues;
 - (void) setEntity: (BXEntityDescription *) entity;
 

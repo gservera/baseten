@@ -46,7 +46,7 @@
 {
 	[mParameters addObject: value];
 	mIndex++;
-	NSString* retval = [NSString stringWithFormat: @"$%d", mIndex];
+	NSString* retval = [NSString stringWithFormat: @"$%ld", (long)mIndex];
 	return retval;
 }
 

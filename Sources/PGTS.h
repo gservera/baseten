@@ -17,7 +17,7 @@
 // limitations under the License.
 //
 
-#import <BaseTen/postgresql/libpq-fe.h>
+#import <BaseTen/libpq-fe.h>
 
 #import "PGTSConnection.h"
 #import "PGTSNotification.h"

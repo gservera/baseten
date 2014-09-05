@@ -124,6 +124,8 @@
 				case NSLessThanOrEqualToPredicateOperatorType:
 					doTest = YES;
 					break;
+                default: //?: New
+                    break;
 			}
 		}
 		else if ([rhs isEqual: lengthExp] && NSConstantValueExpressionType == [lhs expressionType])
@@ -136,6 +138,8 @@
 				case NSGreaterThanOrEqualToPredicateOperatorType:
 					doTest = YES;
 					break;
+                default: //?: New
+                    break;
 			}
 		}
 		
@@ -168,7 +172,7 @@
 	NSAttributeType attrType = [self attributeType];
 	NSInteger maxLength = NSIntegerMax;
 	if (NSStringAttributeType == attrType && NSIntegerMax != (maxLength = [self BXPGMaxLength]))
-		retval = [NSString stringWithFormat: @"VARCHAR (%d)", maxLength];
+		retval = [NSString stringWithFormat: @"VARCHAR (%ld)", (long)maxLength];
 	else
 		retval = [[self class] BXPGNameForAttributeType: attrType];
 	return retval;

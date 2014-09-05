@@ -47,8 +47,9 @@
 		case NSVariableExpressionType:
 			retval = [visitor visitVariableExpression: self];
 			break;
-			
+#if defined (TARGET_OS_IPHONE) && TARGET_OS_IPHONE
 		case 10: //NSKeyPathSpecifierExpression
+#endif
 		case NSKeyPathExpressionType:
 			retval = [visitor visitKeyPathExpression: self];
 			break;
@@ -140,7 +141,7 @@ AddParameter (id parameter, NSMutableDictionary* context)
 		//Return the index used in the query.
 		int count = index + 1;
 		BXAssertValueReturn ([parameters count] == count, nil,
-							 @"Expected count to be %d, was %d.\n\tparameter:\t%@ \n\tcontext:\t%@", 
+							 @"Expected count to be %lu, was %d.\n\tparameter:\t%@ \n\tcontext:\t%@", 
 							 [parameters count], count, parameter, context);
 		retval = [NSString stringWithFormat: @"$%d", count];
 	}

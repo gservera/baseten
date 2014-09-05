@@ -20,6 +20,7 @@
 #import <Foundation/Foundation.h>
 #import <BaseTen/BXDatabaseContext.h>
 #import <Security/Security.h>
+#import <BaseTen/BXDatabaseObject.h>
 
 @protocol BXObjectAsynchronousLocking;
 @class BXDatabaseContext;
@@ -42,7 +43,7 @@ struct BXTrustResult
 - (void) addedObjectsToDatabase: (NSArray *) objectIDs;
 - (void) updatedObjectsInDatabase: (NSArray *) objectIDs attributes: (NSArray *) changedAttributes faultObjects: (BOOL) shouldFault;
 - (void) deletedObjectsFromDatabase: (NSArray *) objectIDs;
-- (void) lockedObjectsInDatabase: (NSArray *) objectIDs status: (enum BXObjectLockStatus) status;
+- (void) lockedObjectsInDatabase: (NSArray *) objectIDs status: (BXObjectLockStatus) status;
 - (void) unlockedObjectsInDatabase: (NSArray *) objectIDs;
 - (void) handleInvalidCopiedTrustAsync: (NSValue *) value;
 - (BOOL) handleInvalidTrust: (SecTrustRef) trust result: (SecTrustResultType) result;
@@ -90,7 +91,7 @@ struct BXTrustResult
  * \internal
  * Lock an object asynchronously.
  */
-- (void) lockObject: (BXDatabaseObject *) object key: (id) key lockType: (enum BXObjectLockStatus) type
+- (void) lockObject: (BXDatabaseObject *) object key: (id) key lockType: (BXObjectLockStatus) type
              sender: (id <BXObjectAsynchronousLocking>) sender;
 /**
  * \internal

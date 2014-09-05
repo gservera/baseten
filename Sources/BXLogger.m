@@ -146,36 +146,21 @@ CopyExecutableName ()
 
 
 #if ! (defined (TARGET_OS_IPHONE) && TARGET_OS_IPHONE)
-void
-BXLogSetLogFile (NSBundle *bundle)
-{
-    FSRef fileRef = {};
-    OSErr err = FSFindFolder (kUserDomain, kLogsFolderType, (Boolean) YES, &fileRef);
-	if (noErr == err)
-	{
-		CFURLRef URL = CFURLCreateFromFSRef (kCFAllocatorSystemDefault, &fileRef);
-		CFStringRef logsFolder = CFURLCopyFileSystemPath (URL, kCFURLPOSIXPathStyle);
-		NSString *bundleName = [bundle objectForInfoDictionaryKey: (NSString *) kCFBundleNameKey];
-		NSString *logPath = [NSString stringWithFormat: @"%@/%@.%@", logsFolder, bundleName, @"log"];
-		
-		if (freopen ([logPath fileSystemRepresentation], "a", stderr))
-			TruncateLogFile (logPath);		
-		else
-		{
-			BXLogError (@"Couldn't redirect stderr stream to file at path '%@', errno: %d, error: '%s'.", 
-						logPath, errno, strerror (errno));
-		}
-		
-		if (logsFolder) 
-			CFRelease (logsFolder);
-		if (URL)
-			CFRelease (URL);
-	}
-	else
-	{
-		BXLogError (@"Unable to get logs folder in the user domain: %s.",
-					GetMacOSStatusCommentString (err));
-	}
+void BXLogSetLogFile (NSBundle *bundle) {
+    NSURL *baseURL = [NSURL fileURLWithPath:[@"~/Library/Logs" stringByStandardizingPath]];
+    CFStringRef logsFolder = CFURLCopyFileSystemPath((CFURLRef)baseURL, kCFURLPOSIXPathStyle);
+    NSString *bundleName = [bundle objectForInfoDictionaryKey: (NSString *) kCFBundleNameKey];
+    NSString *logPath = [NSString stringWithFormat: @"%@/%@.%@", logsFolder, bundleName, @"log"];
+    
+    if (freopen ([logPath fileSystemRepresentation], "a", stderr)) {
+        TruncateLogFile (logPath);
+    } else {
+        BXLogError (@"Couldn't redirect stderr stream to file at path '%@', errno: %d, error: '%s'.",
+                    logPath, errno, strerror (errno));
+    }
+    
+    if (logsFolder)
+        CFRelease (logsFolder);
 }
 #endif
 
