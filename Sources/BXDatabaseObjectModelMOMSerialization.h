@@ -27,6 +27,6 @@
 {
 }
 + (NSManagedObjectModel *) managedObjectModelFromDatabaseObjectModel: (BXDatabaseObjectModel *) model 
-															 options: (enum BXDatabaseObjectModelSerializationOptions) options
+															 options: (BXDatabaseObjectModelSerializationOptions) options
 															   error: (NSError **) outError;
 @end

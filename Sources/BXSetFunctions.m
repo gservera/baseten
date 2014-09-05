@@ -93,7 +93,7 @@ BXSetCreateMutableWeakNonretaining ()
 #if defined (TARGET_OS_IPHONE) && TARGET_OS_IPHONE
 	return (id) CFSetCreateMutable (kCFAllocatorDefault, 0, &stNonRetainedSetCallbacks);
 #else
-	return [[NSHashTable hashTableWithWeakObjects] retain];
+	return [[NSHashTable weakObjectsHashTable] retain];
 #endif
 }
 

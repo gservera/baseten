@@ -48,8 +48,8 @@
 
 - (NSString *) description
 {
-    return [NSString stringWithFormat: @"<%@ (%p) %@ (%d)>", 
-			[self class], self, mName, mIndex];
+    return [NSString stringWithFormat: @"<%@ (%p) %@ (%ld)>", 
+			[self class], self, mName, (long)mIndex];
 }
 
 
@@ -150,14 +150,16 @@
 
 - (BOOL) requiresDocuments
 {
-	BXAssertLog (NO, @"Didn't expect %s to be called for %@.", _cmd, self);
+    SEL s = _cmd;
+	BXAssertLog (NO, @"Didn't expect %@ to be called for %@.", NSStringFromSelector(s), self);
 	return NO;
 }
 
 
 - (void) setRequiresDocuments: (BOOL) aBool
 {
-	BXAssertLog (NO, @"Didn't expect %s to be called for %@.", _cmd, self);
+    SEL s = _cmd;
+	BXAssertLog (NO, @"Didn't expect %@ to be called for %@.", NSStringFromSelector(s), self);
 }
 @end
 

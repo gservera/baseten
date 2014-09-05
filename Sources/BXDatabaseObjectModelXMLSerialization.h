@@ -18,6 +18,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <BaseTen/BXConstants.h>
 
 @class BXDatabaseObjectModel;
 
@@ -26,9 +27,9 @@
 {
 }
 + (NSData *) dataFromObjectModel: (BXDatabaseObjectModel *) objectModel 
-						 options: (enum BXDatabaseObjectModelSerializationOptions) options
+						 options: (BXDatabaseObjectModelSerializationOptions) options
 						   error: (NSError **) outError;
 + (NSXMLDocument *) documentFromObjectModel: (BXDatabaseObjectModel *) objectModel 
-									options: (enum BXDatabaseObjectModelSerializationOptions) options
+									options: (BXDatabaseObjectModelSerializationOptions) options
 									  error: (NSError **) outError;
 @end

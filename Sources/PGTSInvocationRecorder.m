@@ -22,7 +22,7 @@
 
 @class PGTSInvocationRecorder;
 
-
+NS_ROOT_CLASS
 @interface PGTSInvocationRecorderHelper
 {
 @private
@@ -142,7 +142,7 @@ pgts_unrecognized_selector ()
 	{
 		pgts_unrecognized_selector ();
 		//We need to raise an exception because we don't implement -doesNotRecognizeSelector.
-		[NSException raise: NSInvalidArgumentException format: @"%@ does not respond to %s.", mTarget, selector];
+		[NSException raise: NSInvalidArgumentException format: @"%@ does not respond to %@.", mTarget, NSStringFromSelector(@selector(selector))];
 	}
 	return signature;
 }

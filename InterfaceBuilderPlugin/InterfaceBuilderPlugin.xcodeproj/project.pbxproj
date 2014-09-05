@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 42;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -23,8 +23,8 @@
 		53978F8E0CEC709200B93B3C /* BXDatabaseObject.png in Resources */ = {isa = PBXBuildFile; fileRef = 53978F8B0CEC709200B93B3C /* BXDatabaseObject.png */; };
 		53978F8F0CEC709200B93B3C /* Palette5.icns in Resources */ = {isa = PBXBuildFile; fileRef = 53978F8C0CEC709200B93B3C /* Palette5.icns */; };
 		53F5573A11CD6BE900E52F6E /* InterfaceBuilderKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0D069550A49DF9100C95564 /* InterfaceBuilderKit.framework */; };
-		53F749640E362DFA003C2E55 /* BaseTen.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5373CC8D0D65B9710084BD9D /* BaseTen.framework */; };
-		53F749680E362DFD003C2E55 /* BaseTenAppKit.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5373CC900D65B9710084BD9D /* BaseTenAppKit.framework */; };
+		53F749640E362DFA003C2E55 /* BaseTen.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5373CC8D0D65B9710084BD9D /* BaseTen.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		53F749680E362DFD003C2E55 /* BaseTenAppKit.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5373CC900D65B9710084BD9D /* BaseTenAppKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		8D1AC9700486D14A00FE50C9 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD92D38A0106425D02CA0E72 /* Cocoa.framework */; };
 		8D1AC9800486D23B00FE50C9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D1AC97F0486D23B00FE50C9 /* InfoPlist.strings */; };
 /* End PBXBuildFile section */
@@ -110,7 +110,7 @@
 		8D1AC9730486D14A00FE50C9 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1AC9740486D14A00FE50C9 /* BaseTen.ibplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BaseTen.ibplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D1AC97B0486D23100FE50C9 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		C0D069550A49DF9100C95564 /* InterfaceBuilderKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = InterfaceBuilderKit.framework; path = Library/Frameworks/InterfaceBuilderKit.framework; sourceTree = SYSTEM_DEVELOPER_DIR; };
+		C0D069550A49DF9100C95564 /* InterfaceBuilderKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = InterfaceBuilderKit.framework; path = Library/Frameworks/InterfaceBuilderKit.framework; sourceTree = DEVELOPER_DIR; };
 		D1AEDE460A6C289C0010C343 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/InterfaceBuilderPluginLibrary.nib; sourceTree = "<group>"; };
 		DD92D38A0106425D02CA0E72 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -273,9 +273,16 @@
 /* Begin PBXProject section */
 		0259C573FE90428111CA0C5A /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0600;
+			};
 			buildConfigurationList = C056398B08A954F8003078D8 /* Build configuration list for PBXProject "InterfaceBuilderPlugin" */;
-			compatibilityVersion = "Xcode 2.4";
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
 			mainGroup = 0259C574FE90428111CA0C5A /* InterfaceBuilderPlugin */;
 			projectDirPath = "";
 			projectReferences = (
@@ -469,6 +476,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 538DF6B810374F9800F33B72 /* debug.xcconfig */;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 			};
 			name = Debug;
 		};
@@ -476,12 +484,14 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 538DF6B910374F9800F33B72 /* release.xcconfig */;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 			};
 			name = Release;
 		};
 		C056398C08A954F8003078D8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Debug;
 		};

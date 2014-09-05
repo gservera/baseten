@@ -22,7 +22,7 @@
 #import <Foundation/Foundation.h>
 #import <limits>
 #import <BaseTen/NSValue+BaseTenAdditions.h>
-
+#import <BaseTen/BXLogger.h>
 
 namespace BaseTen {
 	

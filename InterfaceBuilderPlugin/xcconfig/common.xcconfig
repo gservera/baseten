@@ -1,6 +1,6 @@
 #include "../../common-xcconfig/common.xcconfig"
 
-ARCHS = ppc i386 x86_64
+ARCHS = i386 x86_64
 FRAMEWORK_SEARCH_PATHS = $(BUILT_PRODUCTS_DIR) ../build/$(BUILD_STYLE) $(DEVELOPER_FRAMEWORKS_DIR_QUOTED)
 GCC_PREFIX_HEADER = Sources/InterfaceBuilderPlugin_Prefix.pch
 HEADER_SEARCH_PATHS = $(BUILT_PRODUCTS_DIR)

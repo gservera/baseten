@@ -169,7 +169,7 @@ DictionaryKeys (NSMapTable *dict)
 				[nc addObserver: self selector: callbacks [i] name: notifications [i] object: mSystemEventNotifier];
 		}
 		
-		mConnections = [[NSMapTable mapTableWithStrongToStrongObjects] retain];
+		mConnections = [[NSMapTable mapTableWithKeyOptions:NSMapTableStrongMemory valueOptions:NSMapTableStrongMemory] retain];
 		mMonitorThread = [[BXConnectionMonitorThread alloc] init];
 		[mMonitorThread setName: @"org.basetenframework.ConnectionMonitorThread"];
 		[mMonitorThread start];

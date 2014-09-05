@@ -153,7 +153,7 @@ static NSInteger CompareAttrIndices (id lhs, id rhs, void* ctx)
 
 
 + (NSManagedObjectModel *) managedObjectModelFromDatabaseObjectModel: (BXDatabaseObjectModel *) objectModel 
-															 options: (enum BXDatabaseObjectModelSerializationOptions) options
+															 options: (BXDatabaseObjectModelSerializationOptions) options
 															   error: (NSError **) outError
 {
 	NSManagedObjectModel* retval = [[[NSManagedObjectModel alloc] init] autorelease];

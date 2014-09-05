@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 42;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -107,10 +107,8 @@
 		53438E550A384FE500BEDCFF /* BXController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BXController.m; path = Sources/BXController.m; sourceTree = "<group>"; };
 		5353F04211DE1180000E8E4E /* BXMultipleChoicePredicateEditorRowTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXMultipleChoicePredicateEditorRowTemplate.h; path = Sources/BXMultipleChoicePredicateEditorRowTemplate.h; sourceTree = "<group>"; };
 		5353F04311DE1180000E8E4E /* BXMultipleChoicePredicateEditorRowTemplate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BXMultipleChoicePredicateEditorRowTemplate.mm; path = Sources/BXMultipleChoicePredicateEditorRowTemplate.mm; sourceTree = "<group>"; };
-		535444490D634D63002A6C47 /* debug-gc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "debug-gc.xcconfig"; path = "xcconfig/debug-gc.xcconfig"; sourceTree = "<group>"; };
-		5354444A0D634D63002A6C47 /* debug-non-gc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "debug-non-gc.xcconfig"; path = "xcconfig/debug-non-gc.xcconfig"; sourceTree = "<group>"; };
-		5354444B0D634D63002A6C47 /* release-gc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "release-gc.xcconfig"; path = "xcconfig/release-gc.xcconfig"; sourceTree = "<group>"; };
-		5354444C0D634D63002A6C47 /* release-non-gc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "release-non-gc.xcconfig"; path = "xcconfig/release-non-gc.xcconfig"; sourceTree = "<group>"; };
+		535444490D634D63002A6C47 /* debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = debug.xcconfig; path = xcconfig/debug.xcconfig; sourceTree = "<group>"; };
+		5354444B0D634D63002A6C47 /* release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = release.xcconfig; path = xcconfig/release.xcconfig; sourceTree = "<group>"; };
 		5354444D0D634D63002A6C47 /* common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = common.xcconfig; path = xcconfig/common.xcconfig; sourceTree = "<group>"; };
 		535444870D634D9C002A6C47 /* BaseTenAppKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BaseTenAppKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5355C15111A8744700C5DEAF /* BXAppKitSystemEventNotifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXAppKitSystemEventNotifier.h; path = Sources/BXAppKitSystemEventNotifier.h; sourceTree = "<group>"; };
@@ -219,10 +217,8 @@
 			isa = PBXGroup;
 			children = (
 				5354444D0D634D63002A6C47 /* common.xcconfig */,
-				535444490D634D63002A6C47 /* debug-gc.xcconfig */,
-				5354444A0D634D63002A6C47 /* debug-non-gc.xcconfig */,
-				5354444B0D634D63002A6C47 /* release-gc.xcconfig */,
-				5354444C0D634D63002A6C47 /* release-non-gc.xcconfig */,
+				535444490D634D63002A6C47 /* debug.xcconfig */,
+				5354444B0D634D63002A6C47 /* release.xcconfig */,
 			);
 			name = xcconfig;
 			sourceTree = "<group>";
@@ -339,9 +335,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		535444570D634D9C002A6C47 /* BaseTenAppKit + GC */ = {
+		535444570D634D9C002A6C47 /* BaseTenAppKit */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 535444840D634D9C002A6C47 /* Build configuration list for PBXNativeTarget "BaseTenAppKit + GC" */;
+			buildConfigurationList = 535444840D634D9C002A6C47 /* Build configuration list for PBXNativeTarget "BaseTenAppKit" */;
 			buildPhases = (
 				5354445C0D634D9C002A6C47 /* Headers */,
 				5354446C0D634D9C002A6C47 /* Resources */,
@@ -355,7 +351,7 @@
 			dependencies = (
 				5302CB610E360B1200587EAD /* PBXTargetDependency */,
 			);
-			name = "BaseTenAppKit + GC";
+			name = BaseTenAppKit;
 			productInstallPath = "$(HOME)/Library/Frameworks";
 			productName = CocoaFramework;
 			productReference = 535444870D634D9C002A6C47 /* BaseTenAppKit.framework */;
@@ -366,9 +362,16 @@
 /* Begin PBXProject section */
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0600;
+			};
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "BaseTenAppKit" */;
-			compatibilityVersion = "Xcode 2.4";
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
 			mainGroup = 0867D691FE84028FC02AAC07 /* CocoaFramework */;
 			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
 			projectDirPath = "";
@@ -380,7 +383,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				535444570D634D9C002A6C47 /* BaseTenAppKit + GC */,
+				535444570D634D9C002A6C47 /* BaseTenAppKit */,
 			);
 		};
 /* End PBXProject section */
@@ -543,6 +546,7 @@
 		1DEB91B208733DA50010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Debug;
 		};
@@ -554,15 +558,17 @@
 		};
 		535444850D634D9C002A6C47 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 535444490D634D63002A6C47 /* debug-gc.xcconfig */;
+			baseConfigurationReference = 535444490D634D63002A6C47 /* debug.xcconfig */;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 			};
 			name = Debug;
 		};
 		535444860D634D9C002A6C47 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5354444B0D634D63002A6C47 /* release-gc.xcconfig */;
+			baseConfigurationReference = 5354444B0D634D63002A6C47 /* release.xcconfig */;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 			};
 			name = Release;
 		};
@@ -578,7 +584,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		535444840D634D9C002A6C47 /* Build configuration list for PBXNativeTarget "BaseTenAppKit + GC" */ = {
+		535444840D634D9C002A6C47 /* Build configuration list for PBXNativeTarget "BaseTenAppKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				535444850D634D9C002A6C47 /* Debug */,

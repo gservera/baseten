@@ -49,7 +49,7 @@ __strong static NSNib* gNib = nil;
 {
 	if ((self = [super initWithContentRect: contentRect styleMask: styleMask backing: bufferingType defer: deferCreation]))
 	{
-		[gNib instantiateNibWithOwner: self topLevelObjects: NULL];
+		[gNib instantiateWithOwner: self topLevelObjects: NULL];
 		mMessageViewSize = [mMessageView frame].size;
 		
 		mByHostnameViewController = [[BXConnectByHostnameViewController alloc] init];

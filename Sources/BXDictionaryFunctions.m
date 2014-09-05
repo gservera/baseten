@@ -37,6 +37,6 @@ BXDictionaryCreateMutableWeakNonretainedObjects ()
 #if defined (TARGET_OS_IPHONE) && TARGET_OS_IPHONE
 	return (id) CFDictionaryCreateMutable (kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &stNonRetainedValueCallbacks);
 #else
-	return [[NSMapTable mapTableWithStrongToWeakObjects] retain];
+	return [[NSMapTable mapTableWithKeyOptions:NSMapTableStrongMemory valueOptions:NSMapTableWeakMemory] retain];
 #endif
 }

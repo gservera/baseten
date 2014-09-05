@@ -29,7 +29,7 @@
 
 - (id) init
 {
-	if ((self = [super init]) && [[[self class] nibInstance] instantiateNibWithOwner: self topLevelObjects: NULL])
+	if ((self = [super init]) && [[[self class] nibInstance] instantiateWithOwner: self topLevelObjects: NULL])
 	{
 		mViewSize = [mView frame].size;
 	}

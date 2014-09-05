@@ -24,8 +24,8 @@
 - (NSString *) description
 {
 	NSString* reason = [self localizedRecoverySuggestion] ?: [self localizedFailureReason];
-	NSMutableString* retval = [NSMutableString stringWithFormat: @"%@ (%@: %d): %@: %@",
-							   [self class], [self domain], [self code], [self localizedDescription], reason];
+	NSMutableString* retval = [NSMutableString stringWithFormat: @"%@ (%@: %ld): %@: %@",
+							   [self class], [self domain], (long)[self code], [self localizedDescription], reason];
 
 	NSError* underlyingError = [[self userInfo] objectForKey: NSUnderlyingErrorKey];
 	if (underlyingError)

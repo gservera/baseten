@@ -234,7 +234,7 @@ end:
 
 + (NSString *) modulus: (NSString *) lval by: (NSString *) rval
 {
-	NSString* retval = [NSString stringWithFormat: @"(%@ % %@)", lval, rval];
+	NSString* retval = [NSString stringWithFormat: @"(%@ %% %@)", lval, rval];
 	return retval;
 }
 

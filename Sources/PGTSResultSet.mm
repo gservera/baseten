@@ -109,7 +109,7 @@ ErrorUserInfoKey (char fieldCode)
 @interface PGTSConcreteResultSet : PGTSResultSet
 {
     PGTSConnection *mConnection;
-	PGresult *mResult;
+    PGresult *mResult;
     NSDictionary *mFieldIndexesByName;
     NSMutableDictionary *mFieldClassesByIndex;
 	id mUserInfo;
@@ -734,13 +734,13 @@ KVCompare (PGTSResultSet* res, void* ctx)
 
 
 @implementation PGTSResultSet
-+ (id) resultWithPGresult: (PGresult *) aResult connection: (PGTSConnection *) aConnection
++ (id) resultWithPGresult: (const PGresult *) aResult connection: (PGTSConnection *) aConnection
 {
-    return [[[PGTSConcreteResultSet alloc] initWithPGResult: aResult connection: aConnection] autorelease];
+    return [[[PGTSConcreteResultSet alloc] initWithPGResult:(PGresult*)aResult connection: aConnection] autorelease];
 }
 
 
-+ (NSError *) errorForPGresult: (PGresult *) result
++ (NSError *) errorForPGresult: (const PGresult *) result
 {
 	NSError* retval = nil;
 	ExecStatusType status = PQresultStatus (result);

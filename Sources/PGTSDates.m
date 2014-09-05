@@ -148,7 +148,7 @@ CopyDate (struct bx_regular_expression_st *re, const char *subject, int *ovector
 	{
 		double fraction = strtod (buffer, NULL);
 		if (fraction)
-			retval = [retval addTimeInterval: fraction];
+			retval = [retval dateByAddingTimeInterval: fraction];
 	}
 	
 	return [retval retain];
@@ -174,7 +174,10 @@ CopyDate (struct bx_regular_expression_st *re, const char *subject, int *ovector
 	Expect (0.0 <= subseconds);
 	if (subseconds)
 	{
-		Expect (0 < snprintf (fraction, BXArraySize (buffer), "%-.6f", subseconds));
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wformat"
+		Expect (0 < snprintf(fraction, (sizeof(buffer)/sizeof(*buffer)), "%-.6f", subseconds));
+#pragma clang diagnostic pop
 		fraction++;
 	}
 	

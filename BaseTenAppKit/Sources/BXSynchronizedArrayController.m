@@ -87,7 +87,7 @@
         BXObjectStatusToColorTransformer* transformer = [[[BXObjectStatusToColorTransformer alloc] init] autorelease];
         [NSValueTransformer setValueTransformer: transformer
                                         forName: @"BXObjectStatusToColorTransformer"];
-        transformer = [[[BXObjectStatusToEditableTransformer alloc] init] autorelease];
+        transformer = (id)[[[BXObjectStatusToEditableTransformer alloc] init] autorelease];
         [NSValueTransformer setValueTransformer: transformer
                                         forName: @"BXObjectStatusToEditableTransformer"];
 		

@@ -164,7 +164,7 @@ enum BXPropertyKind
 	kBXPropertyKindRelationship /**< The property is a relationship. */
 };
 
-enum BXDatabaseObjectModelSerializationOptions
+typedef NS_ENUM(int,BXDatabaseObjectModelSerializationOptions)
 {
 	kBXDatabaseObjectModelSerializationOptionNone                                  = 0,
 	kBXDatabaseObjectModelSerializationOptionRelationshipsUsingFkeyNames           = (1 << 0),

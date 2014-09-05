@@ -54,7 +54,7 @@ static const CGFloat kSizeDiff = 25.0;
     if ((self = [super initWithContentRect: contentRect styleMask: styleMask 
                                    backing: bufferingType defer: deferCreation]))
     {
-        [gAuthenticationViewNib instantiateNibWithOwner: self topLevelObjects: NULL];
+        [gAuthenticationViewNib instantiateWithOwner: self topLevelObjects: NULL];
 		
 		NSRect contentFrame = [mPasswordAuthenticationView frame];
         contentFrame.size.height -= kSizeDiff;

@@ -19,7 +19,7 @@
 
 #import <stdlib.h>
 #import <limits.h>
-#import <BaseTen/postgresql/libpq-fe.h>
+#import <BaseTen/libpq-fe.h>
 #import "NSString+PGTSAdditions.h"
 #import "PGTSConnection.h"
 
