@@ -34,13 +34,6 @@
 			remoteGlobalIDString = 534EE22F0E53213300B079B0;
 			remoteInfo = "BaseTen for iPhone";
 		};
-		539FD5AF0EE98DB500A188F0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 539FD5A10EE98DB400A188F0 /* BaseTen.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 538A82C10E1D16AC0025B3C8;
-			remoteInfo = "SQL Parser";
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -117,7 +110,6 @@
 			children = (
 				539FD5AC0EE98DB500A188F0 /* BaseTen.framework */,
 				539FD5AE0EE98DB500A188F0 /* libBaseTen.a */,
-				539FD5B00EE98DB500A188F0 /* SQLParser.o */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -149,9 +141,16 @@
 /* Begin PBXProject section */
 		08FB7793FE84155DC02AAC07 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0600;
+			};
 			buildConfigurationList = 1DEB927808733DD40010E9CD /* Build configuration list for PBXProject "Introspection" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
 			mainGroup = 08FB7794FE84155DC02AAC07 /* Introspection */;
 			projectDirPath = "";
 			projectReferences = (
@@ -180,13 +179,6 @@
 			fileType = archive.ar;
 			path = libBaseTen.a;
 			remoteRef = 539FD5AD0EE98DB500A188F0 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		539FD5B00EE98DB500A188F0 /* SQLParser.o */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.objfile";
-			path = SQLParser.o;
-			remoteRef = 539FD5AF0EE98DB500A188F0 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
