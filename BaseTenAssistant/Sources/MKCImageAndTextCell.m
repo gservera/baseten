@@ -76,7 +76,7 @@
 		if ([controlView isFlipped])
 			origin.y += imageRect.size.height;
 		imageRect.origin = NSZeroPoint;
-		[[self image] compositeToPoint: origin fromRect: imageRect operation: NSCompositeSourceOver];		
+        [[self image] drawAtPoint:origin fromRect:imageRect operation:NSCompositeSourceOver fraction:1.0];        
 	}
 }
 @end

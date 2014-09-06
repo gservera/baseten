@@ -66,7 +66,7 @@
 
 - (void) setEnabledForAssistant: (BOOL) aBool
 {
-	[[NSApp delegate] process: aBool entity: self];
+	[(BXAController*)[NSApp delegate] process: aBool entity: self];
 }
 
 - (BOOL) validateEnabledForAssistant: (id *) ioValue error: (NSError **) outError
@@ -77,11 +77,11 @@
 		if (ioValue)
 			*ioValue = [NSNumber numberWithBool: NO];
 	}
-	else if (! [[NSApp delegate] hasBaseTenSchema])
+	else if (! [(BXAController*)[NSApp delegate] hasBaseTenSchema])
 	{
 		retval = NO;
 		if (outError)
-			*outError = [[NSApp delegate] schemaInstallError];
+			*outError = [(BXAController*)[NSApp delegate] schemaInstallError];
 	}
 	return retval;
 }

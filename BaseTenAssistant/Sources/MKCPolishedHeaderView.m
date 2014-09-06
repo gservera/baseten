@@ -55,21 +55,21 @@ MKCDrawPolishInRect (NSRect rect, NSDictionary* colours, enum MKCPolishDrawingMa
         if (kMKCPolishDrawBottomLine & mask)
         {
             NSDivideRect (rect, &drawingRect, &rect, 1.0, (isFlipped ? NSMaxYEdge: NSMinYEdge));
-            [[colours objectForKey: kMKCBottomLineColourKey] set];
+            [(NSColor*)[colours objectForKey: kMKCBottomLineColourKey] set];
             NSRectFill (drawingRect);
         }
         
         if (kMKCPolishDrawTopLine & mask)
         {
             NSDivideRect (rect, &drawingRect, &rect, 1.0, (isFlipped ? NSMinYEdge : NSMaxYEdge));
-            [[colours objectForKey: kMKCTopLineColourKey] set];
+            [(NSColor*)[colours objectForKey: kMKCTopLineColourKey] set];
             NSRectFill (drawingRect);
         }
         
         if (kMKCPolishDrawTopAccent & mask)
         {
             NSDivideRect (rect, &drawingRect, &rect, 1.0, (isFlipped ? NSMinYEdge : NSMaxYEdge));
-            [[colours objectForKey: kMKCTopAccentColourKey] set];
+            [(NSColor*)[colours objectForKey: kMKCTopAccentColourKey] set];
             NSRectFill (drawingRect);
         }
         
@@ -204,7 +204,7 @@ MKCShouldDrawEnabled (NSWindow* window)
 - (void) awakeFromNib
 {
 	NSKeyValueObservingOptions options = NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial;
-	[[self tableView] addObserver: self forKeyPath: @"sortDescriptors" options: options context: kKVObservingContext];
+	[[self tableView] addObserver: self forKeyPath: @"sortDescriptors" options: options context: (__bridge void *)kKVObservingContext];
 	
 	NSWindow* window = [self window];
 	NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
@@ -224,7 +224,7 @@ MKCShouldDrawEnabled (NSWindow* window)
 
 - (void) observeValueForKeyPath: (NSString *) keyPath ofObject: (id) object change: (NSDictionary *) change context: (void *) context
 {
-    if (kKVObservingContext == context) 
+    if (kKVObservingContext == (__bridge NSString *)context)
 	{
 		if (mColumnSortedBy)
 		{
@@ -370,7 +370,7 @@ MKCShouldDrawEnabled (NSWindow* window)
 			(i != count - 1 || column == mColumnSortedBy) && 
 			NSPointInRect (end, rect))
         {
-            [[colours objectForKey: kMKCSeparatorLineColourKey] set];
+            [(NSColor*)[colours objectForKey: kMKCSeparatorLineColourKey] set];
             NSRectFill (NSMakeRect (end.x, 1.0, 1.0, height - 2.0));
         }
         
@@ -378,7 +378,7 @@ MKCShouldDrawEnabled (NSWindow* window)
         {
 			if (0 != i || ! (kMKCPolishNoLeftAccentForLeftmostColumn & mDrawingMask))
 			{
-	            [[colours objectForKey: kMKCLeftAccentColourKey] set];
+	            [(NSColor*)[colours objectForKey: kMKCLeftAccentColourKey] set];
 	            NSRectFill (NSMakeRect (columnHeaderRect.origin.x, 1.0, 1.0, height - 2.0));
 			}
         }

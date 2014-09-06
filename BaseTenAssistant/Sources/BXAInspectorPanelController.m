@@ -209,7 +209,7 @@ static NSPoint gLastPoint = {};
 
 - (void) displayProperty: (BXPropertyDescription *) property
 {
-	[[NSApp delegate] selectEntity: [property entity]];
+	[(BXAController*)[NSApp delegate] selectEntity: [property entity]];
 	[self selectProperty: property];
 }
 

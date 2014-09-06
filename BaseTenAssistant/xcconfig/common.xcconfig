@@ -1,7 +1,6 @@
-#include "../../common-xcconfig/MacOSX10.5.xcconfig"
+#include "../../common-xcconfig/MacOSX10.5-6-gcc.xcconfig"
 #include "../../common-xcconfig/common.xcconfig"
 #include "../../common-xcconfig/application.xcconfig"
-#include "../../common-xcconfig/gc.xcconfig"
 
 INFOPLIST_FILE = Info.plist
 PRODUCT_NAME = BaseTen Assistant
@@ -11,4 +10,4 @@ LIBRARY_SEARCH_PATHS = $(BUILT_PRODUCTS_DIR)
 USER_HEADER_SEARCH_PATHS = $(PROJECT_DIR)
 GCC_PREFIX_HEADER = Sources/BaseTenAssistant_Prefix.pch
 IBC_PLUGIN_SEARCH_PATHS = $(BUILT_PRODUCTS_DIR)
-ARCHS = ppc ppc64 i386 x86_64
+ARCHS = i386 x86_64

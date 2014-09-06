@@ -36,13 +36,13 @@
 
 - (void) setPrimaryKeyForAssistant: (BOOL) aBool
 {
-	[[NSApp delegate] process: aBool attribute: self];
+	[(BXAController*)[NSApp delegate] process: aBool attribute: self];
 }
 
 - (BOOL) validatePrimaryKeyForAssistant: (id *) ioValue error: (NSError **) outError
 {
 	BOOL retval = YES;
-	if (! [[NSApp delegate] hasBaseTenSchema])
+	if (! [(BXAController*)[NSApp delegate] hasBaseTenSchema])
 	{
 		retval = NO;
 		
@@ -50,7 +50,7 @@
 			*ioValue = [NSNumber numberWithBool: NO];
 				
 		if (outError)
-			*outError = [[NSApp delegate] schemaInstallError];
+			*outError = [(BXAController*)[NSApp delegate] schemaInstallError];
 	}
 	return retval;
 }

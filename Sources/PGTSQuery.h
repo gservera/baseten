@@ -18,7 +18,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <BaseTen/libpq-fe.h>
+
 
 
 @class PGTSConnection;

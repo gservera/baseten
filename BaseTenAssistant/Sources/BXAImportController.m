@@ -248,7 +248,7 @@ ShouldImport (id entity)
 											   alternateButton: NSLocalizedString(@"Cancel", @"Button label")
 												   otherButton: nil 
 								  //End patch
-									 informativeTextWithFormat: message];
+									 informativeTextWithFormat:@"%@",message];
 				[alert layout];
 				NSArray* buttons = [alert buttons];
 				[[buttons objectAtIndex: 0] setKeyEquivalent: @""];
@@ -418,7 +418,7 @@ ShouldImport (id entity)
 	// We use the sender's tag to form the help anchor. Anchors in the help book are in the form bxahelp###
 	NSString *bookName = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleHelpBookName"];
 	NSHelpManager* helpManager = [NSHelpManager sharedHelpManager];
-	NSString* anchor = [NSString stringWithFormat:@"bxahelp%d", [sender tag]]; 
+	NSString* anchor = [NSString stringWithFormat:@"bxahelp%ld", (long)[sender tag]]; 
 	
 	[helpManager openHelpAnchor:anchor inBook:bookName];
 }

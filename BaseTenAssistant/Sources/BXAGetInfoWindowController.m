@@ -42,7 +42,7 @@
 
 - (void) displayProperty: (BXPropertyDescription *) property
 {
-	BXAGetInfoWindowController *windowController = [[NSApp delegate] displayInfoForEntity: [property entity]];
+	BXAGetInfoWindowController *windowController = [(BXAController*)[NSApp delegate] displayInfoForEntity: [property entity]];
 	[windowController selectProperty: property];
 }
 @end

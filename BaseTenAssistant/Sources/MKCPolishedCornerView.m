@@ -78,7 +78,7 @@
         NSRect intersection = NSIntersectionRect (endRect, rect);
         if (NO == NSIsEmptyRect (intersection))
         {
-            [[enabledColours objectForKey: kMKCRightLineColourKey] set];
+            [(NSColor*)[enabledColours objectForKey: kMKCRightLineColourKey] set];
             NSRectFill (intersection);
         }
     }
@@ -93,7 +93,7 @@
         NSRect intersection = NSIntersectionRect (endRect, rect);
         if (NO == NSIsEmptyRect (intersection))
         {
-            [[enabledColours objectForKey: kMKCRightLineColourKey] set];
+            [(NSColor*)[enabledColours objectForKey: kMKCRightLineColourKey] set];
             NSRectFill (intersection);
         }
     }

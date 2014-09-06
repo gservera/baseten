@@ -38,7 +38,7 @@
     {
         id tableView = [self tableView];
 		NSCell* currentCell = [super dataCellForRow: rowIndex];
-        retval = [[tableView delegate] MKCTableView: tableView dataCellForColumn: self row: rowIndex current: currentCell];
+        retval = [(id)[tableView delegate] MKCTableView: tableView dataCellForColumn: self row: rowIndex current: currentCell];
         if (nil == retval)
             retval = currentCell;
     }

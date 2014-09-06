@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 44;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -19,7 +19,7 @@
 		227A5F4C0E4C5B9D0009CC08 /* BXAInspectorPanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 227A5F4B0E4C5B9D0009CC08 /* BXAInspectorPanelController.m */; };
 		2B66D97D0B1C664300F8C64A /* BaseTenModifications.sql.m4 in Resources */ = {isa = PBXBuildFile; fileRef = 2B66D97C0B1C664300F8C64A /* BaseTenModifications.sql.m4 */; };
 		531DCABA0B52818E00200097 /* MKCAlternativeDataCellColumn.m in Sources */ = {isa = PBXBuildFile; fileRef = 531DCAB80B52818E00200097 /* MKCAlternativeDataCellColumn.m */; };
-		532BC2E6103777B2002F337C /* BaseTen.framework in Copy BaseTen Frameworks */ = {isa = PBXBuildFile; fileRef = 5388DCDB0E23AE22006CDBD8 /* BaseTen.framework */; };
+		532BC2E6103777B2002F337C /* BaseTen.framework in Copy BaseTen Frameworks */ = {isa = PBXBuildFile; fileRef = 5388DCDB0E23AE22006CDBD8 /* BaseTen.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		532D067E106C3B0800E09397 /* BaseTen Assistant Help in Resources */ = {isa = PBXBuildFile; fileRef = 532D062E106C3B0800E09397 /* BaseTen Assistant Help */; };
 		532F42A00D69B70F009FEDCD /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 532F429A0D69B70F009FEDCD /* MainMenu.xib */; };
 		53425B650E2CD237005F6123 /* MKCStackView.m in Sources */ = {isa = PBXBuildFile; fileRef = 53425B640E2CD237005F6123 /* MKCStackView.m */; };
@@ -28,7 +28,7 @@
 		536CB9CC0B0D217000EBCB39 /* Entity16.png in Resources */ = {isa = PBXBuildFile; fileRef = 536CB9C60B0D217000EBCB39 /* Entity16.png */; };
 		536CB9CD0B0D217000EBCB39 /* Schema16.png in Resources */ = {isa = PBXBuildFile; fileRef = 536CB9C70B0D217000EBCB39 /* Schema16.png */; };
 		536CB9CE0B0D217000EBCB39 /* Table16.png in Resources */ = {isa = PBXBuildFile; fileRef = 536CB9C80B0D217000EBCB39 /* Table16.png */; };
-		536D93E80FDECF6700439719 /* BaseTenAppKit.framework in Copy BaseTen Frameworks */ = {isa = PBXBuildFile; fileRef = 53F749980E362E62003C2E55 /* BaseTenAppKit.framework */; };
+		536D93E80FDECF6700439719 /* BaseTenAppKit.framework in Copy BaseTen Frameworks */ = {isa = PBXBuildFile; fileRef = 53F749980E362E62003C2E55 /* BaseTenAppKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		536E603B0E263A8600098C4A /* Import.xib in Resources */ = {isa = PBXBuildFile; fileRef = 532F429E0D69B70F009FEDCD /* Import.xib */; };
 		5374E69A0B0DC8A4000D353D /* MKCPolishedHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5374E6980B0DC8A4000D353D /* MKCPolishedHeaderView.m */; };
 		5374E9450B0E001C000D353D /* MKCPolishedCornerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5374E9430B0E001C000D353D /* MKCPolishedCornerView.m */; };
@@ -449,9 +449,16 @@
 /* Begin PBXProject section */
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0600;
+			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "BaseTenAssistant" */;
-			compatibilityVersion = "Xcode 3.0";
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* SetupApplication */;
 			projectDirPath = "";
 			projectReferences = (
@@ -695,6 +702,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 538DF67710373E5400F33B72 /* debug.xcconfig */;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 			};
 			name = Debug;
 		};
@@ -702,12 +710,14 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 538DF67610373E5400F33B72 /* release.xcconfig */;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 			};
 			name = Release;
 		};
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Debug;
 		};

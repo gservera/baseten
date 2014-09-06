@@ -132,13 +132,13 @@ MKCDrawTriangleAtCellEnd (NSView* controlView, NSCell* cell, NSRect cellFrame)
 CFStringRef 
 MKCCopyDescription (const void *value)
 {
-    return (CFStringRef) [[(id) value description] retain];
+    return (CFStringRef) [[(__bridge id) value description] retain];
 }
 
 CFHashCode 
 MKCHash (const void *value)
 {
-    return [(id) value hash];
+    return [(__bridge id) value hash];
 }
 
 const void*
@@ -157,8 +157,8 @@ Boolean
 MKCEqualRelationshipDescription (const void *value1, const void *value2)
 {
 	Boolean retval = FALSE;
-    id v1 = (id) value1;
-    id v2 = (id) value2;
+    id v1 = (__bridge id) value1;
+    id v2 = (__bridge id) value2;
 	if ([v1 isKindOfClass: [NSRelationshipDescription class]] &&
         [v2 isKindOfClass: [NSRelationshipDescription class]])
 	{

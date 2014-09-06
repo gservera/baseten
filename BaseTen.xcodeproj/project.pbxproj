@@ -599,9 +599,9 @@
 		9923A6CD19B9DFBA00302A93 /* common.h in Headers */ = {isa = PBXBuildFile; fileRef = 9923A6C219B9DFBA00302A93 /* common.h */; };
 		9923A6CE19B9DFBA00302A93 /* dumputils.h in Headers */ = {isa = PBXBuildFile; fileRef = 9923A6C319B9DFBA00302A93 /* dumputils.h */; };
 		9923A6CF19B9DFBA00302A93 /* libpq_additions.h in Headers */ = {isa = PBXBuildFile; fileRef = 9923A6C419B9DFBA00302A93 /* libpq_additions.h */; };
-		9923A6D019B9DFBA00302A93 /* libpq-fe.h in Headers */ = {isa = PBXBuildFile; fileRef = 9923A6C519B9DFBA00302A93 /* libpq-fe.h */; };
-		9923A6D119B9DFBA00302A93 /* pg_config_ext.h in Headers */ = {isa = PBXBuildFile; fileRef = 9923A6C619B9DFBA00302A93 /* pg_config_ext.h */; };
-		9923A6D219B9DFBA00302A93 /* postgres_ext.h in Headers */ = {isa = PBXBuildFile; fileRef = 9923A6C719B9DFBA00302A93 /* postgres_ext.h */; };
+		9923A6D019B9DFBA00302A93 /* libpq-fe.h in Headers */ = {isa = PBXBuildFile; fileRef = 9923A6C519B9DFBA00302A93 /* libpq-fe.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9923A6D119B9DFBA00302A93 /* pg_config_ext.h in Headers */ = {isa = PBXBuildFile; fileRef = 9923A6C619B9DFBA00302A93 /* pg_config_ext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9923A6D219B9DFBA00302A93 /* postgres_ext.h in Headers */ = {isa = PBXBuildFile; fileRef = 9923A6C719B9DFBA00302A93 /* postgres_ext.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9923A6D319B9DFBA00302A93 /* print.h in Headers */ = {isa = PBXBuildFile; fileRef = 9923A6C819B9DFBA00302A93 /* print.h */; };
 		9923A6D419B9DFBA00302A93 /* psqlscan.h in Headers */ = {isa = PBXBuildFile; fileRef = 9923A6C919B9DFBA00302A93 /* psqlscan.h */; };
 		9923A6D519B9DFBA00302A93 /* settings.h in Headers */ = {isa = PBXBuildFile; fileRef = 9923A6CA19B9DFBA00302A93 /* settings.h */; };
@@ -611,7 +611,7 @@
 		9923A6EE19B9FD5A00302A93 /* libcommonCrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9923A6ED19B9FD5A00302A93 /* libcommonCrypto.dylib */; };
 		9954EE7319B9D57E00B29D98 /* libpcre.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9954EE7219B9D57E00B29D98 /* libpcre.dylib */; };
 		9954EE7619B9D61400B29D98 /* libpq.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9935D9D719B9D50E0041FFB0 /* libpq.a */; };
-		995F8D9519B9DC1D00DBB2CE /* pcre.h in Headers */ = {isa = PBXBuildFile; fileRef = 995F8D9419B9DC1D00DBB2CE /* pcre.h */; };
+		995F8D9519B9DC1D00DBB2CE /* pcre.h in Headers */ = {isa = PBXBuildFile; fileRef = 995F8D9419B9DC1D00DBB2CE /* pcre.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -1901,6 +1901,8 @@
 				535443C60D634A47002A6C47 /* BXDatabaseContext.h in Headers */,
 				535443C70D634A47002A6C47 /* BXInterface.h in Headers */,
 				535443C90D634A47002A6C47 /* BXDatabaseObject.h in Headers */,
+				9923A6D019B9DFBA00302A93 /* libpq-fe.h in Headers */,
+				995F8D9519B9DC1D00DBB2CE /* pcre.h in Headers */,
 				535443CA0D634A47002A6C47 /* BXDatabaseObjectID.h in Headers */,
 				535443CB0D634A47002A6C47 /* BXObjectStatusInfo.h in Headers */,
 				535443CC0D634A47002A6C47 /* BXConstants.h in Headers */,
@@ -1921,6 +1923,8 @@
 				535443DD0D634A47002A6C47 /* BXPropertyDescriptionPrivate.h in Headers */,
 				535443DE0D634A47002A6C47 /* BXDatabaseObjectPrivate.h in Headers */,
 				535443DF0D634A47002A6C47 /* BXConstantsPrivate.h in Headers */,
+				9923A6D119B9DFBA00302A93 /* pg_config_ext.h in Headers */,
+				9923A6D219B9DFBA00302A93 /* postgres_ext.h in Headers */,
 				535443E00D634A47002A6C47 /* BXRelationshipDescription.h in Headers */,
 				535443E20D634A47002A6C47 /* BXAttributeDescription.h in Headers */,
 				535443E30D634A47002A6C47 /* BXAttributeDescriptionPrivate.h in Headers */,
@@ -1945,7 +1949,6 @@
 				9923A6D519B9DFBA00302A93 /* settings.h in Headers */,
 				53ED2E8E0E1AB7CB0095BE8B /* BXLogger.h in Headers */,
 				53666CDA0E1CD8D20028DBEA /* PGTS.h in Headers */,
-				9923A6D219B9DFBA00302A93 /* postgres_ext.h in Headers */,
 				9923A6D719B9DFBA00302A93 /* variables.h in Headers */,
 				53666CDB0E1CD8D20028DBEA /* PGTSAbstractClassDescription.h in Headers */,
 				53666CDD0E1CD8D20028DBEA /* PGTSAbstractDescription.h in Headers */,
@@ -2006,7 +2009,6 @@
 				537A23B50E84051E002AAE95 /* BXPGConstantExpressionValueType.h in Headers */,
 				537A23B90E840544002AAE95 /* BXPGAggregateExpressionValueType.h in Headers */,
 				537A23BD0E840556002AAE95 /* BXPGPredefinedFunctionExpressionValueType.h in Headers */,
-				9923A6D119B9DFBA00302A93 /* pg_config_ext.h in Headers */,
 				537A23C30E840AB2002AAE95 /* BXPGDatabaseObjectExpressionValueType.h in Headers */,
 				53CE796B0E87F29C00D5A310 /* BXPGQueryHandler.h in Headers */,
 				535F23570E8A8D4900311CB5 /* BXPGArrayExpressionValueType.h in Headers */,
@@ -2027,7 +2029,6 @@
 				538334DA0F0405F50040368E /* BXDatabaseObject+PGTSResultRowProtocol.h in Headers */,
 				539FB3B00F2BEFC400717F71 /* PGTSColumnDescription.h in Headers */,
 				539FB3E60F2BF10500717F71 /* PGTSSchemaObjectDescription.h in Headers */,
-				9923A6D019B9DFBA00302A93 /* libpq-fe.h in Headers */,
 				539FB3F00F2BF20600717F71 /* PGTSMetadataStorage.h in Headers */,
 				539FB3F10F2BF20600717F71 /* PGTSMetadataContainer.h in Headers */,
 				53688DED0F2F64F200AAC65D /* BXPGEFMetadataContainer.h in Headers */,
@@ -2036,7 +2037,6 @@
 				535736CB0F333CCD00DB3D0B /* BXDatabaseObjectModelStorage.h in Headers */,
 				534BE4680F34F7130098951C /* BXForeignKey.h in Headers */,
 				538FA0250F576278005EBFAC /* BXOpenSSLCompatibility.h in Headers */,
-				995F8D9519B9DC1D00DBB2CE /* pcre.h in Headers */,
 				53671B4B0FABAC5F002FD0B4 /* BXDatabaseObjectModelXMLSerialization.h in Headers */,
 				53BFE53D0FAF2EFA0004533F /* BXError.h in Headers */,
 				536206360FB87AB700ACAE57 /* PGTSValueTypes.h in Headers */,

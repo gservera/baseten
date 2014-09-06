@@ -161,7 +161,6 @@
 
 @interface BXAController (Delegation) <BXDatabaseContextDelegate, BXDataModelCompilerDelegate, BXPGSQLScriptReaderDelegate>
 - (void) alertDidEnd: (NSAlert *) alert returnCode: (int) returnCode contextInfo: (void *) ctx;
-- (void) importOpenPanelDidEnd: (NSOpenPanel *) panel returnCode: (int) returnCode contextInfo: (void *) contextInfo;
 
 - (void) reloadAfterRefresh: (PGTSResultSet *) res;
 - (void) disconnectAfterRefresh: (PGTSResultSet *) res;
