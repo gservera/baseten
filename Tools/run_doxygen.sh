@@ -28,6 +28,8 @@ fi
 
 if [ -x "$DOXYGEN" ]
 then
+echo "Using doxygen at ${DOXYGEN}"
+sleep 2
     cd "$SRCROOT"
     "$DOXYGEN"
 

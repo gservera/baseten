@@ -84,7 +84,7 @@ bx_error_during_clear_notification (id self, NSError* error)
 		{
 			NSString* queryFormat =
 			@"SELECT DISTINCT ON (%@) l.* "
-			@"FROM %@ l NATURAL INNER JOIN %@ "
+			@"FROM %@ l baseten.NATURAL INNER JOIN %@ "
 			@"WHERE baseten_lock_cleared = true "
 			@" AND baseten_lock_backend_pid != pg_backend_pid () "
 			@" AND baseten_lock_timestamp > COALESCE ($1, '-infinity')::timestamp ";

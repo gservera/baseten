@@ -113,7 +113,7 @@
 	if ([notification backendPID] != backendPID)
 	{
 		NSString* query = 
-		@"SELECT * FROM %@ "
+		@"SELECT * FROM baseten.%@ "
 		@"WHERE baseten_lock_cleared = false "
 		@" AND baseten_lock_timestamp > COALESCE ($1, '-infinity')::timestamp "
 		@" AND baseten_lock_backend_pid != $2 "
