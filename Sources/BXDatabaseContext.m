@@ -877,10 +877,9 @@ ModTypeToObject (enum BXModificationType value)
 	if (! (password && [mDatabaseInterface usedPassword]))
     	password = "";
     
-	if (mKeychainPasswordItem)
-		status = SecKeychainItemModifyAttributesAndData (mKeychainPasswordItem, NULL, strlen (password), password);
-	else
-	{
+    if (mKeychainPasswordItem) {
+		SecKeychainItemModifyAttributesAndData (mKeychainPasswordItem, NULL, strlen (password), password);
+    } else {
 		SecKeychainItemRef item = NULL;
 		status = SecKeychainAddInternetPassword (NULL, //Default keychain
 												 strlen (serverName), serverName,
@@ -892,10 +891,9 @@ ModTypeToObject (enum BXModificationType value)
 												 strlen (password), password, 
 												 &item);
 		
-		if (noErr == status)
+        if (noErr == status) {
 			[self setKeychainPasswordItem: item];
-		else if (errSecDuplicateItem == status)
-		{
+        } else if (errSecDuplicateItem == status) {
 			status = SecKeychainFindInternetPassword (NULL, 
 													  strlen (serverName), serverName, 
 													  0, NULL, 
@@ -905,8 +903,9 @@ ModTypeToObject (enum BXModificationType value)
 													  0, kSecAuthenticationTypeDefault, 
 													  0, NULL,
 													  &item);
-			if (noErr == status)
-				status = SecKeychainItemModifyAttributesAndData (item, NULL, strlen (password), password);
+            if (noErr == status) {
+                SecKeychainItemModifyAttributesAndData (item, NULL, strlen (password), password);
+            }
 		}
 	}
 	
@@ -2262,8 +2261,8 @@ ModTypeToObject (enum BXModificationType value)
 
 - (id) initWithCoder: (NSCoder *) decoder
 {
-	if (([self init]))
-    {
+    self = [self init];
+	if (self) {
         [self setDatabaseURI: [decoder decodeObjectForKey: @"databaseURI"]];
         [self setAutocommits: [decoder decodeBoolForKey: @"autocommits"]];
 		[self setConnectsOnAwake: [decoder decodeBoolForKey: @"connectsOnAwake"]];

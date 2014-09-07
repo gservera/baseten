@@ -21,5 +21,5 @@
 
 
 @interface NSDictionary (BaseTenAdditions)
-- (NSDictionary *) BXDeepCopy;
+- (NSDictionary *) BXDeepCopy NS_RETURNS_RETAINED;
 @end

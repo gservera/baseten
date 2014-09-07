@@ -168,7 +168,7 @@
         }
         [mOwner didChangeValueForKey: key withSetMutation: mutation usingObjects: changed];
     }
-	BXLogDebug (@"Count after operation:\t%lu", [mContainer count]);
+	BXLogDebug (@"Count after operation:\t%lu", (unsigned long)[mContainer count]);
 }
 
 @end

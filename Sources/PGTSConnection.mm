@@ -93,6 +93,7 @@ NoticeReceiver (void *connectionPtr, PGresult const *notice)
                 options++;
             }
 			kPGTSConnectionDictionaryKeys = [keys copy];
+            [keys release]; //? Added
 		}
 		
 		[[PGTSMetadataStorage defaultStorage] setContainerClass: [PGTSEFMetadataContainer class]];

@@ -28,15 +28,13 @@ static BOOL CertArrayCompare (CFArrayRef a1, CFArrayRef a2) {
     BOOL retval = NO;
     CFIndex count = CFArrayGetCount (a1);
     if (CFArrayGetCount (a2) == count) {
-        CFDataRef data1;
-        CFDataRef data2;
         
         for (CFIndex i = 0; i < count; i++) {
             SecCertificateRef c1 = (SecCertificateRef) CFArrayGetValueAtIndex (a1, i);
             SecCertificateRef c2 = (SecCertificateRef) CFArrayGetValueAtIndex (a2, i);
             
-            data1 = SecCertificateCopyData(c1);
-            data2 = SecCertificateCopyData(c2);
+            CFDataRef data1 = SecCertificateCopyData(c1);
+            CFDataRef data2 = SecCertificateCopyData(c2);
             
             if ((data1 == NULL) || (data2 == NULL)) {
                 return NO;

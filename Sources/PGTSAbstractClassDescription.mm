@@ -60,6 +60,7 @@ using namespace BaseTen;
 	
 	[mACLItemsByRoleOid release];
 	mACLItemsByRoleOid = [ACLItemsByRoleOid copy];
+    [ACLItemsByRoleOid release]; //? Added
 }
 
 
