@@ -577,7 +577,6 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEFINES_MODULE = YES;
 			};
 			name = Debug;
 		};
@@ -587,7 +586,6 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEFINES_MODULE = YES;
 			};
 			name = Release;
 		};
