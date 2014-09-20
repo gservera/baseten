@@ -1,0 +1,7 @@
+digraph "Graphical Class Hierarchy"
+{
+  edge [fontname="LucidaGrande",fontsize="10",labelfontname="LucidaGrande",labelfontsize="10"];
+  node [fontname="LucidaGrande",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="PGTSConnection(MiscAccessors)",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$category_p_g_t_s_connection_07_misc_accessors_08.html"];
+}

@@ -1,0 +1,63 @@
+\hypertarget{interface_p_g_t_s_result_set}{}\section{P\+G\+T\+S\+Result\+Set Class Reference}
+\label{interface_p_g_t_s_result_set}\index{P\+G\+T\+S\+Result\+Set@{P\+G\+T\+S\+Result\+Set}}
+
+
+\subsection{Overview}
+Result set for a query. A result set contains rows that may be iterated by the user. \subsection*{Instance Methods}
+\begin{DoxyCompactItemize}
+\item 
+(N\+S\+Array $\ast$) -\/ \hyperlink{interface_p_g_t_s_result_set_a55043dd59fce289c88b686ee254a2b28}{current\+Row\+As\+Array}{\ttfamily  \mbox{[}implementation\mbox{]}}
+\item 
+(N\+S\+Dictionary $\ast$) -\/ \hyperlink{interface_p_g_t_s_result_set_a2b73dc783d717f3ec4ddb10d6ce13fa6}{current\+Row\+As\+Dictionary}{\ttfamily  \mbox{[}implementation\mbox{]}}
+\item 
+(void) -\/ \hyperlink{interface_p_g_t_s_result_set_ae1bfa20edf6712f4374d5c97f46def32}{go\+Before\+First\+Row}{\ttfamily  \mbox{[}implementation\mbox{]}}
+\end{DoxyCompactItemize}
+{\bf }\par
+\begin{DoxyCompactItemize}
+\item 
+(B\+O\+O\+L) -\/ \hyperlink{interface_p_g_t_s_result_set_a8e9be7c1118f2b9dce4b422151c7017b}{set\+Class\+:for\+Field\+Named\+:}{\ttfamily  \mbox{[}implementation\mbox{]}}
+\end{DoxyCompactItemize}
+
+
+
+\subsection{Method Documentation}
+\hypertarget{interface_p_g_t_s_result_set_a55043dd59fce289c88b686ee254a2b28}{}\index{P\+G\+T\+S\+Result\+Set@{P\+G\+T\+S\+Result\+Set}!current\+Row\+As\+Array@{current\+Row\+As\+Array}}
+\index{current\+Row\+As\+Array@{current\+Row\+As\+Array}!P\+G\+T\+S\+Result\+Set@{P\+G\+T\+S\+Result\+Set}}
+\subsubsection[{current\+Row\+As\+Array}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (N\+S\+Array $\ast$) current\+Row\+As\+Array 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+\hspace{0.3cm}{\ttfamily [implementation]}}\label{interface_p_g_t_s_result_set_a55043dd59fce289c88b686ee254a2b28}
+Current row with values in the same order as given in the query \hypertarget{interface_p_g_t_s_result_set_a2b73dc783d717f3ec4ddb10d6ce13fa6}{}\index{P\+G\+T\+S\+Result\+Set@{P\+G\+T\+S\+Result\+Set}!current\+Row\+As\+Dictionary@{current\+Row\+As\+Dictionary}}
+\index{current\+Row\+As\+Dictionary@{current\+Row\+As\+Dictionary}!P\+G\+T\+S\+Result\+Set@{P\+G\+T\+S\+Result\+Set}}
+\subsubsection[{current\+Row\+As\+Dictionary}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (N\+S\+Dictionary $\ast$) current\+Row\+As\+Dictionary 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+\hspace{0.3cm}{\ttfamily [implementation]}}\label{interface_p_g_t_s_result_set_a2b73dc783d717f3ec4ddb10d6ce13fa6}
+Current row with field names as keys N\+S\+Null is used in place of nil \hypertarget{interface_p_g_t_s_result_set_ae1bfa20edf6712f4374d5c97f46def32}{}\index{P\+G\+T\+S\+Result\+Set@{P\+G\+T\+S\+Result\+Set}!go\+Before\+First\+Row@{go\+Before\+First\+Row}}
+\index{go\+Before\+First\+Row@{go\+Before\+First\+Row}!P\+G\+T\+S\+Result\+Set@{P\+G\+T\+S\+Result\+Set}}
+\subsubsection[{go\+Before\+First\+Row}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (void) go\+Before\+First\+Row 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+\hspace{0.3cm}{\ttfamily [implementation]}}\label{interface_p_g_t_s_result_set_ae1bfa20edf6712f4374d5c97f46def32}
+Move to the beginning of the result set \hypertarget{interface_p_g_t_s_result_set_a8e9be7c1118f2b9dce4b422151c7017b}{}\index{P\+G\+T\+S\+Result\+Set@{P\+G\+T\+S\+Result\+Set}!set\+Class\+:for\+Field\+Named\+:@{set\+Class\+:for\+Field\+Named\+:}}
+\index{set\+Class\+:for\+Field\+Named\+:@{set\+Class\+:for\+Field\+Named\+:}!P\+G\+T\+S\+Result\+Set@{P\+G\+T\+S\+Result\+Set}}
+\subsubsection[{set\+Class\+:for\+Field\+Named\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (B\+O\+O\+L) set\+Class\+: 
+\begin{DoxyParamCaption}
+\item[{(Class)}]{a\+Class}
+\item[{forFieldNamed:(N\+S\+String $\ast$)}]{a\+Name}
+\end{DoxyParamCaption}
+\hspace{0.3cm}{\ttfamily [implementation]}}\label{interface_p_g_t_s_result_set_a8e9be7c1118f2b9dce4b422151c7017b}
+Set the class that should be used with a specific field 
+
+Provided by category \hyperlink{category_p_g_t_s_result_set_07_serialization_08_a8e9be7c1118f2b9dce4b422151c7017b}{P\+G\+T\+S\+Result\+Set(\+Serialization)}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+P\+G\+T\+S\+Result\+Set.\+h\item 
+P\+G\+T\+S\+Result\+Set.\+m\item 
+P\+G\+T\+S\+Result\+Set.\+mm\end{DoxyCompactItemize}

@@ -1,0 +1,109 @@
+\hypertarget{_b_x_logger_8h}{}\section{B\+X\+Logger.\+h File Reference}
+\label{_b_x_logger_8h}\index{B\+X\+Logger.\+h@{B\+X\+Logger.\+h}}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{_b_x_logger_8h_a0ab8dcbc63cf63bbc8e4d7fd5901634e}{B\+X\+Log\+Level} \{ \\*
+\hyperlink{_b_x_logger_8h_a0ab8dcbc63cf63bbc8e4d7fd5901634ea235f907f4d8a82218eba4ba39c510da7}{k\+B\+X\+Log\+Level\+Off} = 0, 
+\hyperlink{_b_x_logger_8h_a0ab8dcbc63cf63bbc8e4d7fd5901634eae95e110c5be322e4d09ab55c9056d17a}{k\+B\+X\+Log\+Level\+Fatal}, 
+\hyperlink{_b_x_logger_8h_a0ab8dcbc63cf63bbc8e4d7fd5901634eab8e2187897e12fee03c72b253e0910ea}{k\+B\+X\+Log\+Level\+Error}, 
+\hyperlink{_b_x_logger_8h_a0ab8dcbc63cf63bbc8e4d7fd5901634ea21db6a73b7ddfe7d2a1dd228e3d66d5a}{k\+B\+X\+Log\+Level\+Warning}, 
+\\*
+\hyperlink{_b_x_logger_8h_a0ab8dcbc63cf63bbc8e4d7fd5901634eae550bc9668400096886ad02a009e84b9}{k\+B\+X\+Log\+Level\+Info}, 
+\hyperlink{_b_x_logger_8h_a0ab8dcbc63cf63bbc8e4d7fd5901634eae05b7c97140985db8ba5b7b20114dde2}{k\+B\+X\+Log\+Level\+Debug}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+B\+X\+\_\+\+E\+X\+P\+O\+R\+T void \hyperlink{_b_x_logger_8h_a7f6f200d7a36d1f2ff5d2ae51acbe537}{B\+X\+Assertion\+Debug} () B\+X\+\_\+\+A\+N\+A\+L\+Y\+Z\+E\+R\+\_\+\+N\+O\+R\+E\+T\+U\+R\+N
+\item 
+B\+X\+\_\+\+E\+X\+P\+O\+R\+T void \hyperlink{_b_x_logger_8h_aebc9da21ce1d8bd8e13dee02d91e1e7d}{B\+X\+Deprecation\+Warning} ()
+\item 
+B\+X\+\_\+\+E\+X\+P\+O\+R\+T void \hyperlink{_b_x_logger_8h_a321e422f2ef22ef06f67eb531199c820}{B\+X\+Log\+Set\+Aborts\+On\+Assertion\+Failure} (B\+O\+O\+L)
+\item 
+B\+X\+\_\+\+E\+X\+P\+O\+R\+T void \hyperlink{_b_x_logger_8h_a8a7343acf885c3a801fa9eb5e8208357}{B\+X\+Log\+Set\+Level} (enum \hyperlink{_b_x_logger_8h_a0ab8dcbc63cf63bbc8e4d7fd5901634e}{B\+X\+Log\+Level} level)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Logging and assertion functions used by Base\+Ten. 
+
+\subsection{Enumeration Type Documentation}
+\hypertarget{_b_x_logger_8h_a0ab8dcbc63cf63bbc8e4d7fd5901634e}{}\index{B\+X\+Logger.\+h@{B\+X\+Logger.\+h}!B\+X\+Log\+Level@{B\+X\+Log\+Level}}
+\index{B\+X\+Log\+Level@{B\+X\+Log\+Level}!B\+X\+Logger.\+h@{B\+X\+Logger.\+h}}
+\subsubsection[{B\+X\+Log\+Level}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf B\+X\+Log\+Level}}\label{_b_x_logger_8h_a0ab8dcbc63cf63bbc8e4d7fd5901634e}
+
+
+Logging levels used by Base\+Ten. 
+
+\begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{k\+B\+X\+Log\+Level\+Off@{k\+B\+X\+Log\+Level\+Off}!B\+X\+Logger.\+h@{B\+X\+Logger.\+h}}\index{B\+X\+Logger.\+h@{B\+X\+Logger.\+h}!k\+B\+X\+Log\+Level\+Off@{k\+B\+X\+Log\+Level\+Off}}\item[{\em 
+\hypertarget{_b_x_logger_8h_a0ab8dcbc63cf63bbc8e4d7fd5901634ea235f907f4d8a82218eba4ba39c510da7}{}k\+B\+X\+Log\+Level\+Off\label{_b_x_logger_8h_a0ab8dcbc63cf63bbc8e4d7fd5901634ea235f907f4d8a82218eba4ba39c510da7}
+}]No logging \index{k\+B\+X\+Log\+Level\+Fatal@{k\+B\+X\+Log\+Level\+Fatal}!B\+X\+Logger.\+h@{B\+X\+Logger.\+h}}\index{B\+X\+Logger.\+h@{B\+X\+Logger.\+h}!k\+B\+X\+Log\+Level\+Fatal@{k\+B\+X\+Log\+Level\+Fatal}}\item[{\em 
+\hypertarget{_b_x_logger_8h_a0ab8dcbc63cf63bbc8e4d7fd5901634eae95e110c5be322e4d09ab55c9056d17a}{}k\+B\+X\+Log\+Level\+Fatal\label{_b_x_logger_8h_a0ab8dcbc63cf63bbc8e4d7fd5901634eae95e110c5be322e4d09ab55c9056d17a}
+}]Fatal errors \index{k\+B\+X\+Log\+Level\+Error@{k\+B\+X\+Log\+Level\+Error}!B\+X\+Logger.\+h@{B\+X\+Logger.\+h}}\index{B\+X\+Logger.\+h@{B\+X\+Logger.\+h}!k\+B\+X\+Log\+Level\+Error@{k\+B\+X\+Log\+Level\+Error}}\item[{\em 
+\hypertarget{_b_x_logger_8h_a0ab8dcbc63cf63bbc8e4d7fd5901634eab8e2187897e12fee03c72b253e0910ea}{}k\+B\+X\+Log\+Level\+Error\label{_b_x_logger_8h_a0ab8dcbc63cf63bbc8e4d7fd5901634eab8e2187897e12fee03c72b253e0910ea}
+}]Errors \index{k\+B\+X\+Log\+Level\+Warning@{k\+B\+X\+Log\+Level\+Warning}!B\+X\+Logger.\+h@{B\+X\+Logger.\+h}}\index{B\+X\+Logger.\+h@{B\+X\+Logger.\+h}!k\+B\+X\+Log\+Level\+Warning@{k\+B\+X\+Log\+Level\+Warning}}\item[{\em 
+\hypertarget{_b_x_logger_8h_a0ab8dcbc63cf63bbc8e4d7fd5901634ea21db6a73b7ddfe7d2a1dd228e3d66d5a}{}k\+B\+X\+Log\+Level\+Warning\label{_b_x_logger_8h_a0ab8dcbc63cf63bbc8e4d7fd5901634ea21db6a73b7ddfe7d2a1dd228e3d66d5a}
+}]Warnings \index{k\+B\+X\+Log\+Level\+Info@{k\+B\+X\+Log\+Level\+Info}!B\+X\+Logger.\+h@{B\+X\+Logger.\+h}}\index{B\+X\+Logger.\+h@{B\+X\+Logger.\+h}!k\+B\+X\+Log\+Level\+Info@{k\+B\+X\+Log\+Level\+Info}}\item[{\em 
+\hypertarget{_b_x_logger_8h_a0ab8dcbc63cf63bbc8e4d7fd5901634eae550bc9668400096886ad02a009e84b9}{}k\+B\+X\+Log\+Level\+Info\label{_b_x_logger_8h_a0ab8dcbc63cf63bbc8e4d7fd5901634eae550bc9668400096886ad02a009e84b9}
+}]Information \index{k\+B\+X\+Log\+Level\+Debug@{k\+B\+X\+Log\+Level\+Debug}!B\+X\+Logger.\+h@{B\+X\+Logger.\+h}}\index{B\+X\+Logger.\+h@{B\+X\+Logger.\+h}!k\+B\+X\+Log\+Level\+Debug@{k\+B\+X\+Log\+Level\+Debug}}\item[{\em 
+\hypertarget{_b_x_logger_8h_a0ab8dcbc63cf63bbc8e4d7fd5901634eae05b7c97140985db8ba5b7b20114dde2}{}k\+B\+X\+Log\+Level\+Debug\label{_b_x_logger_8h_a0ab8dcbc63cf63bbc8e4d7fd5901634eae05b7c97140985db8ba5b7b20114dde2}
+}]Debugging information \end{description}
+\end{Desc}
+
+
+\subsection{Function Documentation}
+\hypertarget{_b_x_logger_8h_a7f6f200d7a36d1f2ff5d2ae51acbe537}{}\index{B\+X\+Logger.\+h@{B\+X\+Logger.\+h}!B\+X\+Assertion\+Debug@{B\+X\+Assertion\+Debug}}
+\index{B\+X\+Assertion\+Debug@{B\+X\+Assertion\+Debug}!B\+X\+Logger.\+h@{B\+X\+Logger.\+h}}
+\subsubsection[{B\+X\+Assertion\+Debug}]{\setlength{\rightskip}{0pt plus 5cm}B\+X\+\_\+\+E\+X\+P\+O\+R\+T void B\+X\+Assertion\+Debug (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{_b_x_logger_8h_a7f6f200d7a36d1f2ff5d2ae51acbe537}
+
+
+A debugging helper. 
+
+This function provides a convenient breakpoint. It will be called when an assertion fails. The reason might be a bug in either Base\+Ten or in user code. \hypertarget{_b_x_logger_8h_aebc9da21ce1d8bd8e13dee02d91e1e7d}{}\index{B\+X\+Logger.\+h@{B\+X\+Logger.\+h}!B\+X\+Deprecation\+Warning@{B\+X\+Deprecation\+Warning}}
+\index{B\+X\+Deprecation\+Warning@{B\+X\+Deprecation\+Warning}!B\+X\+Logger.\+h@{B\+X\+Logger.\+h}}
+\subsubsection[{B\+X\+Deprecation\+Warning}]{\setlength{\rightskip}{0pt plus 5cm}B\+X\+\_\+\+E\+X\+P\+O\+R\+T void B\+X\+Deprecation\+Warning (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{_b_x_logger_8h_aebc9da21ce1d8bd8e13dee02d91e1e7d}
+
+
+A debugging helper. 
+
+This function provides a convenient breakpoint. It will be called when deprecated functionality is invoked, presently when relationships with deprecated names are used. \hypertarget{_b_x_logger_8h_a321e422f2ef22ef06f67eb531199c820}{}\index{B\+X\+Logger.\+h@{B\+X\+Logger.\+h}!B\+X\+Log\+Set\+Aborts\+On\+Assertion\+Failure@{B\+X\+Log\+Set\+Aborts\+On\+Assertion\+Failure}}
+\index{B\+X\+Log\+Set\+Aborts\+On\+Assertion\+Failure@{B\+X\+Log\+Set\+Aborts\+On\+Assertion\+Failure}!B\+X\+Logger.\+h@{B\+X\+Logger.\+h}}
+\subsubsection[{B\+X\+Log\+Set\+Aborts\+On\+Assertion\+Failure}]{\setlength{\rightskip}{0pt plus 5cm}B\+X\+\_\+\+E\+X\+P\+O\+R\+T void B\+X\+Log\+Set\+Aborts\+On\+Assertion\+Failure (
+\begin{DoxyParamCaption}
+\item[{B\+O\+O\+L}]{}
+\end{DoxyParamCaption}
+)}\label{_b_x_logger_8h_a321e422f2ef22ef06f67eb531199c820}
+
+
+Set whether the logger should call abort() on assertion failure. 
+
+\begin{DoxyWarning}{Warning}
+This function is not thread-\/safe. 
+\end{DoxyWarning}
+\hypertarget{_b_x_logger_8h_a8a7343acf885c3a801fa9eb5e8208357}{}\index{B\+X\+Logger.\+h@{B\+X\+Logger.\+h}!B\+X\+Log\+Set\+Level@{B\+X\+Log\+Set\+Level}}
+\index{B\+X\+Log\+Set\+Level@{B\+X\+Log\+Set\+Level}!B\+X\+Logger.\+h@{B\+X\+Logger.\+h}}
+\subsubsection[{B\+X\+Log\+Set\+Level}]{\setlength{\rightskip}{0pt plus 5cm}B\+X\+\_\+\+E\+X\+P\+O\+R\+T void B\+X\+Log\+Set\+Level (
+\begin{DoxyParamCaption}
+\item[{enum {\bf B\+X\+Log\+Level}}]{level}
+\end{DoxyParamCaption}
+)}\label{_b_x_logger_8h_a8a7343acf885c3a801fa9eb5e8208357}
+
+
+Set the logging level. 
+
+\begin{DoxyWarning}{Warning}
+This function is not thread-\/safe. 
+\end{DoxyWarning}

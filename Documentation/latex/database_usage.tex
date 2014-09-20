@@ -1,0 +1,42 @@
+ \section*{Topics}  \begin{DoxyItemize}
+\item \hyperlink{baseten_enabling}{Enabling relations for use with Base\+Ten} \item \hyperlink{database_dumps}{Making a database dump} \item \hyperlink{postgresql_installation}{Postgre\+S\+Q\+L installation} \end{DoxyItemize}
+\hypertarget{baseten_enabling}{}\section{Enabling relations for use with Base\+Ten}\label{baseten_enabling}
+Some tables are created in Base\+Ten schema to track changes in other relations and storing relationships between tables and views. The association is based on relation names.
+
+While this arrangement allows clients to fault only changed objects, it has some unfortunate side effects\+: \begin{DoxyItemize}
+\item Altering relations' names after having them enabled will not work. To rename relations, they need to be disabled first and re-\/enabled afterwards. \item Altering relations' primary keys will not work. Again, disabling and re-\/enabling is required. \item Altering relations' columns will not work. Again, disabling and re-\/enabling is required. \item Altering relations' foreign keys causes Base\+Ten's relationship information to become out-\/of-\/date and needing to be refreshed.\end{DoxyItemize}
+All this can be done using Base\+Ten Assistant.
+
+\begin{DoxyNote}{Note}
+In version 1.\+5, relations and Base\+Ten's tables were associated with each other based on relation names. This didn't work for all names, though, and made renaming enabled relations impossible. In versions 1.\+6 through 1.\+6.\+2, the association was based on relation oids. While this made renaming relations possible, it also made dumping database contents exceedingly difficult.
+\end{DoxyNote}
+\hypertarget{baseten_enabling_sql_enabling}{}\subsection{Enabling relations and updating relationship cache using S\+Q\+L functions}\label{baseten_enabling_sql_enabling}
+In addition to using Base\+Ten Assistant, it is possible to enable and disable tables with S\+Q\+L functions. The functions are {\itshape baseten.\+enable (oid)} and {\itshape baseten.\+disable (oid)}. The object identifier argument can be looked up from Postgre\+S\+Q\+L's system tables, {\itshape pg\+\_\+class} and {\itshape pg\+\_\+namespace}.
+
+Views' primary keys are stored in {\itshape baseten.\+view\+\_\+pkey}. The table has three columns\+: {\itshape nspname}, {\itshape relname} and {\itshape attname}, which correspond to the view's schema name, the view's name and each primary key column's name respectively. To enable a view, its primary key needs to be specified first.
+
+Relationships and view hierarchies among other things are stored in automatically-\/generated tables. These should be refreshed with the S\+Q\+L function {\itshape baseten.\+refresh\+\_\+caches ()} after all changes to views, primary keys and foreign keys. \hypertarget{database_dumps}{}\section{Making a database dump}\label{database_dumps}
+After having been in use, the Base\+Ten schema might contain some temporary information. The temporary information is removed periodically when the database is queried, but for creating installation scripts it might be desirable to remove all unnecessary data. This can be done from Base\+Ten Assistant or by running the S\+Q\+L function {\itshape baseten.\+prune ()}.
+
+For Base\+Ten schema to work, the table contents for most tables are needed, so dumps excluding the data are not recommended. \hypertarget{postgresql_installation}{}\section{Postgre\+S\+Q\+L installation}\label{postgresql_installation}
+Postgre\+S\+Q\+L is distributed as an Installer package at the following address\+:~\newline
+ \href{http://www.postgresql.org/download/macosx}{\tt http\+://www.\+postgresql.\+org/download/macosx} Another option is to build the server from source. Here's a brief tutorial. 
+\begin{DoxyEnumerate}
+\item Get the latest Postgre\+S\+Q\+L source release (8.\+2 or later) from \href{http://www.postgresql.org/ftp/source}{\tt http\+://www.\+postgresql.\+org/ftp/source}. 
+\item Uncompress, configure, make, \mbox{[}sudo\mbox{]} make install. On Mac O\+S X, Bonjour and Open\+S\+S\+L are available, so {\ttfamily ./configure ---\/with-\/bonjour ---\/with-\/openssl \&\& make \&\& sudo make install} probably gives the expected results. 
+\item It's usually a good idea to create a separate user and group for Postgre\+S\+Q\+L, but Mac O\+S X already comes with a database-\/specific user\+: for mysql. We'll just use that and hope Postgre\+S\+Q\+L doesn't mind. 
+\item Make {\itshape mysql} the owner of the Postgre\+S\+Q\+L folder, then sudo to {\itshape mysql}\+:~\newline
+ {\ttfamily  sudo chown -\/\+R mysql\+:mysql /usr/local/pgsql~\newline
+ sudo -\/u mysql -\/s }  
+\item Initialize the Postgre\+S\+Q\+L database folder. We'll use en\+\_\+\+U\+S.\+U\+T\+F-\/8 as the default locale\+:~\newline
+{\ttfamily L\+C\+\_\+\+A\+L\+L=en\+\_\+\+U\+S.\+U\+T\+F-\/8 /usr/local/pgsql/bin/initdb -\/\+D \textbackslash{}~\newline
+ /usr/local/pgsql/data} 
+\item Launch the Postgre\+S\+Q\+L server itself\+:~\newline
+ {\ttfamily  /usr/local/pgsql/bin/pg\+\_\+ctl -\/\+D /usr/local/pgsql/data \textbackslash{}~\newline
+ -\/l /usr/local/pgsql/data/pg.log start } 
+\item Create a superuser account for yourself. This way, you don't have to sudo to mysql to create new databases and users.~\newline
+ {\ttfamily /usr/local/pgsql/bin/createuser {\itshape your-\/short-\/user-\/name}}  
+\item Exit the {\itshape mysql} sudo and create a database. If you create a database with your short user name, psql will connect to it by default.~\newline
+ {\ttfamily  exit~\newline
+ /usr/local/pgsql/bin/createdb {\itshape your-\/short-\/user-\/name} }  
+\end{DoxyEnumerate}

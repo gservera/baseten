@@ -1,0 +1,7 @@
+digraph "Graphical Class Hierarchy"
+{
+  edge [fontname="LucidaGrande",fontsize="10",labelfontname="LucidaGrande",labelfontsize="10"];
+  node [fontname="LucidaGrande",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="BXObjectStatusToEditable\lTransformer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$interface_b_x_object_status_to_editable_transformer.html",tooltip="Transforms and object&#39;s status into a boolean indicating, whether it&#39;s editable or not..."];
+}

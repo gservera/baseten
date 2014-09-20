@@ -1,0 +1,130 @@
+error: the type 'dirs' is not supported for the entry tag within a navindex! Check your layout file!
+/Users/guille/Developer/baseten/Sources/BaseTen.h:234: warning: unable to resolve reference to `BXDatabaseContext::initWithDatabaseURI:' for \ref command
+/Users/guille/Developer/baseten/Sources/BaseTen.h:234: warning: unable to resolve reference to `BXDatabaseContext::init' for \ref command
+/Users/guille/Developer/baseten/Sources/BaseTen.h:40: warning: unable to resolve reference to `BXDatabaseContext::connectSync:' for \ref command
+/Users/guille/Developer/baseten/Sources/BaseTen.h:41: warning: unable to resolve reference to `BXDatabaseContext::connectAsync' for \ref command
+/Users/guille/Developer/baseten/Sources/BaseTen.h:44: warning: unable to resolve reference to `BXDatabaseContext::notificationCenter' for \ref command
+/Users/guille/Developer/baseten/Sources/BaseTen.h:47: warning: unable to resolve reference to `BXDatabaseContext::connect:' for \ref command
+error: Problems running epstopdf. Check your TeX installation!
+/Users/guille/Developer/baseten/Sources/BaseTen.h:863: warning: unable to resolve reference to `BXDatabaseContext::connect:' for \ref command
+/Users/guille/Developer/baseten/Sources/BaseTen.h:234: warning: unable to resolve reference to `BXDatabaseContext::initWithDatabaseURI:' for \ref command
+/Users/guille/Developer/baseten/Sources/BaseTen.h:234: warning: unable to resolve reference to `BXDatabaseContext::init' for \ref command
+/Users/guille/Developer/baseten/Sources/BaseTen.h:259: warning: unable to resolve reference to `BXDatabaseContext::connectSync:' for \ref command
+/Users/guille/Developer/baseten/Sources/BaseTen.h:260: warning: unable to resolve reference to `BXDatabaseContext::connectAsync' for \ref command
+/Users/guille/Developer/baseten/Sources/BaseTen.h:263: warning: unable to resolve reference to `BXDatabaseContext::notificationCenter' for \ref command
+/Users/guille/Developer/baseten/Sources/BaseTen.h:266: warning: unable to resolve reference to `BXDatabaseContext::connect:' for \ref command
+error: Problems running epstopdf. Check your TeX installation!
+/Users/guille/Developer/baseten/Sources/BaseTen.h:863: warning: unable to resolve reference to `BXDatabaseContext::connect:' for \ref command
+/Users/guille/Developer/baseten/Sources/BXDatabaseObjectModel.m:125: warning: argument 'outError' of command @param is not found in the argument list of BXDatabaseObjectModel::entities()
+/Users/guille/Developer/baseten/Sources/BXDatabaseObjectModel.m:144: warning: argument 'reload' of command @param is not found in the argument list of BXDatabaseObjectModel::entitiesBySchemaAndName:reload:error:(BXDatabaseContext *context,[reload] BOOL shouldReload,[error] NSError **outError)
+/Users/guille/Developer/baseten/Sources/BXDatabaseObjectModel.m:144: warning: The following parameters of -[BXDatabaseObjectModel entitiesBySchemaAndName:reload:error:](BXDatabaseContext *context,[reload] BOOL shouldReload,[error] NSError **outError) are not documented:
+  parameter 'context'
+  parameter 'shouldReload'
+/Users/guille/Developer/baseten/BaseTenAppKit/Sources/BXSynchronizedArrayController.m:567: warning: argument 'fetchReques' of command @param is not found in the argument list of BXSynchronizedArrayController::fetchWithRequest:merge:error:(NSFetchRequest *fetchRequest,[merge] BOOL merge,[error] NSError **error)
+/Users/guille/Developer/baseten/BaseTenAppKit/Sources/BXSynchronizedArrayController.m:567: warning: The following parameters of -[BXSynchronizedArrayController fetchWithRequest:merge:error:](NSFetchRequest *fetchRequest,[merge] BOOL merge,[error] NSError **error) are not documented:
+  parameter 'fetchRequest'
+/Users/guille/Developer/baseten/Sources/PGTSConnectionQueries.m:488: warning: argument 'errorMessage' of command @param is not found in the argument list of PGTSConnection::endCopyAndAccept2:errorMessage:messageWhenDone:(BOOL accept,[errorMessage] NSString *localErrorMessage,[messageWhenDone] BOOL messageWhenDone)
+/Users/guille/Developer/baseten/Sources/PGTSConnectionQueries.m:488: warning: The following parameters of -[PGTSConnection endCopyAndAccept2:errorMessage:messageWhenDone:](BOOL accept,[errorMessage] NSString *localErrorMessage,[messageWhenDone] BOOL messageWhenDone) are not documented:
+  parameter 'localErrorMessage'
+/Users/guille/Developer/baseten/Sources/PGTSConnection-old.m:380: warning: The following parameters of -[PGTSConnection startListening:forNotification:selector:](id anObject,[forNotification] NSString *notificationName,[selector] SEL aSelector) are not documented:
+  parameter 'notificationName'
+/Users/guille/Developer/baseten/Sources/PGTSConnectionQueries.m:488: warning: argument 'errorMessage' of command @param is not found in the argument list of PGTSConnection(QueriesWorkerThread)::endCopyAndAccept2:errorMessage:messageWhenDone:(BOOL accept,[errorMessage] NSString *localErrorMessage,[messageWhenDone] BOOL messageWhenDone)
+/Users/guille/Developer/baseten/Sources/PGTSConnectionQueries.m:488: warning: The following parameters of -[PGTSConnection(QueriesWorkerThread) endCopyAndAccept2:errorMessage:messageWhenDone:](BOOL accept,[errorMessage] NSString *localErrorMessage,[messageWhenDone] BOOL messageWhenDone) are not documented:
+  parameter 'localErrorMessage'
+error: Problems running dot: exit code=127, command='dot', arguments='"/Users/guille/Developer/baseten/Documentation/html/graph_legend.dot" -Tpng -o "/Users/guille/Developer/baseten/Documentation/html/graph_legend.png"'
+error: Problems running dot: exit code=127, command='dot', arguments='"/Users/guille/Developer/baseten/Documentation/html/inherit_graph_0.dot" -Tpng -o "/Users/guille/Developer/baseten/Documentation/html/inherit_graph_0.png"'
+error: Problems running dot: exit code=127, command='dot', arguments='"/Users/guille/Developer/baseten/Documentation/html/inherit_graph_1.dot" -Tpng -o "/Users/guille/Developer/baseten/Documentation/html/inherit_graph_1.png"'
+error: Problems running dot: exit code=127, command='dot', arguments='"/Users/guille/Developer/baseten/Documentation/html/inherit_graph_3.dot" -Tpng -o "/Users/guille/Developer/baseten/Documentation/html/inherit_graph_3.png"'
+error: Problems running dot: exit code=127, command='dot', arguments='"/Users/guille/Developer/baseten/Documentation/html/inherit_graph_2.dot" -Tpng -o "/Users/guille/Developer/baseten/Documentation/html/inherit_graph_2.png"'
+error: Problems running dot: exit code=127, command='dot', arguments='"/Users/guille/Developer/baseten/Documentation/html/inherit_graph_5.dot" -Tpng -o "/Users/guille/Developer/baseten/Documentation/html/inherit_graph_5.png"'
+error: Problems running dot: exit code=127, command='dot', arguments='"/Users/guille/Developer/baseten/Documentation/html/inherit_graph_4.dot" -Tpng -o "/Users/guille/Developer/baseten/Documentation/html/inherit_graph_4.png"'
+error: Problems running dot: exit code=127, command='dot', arguments='"/Users/guille/Developer/baseten/Documentation/html/inherit_graph_7.dot" -Tpng -o "/Users/guille/Developer/baseten/Documentation/html/inherit_graph_7.png"'
+error: Problems running dot: exit code=127, command='dot', arguments='"/Users/guille/Developer/baseten/Documentation/html/inherit_graph_6.dot" -Tpng -o "/Users/guille/Developer/baseten/Documentation/html/inherit_graph_6.png"'
+error: Problems running dot: exit code=127, command='dot', arguments='"/Users/guille/Developer/baseten/Documentation/html/inherit_graph_8.dot" -Tpng -o "/Users/guille/Developer/baseten/Documentation/html/inherit_graph_8.png"'
+error: Problems running dot: exit code=127, command='dot', arguments='"/Users/guille/Developer/baseten/Documentation/html/inherit_graph_11.dot" -Tpng -o "/Users/guille/Developer/baseten/Documentation/html/inherit_graph_11.png"'
+error: Problems running dot: exit code=127, command='dot', arguments='"/Users/guille/Developer/baseten/Documentation/html/inherit_graph_9.dot" -Tpng -o "/Users/guille/Developer/baseten/Documentation/html/inherit_graph_9.png"'
+error: Problems running dot: exit code=127, command='dot', arguments='"/Users/guille/Developer/baseten/Documentation/html/inherit_graph_10.dot" -Tpng -o "/Users/guille/Developer/baseten/Documentation/html/inherit_graph_10.png"'
+error: Problems running dot: exit code=127, command='dot', arguments='"/Users/guille/Developer/baseten/Documentation/html/inherit_graph_12.dot" -Tpng -o "/Users/guille/Developer/baseten/Documentation/html/inherit_graph_12.png"'
+error: Problems running dot: exit code=127, command='dot', arguments='"/Users/guille/Developer/baseten/Documentation/html/inherit_graph_14.dot" -Tpng -o "/Users/guille/Developer/baseten/Documentation/html/inherit_graph_14.png"'
+error: Problems running dot: exit code=127, command='dot', arguments='"/Users/guille/Developer/baseten/Documentation/html/inherit_graph_13.dot" -Tpng -o "/Users/guille/Developer/baseten/Documentation/html/inherit_graph_13.png"'
+error: Problems running dot: exit code=127, command='dot', arguments='"/Users/guille/Developer/baseten/Documentation/html/inherit_graph_15.dot" -Tpng -o "/Users/guille/Developer/baseten/Documentation/html/inherit_graph_15.png"'
+error: Problems running dot: exit code=127, command='dot', arguments='"/Users/guille/Developer/baseten/Documentation/html/inherit_graph_17.dot" -Tpng -o "/Users/guille/Developer/baseten/Documentation/html/inherit_graph_17.png"'
+error: Problems running dot: exit code=127, command='dot', arguments='"/Users/guille/Developer/baseten/Documentation/html/inherit_graph_18.dot" -Tpng -o "/Users/guille/Developer/baseten/Documentation/html/inherit_graph_18.png"'
+error: Problems running dot: exit code=127, command='dot', arguments='"/Users/guille/Developer/baseten/Documentation/html/inherit_graph_19.dot" -Tpng -o "/Users/guille/Developer/baseten/Documentation/html/inherit_graph_19.png"'
+error: Problems running dot: exit code=127, command='dot', arguments='"/Users/guille/Developer/baseten/Documentation/html/inherit_graph_16.dot" -Tpng -o "/Users/guille/Developer/baseten/Documentation/html/inherit_graph_16.png"'
+error: Problems running dot: exit code=127, command='dot', arguments='"/Users/guille/Developer/baseten/Documentation/html/inherit_graph_21.dot" -Tpng -o "/Users/guille/Developer/baseten/Documentation/html/inherit_graph_21.png"'
+error: Problems running dot: exit code=127, command='dot', arguments='"/Users/guille/Developer/baseten/Documentation/html/inherit_graph_22.dot" -Tpng -o "/Users/guille/Developer/baseten/Documentation/html/inherit_graph_22.png"'
+error: Problems running dot: exit code=127, command='dot', arguments='"/Users/guille/Developer/baseten/Documentation/html/inherit_graph_20.dot" -Tpng -o "/Users/guille/Developer/baseten/Documentation/html/inherit_graph_20.png"'
+error: Problems running dot: exit code=127, command='dot', arguments='"/Users/guille/Developer/baseten/Documentation/html/inherit_graph_23.dot" -Tpng -o "/Users/guille/Developer/baseten/Documentation/html/inherit_graph_23.png"'
+error: problems opening map file /Users/guille/Developer/baseten/Documentation/html/inherit_graph_0.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file /Users/guille/Developer/baseten/Documentation/html/inherit_graph_1.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file /Users/guille/Developer/baseten/Documentation/html/inherit_graph_2.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file /Users/guille/Developer/baseten/Documentation/html/inherit_graph_3.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file /Users/guille/Developer/baseten/Documentation/html/inherit_graph_4.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file /Users/guille/Developer/baseten/Documentation/html/inherit_graph_5.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file /Users/guille/Developer/baseten/Documentation/html/inherit_graph_6.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file /Users/guille/Developer/baseten/Documentation/html/inherit_graph_7.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file /Users/guille/Developer/baseten/Documentation/html/inherit_graph_8.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file /Users/guille/Developer/baseten/Documentation/html/inherit_graph_9.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file /Users/guille/Developer/baseten/Documentation/html/inherit_graph_10.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file /Users/guille/Developer/baseten/Documentation/html/inherit_graph_11.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file /Users/guille/Developer/baseten/Documentation/html/inherit_graph_12.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file /Users/guille/Developer/baseten/Documentation/html/inherit_graph_13.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file /Users/guille/Developer/baseten/Documentation/html/inherit_graph_14.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file /Users/guille/Developer/baseten/Documentation/html/inherit_graph_15.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file /Users/guille/Developer/baseten/Documentation/html/inherit_graph_16.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file /Users/guille/Developer/baseten/Documentation/html/inherit_graph_17.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file /Users/guille/Developer/baseten/Documentation/html/inherit_graph_18.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file /Users/guille/Developer/baseten/Documentation/html/inherit_graph_19.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file /Users/guille/Developer/baseten/Documentation/html/inherit_graph_20.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file /Users/guille/Developer/baseten/Documentation/html/inherit_graph_21.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file /Users/guille/Developer/baseten/Documentation/html/inherit_graph_22.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.
+error: problems opening map file /Users/guille/Developer/baseten/Documentation/html/inherit_graph_23.map for inclusion in the docs!
+If you installed Graphviz/dot after a previous failing run, 
+try deleting the output directory and rerun doxygen.

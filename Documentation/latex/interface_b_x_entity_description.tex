@@ -1,0 +1,172 @@
+\hypertarget{interface_b_x_entity_description}{}\section{B\+X\+Entity\+Description Class Reference}
+\label{interface_b_x_entity_description}\index{B\+X\+Entity\+Description@{B\+X\+Entity\+Description}}
+
+
+\subsection{Overview}
+An entity description contains information about a specific table or view in a given database. 
+
+Only one entity description instance is created for a combination of a database U\+R\+I, a schema and a table.
+
+\begin{DoxyNote}{Note}
+This class's documented methods are thread-\/safe. Creating objects, however, is not. 
+
+For this class to work in non-\/\+G\+C applications, the corresponding database context must be retained as well. 
+\end{DoxyNote}
+\subsection*{Instance Methods}
+\begin{DoxyCompactItemize}
+\item 
+(N\+S\+Dictionary $\ast$) -\/ \hyperlink{interface_b_x_entity_description_aec04219f4604dae1bfdac0f46864e2a2}{attributes\+By\+Name}
+\item 
+\hypertarget{interface_b_x_entity_description_a59e879954a6b5b306b4d717989625ba2}{}(id) -\/ \hyperlink{interface_b_x_entity_description_a59e879954a6b5b306b4d717989625ba2}{copy\+With\+Zone\+:}{\ttfamily  \mbox{[}implementation\mbox{]}}\label{interface_b_x_entity_description_a59e879954a6b5b306b4d717989625ba2}
+
+\item 
+(Class) -\/ \hyperlink{interface_b_x_entity_description_a9b0743ba6503d46910c050c3e9870af4}{database\+Object\+Class}
+\item 
+\hypertarget{interface_b_x_entity_description_ac7e64cdf53b810e1d2416ca5e7a01062}{}(N\+S\+U\+R\+L $\ast$) -\/ \hyperlink{interface_b_x_entity_description_ac7e64cdf53b810e1d2416ca5e7a01062}{database\+U\+R\+I}\label{interface_b_x_entity_description_ac7e64cdf53b810e1d2416ca5e7a01062}
+
+\item 
+(N\+S\+Array $\ast$) -\/ \hyperlink{interface_b_x_entity_description_a97ba11f96ac36aa1109c42dfb291242b}{fields}
+\item 
+\hypertarget{interface_b_x_entity_description_a626da2f72c1d472f873a684a30098280}{}(B\+O\+O\+L) -\/ \hyperlink{interface_b_x_entity_description_a626da2f72c1d472f873a684a30098280}{is\+Enabled}\label{interface_b_x_entity_description_a626da2f72c1d472f873a684a30098280}
+
+\item 
+(B\+O\+O\+L) -\/ \hyperlink{interface_b_x_entity_description_a0ece23ac0e8fe5ee9d66103306cbeb7b}{is\+Validated}
+\item 
+\hypertarget{interface_b_x_entity_description_a61d405d5a9533ba248a3b2d1f402a5c6}{}(B\+O\+O\+L) -\/ \hyperlink{interface_b_x_entity_description_a61d405d5a9533ba248a3b2d1f402a5c6}{is\+View}\label{interface_b_x_entity_description_a61d405d5a9533ba248a3b2d1f402a5c6}
+
+\item 
+\hypertarget{interface_b_x_entity_description_a1ba9bfd60940a145c99f69528cde0063}{}(N\+S\+Array $\ast$) -\/ \hyperlink{interface_b_x_entity_description_a1ba9bfd60940a145c99f69528cde0063}{object\+I\+Ds}\label{interface_b_x_entity_description_a1ba9bfd60940a145c99f69528cde0063}
+
+\item 
+(N\+S\+Array $\ast$) -\/ \hyperlink{interface_b_x_entity_description_a58dcb8ea7e1074ddb2c590c3507768b1}{primary\+Key\+Fields}
+\item 
+(N\+S\+Dictionary $\ast$) -\/ \hyperlink{interface_b_x_entity_description_a8123d917345a8b6a81d44fbf95e4860a}{relationships\+By\+Name}
+\item 
+\hypertarget{interface_b_x_entity_description_aba35834b6bb7a182a3cdcb70e1c6b3d3}{}(N\+S\+String $\ast$) -\/ \hyperlink{interface_b_x_entity_description_aba35834b6bb7a182a3cdcb70e1c6b3d3}{schema\+Name}\label{interface_b_x_entity_description_aba35834b6bb7a182a3cdcb70e1c6b3d3}
+
+\item 
+(void) -\/ \hyperlink{interface_b_x_entity_description_a3e9f8ff9b56f2008d12e0df5681fa09f}{set\+Database\+Object\+Class\+:}
+\end{DoxyCompactItemize}
+
+
+\subsection{Method Documentation}
+\hypertarget{interface_b_x_entity_description_aec04219f4604dae1bfdac0f46864e2a2}{}\index{B\+X\+Entity\+Description@{B\+X\+Entity\+Description}!attributes\+By\+Name@{attributes\+By\+Name}}
+\index{attributes\+By\+Name@{attributes\+By\+Name}!B\+X\+Entity\+Description@{B\+X\+Entity\+Description}}
+\subsubsection[{attributes\+By\+Name}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (N\+S\+Dictionary $\ast$) attributes\+By\+Name 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+}\label{interface_b_x_entity_description_aec04219f4604dae1bfdac0f46864e2a2}
+
+
+Attributes for this entity. 
+
+Primary key fields and other fields for this entity. \begin{DoxyReturn}{Returns}
+An N\+S\+Dictionary with N\+S\+Strings as keys and B\+X\+Attribute\+Descriptions as objects. 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{interface_b_x_entity_description_a0ece23ac0e8fe5ee9d66103306cbeb7b}{-\/ is\+Validated} 
+\end{DoxySeeAlso}
+\hypertarget{interface_b_x_entity_description_a9b0743ba6503d46910c050c3e9870af4}{}\index{B\+X\+Entity\+Description@{B\+X\+Entity\+Description}!database\+Object\+Class@{database\+Object\+Class}}
+\index{database\+Object\+Class@{database\+Object\+Class}!B\+X\+Entity\+Description@{B\+X\+Entity\+Description}}
+\subsubsection[{database\+Object\+Class}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (Class) database\+Object\+Class 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+}\label{interface_b_x_entity_description_a9b0743ba6503d46910c050c3e9870af4}
+
+
+The class for this entity. 
+
+\begin{DoxyReturn}{Returns}
+The default class is \hyperlink{interface_b_x_database_object}{B\+X\+Database\+Object}. 
+\end{DoxyReturn}
+\hypertarget{interface_b_x_entity_description_a97ba11f96ac36aa1109c42dfb291242b}{}\index{B\+X\+Entity\+Description@{B\+X\+Entity\+Description}!fields@{fields}}
+\index{fields@{fields}!B\+X\+Entity\+Description@{B\+X\+Entity\+Description}}
+\subsubsection[{fields}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (N\+S\+Array $\ast$) fields 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+}\label{interface_b_x_entity_description_a97ba11f96ac36aa1109c42dfb291242b}
+
+
+Non-\/primary key fields for this entity. 
+
+\begin{DoxyReturn}{Returns}
+An array of B\+X\+Attribute\+Descriptions 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{interface_b_x_entity_description_a0ece23ac0e8fe5ee9d66103306cbeb7b}{-\/ is\+Validated} 
+\end{DoxySeeAlso}
+\hypertarget{interface_b_x_entity_description_a0ece23ac0e8fe5ee9d66103306cbeb7b}{}\index{B\+X\+Entity\+Description@{B\+X\+Entity\+Description}!is\+Validated@{is\+Validated}}
+\index{is\+Validated@{is\+Validated}!B\+X\+Entity\+Description@{B\+X\+Entity\+Description}}
+\subsubsection[{is\+Validated}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (B\+O\+O\+L) is\+Validated 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+}\label{interface_b_x_entity_description_a0ece23ac0e8fe5ee9d66103306cbeb7b}
+
+
+Entity validation. 
+
+The entity will be validated after a database connection has been made. Afterwards, \hyperlink{interface_b_x_entity_description_a97ba11f96ac36aa1109c42dfb291242b}{fields}, \hyperlink{interface_b_x_entity_description_a58dcb8ea7e1074ddb2c590c3507768b1}{primary\+Key\+Fields}, \hyperlink{interface_b_x_entity_description_aec04219f4604dae1bfdac0f46864e2a2}{attributes\+By\+Name} and \hyperlink{interface_b_x_entity_description_a8123d917345a8b6a81d44fbf95e4860a}{relationships\+By\+Name} return meaningful values.
+
+\begin{DoxyNote}{Note}
+To call this safely, {\itshape m\+Validation\+Lock} should be acquired first. Our validation methods do this, though. 
+\end{DoxyNote}
+\hypertarget{interface_b_x_entity_description_a58dcb8ea7e1074ddb2c590c3507768b1}{}\index{B\+X\+Entity\+Description@{B\+X\+Entity\+Description}!primary\+Key\+Fields@{primary\+Key\+Fields}}
+\index{primary\+Key\+Fields@{primary\+Key\+Fields}!B\+X\+Entity\+Description@{B\+X\+Entity\+Description}}
+\subsubsection[{primary\+Key\+Fields}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (N\+S\+Array $\ast$) primary\+Key\+Fields 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+}\label{interface_b_x_entity_description_a58dcb8ea7e1074ddb2c590c3507768b1}
+
+
+Primary key fields for this entity. 
+
+The fields get determined automatically after database connection has been made. \begin{DoxyReturn}{Returns}
+An array of B\+X\+Attribute\+Descriptions 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{interface_b_x_entity_description_a0ece23ac0e8fe5ee9d66103306cbeb7b}{-\/ is\+Validated} 
+\end{DoxySeeAlso}
+\hypertarget{interface_b_x_entity_description_a8123d917345a8b6a81d44fbf95e4860a}{}\index{B\+X\+Entity\+Description@{B\+X\+Entity\+Description}!relationships\+By\+Name@{relationships\+By\+Name}}
+\index{relationships\+By\+Name@{relationships\+By\+Name}!B\+X\+Entity\+Description@{B\+X\+Entity\+Description}}
+\subsubsection[{relationships\+By\+Name}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (N\+S\+Dictionary $\ast$) relationships\+By\+Name 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+}\label{interface_b_x_entity_description_a8123d917345a8b6a81d44fbf95e4860a}
+
+
+Relationships for this entity. 
+
+\begin{DoxyReturn}{Returns}
+An N\+S\+Dictionary with N\+S\+Strings as keys and B\+X\+Relationship\+Descriptions as objects. 
+\end{DoxyReturn}
+\hypertarget{interface_b_x_entity_description_a3e9f8ff9b56f2008d12e0df5681fa09f}{}\index{B\+X\+Entity\+Description@{B\+X\+Entity\+Description}!set\+Database\+Object\+Class\+:@{set\+Database\+Object\+Class\+:}}
+\index{set\+Database\+Object\+Class\+:@{set\+Database\+Object\+Class\+:}!B\+X\+Entity\+Description@{B\+X\+Entity\+Description}}
+\subsubsection[{set\+Database\+Object\+Class\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (void) set\+Database\+Object\+Class\+: 
+\begin{DoxyParamCaption}
+\item[{(Class)}]{cls}
+\end{DoxyParamCaption}
+}\label{interface_b_x_entity_description_a3e9f8ff9b56f2008d12e0df5681fa09f}
+
+
+Set the class for this entity. 
+
+Objects fetched using this entity will be instances of the given class, which needs to be a subclass of \hyperlink{interface_b_x_database_object}{B\+X\+Database\+Object}. 
+\begin{DoxyParams}{Parameters}
+{\em cls} & The object class. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+If objects have been fetched from this entity before setting a class, those objects might be returned by subsequent fetches. It is best to set the class before connecting to the database. 
+\end{DoxyNote}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+B\+X\+Entity\+Description.\+h\item 
+B\+X\+Entity\+Description.\+m\end{DoxyCompactItemize}

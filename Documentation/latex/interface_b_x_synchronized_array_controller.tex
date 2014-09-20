@@ -1,0 +1,273 @@
+\hypertarget{interface_b_x_synchronized_array_controller}{}\section{B\+X\+Synchronized\+Array\+Controller Class Reference}
+\label{interface_b_x_synchronized_array_controller}\index{B\+X\+Synchronized\+Array\+Controller@{B\+X\+Synchronized\+Array\+Controller}}
+
+
+\subsection{Overview}
+An N\+S\+Array\+Controller subclass for use with Base\+Ten. 
+
+A \hyperlink{interface_b_x_synchronized_array_controller}{B\+X\+Synchronized\+Array\+Controller} updates its contents automatically based on notifications received from a database context. In order to function, its database\+Context outlet needs to be connected. It may also fetch objects when the context connects. However, this option should not be enabled if the controller's contents are bound to a relationship in a database object. \subsection*{Instance Methods}
+\begin{DoxyCompactItemize}
+\item 
+(id) -\/ \hyperlink{interface_b_x_synchronized_array_controller_a37ef1327299aaca85df1510ff254bef6}{create\+Object\+:}
+\item 
+\hypertarget{interface_b_x_synchronized_array_controller_ac66d8fc780c695f0d1388d8f68fc6f23}{}(B\+X\+Database\+Context $\ast$) -\/ \hyperlink{interface_b_x_synchronized_array_controller_ac66d8fc780c695f0d1388d8f68fc6f23}{database\+Context}\label{interface_b_x_synchronized_array_controller_ac66d8fc780c695f0d1388d8f68fc6f23}
+
+\item 
+\hypertarget{interface_b_x_synchronized_array_controller_a71cf14e06fca4db58b057848d91f3236}{}(\hyperlink{interface_b_x_entity_description}{B\+X\+Entity\+Description} $\ast$) -\/ \hyperlink{interface_b_x_synchronized_array_controller_a71cf14e06fca4db58b057848d91f3236}{entity\+Description}\label{interface_b_x_synchronized_array_controller_a71cf14e06fca4db58b057848d91f3236}
+
+\item 
+\hypertarget{interface_b_x_synchronized_array_controller_a0a34cb91f193da2b30112c1218d66b5b}{}(B\+O\+O\+L) -\/ \hyperlink{interface_b_x_synchronized_array_controller_a0a34cb91f193da2b30112c1218d66b5b}{fetches\+Automatically}\label{interface_b_x_synchronized_array_controller_a0a34cb91f193da2b30112c1218d66b5b}
+
+\item 
+\hypertarget{interface_b_x_synchronized_array_controller_a7877feacfc5cfaca8df9e1596a296bc4}{}(B\+O\+O\+L) -\/ \hyperlink{interface_b_x_synchronized_array_controller_a7877feacfc5cfaca8df9e1596a296bc4}{locks\+Rows\+On\+Begin\+Editing}\label{interface_b_x_synchronized_array_controller_a7877feacfc5cfaca8df9e1596a296bc4}
+
+\item 
+\hypertarget{interface_b_x_synchronized_array_controller_a55c39dfa499df6453f65c8835fcea9ce}{}(N\+S\+Array $\ast$) -\/ \hyperlink{interface_b_x_synchronized_array_controller_a55c39dfa499df6453f65c8835fcea9ce}{selected\+Object\+I\+Ds}\label{interface_b_x_synchronized_array_controller_a55c39dfa499df6453f65c8835fcea9ce}
+
+\item 
+(void) -\/ \hyperlink{interface_b_x_synchronized_array_controller_add89f8394886d43ce1f8f51a1b5c5f1d}{set\+Database\+Context\+:}
+\item 
+\hypertarget{interface_b_x_synchronized_array_controller_ae432317068c3e27867f7a69896c7b519}{}(void) -\/ \hyperlink{interface_b_x_synchronized_array_controller_ae432317068c3e27867f7a69896c7b519}{set\+Entity\+Description\+:}\label{interface_b_x_synchronized_array_controller_ae432317068c3e27867f7a69896c7b519}
+
+\item 
+(void) -\/ \hyperlink{interface_b_x_synchronized_array_controller_a5b7255ae4d2615c391a8b5461cd82d62}{set\+Fetches\+Automatically\+:}
+\item 
+(void) -\/ \hyperlink{interface_b_x_synchronized_array_controller_a1dbb697e1e8658fde5d59f2b1eace25f}{set\+Locks\+Rows\+On\+Begin\+Editing\+:}
+\end{DoxyCompactItemize}
+\begin{Indent}{\bf Methods used by the I\+B plugin}\par
+{\em The controller will try to get an entity description when its database context based on these properties. This will occur when the context gets set and when the context connects. If a class name has also been set, the controller will call N\+S\+Class\+From\+String and set the entity's corresponding property. }\begin{DoxyCompactItemize}
+\item 
+\hypertarget{interface_b_x_synchronized_array_controller_ad5469de11657d55b2b0ce0b7158806d8}{}(N\+S\+String $\ast$) -\/ \hyperlink{interface_b_x_synchronized_array_controller_ad5469de11657d55b2b0ce0b7158806d8}{schema\+Name}\label{interface_b_x_synchronized_array_controller_ad5469de11657d55b2b0ce0b7158806d8}
+
+\item 
+\hypertarget{interface_b_x_synchronized_array_controller_af6a75bbcc92629c7cdceebb16284c4a5}{}(void) -\/ \hyperlink{interface_b_x_synchronized_array_controller_af6a75bbcc92629c7cdceebb16284c4a5}{set\+Schema\+Name\+:}\label{interface_b_x_synchronized_array_controller_af6a75bbcc92629c7cdceebb16284c4a5}
+
+\item 
+\hypertarget{interface_b_x_synchronized_array_controller_a6ddffbf2a957c9c492adfd36d9d78831}{}(N\+S\+String $\ast$) -\/ \hyperlink{interface_b_x_synchronized_array_controller_a6ddffbf2a957c9c492adfd36d9d78831}{table\+Name}\label{interface_b_x_synchronized_array_controller_a6ddffbf2a957c9c492adfd36d9d78831}
+
+\item 
+\hypertarget{interface_b_x_synchronized_array_controller_a3e6c79db00f483ad8293021a7a2b46f8}{}(void) -\/ \hyperlink{interface_b_x_synchronized_array_controller_a3e6c79db00f483ad8293021a7a2b46f8}{set\+Table\+Name\+:}\label{interface_b_x_synchronized_array_controller_a3e6c79db00f483ad8293021a7a2b46f8}
+
+\item 
+\hypertarget{interface_b_x_synchronized_array_controller_a8bf18491bebe11ba20b353763e7ac697}{}(N\+S\+String $\ast$) -\/ \hyperlink{interface_b_x_synchronized_array_controller_a8bf18491bebe11ba20b353763e7ac697}{database\+Object\+Class\+Name}\label{interface_b_x_synchronized_array_controller_a8bf18491bebe11ba20b353763e7ac697}
+
+\item 
+\hypertarget{interface_b_x_synchronized_array_controller_a0d2a8f1d22f5b0aef3f41a977f06abfc}{}(void) -\/ \hyperlink{interface_b_x_synchronized_array_controller_a0d2a8f1d22f5b0aef3f41a977f06abfc}{set\+Database\+Object\+Class\+Name\+:}\label{interface_b_x_synchronized_array_controller_a0d2a8f1d22f5b0aef3f41a977f06abfc}
+
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Overridden methods}\par
+{\em Methods changed from N\+S\+Array\+Controller's implementation. }\begin{DoxyCompactItemize}
+\item 
+(N\+S\+Array $\ast$) -\/ \hyperlink{interface_b_x_synchronized_array_controller_a587959cfaba55da6923523b9ff8fe0cc}{exposed\+Bindings}{\ttfamily  \mbox{[}implementation\mbox{]}}
+\item 
+\hypertarget{interface_b_x_synchronized_array_controller_a01fbf2129c47c9419045a98c860a14e7}{}(void) -\/ {\bfseries bind\+:to\+Object\+:with\+Key\+Path\+:options\+:}{\ttfamily  \mbox{[}implementation\mbox{]}}\label{interface_b_x_synchronized_array_controller_a01fbf2129c47c9419045a98c860a14e7}
+
+\item 
+\hypertarget{interface_b_x_synchronized_array_controller_aa96b15db9625779882a961f8d3c9163b}{}(void) -\/ {\bfseries unbind\+:}{\ttfamily  \mbox{[}implementation\mbox{]}}\label{interface_b_x_synchronized_array_controller_aa96b15db9625779882a961f8d3c9163b}
+
+\item 
+\hypertarget{interface_b_x_synchronized_array_controller_a09f09b6bce743650d43483e065eb97af}{}(void) -\/ {\bfseries object\+Did\+Begin\+Editing\+:}{\ttfamily  \mbox{[}implementation\mbox{]}}\label{interface_b_x_synchronized_array_controller_a09f09b6bce743650d43483e065eb97af}
+
+\item 
+\hypertarget{interface_b_x_synchronized_array_controller_a4f105106d068a2b480dc5f51af84c705}{}(void) -\/ {\bfseries object\+Did\+End\+Editing\+:}{\ttfamily  \mbox{[}implementation\mbox{]}}\label{interface_b_x_synchronized_array_controller_a4f105106d068a2b480dc5f51af84c705}
+
+\item 
+(void) -\/ \hyperlink{interface_b_x_synchronized_array_controller_a612575f2b7d348b5d4e558a4f79ac384}{fetch\+:}{\ttfamily  \mbox{[}implementation\mbox{]}}
+\item 
+(B\+O\+O\+L) -\/ \hyperlink{interface_b_x_synchronized_array_controller_a75afbfa87d253787cc278a2d923e3835}{fetch\+With\+Request\+:merge\+:error\+:}{\ttfamily  \mbox{[}implementation\mbox{]}}
+\item 
+(id) -\/ \hyperlink{interface_b_x_synchronized_array_controller_a0c729a7a66ceb0b5cf2aed4c7cc85184}{new\+Object}{\ttfamily  \mbox{[}implementation\mbox{]}}
+\item 
+\hypertarget{interface_b_x_synchronized_array_controller_a0ae63e814a0a0a5d2e3d995ab71146d0}{}(void) -\/ {\bfseries insert\+Object\+:at\+Arranged\+Object\+Index\+:}{\ttfamily  \mbox{[}implementation\mbox{]}}\label{interface_b_x_synchronized_array_controller_a0ae63e814a0a0a5d2e3d995ab71146d0}
+
+\item 
+(void) -\/ \hyperlink{interface_b_x_synchronized_array_controller_a66992377b65b676a3ae2ba37a1605787}{remove\+Objects\+At\+Arranged\+Object\+Indexes\+:}{\ttfamily  \mbox{[}implementation\mbox{]}}
+\item 
+\hypertarget{interface_b_x_synchronized_array_controller_a8398e7617bb0166330384b1db8b2008a}{}(N\+S\+String $\ast$) -\/ {\bfseries entity\+Name}{\ttfamily  \mbox{[}implementation\mbox{]}}\label{interface_b_x_synchronized_array_controller_a8398e7617bb0166330384b1db8b2008a}
+
+\item 
+\hypertarget{interface_b_x_synchronized_array_controller_a53199301ebf0ce4125af52d48b0468cf}{}(void) -\/ {\bfseries set\+Entity\+Name\+:}{\ttfamily  \mbox{[}implementation\mbox{]}}\label{interface_b_x_synchronized_array_controller_a53199301ebf0ce4125af52d48b0468cf}
+
+\item 
+\hypertarget{interface_b_x_synchronized_array_controller_a3840c893f7918089c86bc7983f65f827}{}(N\+S\+Managed\+Object\+Context $\ast$) -\/ {\bfseries managed\+Object\+Context}{\ttfamily  \mbox{[}implementation\mbox{]}}\label{interface_b_x_synchronized_array_controller_a3840c893f7918089c86bc7983f65f827}
+
+\item 
+\hypertarget{interface_b_x_synchronized_array_controller_aa197a6417278d29f13df6dc20fb284f5}{}(void) -\/ {\bfseries set\+Managed\+Object\+Context\+:}{\ttfamily  \mbox{[}implementation\mbox{]}}\label{interface_b_x_synchronized_array_controller_aa197a6417278d29f13df6dc20fb284f5}
+
+\item 
+\hypertarget{interface_b_x_synchronized_array_controller_a574ca645df789870864cc047ecb689db}{}(B\+O\+O\+L) -\/ {\bfseries uses\+Lazy\+Fetching}{\ttfamily  \mbox{[}implementation\mbox{]}}\label{interface_b_x_synchronized_array_controller_a574ca645df789870864cc047ecb689db}
+
+\item 
+\hypertarget{interface_b_x_synchronized_array_controller_aa557f665ea0d01c456f612969d76e63a}{}(void) -\/ {\bfseries set\+Uses\+Lazy\+Fetching\+:}{\ttfamily  \mbox{[}implementation\mbox{]}}\label{interface_b_x_synchronized_array_controller_aa557f665ea0d01c456f612969d76e63a}
+
+\item 
+\hypertarget{interface_b_x_synchronized_array_controller_a9039caba64d8794080fcbe574323ecb0}{}(Class) -\/ {\bfseries object\+Class}{\ttfamily  \mbox{[}implementation\mbox{]}}\label{interface_b_x_synchronized_array_controller_a9039caba64d8794080fcbe574323ecb0}
+
+\item 
+\hypertarget{interface_b_x_synchronized_array_controller_abf651553a326c3b86a3b88bd965febe9}{}(void) -\/ {\bfseries set\+Object\+Class\+:}{\ttfamily  \mbox{[}implementation\mbox{]}}\label{interface_b_x_synchronized_array_controller_abf651553a326c3b86a3b88bd965febe9}
+
+\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{interface_b_x_synchronized_array_controller_a988928090cda61c023ddfe9cbeb9bcd3}{}I\+B\+Outlet B\+X\+Database\+Context $\ast$ \hyperlink{interface_b_x_synchronized_array_controller_a988928090cda61c023ddfe9cbeb9bcd3}{database\+Context}\label{interface_b_x_synchronized_array_controller_a988928090cda61c023ddfe9cbeb9bcd3}
+
+\item 
+\hypertarget{interface_b_x_synchronized_array_controller_a18a52ae9ab49d6d9383726c5a97354ed}{}I\+B\+Outlet N\+S\+Window $\ast$ \hyperlink{interface_b_x_synchronized_array_controller_a18a52ae9ab49d6d9383726c5a97354ed}{modal\+Window}\label{interface_b_x_synchronized_array_controller_a18a52ae9ab49d6d9383726c5a97354ed}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Method Documentation}
+\hypertarget{interface_b_x_synchronized_array_controller_a37ef1327299aaca85df1510ff254bef6}{}\index{B\+X\+Synchronized\+Array\+Controller@{B\+X\+Synchronized\+Array\+Controller}!create\+Object\+:@{create\+Object\+:}}
+\index{create\+Object\+:@{create\+Object\+:}!B\+X\+Synchronized\+Array\+Controller@{B\+X\+Synchronized\+Array\+Controller}}
+\subsubsection[{create\+Object\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (id) create\+Object\+: 
+\begin{DoxyParamCaption}
+\item[{(N\+S\+Error $\ast$$\ast$)}]{out\+Error}
+\end{DoxyParamCaption}
+}\label{interface_b_x_synchronized_array_controller_a37ef1327299aaca85df1510ff254bef6}
+
+
+Create a new object. 
+
+Calls -\/\mbox{[}B\+X\+Database\+Context create\+Object\+For\+Entity\+:with\+Field\+Values\+:error\+:\mbox{]}. If the receiver's content\+Set is bound to another \hyperlink{interface_b_x_synchronized_array_controller}{B\+X\+Synchronized\+Array\+Controller} using a key that refers to a to-\/many relationship, the created object's foreign key values will be set accordingly. 
+\begin{DoxyParams}{Parameters}
+{\em out\+Error} & Error returned by the database. If N\+U\+L\+L is passed and an error occurs, B\+X\+Database\+Context will raise an exception by default. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+An autoreleased \hyperlink{interface_b_x_database_object}{B\+X\+Database\+Object}. 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{interface_b_x_synchronized_array_controller_a0c729a7a66ceb0b5cf2aed4c7cc85184}{-\/ new\+Object} 
+\end{DoxySeeAlso}
+\hypertarget{interface_b_x_synchronized_array_controller_a587959cfaba55da6923523b9ff8fe0cc}{}\index{B\+X\+Synchronized\+Array\+Controller@{B\+X\+Synchronized\+Array\+Controller}!exposed\+Bindings@{exposed\+Bindings}}
+\index{exposed\+Bindings@{exposed\+Bindings}!B\+X\+Synchronized\+Array\+Controller@{B\+X\+Synchronized\+Array\+Controller}}
+\subsubsection[{exposed\+Bindings}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (N\+S\+Array $\ast$) exposed\+Bindings 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+\hspace{0.3cm}{\ttfamily [implementation]}}\label{interface_b_x_synchronized_array_controller_a587959cfaba55da6923523b9ff8fe0cc}
+
+
+Exposed bindings. 
+
+managed\+Object\+Context is removed from bindings exposed by the superclass. \hypertarget{interface_b_x_synchronized_array_controller_a612575f2b7d348b5d4e558a4f79ac384}{}\index{B\+X\+Synchronized\+Array\+Controller@{B\+X\+Synchronized\+Array\+Controller}!fetch\+:@{fetch\+:}}
+\index{fetch\+:@{fetch\+:}!B\+X\+Synchronized\+Array\+Controller@{B\+X\+Synchronized\+Array\+Controller}}
+\subsubsection[{fetch\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (void) fetch\+: 
+\begin{DoxyParamCaption}
+\item[{(id)}]{sender}
+\end{DoxyParamCaption}
+\hspace{0.3cm}{\ttfamily [implementation]}}\label{interface_b_x_synchronized_array_controller_a612575f2b7d348b5d4e558a4f79ac384}
+
+
+Perform a fetch. 
+
+Calls -\/fetch\+With\+Request\+:merge\+:error\+:. If an error occurs, an alert sheet or panel is displayed. 
+\begin{DoxyParams}{Parameters}
+{\em sender} & Ignored. \\
+\hline
+\end{DoxyParams}
+\hypertarget{interface_b_x_synchronized_array_controller_a75afbfa87d253787cc278a2d923e3835}{}\index{B\+X\+Synchronized\+Array\+Controller@{B\+X\+Synchronized\+Array\+Controller}!fetch\+With\+Request\+:merge\+:error\+:@{fetch\+With\+Request\+:merge\+:error\+:}}
+\index{fetch\+With\+Request\+:merge\+:error\+:@{fetch\+With\+Request\+:merge\+:error\+:}!B\+X\+Synchronized\+Array\+Controller@{B\+X\+Synchronized\+Array\+Controller}}
+\subsubsection[{fetch\+With\+Request\+:merge\+:error\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (B\+O\+O\+L) fetch\+With\+Request\+: 
+\begin{DoxyParamCaption}
+\item[{(N\+S\+Fetch\+Request $\ast$)}]{fetch\+Request}
+\item[{merge:(B\+O\+O\+L)}]{merge}
+\item[{error:(N\+S\+Error $\ast$$\ast$)}]{error}
+\end{DoxyParamCaption}
+\hspace{0.3cm}{\ttfamily [implementation]}}\label{interface_b_x_synchronized_array_controller_a75afbfa87d253787cc278a2d923e3835}
+
+
+Perform a fetch. 
+
+Fetch objects from the database. 
+\begin{DoxyParams}{Parameters}
+{\em fetch\+Reques} & Currently ignored. Pass nil. \\
+\hline
+{\em merge} & Whether the content should be replaced. If the receiver already has a collection, it won't be re-\/fetched, because the collection's contents will be automatically updated. \\
+\hline
+{\em error} & Error returned by the database. If N\+U\+L\+L is passed and an error occurs, B\+X\+Database\+Context will raise an exception by default. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+If the fetch was successful or it wasn't needed, the receiver will return Y\+E\+S. 
+\end{DoxyReturn}
+\hypertarget{interface_b_x_synchronized_array_controller_a0c729a7a66ceb0b5cf2aed4c7cc85184}{}\index{B\+X\+Synchronized\+Array\+Controller@{B\+X\+Synchronized\+Array\+Controller}!new\+Object@{new\+Object}}
+\index{new\+Object@{new\+Object}!B\+X\+Synchronized\+Array\+Controller@{B\+X\+Synchronized\+Array\+Controller}}
+\subsubsection[{new\+Object}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (id) new\+Object 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+\hspace{0.3cm}{\ttfamily [implementation]}}\label{interface_b_x_synchronized_array_controller_a0c729a7a66ceb0b5cf2aed4c7cc85184}
+
+
+Create a new object. 
+
+Calls \hyperlink{interface_b_x_synchronized_array_controller_a37ef1327299aaca85df1510ff254bef6}{create\+Object\+:}, which in turn calls -\/\mbox{[}B\+X\+Database\+Context create\+Object\+For\+Entity\+:with\+Field\+Values\+:error\+:\mbox{]}. If an error occurs, an alert sheet or panel will be displayed. If the receiver's content\+Set is bound to another \hyperlink{interface_b_x_synchronized_array_controller}{B\+X\+Synchronized\+Array\+Controller} using a key that refers to a to-\/many relationship, the created object's foreign key values will be set accordingly. \begin{DoxyReturn}{Returns}
+A retained \hyperlink{interface_b_x_database_object}{B\+X\+Database\+Object}. 
+\end{DoxyReturn}
+\hypertarget{interface_b_x_synchronized_array_controller_a66992377b65b676a3ae2ba37a1605787}{}\index{B\+X\+Synchronized\+Array\+Controller@{B\+X\+Synchronized\+Array\+Controller}!remove\+Objects\+At\+Arranged\+Object\+Indexes\+:@{remove\+Objects\+At\+Arranged\+Object\+Indexes\+:}}
+\index{remove\+Objects\+At\+Arranged\+Object\+Indexes\+:@{remove\+Objects\+At\+Arranged\+Object\+Indexes\+:}!B\+X\+Synchronized\+Array\+Controller@{B\+X\+Synchronized\+Array\+Controller}}
+\subsubsection[{remove\+Objects\+At\+Arranged\+Object\+Indexes\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (void) remove\+Objects\+At\+Arranged\+Object\+Indexes\+: 
+\begin{DoxyParamCaption}
+\item[{(N\+S\+Index\+Set $\ast$)}]{indexes}
+\end{DoxyParamCaption}
+\hspace{0.3cm}{\ttfamily [implementation]}}\label{interface_b_x_synchronized_array_controller_a66992377b65b676a3ae2ba37a1605787}
+
+
+Delete objects at specified indices. 
+
+Deletes specified rows from the database. The objects will be marked deleted. If an error occurs, an alert sheet or panel will be displayed. \hypertarget{interface_b_x_synchronized_array_controller_add89f8394886d43ce1f8f51a1b5c5f1d}{}\index{B\+X\+Synchronized\+Array\+Controller@{B\+X\+Synchronized\+Array\+Controller}!set\+Database\+Context\+:@{set\+Database\+Context\+:}}
+\index{set\+Database\+Context\+:@{set\+Database\+Context\+:}!B\+X\+Synchronized\+Array\+Controller@{B\+X\+Synchronized\+Array\+Controller}}
+\subsubsection[{set\+Database\+Context\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (void) set\+Database\+Context\+: 
+\begin{DoxyParamCaption}
+\item[{(B\+X\+Database\+Context $\ast$)}]{ctx}
+\end{DoxyParamCaption}
+}\label{interface_b_x_synchronized_array_controller_add89f8394886d43ce1f8f51a1b5c5f1d}
+
+
+Set the database context. 
+
+\begin{DoxySeeAlso}{See also}
+\hyperlink{interface_b_x_synchronized_array_controller_a5b7255ae4d2615c391a8b5461cd82d62}{-\/ set\+Fetches\+Automatically\+:} 
+\end{DoxySeeAlso}
+\hypertarget{interface_b_x_synchronized_array_controller_a5b7255ae4d2615c391a8b5461cd82d62}{}\index{B\+X\+Synchronized\+Array\+Controller@{B\+X\+Synchronized\+Array\+Controller}!set\+Fetches\+Automatically\+:@{set\+Fetches\+Automatically\+:}}
+\index{set\+Fetches\+Automatically\+:@{set\+Fetches\+Automatically\+:}!B\+X\+Synchronized\+Array\+Controller@{B\+X\+Synchronized\+Array\+Controller}}
+\subsubsection[{set\+Fetches\+Automatically\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (void) set\+Fetches\+Automatically\+: 
+\begin{DoxyParamCaption}
+\item[{(B\+O\+O\+L)}]{a\+Bool}
+\end{DoxyParamCaption}
+}\label{interface_b_x_synchronized_array_controller_a5b7255ae4d2615c391a8b5461cd82d62}
+
+
+Set whether this controller fetches automatically. 
+
+This causes the content to be fetched automatically when the array controller receives a connection notification or the array controller's database context is set and is already connected. \begin{DoxyNote}{Note}
+Controllers the content of which is bound to other B\+X\+Synchronized\+Array\+Controllers should not fetch on connect. 
+\end{DoxyNote}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{interface_b_x_synchronized_array_controller_add89f8394886d43ce1f8f51a1b5c5f1d}{-\/ set\+Database\+Context\+:} 
+\end{DoxySeeAlso}
+\hypertarget{interface_b_x_synchronized_array_controller_a1dbb697e1e8658fde5d59f2b1eace25f}{}\index{B\+X\+Synchronized\+Array\+Controller@{B\+X\+Synchronized\+Array\+Controller}!set\+Locks\+Rows\+On\+Begin\+Editing\+:@{set\+Locks\+Rows\+On\+Begin\+Editing\+:}}
+\index{set\+Locks\+Rows\+On\+Begin\+Editing\+:@{set\+Locks\+Rows\+On\+Begin\+Editing\+:}!B\+X\+Synchronized\+Array\+Controller@{B\+X\+Synchronized\+Array\+Controller}}
+\subsubsection[{set\+Locks\+Rows\+On\+Begin\+Editing\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (void) set\+Locks\+Rows\+On\+Begin\+Editing\+: 
+\begin{DoxyParamCaption}
+\item[{(B\+O\+O\+L)}]{a\+Bool}
+\end{DoxyParamCaption}
+}\label{interface_b_x_synchronized_array_controller_a1dbb697e1e8658fde5d59f2b1eace25f}
+
+
+Set whether the receiver begins a transaction for each editing session. 
+
+Sets whether the receiver asks its database context to begin a transaction to lock the corresponding row when each editing session begins. Regardless of the context setting for sending lock notifications, other Base\+Ten clients will always be notified. When editing ends, the transaction will end as well. This is determined from calls to -\/object\+Did\+Begin\+Editing\+: and -\/object\+Did\+End\+Editing\+: declared in N\+S\+Editor protocol. The default is Y\+E\+S. \begin{DoxySeeAlso}{See also}
+B\+X\+Database\+Context\+::set\+Sends\+Lock\+Queries\+: 
+\end{DoxySeeAlso}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+B\+X\+Synchronized\+Array\+Controller.\+h\item 
+B\+X\+Synchronized\+Array\+Controller.\+m\end{DoxyCompactItemize}

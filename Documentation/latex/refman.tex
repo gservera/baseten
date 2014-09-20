@@ -1,0 +1,108 @@
+\batchmode
+\documentclass[a4paper]{book}
+\usepackage{a4wide}
+\usepackage{makeidx}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{float}
+\usepackage{textcomp}
+\usepackage{alltt}
+\usepackage{times}
+\usepackage[pdftex,
+            pagebackref=true,
+            colorlinks=true,
+            linkcolor=blue,
+            unicode
+           ]{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage{doxygen}
+\usepackage{multirow}
+\usepackage{listings}
+\usepackage{rotating}
+\makeindex
+\setcounter{tocdepth}{3}
+\renewcommand{\footrulewidth}{0.4pt}
+\renewcommand{\printindex}{\clearpage\pagestyle{empty}\fancyhf{}\mbox{}} %% Omit the index. Add an empty page instead.
+
+
+\begin{document}
+
+\begin{titlepage}
+\fontsize{40pt}{0pt}\selectfont
+\vspace*{5cm}
+\parbox{\columnwidth}{\raggedright{BaseTen 1.8}}
+\rule{\columnwidth}{1pt}
+\fontsize{18pt}{16pt}\selectfont
+\parbox{\columnwidth}{\raggedright\hspace{1mm}Reference Manual}
+\vfill
+\center{\normalsize{MK\&C}}
+\end{titlepage}
+
+\clearemptydoublepage
+\pagenumbering{roman}
+\tableofcontents
+\clearemptydoublepage
+\pagenumbering{arabic}
+
+\chapter{Introduction}
+\label{index}\hypertarget{index}{}\input{index}
+\chapter{Using Base\+Ten framework}
+\label{general_usage}
+\hypertarget{general_usage}{}
+\input{general_usage}
+\chapter{Database administration}
+\label{database_usage}
+\hypertarget{database_usage}{}
+\input{database_usage}
+\chapter{Module Documentation}
+\input{group__baseten}
+\include{group__descriptions}
+\include{group__auto__containers}
+\include{group__baseten__appkit}
+\include{group__value__transformers}
+\chapter{Class Documentation}
+\input{interface_b_x_abstract_description}
+\input{interface_b_x_array_proxy}
+\input{interface_b_x_attribute_description}
+\input{interface_b_x_container_proxy}
+\input{protocol_b_x_database_context_delegate-p}
+\input{interface_b_x_database_object}
+\input{interface_b_x_database_object_i_d}
+\input{interface_b_x_database_object_model}
+\input{interface_b_x_database_object_model_storage}
+\input{interface_b_x_entity_description}
+\input{interface_b_x_exception}
+\input{interface_b_x_net_service_connector}
+\input{interface_b_x_object_status_info}
+\input{interface_b_x_object_status_to_color_transformer}
+\input{interface_b_x_object_status_to_editable_transformer}
+\input{interface_b_x_property_description}
+\input{interface_b_x_relationship_description}
+\input{interface_b_x_set_proxy}
+\input{interface_b_x_synchronized_array_controller}
+\input{category_n_s_object_07_p_g_t_s_connection_delegate_08}
+\input{interface_p_g_t_s_connection}
+\input{category_p_g_t_s_connection_07_misc_accessors_08}
+\input{category_p_g_t_s_connection_07_n_s_coding_08}
+\input{category_p_g_t_s_connection_07_queries_main_thread_08}
+\input{category_p_g_t_s_connection_07_queries_worker_thread_08}
+\input{category_p_g_t_s_connection_07_status_methods_08}
+\input{category_p_g_t_s_connection_07_transaction_handling_08}
+\input{protocol_p_g_t_s_connection_delegate-p}
+\input{interface_p_g_t_s_result_set}
+\input{category_p_g_t_s_result_set_07_serialization_08}
+\chapter{File Documentation}
+\input{_b_x_constants_8h}
+\input{_b_x_logger_8h}
+%--- End generated contents ---
+
+% Index
+\backmatter
+\newpage
+\phantomsection
+\clearemptydoublepage
+\addcontentsline{toc}{chapter}{Index}
+\printindex
+
+\end{document}

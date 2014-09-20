@@ -1,0 +1,58 @@
+\hypertarget{interface_b_x_attribute_description}{}\section{B\+X\+Attribute\+Description Class Reference}
+\label{interface_b_x_attribute_description}\index{B\+X\+Attribute\+Description@{B\+X\+Attribute\+Description}}
+
+
+\subsection{Overview}
+An attribute description contains information about a column in a specific entity. 
+
+\begin{DoxyNote}{Note}
+This class's documented methods are thread-\/safe. Creating objects, however, is not. 
+
+For this class to work in non-\/\+G\+C applications, the corresponding database context must be retained as well. 
+\end{DoxyNote}
+\subsection*{Instance Methods}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{interface_b_x_attribute_description_a2be964c3a5713f86b3ebd31731082f0d}{}(Class) -\/ \hyperlink{interface_b_x_attribute_description_a2be964c3a5713f86b3ebd31731082f0d}{attribute\+Value\+Class}\label{interface_b_x_attribute_description_a2be964c3a5713f86b3ebd31731082f0d}
+
+\item 
+\hypertarget{interface_b_x_attribute_description_ae3de5cf075e4c797d3967a395913bd09}{}(N\+S\+String $\ast$) -\/ \hyperlink{interface_b_x_attribute_description_ae3de5cf075e4c797d3967a395913bd09}{attribute\+Value\+Class\+Name}\label{interface_b_x_attribute_description_ae3de5cf075e4c797d3967a395913bd09}
+
+\item 
+\hypertarget{interface_b_x_attribute_description_a9f638b3f3ba6b32a574c7c4ecfe07fc9}{}(N\+S\+String $\ast$) -\/ \hyperlink{interface_b_x_attribute_description_a9f638b3f3ba6b32a574c7c4ecfe07fc9}{database\+Type\+Name}\label{interface_b_x_attribute_description_a9f638b3f3ba6b32a574c7c4ecfe07fc9}
+
+\item 
+\hypertarget{interface_b_x_attribute_description_a5adc25c5ff33178b308970d2693ebbc0}{}(B\+O\+O\+L) -\/ \hyperlink{interface_b_x_attribute_description_a5adc25c5ff33178b308970d2693ebbc0}{is\+Array}\label{interface_b_x_attribute_description_a5adc25c5ff33178b308970d2693ebbc0}
+
+\item 
+(B\+O\+O\+L) -\/ \hyperlink{interface_b_x_attribute_description_aa71d11dc86b0740d549b5038e0bdc6f7}{is\+Excluded}
+\item 
+\hypertarget{interface_b_x_attribute_description_a0bc6901318f8729f8064797a706c9497}{}(B\+O\+O\+L) -\/ \hyperlink{interface_b_x_attribute_description_a0bc6901318f8729f8064797a706c9497}{is\+Primary\+Key}\label{interface_b_x_attribute_description_a0bc6901318f8729f8064797a706c9497}
+
+\item 
+\hypertarget{interface_b_x_attribute_description_ae7bbe3be6cdd4ab556b56c1b1ab7ddc5}{}(enum \hyperlink{_b_x_constants_8h_a4640a84a78f6764e1f92041225c8e81e}{B\+X\+Property\+Kind}) -\/ \hyperlink{interface_b_x_attribute_description_ae7bbe3be6cdd4ab556b56c1b1ab7ddc5}{property\+Kind}{\ttfamily  \mbox{[}implementation\mbox{]}}\label{interface_b_x_attribute_description_ae7bbe3be6cdd4ab556b56c1b1ab7ddc5}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Method Documentation}
+\hypertarget{interface_b_x_attribute_description_aa71d11dc86b0740d549b5038e0bdc6f7}{}\index{B\+X\+Attribute\+Description@{B\+X\+Attribute\+Description}!is\+Excluded@{is\+Excluded}}
+\index{is\+Excluded@{is\+Excluded}!B\+X\+Attribute\+Description@{B\+X\+Attribute\+Description}}
+\subsubsection[{is\+Excluded}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (B\+O\+O\+L) is\+Excluded 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+}\label{interface_b_x_attribute_description_aa71d11dc86b0740d549b5038e0bdc6f7}
+
+
+Whether the attribute will be excluded from fetches and queried only when needed. 
+
+\begin{DoxySeeAlso}{See also}
+B\+X\+Database\+Context\+::execute\+Fetch\+For\+Entity\+:with\+Predicate\+:excluding\+Fields\+:error\+: 
+\end{DoxySeeAlso}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+B\+X\+Attribute\+Description.\+h\item 
+B\+X\+Attribute\+Description.\+m\end{DoxyCompactItemize}

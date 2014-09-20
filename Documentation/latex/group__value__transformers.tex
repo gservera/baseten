@@ -1,0 +1,13 @@
+\hypertarget{group__value__transformers}{}\section{Value Transformers}
+\label{group__value__transformers}\index{Value Transformers@{Value Transformers}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{interface_b_x_object_status_to_color_transformer}{B\+X\+Object\+Status\+To\+Color\+Transformer}
+\item 
+class \hyperlink{interface_b_x_object_status_to_editable_transformer}{B\+X\+Object\+Status\+To\+Editable\+Transformer}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Transform database objects' status to various information. \hyperlink{interface_b_x_database_object}{B\+X\+Database\+Object} has \hyperlink{interface_b_x_database_object_a265a128ae31aff014eff278ec66ae1da}{status\+Info (\+B\+X\+Database\+Object)} method which returns a proxy for retrieving object's status. The status may then be passed to N\+S\+Value\+Transformer subclasses. For example, an N\+S\+Table\+Column's editable binding may be bound to a key path like array\+Controller.\+arranged\+Objects.\+status\+Info.\+some\+\_\+key\+\_\+name and the value transformer may then be set to \hyperlink{interface_b_x_object_status_to_editable_transformer}{B\+X\+Object\+Status\+To\+Editable\+Transformer}. 

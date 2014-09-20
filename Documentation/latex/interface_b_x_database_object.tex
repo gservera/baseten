@@ -1,0 +1,417 @@
+\hypertarget{interface_b_x_database_object}{}\section{B\+X\+Database\+Object Class Reference}
+\label{interface_b_x_database_object}\index{B\+X\+Database\+Object@{B\+X\+Database\+Object}}
+
+
+\subsection{Overview}
+A class that represents a single row in a database table. 
+
+The objects returned by the database context are instances of this class or its subclasses. The class is K\+V\+C-\/compliant. It is not thread-\/safe for the most part, i.\+e. if methods of an \hyperlink{interface_b_x_database_object}{B\+X\+Database\+Object} instance will be called from different threads the result is undefined and deadlocks are possible.
+
+Retrieving cached values is thread safe. This could be useful in situations, where worker threads need access to the object's contents but the contents have been fetched earlier. \subsection*{Instance Methods}
+\begin{DoxyCompactItemize}
+\item 
+(id) -\/ \hyperlink{interface_b_x_database_object_aab8dce45cac76c0f46d101bd162d4045}{cached\+Value\+For\+Key\+:}
+\item 
+(N\+S\+Dictionary $\ast$) -\/ \hyperlink{interface_b_x_database_object_ae6f09f3e379fd669797d9d05330dcd97}{cached\+Values}
+\item 
+\hypertarget{interface_b_x_database_object_a2ef9884712a89c2e20c8a08cd46a3ec7}{}(id) -\/ \hyperlink{interface_b_x_database_object_a2ef9884712a89c2e20c8a08cd46a3ec7}{copy\+With\+Zone\+:}{\ttfamily  \mbox{[}implementation\mbox{]}}\label{interface_b_x_database_object_a2ef9884712a89c2e20c8a08cd46a3ec7}
+
+\item 
+(B\+X\+Database\+Context $\ast$) -\/ \hyperlink{interface_b_x_database_object_a5c59c1541c04976f7d427bedda08da2f}{database\+Context}
+\item 
+\hypertarget{interface_b_x_database_object_a071b3579cf57575dcf28b8ababcd962a}{}(void) -\/ \hyperlink{interface_b_x_database_object_a071b3579cf57575dcf28b8ababcd962a}{dealloc}{\ttfamily  \mbox{[}implementation\mbox{]}}\label{interface_b_x_database_object_a071b3579cf57575dcf28b8ababcd962a}
+
+\item 
+\hypertarget{interface_b_x_database_object_a670e2b54915aa6068d683da023fa184e}{}(\hyperlink{interface_b_x_entity_description}{B\+X\+Entity\+Description} $\ast$) -\/ \hyperlink{interface_b_x_database_object_a670e2b54915aa6068d683da023fa184e}{entity}\label{interface_b_x_database_object_a670e2b54915aa6068d683da023fa184e}
+
+\item 
+(void) -\/ \hyperlink{interface_b_x_database_object_ae766a9251fdbd0922b31018205403476}{fault\+Key\+:}
+\item 
+(B\+O\+O\+L) -\/ \hyperlink{interface_b_x_database_object_a67f1cf0086f127d01033c1e8529ef7ab}{is\+Deleted}
+\item 
+(B\+O\+O\+L) -\/ \hyperlink{interface_b_x_database_object_ac3a11ada46b86e3476336e7a1f2e8c5d}{is\+Equal\+:}{\ttfamily  \mbox{[}implementation\mbox{]}}
+\item 
+(int) -\/ \hyperlink{interface_b_x_database_object_a9f500828e88ff9ed10e0f124987f5c1c}{is\+Fault\+Key\+:}
+\item 
+(B\+O\+O\+L) -\/ \hyperlink{interface_b_x_database_object_ab95e2fd29daf1ed8e1a816600718861d}{is\+Inserted}
+\item 
+(B\+O\+O\+L) -\/ \hyperlink{interface_b_x_database_object_aa366f2489aafa4d2783432d6b3012014}{is\+Locked\+For\+Key\+:}
+\item 
+(id) -\/ \hyperlink{interface_b_x_database_object_af3a31b0a842e890b508772c96f18bc89}{object\+For\+Key\+:}
+\item 
+(\hyperlink{interface_b_x_database_object_i_d}{B\+X\+Database\+Object\+I\+D} $\ast$) -\/ \hyperlink{interface_b_x_database_object_a84005bb56ea3b7be6edcfec01ad292f2}{object\+I\+D}
+\item 
+(N\+S\+Array $\ast$) -\/ \hyperlink{interface_b_x_database_object_a1c36b5b332a5f61be2e6080de8a933da}{objects\+For\+Keys\+:}
+\item 
+(N\+S\+Predicate $\ast$) -\/ \hyperlink{interface_b_x_database_object_ad5e110fe26d2dc26e2da4ac882a100d2}{predicate}
+\item 
+(id) -\/ \hyperlink{interface_b_x_database_object_a0576661b8930420dce5248584dfc1add}{primitive\+Value\+For\+Key\+:}
+\item 
+(void) -\/ \hyperlink{interface_b_x_database_object_ab4d3738a5d4bcd6fd89ffcb7fb6fe6e5}{set\+Primitive\+Value\+:for\+Key\+:}
+\item 
+(void) -\/ \hyperlink{interface_b_x_database_object_a02643433ee57009f9c316c040e086016}{set\+Primitive\+Values\+For\+Keys\+With\+Dictionary\+:}
+\item 
+(id$<$ \hyperlink{interface_b_x_object_status_info}{B\+X\+Object\+Status\+Info} $>$) -\/ \hyperlink{interface_b_x_database_object_a265a128ae31aff014eff278ec66ae1da}{status\+Info}
+\item 
+(B\+O\+O\+L) -\/ \hyperlink{interface_b_x_database_object_ade326897773ce523f74b3f3c9394da2b}{validate\+For\+Delete\+:}
+\item 
+(B\+O\+O\+L) -\/ \hyperlink{interface_b_x_database_object_a83a8a9a412b73e0ef13c7c59faa364d4}{validate\+Value\+:for\+Key\+:error\+:}
+\item 
+(N\+S\+Array $\ast$) -\/ \hyperlink{interface_b_x_database_object_a5e0891622abd6b9503e9477bc9cb1b17}{values\+For\+Keys\+:}
+\end{DoxyCompactItemize}
+\begin{Indent}{\bf Methods that subclasses might override}\par
+{\em \begin{DoxyNote}{Note}
+When fetching values, \hyperlink{interface_b_x_database_object_a0576661b8930420dce5248584dfc1add}{primitive\+Value\+For\+Key\+: (\+B\+X\+Database\+Object)} will always be used. 
+\end{DoxyNote}
+}\begin{DoxyCompactItemize}
+\item 
+\hypertarget{interface_b_x_database_object_adacc62fe9895e903abd1fc59cec4747b}{}(id) -\/ \hyperlink{interface_b_x_database_object_adacc62fe9895e903abd1fc59cec4747b}{init}\label{interface_b_x_database_object_adacc62fe9895e903abd1fc59cec4747b}
+
+\item 
+(void) -\/ \hyperlink{interface_b_x_database_object_a90389b13acef42186f2db93af6dec846}{awake\+From\+Fetch}
+\item 
+(void) -\/ \hyperlink{interface_b_x_database_object_a96552f2c3bf37a0cd4fdf0b168478721}{awake\+From\+Insert}
+\item 
+(void) -\/ \hyperlink{interface_b_x_database_object_a8a731aea00168c1e9467a184faf69310}{did\+Turn\+Into\+Fault}
+\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Class Methods}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{interface_b_x_database_object_af9bc7098dd9851cd0bc5a10d65e5b686}{}(B\+O\+O\+L) + \hyperlink{interface_b_x_database_object_af9bc7098dd9851cd0bc5a10d65e5b686}{access\+Instance\+Variables\+Directly}{\ttfamily  \mbox{[}implementation\mbox{]}}\label{interface_b_x_database_object_af9bc7098dd9851cd0bc5a10d65e5b686}
+
+\item 
+\hypertarget{interface_b_x_database_object_a7431be6ff93be18d354b37a426dc5144}{}(B\+O\+O\+L) + \hyperlink{interface_b_x_database_object_a7431be6ff93be18d354b37a426dc5144}{automatically\+Notifies\+Observers\+For\+Key\+:}{\ttfamily  \mbox{[}implementation\mbox{]}}\label{interface_b_x_database_object_a7431be6ff93be18d354b37a426dc5144}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Method Documentation}
+\hypertarget{interface_b_x_database_object_a90389b13acef42186f2db93af6dec846}{}\index{B\+X\+Database\+Object@{B\+X\+Database\+Object}!awake\+From\+Fetch@{awake\+From\+Fetch}}
+\index{awake\+From\+Fetch@{awake\+From\+Fetch}!B\+X\+Database\+Object@{B\+X\+Database\+Object}}
+\subsubsection[{awake\+From\+Fetch}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (void) awake\+From\+Fetch 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+}\label{interface_b_x_database_object_a90389b13acef42186f2db93af6dec846}
+
+
+Callback for deserializing the row. 
+
+Called once after a fetch or firing a fault. \hypertarget{interface_b_x_database_object_a96552f2c3bf37a0cd4fdf0b168478721}{}\index{B\+X\+Database\+Object@{B\+X\+Database\+Object}!awake\+From\+Insert@{awake\+From\+Insert}}
+\index{awake\+From\+Insert@{awake\+From\+Insert}!B\+X\+Database\+Object@{B\+X\+Database\+Object}}
+\subsubsection[{awake\+From\+Insert}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (void) awake\+From\+Insert 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+}\label{interface_b_x_database_object_a96552f2c3bf37a0cd4fdf0b168478721}
+
+
+Callback for inserting the row into the database. 
+
+\begin{DoxyNote}{Note}
+This method will be called before posting insert notifications and adding the object to self-\/updating collections. 
+
+B\+X\+Database\+Context may create new objects during redo causing their -\/awake\+From\+Insert method to be invoked. This could be checked by sending -\/is\+Redoing to the context's undo manager. 
+\end{DoxyNote}
+\hypertarget{interface_b_x_database_object_aab8dce45cac76c0f46d101bd162d4045}{}\index{B\+X\+Database\+Object@{B\+X\+Database\+Object}!cached\+Value\+For\+Key\+:@{cached\+Value\+For\+Key\+:}}
+\index{cached\+Value\+For\+Key\+:@{cached\+Value\+For\+Key\+:}!B\+X\+Database\+Object@{B\+X\+Database\+Object}}
+\subsubsection[{cached\+Value\+For\+Key\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (id) cached\+Value\+For\+Key\+: 
+\begin{DoxyParamCaption}
+\item[{(N\+S\+String $\ast$)}]{a\+Key}
+\end{DoxyParamCaption}
+}\label{interface_b_x_database_object_aab8dce45cac76c0f46d101bd162d4045}
+
+
+Value from the object's cache. 
+
+This method is thread-\/safe and doesn't cause a fault to fire. \begin{DoxyReturn}{Returns}
+The value in question or nil, if it has not been fetched from the database yet. N\+S\+Nulls represent nil values. 
+\end{DoxyReturn}
+\hypertarget{interface_b_x_database_object_ae6f09f3e379fd669797d9d05330dcd97}{}\index{B\+X\+Database\+Object@{B\+X\+Database\+Object}!cached\+Values@{cached\+Values}}
+\index{cached\+Values@{cached\+Values}!B\+X\+Database\+Object@{B\+X\+Database\+Object}}
+\subsubsection[{cached\+Values}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (N\+S\+Dictionary $\ast$) cached\+Values 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+}\label{interface_b_x_database_object_ae6f09f3e379fd669797d9d05330dcd97}
+
+
+Values from the object's cache. 
+
+This method is thread-\/safe and doesn't cause a fault to fire. \begin{DoxyReturn}{Returns}
+An N\+S\+Dictionary which contains the cached values. 
+\end{DoxyReturn}
+\hypertarget{interface_b_x_database_object_a5c59c1541c04976f7d427bedda08da2f}{}\index{B\+X\+Database\+Object@{B\+X\+Database\+Object}!database\+Context@{database\+Context}}
+\index{database\+Context@{database\+Context}!B\+X\+Database\+Object@{B\+X\+Database\+Object}}
+\subsubsection[{database\+Context}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (B\+X\+Database\+Context $\ast$) database\+Context 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+}\label{interface_b_x_database_object_a5c59c1541c04976f7d427bedda08da2f}
+
+
+The database context to which this object is registered. 
+
+This method doesn't cause a fault to fire. \hypertarget{interface_b_x_database_object_a8a731aea00168c1e9467a184faf69310}{}\index{B\+X\+Database\+Object@{B\+X\+Database\+Object}!did\+Turn\+Into\+Fault@{did\+Turn\+Into\+Fault}}
+\index{did\+Turn\+Into\+Fault@{did\+Turn\+Into\+Fault}!B\+X\+Database\+Object@{B\+X\+Database\+Object}}
+\subsubsection[{did\+Turn\+Into\+Fault}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (void) did\+Turn\+Into\+Fault 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+}\label{interface_b_x_database_object_a8a731aea00168c1e9467a184faf69310}
+
+
+Callback for turning into a fault. 
+
+This method will be called if any of the object's fields is faulted. \hypertarget{interface_b_x_database_object_ae766a9251fdbd0922b31018205403476}{}\index{B\+X\+Database\+Object@{B\+X\+Database\+Object}!fault\+Key\+:@{fault\+Key\+:}}
+\index{fault\+Key\+:@{fault\+Key\+:}!B\+X\+Database\+Object@{B\+X\+Database\+Object}}
+\subsubsection[{fault\+Key\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (void) fault\+Key\+: 
+\begin{DoxyParamCaption}
+\item[{(N\+S\+String $\ast$)}]{a\+Key}
+\end{DoxyParamCaption}
+}\label{interface_b_x_database_object_ae766a9251fdbd0922b31018205403476}
+
+
+Fault the given key. 
+
+The object's cached value or related object will be released. A new fetch won't be performed until any of the object's values is requested. 
+\begin{DoxyParams}{Parameters}
+{\em a\+Key} & The key to fault. If nil, all values will be removed. \\
+\hline
+\end{DoxyParams}
+\hypertarget{interface_b_x_database_object_a67f1cf0086f127d01033c1e8529ef7ab}{}\index{B\+X\+Database\+Object@{B\+X\+Database\+Object}!is\+Deleted@{is\+Deleted}}
+\index{is\+Deleted@{is\+Deleted}!B\+X\+Database\+Object@{B\+X\+Database\+Object}}
+\subsubsection[{is\+Deleted}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (B\+O\+O\+L) is\+Deleted 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+}\label{interface_b_x_database_object_a67f1cf0086f127d01033c1e8529ef7ab}
+
+
+Whether the object has beed deleted or is going to be deleted in the next commit. 
+
+This method doesn't cause a fault to fire. \hypertarget{interface_b_x_database_object_ac3a11ada46b86e3476336e7a1f2e8c5d}{}\index{B\+X\+Database\+Object@{B\+X\+Database\+Object}!is\+Equal\+:@{is\+Equal\+:}}
+\index{is\+Equal\+:@{is\+Equal\+:}!B\+X\+Database\+Object@{B\+X\+Database\+Object}}
+\subsubsection[{is\+Equal\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (B\+O\+O\+L) is\+Equal\+: 
+\begin{DoxyParamCaption}
+\item[{({\bf B\+X\+Database\+Object} $\ast$)}]{an\+Object}
+\end{DoxyParamCaption}
+\hspace{0.3cm}{\ttfamily [implementation]}}\label{interface_b_x_database_object_ac3a11ada46b86e3476336e7a1f2e8c5d}
+
+
+Test object equality. 
+
+Currently objects are considered equal if they are managed by the same database context and their object I\+Ds are equal. This method doesn't cause a fault to fire. \hypertarget{interface_b_x_database_object_a9f500828e88ff9ed10e0f124987f5c1c}{}\index{B\+X\+Database\+Object@{B\+X\+Database\+Object}!is\+Fault\+Key\+:@{is\+Fault\+Key\+:}}
+\index{is\+Fault\+Key\+:@{is\+Fault\+Key\+:}!B\+X\+Database\+Object@{B\+X\+Database\+Object}}
+\subsubsection[{is\+Fault\+Key\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (int) is\+Fault\+Key\+: 
+\begin{DoxyParamCaption}
+\item[{(N\+S\+String $\ast$)}]{a\+Key}
+\end{DoxyParamCaption}
+}\label{interface_b_x_database_object_a9f500828e88ff9ed10e0f124987f5c1c}
+
+
+Whether the given key is faulted or not. 
+
+This method doesn't cause a fault to fire. 
+\begin{DoxyParams}{Parameters}
+{\em a\+Key} & An N\+S\+String. May be nil, in which case the object is considered a fault if value for any of its keys is not cached. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+The database's internal fields, which are excluded by default, will be considered when determining whether an object is a fault. 
+\end{DoxyNote}
+\begin{DoxyReturn}{Returns}
+0 if the corresponding value is in cache, 1 if not, -\/1 if the key is unknown. 
+\end{DoxyReturn}
+\hypertarget{interface_b_x_database_object_ab95e2fd29daf1ed8e1a816600718861d}{}\index{B\+X\+Database\+Object@{B\+X\+Database\+Object}!is\+Inserted@{is\+Inserted}}
+\index{is\+Inserted@{is\+Inserted}!B\+X\+Database\+Object@{B\+X\+Database\+Object}}
+\subsubsection[{is\+Inserted}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (B\+O\+O\+L) is\+Inserted 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+}\label{interface_b_x_database_object_ab95e2fd29daf1ed8e1a816600718861d}
+
+
+Whether the object has been inserted to the database in a previous transaction. 
+
+If the object has been deleted, this method returns Y\+E\+S. This method doesn't cause a fault to fire. \hypertarget{interface_b_x_database_object_aa366f2489aafa4d2783432d6b3012014}{}\index{B\+X\+Database\+Object@{B\+X\+Database\+Object}!is\+Locked\+For\+Key\+:@{is\+Locked\+For\+Key\+:}}
+\index{is\+Locked\+For\+Key\+:@{is\+Locked\+For\+Key\+:}!B\+X\+Database\+Object@{B\+X\+Database\+Object}}
+\subsubsection[{is\+Locked\+For\+Key\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (B\+O\+O\+L) is\+Locked\+For\+Key\+: 
+\begin{DoxyParamCaption}
+\item[{(N\+S\+String $\ast$)}]{a\+Key}
+\end{DoxyParamCaption}
+}\label{interface_b_x_database_object_aa366f2489aafa4d2783432d6b3012014}
+
+
+Whether the given key is locked locked or not. 
+
+Returns Y\+E\+S if modifying the given key would block. Current implementation locks the whole object when any key gets locked. This method doesn't cause a fault to fire. \hypertarget{interface_b_x_database_object_af3a31b0a842e890b508772c96f18bc89}{}\index{B\+X\+Database\+Object@{B\+X\+Database\+Object}!object\+For\+Key\+:@{object\+For\+Key\+:}}
+\index{object\+For\+Key\+:@{object\+For\+Key\+:}!B\+X\+Database\+Object@{B\+X\+Database\+Object}}
+\subsubsection[{object\+For\+Key\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (id) object\+For\+Key\+: 
+\begin{DoxyParamCaption}
+\item[{({\bf B\+X\+Attribute\+Description} $\ast$)}]{a\+Key}
+\end{DoxyParamCaption}
+}\label{interface_b_x_database_object_af3a31b0a842e890b508772c96f18bc89}
+
+
+Value or objects from the database. 
+
+Look up the value from cache or ask the database context to fetch it. Currently this method calls \hyperlink{interface_b_x_database_object_a0576661b8930420dce5248584dfc1add}{primitive\+Value\+For\+Key\+:}. 
+\begin{DoxyParams}{Parameters}
+{\em a\+Key} & A \hyperlink{interface_b_x_attribute_description}{B\+X\+Attribute\+Description}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+An object or an N\+S\+Array of B\+X\+Database\+Objects. 
+\end{DoxyReturn}
+\hypertarget{interface_b_x_database_object_a84005bb56ea3b7be6edcfec01ad292f2}{}\index{B\+X\+Database\+Object@{B\+X\+Database\+Object}!object\+I\+D@{object\+I\+D}}
+\index{object\+I\+D@{object\+I\+D}!B\+X\+Database\+Object@{B\+X\+Database\+Object}}
+\subsubsection[{object\+I\+D}]{\setlength{\rightskip}{0pt plus 5cm}-\/ ({\bf B\+X\+Database\+Object\+I\+D} $\ast$) object\+I\+D 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+}\label{interface_b_x_database_object_a84005bb56ea3b7be6edcfec01ad292f2}
+
+
+The object I\+D. 
+
+This method doesn't cause a fault to fire. \hypertarget{interface_b_x_database_object_a1c36b5b332a5f61be2e6080de8a933da}{}\index{B\+X\+Database\+Object@{B\+X\+Database\+Object}!objects\+For\+Keys\+:@{objects\+For\+Keys\+:}}
+\index{objects\+For\+Keys\+:@{objects\+For\+Keys\+:}!B\+X\+Database\+Object@{B\+X\+Database\+Object}}
+\subsubsection[{objects\+For\+Keys\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (N\+S\+Array $\ast$) objects\+For\+Keys\+: 
+\begin{DoxyParamCaption}
+\item[{(N\+S\+Array $\ast$)}]{keys}
+\end{DoxyParamCaption}
+}\label{interface_b_x_database_object_a1c36b5b332a5f61be2e6080de8a933da}
+
+
+A convenience method for retrieving values for multiple keys. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em keys} & An N\+S\+Array of B\+X\+Attribute\+Descriptions. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The requested values. 
+\end{DoxyReturn}
+\hypertarget{interface_b_x_database_object_ad5e110fe26d2dc26e2da4ac882a100d2}{}\index{B\+X\+Database\+Object@{B\+X\+Database\+Object}!predicate@{predicate}}
+\index{predicate@{predicate}!B\+X\+Database\+Object@{B\+X\+Database\+Object}}
+\subsubsection[{predicate}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (N\+S\+Predicate $\ast$) predicate 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+}\label{interface_b_x_database_object_ad5e110fe26d2dc26e2da4ac882a100d2}
+
+
+Predicate for this object. 
+
+This method might cause a fault to fire. \hypertarget{interface_b_x_database_object_a0576661b8930420dce5248584dfc1add}{}\index{B\+X\+Database\+Object@{B\+X\+Database\+Object}!primitive\+Value\+For\+Key\+:@{primitive\+Value\+For\+Key\+:}}
+\index{primitive\+Value\+For\+Key\+:@{primitive\+Value\+For\+Key\+:}!B\+X\+Database\+Object@{B\+X\+Database\+Object}}
+\subsubsection[{primitive\+Value\+For\+Key\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (id) primitive\+Value\+For\+Key\+: 
+\begin{DoxyParamCaption}
+\item[{(N\+S\+String $\ast$)}]{a\+Key}
+\end{DoxyParamCaption}
+}\label{interface_b_x_database_object_a0576661b8930420dce5248584dfc1add}
+
+
+Value or objects from the database. 
+
+Look up the value from cache or ask the database context to fetch it. Calls super's implementation of -\/value\+For\+Undefined\+Key\+: if the key isn't known. 
+\begin{DoxyParams}{Parameters}
+{\em a\+Key} & Name of the column or a relationship. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+nil for null values. Otherwise an object or a self-\/updating N\+S\+Set-\/style collection of B\+X\+Database\+Objects. 
+\end{DoxyReturn}
+\hypertarget{interface_b_x_database_object_ab4d3738a5d4bcd6fd89ffcb7fb6fe6e5}{}\index{B\+X\+Database\+Object@{B\+X\+Database\+Object}!set\+Primitive\+Value\+:for\+Key\+:@{set\+Primitive\+Value\+:for\+Key\+:}}
+\index{set\+Primitive\+Value\+:for\+Key\+:@{set\+Primitive\+Value\+:for\+Key\+:}!B\+X\+Database\+Object@{B\+X\+Database\+Object}}
+\subsubsection[{set\+Primitive\+Value\+:for\+Key\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (void) set\+Primitive\+Value\+: 
+\begin{DoxyParamCaption}
+\item[{(id)}]{a\+Val}
+\item[{forKey:(N\+S\+String $\ast$)}]{a\+Key}
+\end{DoxyParamCaption}
+}\label{interface_b_x_database_object_ab4d3738a5d4bcd6fd89ffcb7fb6fe6e5}
+
+
+Set value for a given key in the database. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+Val} & The new value. May be nil for ordinary columns. \\
+\hline
+{\em a\+Key} & An N\+S\+String. \\
+\hline
+\end{DoxyParams}
+\hypertarget{interface_b_x_database_object_a02643433ee57009f9c316c040e086016}{}\index{B\+X\+Database\+Object@{B\+X\+Database\+Object}!set\+Primitive\+Values\+For\+Keys\+With\+Dictionary\+:@{set\+Primitive\+Values\+For\+Keys\+With\+Dictionary\+:}}
+\index{set\+Primitive\+Values\+For\+Keys\+With\+Dictionary\+:@{set\+Primitive\+Values\+For\+Keys\+With\+Dictionary\+:}!B\+X\+Database\+Object@{B\+X\+Database\+Object}}
+\subsubsection[{set\+Primitive\+Values\+For\+Keys\+With\+Dictionary\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (void) set\+Primitive\+Values\+For\+Keys\+With\+Dictionary\+: 
+\begin{DoxyParamCaption}
+\item[{(N\+S\+Dictionary $\ast$)}]{a\+Dict}
+\end{DoxyParamCaption}
+}\label{interface_b_x_database_object_a02643433ee57009f9c316c040e086016}
+
+
+Set multiple values. 
+
+This is not merely a convenience method; invoking this is potentially much faster than repeatedly using \hyperlink{interface_b_x_database_object_ab4d3738a5d4bcd6fd89ffcb7fb6fe6e5}{set\+Primitive\+Value\+:for\+Key\+:}. However, for foreign keys, \hyperlink{interface_b_x_database_object_ab4d3738a5d4bcd6fd89ffcb7fb6fe6e5}{set\+Primitive\+Value\+:for\+Key\+:} should be used instead or the collection proxy be modified directly. \hypertarget{interface_b_x_database_object_a265a128ae31aff014eff278ec66ae1da}{}\index{B\+X\+Database\+Object@{B\+X\+Database\+Object}!status\+Info@{status\+Info}}
+\index{status\+Info@{status\+Info}!B\+X\+Database\+Object@{B\+X\+Database\+Object}}
+\subsubsection[{status\+Info}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (id$<$ {\bf B\+X\+Object\+Status\+Info} $>$) status\+Info 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+}\label{interface_b_x_database_object_a265a128ae31aff014eff278ec66ae1da}
+
+
+A proxy for monitoring the object's status. 
+
+Returns a proxy that can be used with \hyperlink{interface_b_x_object_status_to_editable_transformer}{B\+X\+Object\+Status\+To\+Editable\+Transformer} and \hyperlink{interface_b_x_object_status_to_color_transformer}{B\+X\+Object\+Status\+To\+Color\+Transformer}. This method doesn't cause a fault to fire. \hypertarget{interface_b_x_database_object_ade326897773ce523f74b3f3c9394da2b}{}\index{B\+X\+Database\+Object@{B\+X\+Database\+Object}!validate\+For\+Delete\+:@{validate\+For\+Delete\+:}}
+\index{validate\+For\+Delete\+:@{validate\+For\+Delete\+:}!B\+X\+Database\+Object@{B\+X\+Database\+Object}}
+\subsubsection[{validate\+For\+Delete\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (B\+O\+O\+L) validate\+For\+Delete\+: 
+\begin{DoxyParamCaption}
+\item[{(N\+S\+Error $\ast$$\ast$)}]{out\+Error}
+\end{DoxyParamCaption}
+}\label{interface_b_x_database_object_ade326897773ce523f74b3f3c9394da2b}
+
+
+Determines whether the receiver can be deleted in its current state. 
+
+Currently, only inverse relationships' delete rules are checked. This method could cause a fault to fire. \hypertarget{interface_b_x_database_object_a83a8a9a412b73e0ef13c7c59faa364d4}{}\index{B\+X\+Database\+Object@{B\+X\+Database\+Object}!validate\+Value\+:for\+Key\+:error\+:@{validate\+Value\+:for\+Key\+:error\+:}}
+\index{validate\+Value\+:for\+Key\+:error\+:@{validate\+Value\+:for\+Key\+:error\+:}!B\+X\+Database\+Object@{B\+X\+Database\+Object}}
+\subsubsection[{validate\+Value\+:for\+Key\+:error\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (B\+O\+O\+L) validate\+Value\+: 
+\begin{DoxyParamCaption}
+\item[{(id $\ast$)}]{io\+Value}
+\item[{forKey:(N\+S\+String $\ast$)}]{key}
+\item[{error:(N\+S\+Error $\ast$$\ast$)}]{out\+Error}
+\end{DoxyParamCaption}
+}\label{interface_b_x_database_object_a83a8a9a412b73e0ef13c7c59faa364d4}
+
+
+Validate a value. 
+
+Currently, only null constraints are checked. This method doesn't cause a fault to fire. \hypertarget{interface_b_x_database_object_a5e0891622abd6b9503e9477bc9cb1b17}{}\index{B\+X\+Database\+Object@{B\+X\+Database\+Object}!values\+For\+Keys\+:@{values\+For\+Keys\+:}}
+\index{values\+For\+Keys\+:@{values\+For\+Keys\+:}!B\+X\+Database\+Object@{B\+X\+Database\+Object}}
+\subsubsection[{values\+For\+Keys\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (N\+S\+Array $\ast$) values\+For\+Keys\+: 
+\begin{DoxyParamCaption}
+\item[{(N\+S\+Array $\ast$)}]{keys}
+\end{DoxyParamCaption}
+}\label{interface_b_x_database_object_a5e0891622abd6b9503e9477bc9cb1b17}
+
+
+A convenience method for retrieving values for multiple keys. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em keys} & An N\+S\+Array of N\+S\+Strings. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The requested values. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+B\+X\+Database\+Object.\+h\item 
+B\+X\+Database\+Object.\+m\end{DoxyCompactItemize}

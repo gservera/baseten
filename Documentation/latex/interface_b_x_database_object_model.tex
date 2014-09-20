@@ -1,0 +1,90 @@
+\hypertarget{interface_b_x_database_object_model}{}\section{B\+X\+Database\+Object\+Model Class Reference}
+\label{interface_b_x_database_object_model}\index{B\+X\+Database\+Object\+Model@{B\+X\+Database\+Object\+Model}}
+
+
+\subsection{Overview}
+The database object model. 
+
+A database object model stores the entity descriptions for a database at a certain U\+R\+I.
+
+\begin{DoxyNote}{Note}
+This class is thread-\/safe. 
+\end{DoxyNote}
+\subsection*{Instance Methods}
+\begin{DoxyCompactItemize}
+\item 
+(N\+S\+Array $\ast$) -\/ \hyperlink{interface_b_x_database_object_model_a0f740cda8a4a174a1d911f81410900f8}{entities}
+\item 
+(N\+S\+Dictionary $\ast$) -\/ \hyperlink{interface_b_x_database_object_model_ac388762ca0b04d498f0def9d7e3e18eb}{entities\+By\+Schema\+And\+Name\+:reload\+:error\+:}
+\item 
+\hypertarget{interface_b_x_database_object_model_ada917c7ab034ad9d735dc89f716b5ec0}{}(\hyperlink{interface_b_x_entity_description}{B\+X\+Entity\+Description} $\ast$) -\/ \hyperlink{interface_b_x_database_object_model_ada917c7ab034ad9d735dc89f716b5ec0}{entity\+For\+Table\+:}\label{interface_b_x_database_object_model_ada917c7ab034ad9d735dc89f716b5ec0}
+
+\item 
+(\hyperlink{interface_b_x_entity_description}{B\+X\+Entity\+Description} $\ast$) -\/ \hyperlink{interface_b_x_database_object_model_a4dcd50aebdc1a3166fa6c76a84baf1a1}{entity\+For\+Table\+:in\+Schema\+:}
+\end{DoxyCompactItemize}
+
+
+\subsection{Method Documentation}
+\hypertarget{interface_b_x_database_object_model_a0f740cda8a4a174a1d911f81410900f8}{}\index{B\+X\+Database\+Object\+Model@{B\+X\+Database\+Object\+Model}!entities@{entities}}
+\index{entities@{entities}!B\+X\+Database\+Object\+Model@{B\+X\+Database\+Object\+Model}}
+\subsubsection[{entities}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (N\+S\+Array $\ast$) entities 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+}\label{interface_b_x_database_object_model_a0f740cda8a4a174a1d911f81410900f8}
+
+
+All entities found in the database. 
+
+Entities in private and metadata schemata won't be included. 
+\begin{DoxyParams}{Parameters}
+{\em out\+Error} & If an error occurs, this pointer is set to an N\+S\+Error instance. May be N\+U\+L\+L. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+An N\+S\+Array containing B\+X\+Entity\+Descriptions. 
+\end{DoxyReturn}
+\hypertarget{interface_b_x_database_object_model_ac388762ca0b04d498f0def9d7e3e18eb}{}\index{B\+X\+Database\+Object\+Model@{B\+X\+Database\+Object\+Model}!entities\+By\+Schema\+And\+Name\+:reload\+:error\+:@{entities\+By\+Schema\+And\+Name\+:reload\+:error\+:}}
+\index{entities\+By\+Schema\+And\+Name\+:reload\+:error\+:@{entities\+By\+Schema\+And\+Name\+:reload\+:error\+:}!B\+X\+Database\+Object\+Model@{B\+X\+Database\+Object\+Model}}
+\subsubsection[{entities\+By\+Schema\+And\+Name\+:reload\+:error\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (N\+S\+Dictionary $\ast$) entities\+By\+Schema\+And\+Name\+: 
+\begin{DoxyParamCaption}
+\item[{(B\+X\+Database\+Context $\ast$)}]{context}
+\item[{reload:(B\+O\+O\+L)}]{should\+Reload}
+\item[{error:(N\+S\+Error $\ast$$\ast$)}]{out\+Error}
+\end{DoxyParamCaption}
+}\label{interface_b_x_database_object_model_ac388762ca0b04d498f0def9d7e3e18eb}
+
+
+All entities found in the database. 
+
+Entities in private and metadata schemata won't be included. 
+\begin{DoxyParams}{Parameters}
+{\em reload} & Whether the entity list should be reloaded. \\
+\hline
+{\em out\+Error} & If an error occurs, this pointer is set to an N\+S\+Error instance. May be N\+U\+L\+L. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+An N\+S\+Dictionary with N\+S\+Strings corresponding to schema names as keys and N\+S\+Dictionarys as objects. Each of them will have N\+S\+Strings corresponding to relation names as keys and B\+X\+Entity\+Descriptions as objects. 
+\end{DoxyReturn}
+\hypertarget{interface_b_x_database_object_model_a4dcd50aebdc1a3166fa6c76a84baf1a1}{}\index{B\+X\+Database\+Object\+Model@{B\+X\+Database\+Object\+Model}!entity\+For\+Table\+:in\+Schema\+:@{entity\+For\+Table\+:in\+Schema\+:}}
+\index{entity\+For\+Table\+:in\+Schema\+:@{entity\+For\+Table\+:in\+Schema\+:}!B\+X\+Database\+Object\+Model@{B\+X\+Database\+Object\+Model}}
+\subsubsection[{entity\+For\+Table\+:in\+Schema\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ ({\bf B\+X\+Entity\+Description} $\ast$) {\bf entity\+For\+Table\+:} 
+\begin{DoxyParamCaption}
+\item[{(N\+S\+String $\ast$)}]{name}
+\item[{inSchema:(N\+S\+String $\ast$)}]{schema\+Name}
+\end{DoxyParamCaption}
+}\label{interface_b_x_database_object_model_a4dcd50aebdc1a3166fa6c76a84baf1a1}
+
+
+Entity for a table in the given schema. 
+
+\begin{DoxyNote}{Note}
+Unlike Postgre\+S\+Q\+L, leaving {\itshape schema\+Name} unspecified does not cause the search path to be used but instead will search the {\itshape public} schema. 
+\end{DoxyNote}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+B\+X\+Database\+Object\+Model.\+h\item 
+B\+X\+Database\+Object\+Model.\+m\end{DoxyCompactItemize}

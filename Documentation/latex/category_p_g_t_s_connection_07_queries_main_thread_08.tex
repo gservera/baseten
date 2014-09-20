@@ -1,0 +1,64 @@
+\hypertarget{category_p_g_t_s_connection_07_queries_main_thread_08}{}\section{P\+G\+T\+S\+Connection(Queries\+Main\+Thread) Category Reference}
+\label{category_p_g_t_s_connection_07_queries_main_thread_08}\index{P\+G\+T\+S\+Connection(\+Queries\+Main\+Thread)@{P\+G\+T\+S\+Connection(\+Queries\+Main\+Thread)}}
+
+
+\subsection{Overview}
+Query-\/related methods executed on the main thread \subsection*{Instance Methods}
+\begin{DoxyCompactItemize}
+\item 
+(void) -\/ \hyperlink{category_p_g_t_s_connection_07_queries_main_thread_08_a5c96541d27baa27effc4c41a34c6f7b5}{cancel\+Command}
+\end{DoxyCompactItemize}
+{\bf }\par
+\begin{DoxyCompactItemize}
+\item 
+(\hyperlink{interface_p_g_t_s_result_set}{P\+G\+T\+S\+Result\+Set} $\ast$) -\/ \hyperlink{category_p_g_t_s_connection_07_queries_main_thread_08_a2a633972d078fea16192c57c5cb87514}{execute\+Query\+:}
+\end{DoxyCompactItemize}
+
+{\bf }\par
+\begin{DoxyCompactItemize}
+\item 
+(int) -\/ \hyperlink{category_p_g_t_s_connection_07_queries_main_thread_08_a4376dcad5b13ea495f9237a26453642f}{send\+Query\+:}
+\end{DoxyCompactItemize}
+
+
+
+\subsection{Method Documentation}
+\hypertarget{category_p_g_t_s_connection_07_queries_main_thread_08_a5c96541d27baa27effc4c41a34c6f7b5}{}\index{P\+G\+T\+S\+Connection(\+Queries\+Main\+Thread)@{P\+G\+T\+S\+Connection(\+Queries\+Main\+Thread)}!cancel\+Command@{cancel\+Command}}
+\index{cancel\+Command@{cancel\+Command}!P\+G\+T\+S\+Connection(\+Queries\+Main\+Thread)@{P\+G\+T\+S\+Connection(\+Queries\+Main\+Thread)}}
+\subsubsection[{cancel\+Command}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (void) cancel\+Command 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+}\label{category_p_g_t_s_connection_07_queries_main_thread_08_a5c96541d27baa27effc4c41a34c6f7b5}
+Cancel the current command 
+
+Extends class \hyperlink{interface_p_g_t_s_connection_a5c96541d27baa27effc4c41a34c6f7b5}{P\+G\+T\+S\+Connection}.
+
+\hypertarget{category_p_g_t_s_connection_07_queries_main_thread_08_a2a633972d078fea16192c57c5cb87514}{}\index{P\+G\+T\+S\+Connection(\+Queries\+Main\+Thread)@{P\+G\+T\+S\+Connection(\+Queries\+Main\+Thread)}!execute\+Query\+:@{execute\+Query\+:}}
+\index{execute\+Query\+:@{execute\+Query\+:}!P\+G\+T\+S\+Connection(\+Queries\+Main\+Thread)@{P\+G\+T\+S\+Connection(\+Queries\+Main\+Thread)}}
+\subsubsection[{execute\+Query\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ ({\bf P\+G\+T\+S\+Result\+Set} $\ast$) execute\+Query\+: 
+\begin{DoxyParamCaption}
+\item[{(N\+S\+String $\ast$)}]{query\+String}
+\end{DoxyParamCaption}
+}\label{category_p_g_t_s_connection_07_queries_main_thread_08_a2a633972d078fea16192c57c5cb87514}
+Execute the query. Block until the result is available. Multiple queries can be sent but the result is returned only for the last successful one. 
+
+Extends class \hyperlink{interface_p_g_t_s_connection_ac19b3e31f8fe98a5489da54a4564d4ba}{P\+G\+T\+S\+Connection}.
+
+\hypertarget{category_p_g_t_s_connection_07_queries_main_thread_08_a4376dcad5b13ea495f9237a26453642f}{}\index{P\+G\+T\+S\+Connection(\+Queries\+Main\+Thread)@{P\+G\+T\+S\+Connection(\+Queries\+Main\+Thread)}!send\+Query\+:@{send\+Query\+:}}
+\index{send\+Query\+:@{send\+Query\+:}!P\+G\+T\+S\+Connection(\+Queries\+Main\+Thread)@{P\+G\+T\+S\+Connection(\+Queries\+Main\+Thread)}}
+\subsubsection[{send\+Query\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (int) send\+Query\+: 
+\begin{DoxyParamCaption}
+\item[{(N\+S\+String $\ast$)}]{query\+String}
+\end{DoxyParamCaption}
+}\label{category_p_g_t_s_connection_07_queries_main_thread_08_a4376dcad5b13ea495f9237a26453642f}
+Send the query Block only to make sure that the query was successfully dispatched. The delegate is messaged when the result is available. 
+
+Extends class \hyperlink{interface_p_g_t_s_connection_a4376dcad5b13ea495f9237a26453642f}{P\+G\+T\+S\+Connection}.
+
+
+
+The documentation for this category was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+P\+G\+T\+S\+Connection-\/old.\+h\item 
+P\+G\+T\+S\+Connection\+Queries.\+m\end{DoxyCompactItemize}

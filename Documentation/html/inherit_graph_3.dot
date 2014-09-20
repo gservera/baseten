@@ -1,0 +1,11 @@
+digraph "Graphical Class Hierarchy"
+{
+  edge [fontname="LucidaGrande",fontsize="10",labelfontname="LucidaGrande",labelfontsize="10"];
+  node [fontname="LucidaGrande",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="BXContainerProxy",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$interface_b_x_container_proxy.html",tooltip="A generic self-updating container proxy. "];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="LucidaGrande"];
+  Node2 [label="BXArrayProxy",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$interface_b_x_array_proxy.html",tooltip="An NSArray or NSMutableArray-style self-updating container proxy. "];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="LucidaGrande"];
+  Node3 [label="BXSetProxy",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$interface_b_x_set_proxy.html",tooltip="An NSMutableSet-style self-updating container proxy. "];
+}

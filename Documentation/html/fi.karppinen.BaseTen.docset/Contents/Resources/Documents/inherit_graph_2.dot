@@ -1,0 +1,15 @@
+digraph "Graphical Class Hierarchy"
+{
+  edge [fontname="LucidaGrande",fontsize="10",labelfontname="LucidaGrande",labelfontsize="10"];
+  node [fontname="LucidaGrande",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="BXAbstractDescription",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$interface_b_x_abstract_description.html",tooltip="An abstract superclass for various description classes. "];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="LucidaGrande"];
+  Node2 [label="BXEntityDescription",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$interface_b_x_entity_description.html",tooltip="An entity description contains information about a specific table or view in a given database..."];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="LucidaGrande"];
+  Node3 [label="BXPropertyDescription",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$interface_b_x_property_description.html",tooltip="A superclass for various description classes. "];
+  Node3 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="LucidaGrande"];
+  Node4 [label="BXAttributeDescription",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$interface_b_x_attribute_description.html",tooltip="An attribute description contains information about a column in a specific entity. "];
+  Node3 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="LucidaGrande"];
+  Node5 [label="BXRelationshipDescription",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$interface_b_x_relationship_description.html",tooltip="A description for one-to-many relationships and a superclass for others. "];
+}

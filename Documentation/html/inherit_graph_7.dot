@@ -1,0 +1,7 @@
+digraph "Graphical Class Hierarchy"
+{
+  edge [fontname="LucidaGrande",fontsize="10",labelfontname="LucidaGrande",labelfontsize="10"];
+  node [fontname="LucidaGrande",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="BXDatabaseObjectModelStorage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$interface_b_x_database_object_model_storage.html",tooltip="The database object model storage. "];
+}

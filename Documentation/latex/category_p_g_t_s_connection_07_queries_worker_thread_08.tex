@@ -1,0 +1,100 @@
+\hypertarget{category_p_g_t_s_connection_07_queries_worker_thread_08}{}\section{P\+G\+T\+S\+Connection(Queries\+Worker\+Thread) Category Reference}
+\label{category_p_g_t_s_connection_07_queries_worker_thread_08}\index{P\+G\+T\+S\+Connection(\+Queries\+Worker\+Thread)@{P\+G\+T\+S\+Connection(\+Queries\+Worker\+Thread)}}
+
+
+\subsection{Overview}
+Query-\/related methods executed on the worker thread \subsection*{Instance Methods}
+\begin{DoxyCompactItemize}
+\item 
+(int) -\/ \hyperlink{category_p_g_t_s_connection_07_queries_worker_thread_08_af80b6820e2e507e803f2f011bbae3c99}{end\+Copy\+And\+Accept2\+:error\+Message\+:message\+When\+Done\+:}
+\item 
+(N\+S\+Array $\ast$) -\/ \hyperlink{category_p_g_t_s_connection_07_queries_worker_thread_08_a197a23fee041660cbacb5398d1eb46ed}{pending\+Result\+Sets}
+\item 
+(void) -\/ \hyperlink{category_p_g_t_s_connection_07_queries_worker_thread_08_a57a45776d9bde345c877f7126bf8d52d}{retrieve\+Results\+And\+Send\+To\+Delegate}
+\item 
+(int) -\/ \hyperlink{category_p_g_t_s_connection_07_queries_worker_thread_08_a4a7d18e07e3280f24111c371e435d9ab}{send\+Copy\+Data2\+:packet\+Size\+:message\+When\+Done\+:}
+\end{DoxyCompactItemize}
+{\bf }\par
+\begin{DoxyCompactItemize}
+\item 
+(int) -\/ \hyperlink{category_p_g_t_s_connection_07_queries_worker_thread_08_abd70fb6ce175a5fb0be26aae29e0e6af}{send\+Query2\+:message\+Delegate\+:}
+\end{DoxyCompactItemize}
+
+
+
+\subsection{Method Documentation}
+\hypertarget{category_p_g_t_s_connection_07_queries_worker_thread_08_af80b6820e2e507e803f2f011bbae3c99}{}\index{P\+G\+T\+S\+Connection(\+Queries\+Worker\+Thread)@{P\+G\+T\+S\+Connection(\+Queries\+Worker\+Thread)}!end\+Copy\+And\+Accept2\+:error\+Message\+:message\+When\+Done\+:@{end\+Copy\+And\+Accept2\+:error\+Message\+:message\+When\+Done\+:}}
+\index{end\+Copy\+And\+Accept2\+:error\+Message\+:message\+When\+Done\+:@{end\+Copy\+And\+Accept2\+:error\+Message\+:message\+When\+Done\+:}!P\+G\+T\+S\+Connection(\+Queries\+Worker\+Thread)@{P\+G\+T\+S\+Connection(\+Queries\+Worker\+Thread)}}
+\subsubsection[{end\+Copy\+And\+Accept2\+:error\+Message\+:message\+When\+Done\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (int) end\+Copy\+And\+Accept2\+: 
+\begin{DoxyParamCaption}
+\item[{(B\+O\+O\+L)}]{accept}
+\item[{errorMessage:(N\+S\+String $\ast$)}]{local\+Error\+Message}
+\item[{messageWhenDone:(B\+O\+O\+L)}]{message\+When\+Done}
+\end{DoxyParamCaption}
+}\label{category_p_g_t_s_connection_07_queries_worker_thread_08_af80b6820e2e507e803f2f011bbae3c99}
+Finish the C\+O\+P\+Y command 
+\begin{DoxyParams}{Parameters}
+{\em accept} & Accept the copying \\
+\hline
+{\em error\+Message} & Custom error message, may be nil \\
+\hline
+{\em message\+When\+Done} & Whether to send the results to the delegate \\
+\hline
+\end{DoxyParams}
+
+
+Extends class \hyperlink{interface_p_g_t_s_connection_af80b6820e2e507e803f2f011bbae3c99}{P\+G\+T\+S\+Connection}.
+
+\hypertarget{category_p_g_t_s_connection_07_queries_worker_thread_08_a197a23fee041660cbacb5398d1eb46ed}{}\index{P\+G\+T\+S\+Connection(\+Queries\+Worker\+Thread)@{P\+G\+T\+S\+Connection(\+Queries\+Worker\+Thread)}!pending\+Result\+Sets@{pending\+Result\+Sets}}
+\index{pending\+Result\+Sets@{pending\+Result\+Sets}!P\+G\+T\+S\+Connection(\+Queries\+Worker\+Thread)@{P\+G\+T\+S\+Connection(\+Queries\+Worker\+Thread)}}
+\subsubsection[{pending\+Result\+Sets}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (N\+S\+Array $\ast$) pending\+Result\+Sets 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+}\label{category_p_g_t_s_connection_07_queries_worker_thread_08_a197a23fee041660cbacb5398d1eb46ed}
+Block and retrieve all pending results If no command is active, nil will be returned 
+
+Extends class \hyperlink{interface_p_g_t_s_connection_a197a23fee041660cbacb5398d1eb46ed}{P\+G\+T\+S\+Connection}.
+
+\hypertarget{category_p_g_t_s_connection_07_queries_worker_thread_08_a57a45776d9bde345c877f7126bf8d52d}{}\index{P\+G\+T\+S\+Connection(\+Queries\+Worker\+Thread)@{P\+G\+T\+S\+Connection(\+Queries\+Worker\+Thread)}!retrieve\+Results\+And\+Send\+To\+Delegate@{retrieve\+Results\+And\+Send\+To\+Delegate}}
+\index{retrieve\+Results\+And\+Send\+To\+Delegate@{retrieve\+Results\+And\+Send\+To\+Delegate}!P\+G\+T\+S\+Connection(\+Queries\+Worker\+Thread)@{P\+G\+T\+S\+Connection(\+Queries\+Worker\+Thread)}}
+\subsubsection[{retrieve\+Results\+And\+Send\+To\+Delegate}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (void) retrieve\+Results\+And\+Send\+To\+Delegate 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+}\label{category_p_g_t_s_connection_07_queries_worker_thread_08_a57a45776d9bde345c877f7126bf8d52d}
+Retrieve the pending results and send them to the delegate 
+
+Extends class \hyperlink{interface_p_g_t_s_connection_a57a45776d9bde345c877f7126bf8d52d}{P\+G\+T\+S\+Connection}.
+
+\hypertarget{category_p_g_t_s_connection_07_queries_worker_thread_08_a4a7d18e07e3280f24111c371e435d9ab}{}\index{P\+G\+T\+S\+Connection(\+Queries\+Worker\+Thread)@{P\+G\+T\+S\+Connection(\+Queries\+Worker\+Thread)}!send\+Copy\+Data2\+:packet\+Size\+:message\+When\+Done\+:@{send\+Copy\+Data2\+:packet\+Size\+:message\+When\+Done\+:}}
+\index{send\+Copy\+Data2\+:packet\+Size\+:message\+When\+Done\+:@{send\+Copy\+Data2\+:packet\+Size\+:message\+When\+Done\+:}!P\+G\+T\+S\+Connection(\+Queries\+Worker\+Thread)@{P\+G\+T\+S\+Connection(\+Queries\+Worker\+Thread)}}
+\subsubsection[{send\+Copy\+Data2\+:packet\+Size\+:message\+When\+Done\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (int) send\+Copy\+Data2\+: 
+\begin{DoxyParamCaption}
+\item[{(N\+S\+Data $\ast$)}]{data}
+\item[{packetSize:(int)}]{packet\+Size}
+\item[{messageWhenDone:(B\+O\+O\+L)}]{message\+When\+Done}
+\end{DoxyParamCaption}
+}\label{category_p_g_t_s_connection_07_queries_worker_thread_08_a4a7d18e07e3280f24111c371e435d9ab}
+Methods associated with the C\+O\+P\+Y command 
+
+Extends class \hyperlink{interface_p_g_t_s_connection_a4a7d18e07e3280f24111c371e435d9ab}{P\+G\+T\+S\+Connection}.
+
+\hypertarget{category_p_g_t_s_connection_07_queries_worker_thread_08_abd70fb6ce175a5fb0be26aae29e0e6af}{}\index{P\+G\+T\+S\+Connection(\+Queries\+Worker\+Thread)@{P\+G\+T\+S\+Connection(\+Queries\+Worker\+Thread)}!send\+Query2\+:message\+Delegate\+:@{send\+Query2\+:message\+Delegate\+:}}
+\index{send\+Query2\+:message\+Delegate\+:@{send\+Query2\+:message\+Delegate\+:}!P\+G\+T\+S\+Connection(\+Queries\+Worker\+Thread)@{P\+G\+T\+S\+Connection(\+Queries\+Worker\+Thread)}}
+\subsubsection[{send\+Query2\+:message\+Delegate\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (int) send\+Query2\+: 
+\begin{DoxyParamCaption}
+\item[{(N\+S\+String $\ast$)}]{query\+String}
+\item[{messageDelegate:(B\+O\+O\+L)}]{message\+Delegate}
+\end{DoxyParamCaption}
+}\label{category_p_g_t_s_connection_07_queries_worker_thread_08_abd70fb6ce175a5fb0be26aae29e0e6af}
+Send the query without retrieving the result The caller must retrieve the result afterwards. This will not be enforced by the framework 
+
+Extends class \hyperlink{interface_p_g_t_s_connection_abd70fb6ce175a5fb0be26aae29e0e6af}{P\+G\+T\+S\+Connection}.
+
+
+
+The documentation for this category was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+P\+G\+T\+S\+Connection-\/old.\+h\item 
+P\+G\+T\+S\+Connection\+Queries.\+m\end{DoxyCompactItemize}

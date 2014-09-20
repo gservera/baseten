@@ -1,0 +1,168 @@
+\hypertarget{protocol_b_x_database_context_delegate-p}{}\section{$<$B\+X\+Database\+Context\+Delegate$>$ Protocol Reference}
+\label{protocol_b_x_database_context_delegate-p}\index{$<$\+B\+X\+Database\+Context\+Delegate$>$@{$<$\+B\+X\+Database\+Context\+Delegate$>$}}
+
+
+\subsection{Overview}
+The protocol the database context's delegate needs to implement. \begin{DoxyNote}{Note}
+Most of the protocol is declared optional. 
+\end{DoxyNote}
+\subsection*{Instance Methods}
+\begin{DoxyCompactItemize}
+\item 
+(void) -\/ \hyperlink{protocol_b_x_database_context_delegate-p_a8876f51cb221e1e637d670ad28e2fb70}{database\+Context\+:failed\+To\+Connect\+:}
+\item 
+(void) -\/ \hyperlink{protocol_b_x_database_context_delegate-p_a7225b66321a98e0c78dc46743517167c}{database\+Context\+:had\+Error\+:will\+Be\+Passed\+On\+:}
+\item 
+(void) -\/ \hyperlink{protocol_b_x_database_context_delegate-p_aec9d16c1c021751c1133d8a731192d8e}{database\+Context\+:had\+Reconnection\+Error\+:}
+\item 
+(enum \hyperlink{_b_x_constants_8h_a80b9c289a6af363458e99988befceba3}{B\+X\+Certificate\+Policy}) -\/ \hyperlink{protocol_b_x_database_context_delegate-p_a84b5137af0edbf8be886bd6ddf2e0d9c}{database\+Context\+:handle\+Invalid\+Trust\+:result\+:}
+\item 
+(void) -\/ \hyperlink{protocol_b_x_database_context_delegate-p_a5e80c96e9141bb55345bdc311bf0daa0}{database\+Context\+:lost\+Connection\+:}
+\item 
+(void) -\/ \hyperlink{protocol_b_x_database_context_delegate-p_a57b544628f1bc31d6bf965eba463dce9}{database\+Context\+:network\+Status\+Changed\+:}
+\item 
+(void) -\/ \hyperlink{protocol_b_x_database_context_delegate-p_adbf6c93035fa905af1687cb140722d75}{database\+Context\+Connection\+Failure\+Alert\+Dismissed\+:}
+\item 
+(void) -\/ \hyperlink{protocol_b_x_database_context_delegate-p_a408a0aec2c29c263828cf2892ca48fe3}{database\+Context\+Connection\+Succeeded\+:}
+\item 
+(enum \hyperlink{_b_x_constants_8h_aa90c820a219290fe23398cb49a4a9316}{B\+X\+S\+S\+L\+Mode}) -\/ \hyperlink{protocol_b_x_database_context_delegate-p_ad9b0cd8d7c44982849aec02146827664}{S\+S\+L\+Mode\+For\+Database\+Context\+:}
+\end{DoxyCompactItemize}
+
+
+\subsection{Method Documentation}
+\hypertarget{protocol_b_x_database_context_delegate-p_a8876f51cb221e1e637d670ad28e2fb70}{}\index{B\+X\+Database\+Context\+Delegate-\/p@{B\+X\+Database\+Context\+Delegate-\/p}!database\+Context\+:failed\+To\+Connect\+:@{database\+Context\+:failed\+To\+Connect\+:}}
+\index{database\+Context\+:failed\+To\+Connect\+:@{database\+Context\+:failed\+To\+Connect\+:}!B\+X\+Database\+Context\+Delegate-\/p@{B\+X\+Database\+Context\+Delegate-\/p}}
+\subsubsection[{database\+Context\+:failed\+To\+Connect\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (void) database\+Context\+: 
+\begin{DoxyParamCaption}
+\item[{(B\+X\+Database\+Context $\ast$)}]{ctx}
+\item[{failedToConnect:(N\+S\+Error $\ast$)}]{error}
+\end{DoxyParamCaption}
+\hspace{0.3cm}{\ttfamily [optional]}}\label{protocol_b_x_database_context_delegate-p_a8876f51cb221e1e637d670ad28e2fb70}
+Callback for a failed connection. Called after a failed asynchronous connection attempt. 
+\begin{DoxyParams}{Parameters}
+{\em ctx} & The database context that initiated the connection. \\
+\hline
+{\em error} & The connection error. \\
+\hline
+\end{DoxyParams}
+\hypertarget{protocol_b_x_database_context_delegate-p_a7225b66321a98e0c78dc46743517167c}{}\index{B\+X\+Database\+Context\+Delegate-\/p@{B\+X\+Database\+Context\+Delegate-\/p}!database\+Context\+:had\+Error\+:will\+Be\+Passed\+On\+:@{database\+Context\+:had\+Error\+:will\+Be\+Passed\+On\+:}}
+\index{database\+Context\+:had\+Error\+:will\+Be\+Passed\+On\+:@{database\+Context\+:had\+Error\+:will\+Be\+Passed\+On\+:}!B\+X\+Database\+Context\+Delegate-\/p@{B\+X\+Database\+Context\+Delegate-\/p}}
+\subsubsection[{database\+Context\+:had\+Error\+:will\+Be\+Passed\+On\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (void) database\+Context\+: 
+\begin{DoxyParamCaption}
+\item[{(B\+X\+Database\+Context $\ast$)}]{context}
+\item[{hadError:(N\+S\+Error $\ast$)}]{an\+Error}
+\item[{willBePassedOn:(B\+O\+O\+L)}]{will\+Be\+Passed\+On}
+\end{DoxyParamCaption}
+\hspace{0.3cm}{\ttfamily [optional]}}\label{protocol_b_x_database_context_delegate-p_a7225b66321a98e0c78dc46743517167c}
+Handle an error. Various methods in B\+X\+Database\+Context have an N\+S\+Error$\ast$$\ast$ parameter. In addition, the context has an error\+Handler\+Delegate outlet. If no error handler has been set, the database context will handle errors itself.
+
+When the N\+S\+Error$\ast$$\ast$ parameter has been supplied to the methods, no action will be taken and the error is assumed to have been handled. If the parameter is N\+U\+L\+L and an error occurs, a \hyperlink{interface_b_x_exception}{B\+X\+Exception} named {\itshape k\+B\+X\+Exception\+Unhandled\+Error} will be thrown.
+
+
+\begin{DoxyParams}{Parameters}
+{\em context} & The database context from which the error originated. \\
+\hline
+{\em an\+Error} & The error. \\
+\hline
+{\em will\+Be\+Passed\+On} & Whether the calling method's N\+S\+Error$\ast$$\ast$ parameter was set or not. \\
+\hline
+\end{DoxyParams}
+\hypertarget{protocol_b_x_database_context_delegate-p_aec9d16c1c021751c1133d8a731192d8e}{}\index{B\+X\+Database\+Context\+Delegate-\/p@{B\+X\+Database\+Context\+Delegate-\/p}!database\+Context\+:had\+Reconnection\+Error\+:@{database\+Context\+:had\+Reconnection\+Error\+:}}
+\index{database\+Context\+:had\+Reconnection\+Error\+:@{database\+Context\+:had\+Reconnection\+Error\+:}!B\+X\+Database\+Context\+Delegate-\/p@{B\+X\+Database\+Context\+Delegate-\/p}}
+\subsubsection[{database\+Context\+:had\+Reconnection\+Error\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (void) database\+Context\+: 
+\begin{DoxyParamCaption}
+\item[{(B\+X\+Database\+Context $\ast$)}]{context}
+\item[{hadReconnectionError:(N\+S\+Error $\ast$)}]{error}
+\end{DoxyParamCaption}
+\hspace{0.3cm}{\ttfamily [optional]}}\label{protocol_b_x_database_context_delegate-p_aec9d16c1c021751c1133d8a731192d8e}
+Handle failure during connection loss recovery. Called after recovery was attempted after a database connection had been lost but the attempt failed.
+
+By default in App\+Kit applications the error will be presented to the user as an application modal alert panel.
+
+Foundation applications will log the error.
+
+\begin{DoxyNote}{Note}
+-\/database\+Context\+:had\+Error\+:will\+Be\+Passed\+On\+: won't be called for this error. 
+\end{DoxyNote}
+\hypertarget{protocol_b_x_database_context_delegate-p_a84b5137af0edbf8be886bd6ddf2e0d9c}{}\index{B\+X\+Database\+Context\+Delegate-\/p@{B\+X\+Database\+Context\+Delegate-\/p}!database\+Context\+:handle\+Invalid\+Trust\+:result\+:@{database\+Context\+:handle\+Invalid\+Trust\+:result\+:}}
+\index{database\+Context\+:handle\+Invalid\+Trust\+:result\+:@{database\+Context\+:handle\+Invalid\+Trust\+:result\+:}!B\+X\+Database\+Context\+Delegate-\/p@{B\+X\+Database\+Context\+Delegate-\/p}}
+\subsubsection[{database\+Context\+:handle\+Invalid\+Trust\+:result\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (enum {\bf B\+X\+Certificate\+Policy}) database\+Context\+: 
+\begin{DoxyParamCaption}
+\item[{(B\+X\+Database\+Context $\ast$)}]{ctx}
+\item[{handleInvalidTrust:(Sec\+Trust\+Ref)}]{trust}
+\item[{result:(Sec\+Trust\+Result\+Type)}]{result}
+\end{DoxyParamCaption}
+\hspace{0.3cm}{\ttfamily [optional]}}\label{protocol_b_x_database_context_delegate-p_a84b5137af0edbf8be886bd6ddf2e0d9c}
+Policy for invalid trust. The server certificate will be verified using the system keychain. On failure this method will be called. The delegate may then accept or deny the certificate or, in case the application has been linked to the Base\+Ten\+App\+Kit framework, ask the context to display a trust panel to the user. 
+\begin{DoxyParams}{Parameters}
+{\em ctx} & The database context making the connection \\
+\hline
+{\em trust} & A trust created from the certificate \\
+\hline
+{\em result} & Initial verification result \\
+\hline
+\end{DoxyParams}
+\hypertarget{protocol_b_x_database_context_delegate-p_a5e80c96e9141bb55345bdc311bf0daa0}{}\index{B\+X\+Database\+Context\+Delegate-\/p@{B\+X\+Database\+Context\+Delegate-\/p}!database\+Context\+:lost\+Connection\+:@{database\+Context\+:lost\+Connection\+:}}
+\index{database\+Context\+:lost\+Connection\+:@{database\+Context\+:lost\+Connection\+:}!B\+X\+Database\+Context\+Delegate-\/p@{B\+X\+Database\+Context\+Delegate-\/p}}
+\subsubsection[{database\+Context\+:lost\+Connection\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (void) database\+Context\+: 
+\begin{DoxyParamCaption}
+\item[{(B\+X\+Database\+Context $\ast$)}]{context}
+\item[{lostConnection:(N\+S\+Error $\ast$)}]{error}
+\end{DoxyParamCaption}
+\hspace{0.3cm}{\ttfamily [optional]}}\label{protocol_b_x_database_context_delegate-p_a5e80c96e9141bb55345bdc311bf0daa0}
+Handle connection loss. Called when a database connection is lost either unintentionally or by system sleep. In both cases a recovery attempter will be included with the error.
+
+By default in App\+Kit applications the error will be presented to the user as an application modal alert panel. If they choose not to reconnect or the attempt fails for some reason, the context will be set to return {\itshape nil} for all non-\/cached object values.
+
+Foundation applications will throw a \hyperlink{interface_b_x_exception}{B\+X\+Exception} named {\itshape k\+B\+X\+Exception\+Unhandled\+Error}.
+
+\begin{DoxyNote}{Note}
+-\/database\+Context\+:had\+Error\+:will\+Be\+Passed\+On\+: won't be called for this error. 
+\end{DoxyNote}
+\hypertarget{protocol_b_x_database_context_delegate-p_a57b544628f1bc31d6bf965eba463dce9}{}\index{B\+X\+Database\+Context\+Delegate-\/p@{B\+X\+Database\+Context\+Delegate-\/p}!database\+Context\+:network\+Status\+Changed\+:@{database\+Context\+:network\+Status\+Changed\+:}}
+\index{database\+Context\+:network\+Status\+Changed\+:@{database\+Context\+:network\+Status\+Changed\+:}!B\+X\+Database\+Context\+Delegate-\/p@{B\+X\+Database\+Context\+Delegate-\/p}}
+\subsubsection[{database\+Context\+:network\+Status\+Changed\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (void) database\+Context\+: 
+\begin{DoxyParamCaption}
+\item[{(B\+X\+Database\+Context $\ast$)}]{context}
+\item[{networkStatusChanged:(S\+C\+Network\+Connection\+Flags)}]{new\+Flags}
+\end{DoxyParamCaption}
+\hspace{0.3cm}{\ttfamily [optional]}}\label{protocol_b_x_database_context_delegate-p_a57b544628f1bc31d6bf965eba463dce9}
+Network status change. Changes in network status are received from System Configuration framework. \begin{DoxyNote}{Note}
+The default implementation does nothing but this might change in the future. 
+\end{DoxyNote}
+\hypertarget{protocol_b_x_database_context_delegate-p_adbf6c93035fa905af1687cb140722d75}{}\index{B\+X\+Database\+Context\+Delegate-\/p@{B\+X\+Database\+Context\+Delegate-\/p}!database\+Context\+Connection\+Failure\+Alert\+Dismissed\+:@{database\+Context\+Connection\+Failure\+Alert\+Dismissed\+:}}
+\index{database\+Context\+Connection\+Failure\+Alert\+Dismissed\+:@{database\+Context\+Connection\+Failure\+Alert\+Dismissed\+:}!B\+X\+Database\+Context\+Delegate-\/p@{B\+X\+Database\+Context\+Delegate-\/p}}
+\subsubsection[{database\+Context\+Connection\+Failure\+Alert\+Dismissed\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (void) database\+Context\+Connection\+Failure\+Alert\+Dismissed\+: 
+\begin{DoxyParamCaption}
+\item[{(B\+X\+Database\+Context $\ast$)}]{ctx}
+\end{DoxyParamCaption}
+\hspace{0.3cm}{\ttfamily [optional]}}\label{protocol_b_x_database_context_delegate-p_adbf6c93035fa905af1687cb140722d75}
+Callback for a failed connection. When Base\+Ten\+App\+Kit is linked, B\+X\+Database\+Context automatically displays an alert panel. This method will be called after the user has dismissed the panel. 
+\begin{DoxyParams}{Parameters}
+{\em ctx} & The database context that initiated the connection. \\
+\hline
+\end{DoxyParams}
+\hypertarget{protocol_b_x_database_context_delegate-p_a408a0aec2c29c263828cf2892ca48fe3}{}\index{B\+X\+Database\+Context\+Delegate-\/p@{B\+X\+Database\+Context\+Delegate-\/p}!database\+Context\+Connection\+Succeeded\+:@{database\+Context\+Connection\+Succeeded\+:}}
+\index{database\+Context\+Connection\+Succeeded\+:@{database\+Context\+Connection\+Succeeded\+:}!B\+X\+Database\+Context\+Delegate-\/p@{B\+X\+Database\+Context\+Delegate-\/p}}
+\subsubsection[{database\+Context\+Connection\+Succeeded\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (void) database\+Context\+Connection\+Succeeded\+: 
+\begin{DoxyParamCaption}
+\item[{(B\+X\+Database\+Context $\ast$)}]{ctx}
+\end{DoxyParamCaption}
+\hspace{0.3cm}{\ttfamily [optional]}}\label{protocol_b_x_database_context_delegate-p_a408a0aec2c29c263828cf2892ca48fe3}
+Callback for a successful connection. Called after a successful asynchronous connection attempt. 
+\begin{DoxyParams}{Parameters}
+{\em ctx} & The database context that initiated the connection. \\
+\hline
+\end{DoxyParams}
+\hypertarget{protocol_b_x_database_context_delegate-p_ad9b0cd8d7c44982849aec02146827664}{}\index{B\+X\+Database\+Context\+Delegate-\/p@{B\+X\+Database\+Context\+Delegate-\/p}!S\+S\+L\+Mode\+For\+Database\+Context\+:@{S\+S\+L\+Mode\+For\+Database\+Context\+:}}
+\index{S\+S\+L\+Mode\+For\+Database\+Context\+:@{S\+S\+L\+Mode\+For\+Database\+Context\+:}!B\+X\+Database\+Context\+Delegate-\/p@{B\+X\+Database\+Context\+Delegate-\/p}}
+\subsubsection[{S\+S\+L\+Mode\+For\+Database\+Context\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (enum {\bf B\+X\+S\+S\+L\+Mode}) S\+S\+L\+Mode\+For\+Database\+Context\+: 
+\begin{DoxyParamCaption}
+\item[{(B\+X\+Database\+Context $\ast$)}]{ctx}
+\end{DoxyParamCaption}
+\hspace{0.3cm}{\ttfamily [optional]}}\label{protocol_b_x_database_context_delegate-p_ad9b0cd8d7c44982849aec02146827664}
+Secure connection mode for the context. The mode may be one of require, disable and prefer. In prefer mode, a secure connection will be attempted. If this fails for other reason than a certificate verification problem, an insecure connection will be tried. 
+
+The documentation for this protocol was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+B\+X\+Database\+Context\+Delegate\+Protocol.\+h\end{DoxyCompactItemize}

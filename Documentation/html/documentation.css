@@ -1,0 +1,118 @@
+p, div, li, td, th, h1, h2, h3, h4, h5, h6,
+dl.el
+{
+    font-family: "Lucida Grande", Verdana, sans-serif;
+}
+
+p, div, li, td, th
+{
+    font-size: small;
+}
+
+a#logo
+{
+    border: none;
+}
+
+div#logo-container
+{
+    position: relative;
+    left: -4px;
+    margin-bottom: 0.5em;
+    margin-left: 1em;
+}
+
+h1
+{
+    margin-top: 0;
+    font-size: 160%;
+}
+
+h2
+{
+    margin-top: 2em;
+}
+
+div.navigation
+{
+    float: right;
+    width: 12em;
+    margin-right: 1em;
+}
+
+div.tabs
+{
+    border: thin gray solid;
+    margin-bottom: 1em;
+}
+
+div.container
+{
+    float: left;
+    width: 100%;
+    margin-right: -14em;
+}
+
+div.contents
+{
+    margin-right: 14em;
+    margin-left: 1em;
+}
+
+
+div.footer
+{
+    clear: both;
+}
+
+div.memitem /* , div.contents > ul */
+{
+    border-bottom: 1px gray solid;
+}
+
+div.contents > ul:last-child
+{
+    border-bottom: none;
+}
+
+div.contents > ul > li
+{
+}
+
+hr, h1 br
+{
+    display: none;
+}
+
+div.groupHeader
+{
+    font-size: 130%;
+    font-weight: bold;
+    margin-top: 2em;
+}
+
+div.memproto
+{
+    font-size: 120%;
+    font-weight: bold;
+}
+
+td.paramkey
+{
+    text-align: right;
+}
+
+td.paramtype
+{
+    text-align: center;
+}
+
+li dl
+{
+    font-style: italic;
+}
+
+code
+{
+    white-space: pre;
+}

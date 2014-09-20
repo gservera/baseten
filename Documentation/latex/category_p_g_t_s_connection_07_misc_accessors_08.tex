@@ -1,0 +1,237 @@
+\hypertarget{category_p_g_t_s_connection_07_misc_accessors_08}{}\section{P\+G\+T\+S\+Connection(Misc\+Accessors) Category Reference}
+\label{category_p_g_t_s_connection_07_misc_accessors_08}\index{P\+G\+T\+S\+Connection(\+Misc\+Accessors)@{P\+G\+T\+S\+Connection(\+Misc\+Accessors)}}
+
+
+\subsection{Overview}
+Miscellaneous accessors \subsection*{Instance Methods}
+\begin{DoxyCompactItemize}
+\item 
+(N\+S\+String $\ast$) -\/ \hyperlink{category_p_g_t_s_connection_07_misc_accessors_08_a9750ed8f94634937b940a62e42a745b8}{connection\+String}
+\item 
+(P\+Gconn $\ast$) -\/ \hyperlink{category_p_g_t_s_connection_07_misc_accessors_08_a74e9db46d80376853bada84e2ec370ff}{pg\+Connection}
+\item 
+(void) -\/ \hyperlink{category_p_g_t_s_connection_07_misc_accessors_08_affcfc72eb15f19ee4e1952c26dc5c932}{set\+Overlooks\+Failed\+Queries\+:}
+\item 
+(Conn\+Status\+Type) -\/ \hyperlink{category_p_g_t_s_connection_07_misc_accessors_08_abaf1ed2f2f5eb4bbfbe0e0e10bedcce8}{status}
+\end{DoxyCompactItemize}
+{\bf }\par
+\begin{DoxyCompactItemize}
+\item 
+(B\+O\+O\+L) -\/ \hyperlink{category_p_g_t_s_connection_07_misc_accessors_08_a34a225a33c9a2ae107fdcc21303b7371}{set\+Connection\+U\+R\+L\+:}
+\item 
+(void) -\/ \hyperlink{category_p_g_t_s_connection_07_misc_accessors_08_aae94caf61241aca0a02175a5f024d282}{set\+Connection\+Dictionary\+:}
+\item 
+(void) -\/ \hyperlink{category_p_g_t_s_connection_07_misc_accessors_08_a9498870ef37387d3d26dc40f5364bdbb}{set\+Connection\+String\+:}
+\end{DoxyCompactItemize}
+
+{\bf }\par
+\begin{DoxyCompactItemize}
+\item 
+(id$<$ \hyperlink{protocol_p_g_t_s_connection_delegate-p}{P\+G\+T\+S\+Connection\+Delegate} $>$) -\/ \hyperlink{category_p_g_t_s_connection_07_misc_accessors_08_a6cbb1926a0f65bb01fdfea578187cb03}{delegate}
+\end{DoxyCompactItemize}
+
+{\bf }\par
+\begin{DoxyCompactItemize}
+\item 
+(B\+O\+O\+L) -\/ \hyperlink{category_p_g_t_s_connection_07_misc_accessors_08_ac0cfd676770b4b40685b599acd2da740}{connects\+Automatically}
+\end{DoxyCompactItemize}
+
+{\bf }\par
+\begin{DoxyCompactItemize}
+\item 
+(N\+S\+String $\ast$) -\/ \hyperlink{category_p_g_t_s_connection_07_misc_accessors_08_a730509f6710de6bca942950a0075b209}{initial\+Commands}
+\end{DoxyCompactItemize}
+
+{\bf }\par
+\begin{DoxyCompactItemize}
+\item 
+(struct timeval) -\/ \hyperlink{category_p_g_t_s_connection_07_misc_accessors_08_ac337237c5b175d6107048ab770106533}{timeout}
+\end{DoxyCompactItemize}
+
+{\bf }\par
+\begin{DoxyCompactItemize}
+\item 
+(P\+G\+T\+S\+Database\+Info $\ast$) -\/ \hyperlink{category_p_g_t_s_connection_07_misc_accessors_08_a77f4acfa420b3effffa51aff48d881d7}{database\+Info}
+\item 
+(void) -\/ \hyperlink{category_p_g_t_s_connection_07_misc_accessors_08_abffc8fbb7c1b51a6fff0e52673589671}{set\+Database\+Info\+:}
+\end{DoxyCompactItemize}
+
+{\bf }\par
+\begin{DoxyCompactItemize}
+\item 
+(N\+S\+Mutable\+Dictionary $\ast$) -\/ \hyperlink{category_p_g_t_s_connection_07_misc_accessors_08_acc24bbfabac6c53c4997b03bd746e4a9}{deserialization\+Dictionary}
+\end{DoxyCompactItemize}
+
+{\bf }\par
+\begin{DoxyCompactItemize}
+\item 
+(B\+O\+O\+L) -\/ \hyperlink{category_p_g_t_s_connection_07_misc_accessors_08_abbc8c5d8c7f6656395e2a7d261f4e1ac}{reconnects\+Automatically}{\ttfamily  \mbox{[}implementation\mbox{]}}
+\end{DoxyCompactItemize}
+
+\subsection*{Class Methods}
+\begin{DoxyCompactItemize}
+\item 
+(B\+O\+O\+L) + \hyperlink{category_p_g_t_s_connection_07_misc_accessors_08_abb9dfbf02ef80722abdcf0520dd56830}{has\+S\+S\+L\+Capability}
+\end{DoxyCompactItemize}
+
+
+\subsection{Method Documentation}
+\hypertarget{category_p_g_t_s_connection_07_misc_accessors_08_a9750ed8f94634937b940a62e42a745b8}{}\index{P\+G\+T\+S\+Connection(\+Misc\+Accessors)@{P\+G\+T\+S\+Connection(\+Misc\+Accessors)}!connection\+String@{connection\+String}}
+\index{connection\+String@{connection\+String}!P\+G\+T\+S\+Connection(\+Misc\+Accessors)@{P\+G\+T\+S\+Connection(\+Misc\+Accessors)}}
+\subsubsection[{connection\+String}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (N\+S\+String $\ast$) connection\+String 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+}\label{category_p_g_t_s_connection_07_misc_accessors_08_a9750ed8f94634937b940a62e42a745b8}
+Return the connection string set using an N\+S\+Dictionary or N\+S\+String \hypertarget{category_p_g_t_s_connection_07_misc_accessors_08_ac0cfd676770b4b40685b599acd2da740}{}\index{P\+G\+T\+S\+Connection(\+Misc\+Accessors)@{P\+G\+T\+S\+Connection(\+Misc\+Accessors)}!connects\+Automatically@{connects\+Automatically}}
+\index{connects\+Automatically@{connects\+Automatically}!P\+G\+T\+S\+Connection(\+Misc\+Accessors)@{P\+G\+T\+S\+Connection(\+Misc\+Accessors)}}
+\subsubsection[{connects\+Automatically}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (B\+O\+O\+L) connects\+Automatically 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+}\label{category_p_g_t_s_connection_07_misc_accessors_08_ac0cfd676770b4b40685b599acd2da740}
+Connect automatically after awake\+From\+Nib \hypertarget{category_p_g_t_s_connection_07_misc_accessors_08_a77f4acfa420b3effffa51aff48d881d7}{}\index{P\+G\+T\+S\+Connection(\+Misc\+Accessors)@{P\+G\+T\+S\+Connection(\+Misc\+Accessors)}!database\+Info@{database\+Info}}
+\index{database\+Info@{database\+Info}!P\+G\+T\+S\+Connection(\+Misc\+Accessors)@{P\+G\+T\+S\+Connection(\+Misc\+Accessors)}}
+\subsubsection[{database\+Info}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (P\+G\+T\+S\+Database\+Info $\ast$) database\+Info 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+}\label{category_p_g_t_s_connection_07_misc_accessors_08_a77f4acfa420b3effffa51aff48d881d7}
+Information object related to the connected database\begin{DoxyReturn}{Returns}
+the P\+G\+T\+S\+Database\+Info object, or nil if disconnected 
+\end{DoxyReturn}
+\hypertarget{category_p_g_t_s_connection_07_misc_accessors_08_a6cbb1926a0f65bb01fdfea578187cb03}{}\index{P\+G\+T\+S\+Connection(\+Misc\+Accessors)@{P\+G\+T\+S\+Connection(\+Misc\+Accessors)}!delegate@{delegate}}
+\index{delegate@{delegate}!P\+G\+T\+S\+Connection(\+Misc\+Accessors)@{P\+G\+T\+S\+Connection(\+Misc\+Accessors)}}
+\subsubsection[{delegate}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (id$<$ {\bf P\+G\+T\+S\+Connection\+Delegate} $>$) delegate 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+}\label{category_p_g_t_s_connection_07_misc_accessors_08_a6cbb1926a0f65bb01fdfea578187cb03}
+The delegate \hypertarget{category_p_g_t_s_connection_07_misc_accessors_08_acc24bbfabac6c53c4997b03bd746e4a9}{}\index{P\+G\+T\+S\+Connection(\+Misc\+Accessors)@{P\+G\+T\+S\+Connection(\+Misc\+Accessors)}!deserialization\+Dictionary@{deserialization\+Dictionary}}
+\index{deserialization\+Dictionary@{deserialization\+Dictionary}!P\+G\+T\+S\+Connection(\+Misc\+Accessors)@{P\+G\+T\+S\+Connection(\+Misc\+Accessors)}}
+\subsubsection[{deserialization\+Dictionary}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (N\+S\+Mutable\+Dictionary $\ast$) deserialization\+Dictionary 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+}\label{category_p_g_t_s_connection_07_misc_accessors_08_acc24bbfabac6c53c4997b03bd746e4a9}
+The deserialization dictionary for result sets returned by this connection \hypertarget{category_p_g_t_s_connection_07_misc_accessors_08_abb9dfbf02ef80722abdcf0520dd56830}{}\index{P\+G\+T\+S\+Connection(\+Misc\+Accessors)@{P\+G\+T\+S\+Connection(\+Misc\+Accessors)}!has\+S\+S\+L\+Capability@{has\+S\+S\+L\+Capability}}
+\index{has\+S\+S\+L\+Capability@{has\+S\+S\+L\+Capability}!P\+G\+T\+S\+Connection(\+Misc\+Accessors)@{P\+G\+T\+S\+Connection(\+Misc\+Accessors)}}
+\subsubsection[{has\+S\+S\+L\+Capability}]{\setlength{\rightskip}{0pt plus 5cm}+ (B\+O\+O\+L) has\+S\+S\+L\+Capability 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+}\label{category_p_g_t_s_connection_07_misc_accessors_08_abb9dfbf02ef80722abdcf0520dd56830}
+Returns Y\+E\+S if Open\+S\+S\+L was linked at compile time 
+
+Extends class \hyperlink{interface_p_g_t_s_connection_abb9dfbf02ef80722abdcf0520dd56830}{P\+G\+T\+S\+Connection}.
+
+\hypertarget{category_p_g_t_s_connection_07_misc_accessors_08_a730509f6710de6bca942950a0075b209}{}\index{P\+G\+T\+S\+Connection(\+Misc\+Accessors)@{P\+G\+T\+S\+Connection(\+Misc\+Accessors)}!initial\+Commands@{initial\+Commands}}
+\index{initial\+Commands@{initial\+Commands}!P\+G\+T\+S\+Connection(\+Misc\+Accessors)@{P\+G\+T\+S\+Connection(\+Misc\+Accessors)}}
+\subsubsection[{initial\+Commands}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (N\+S\+String $\ast$) initial\+Commands 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+}\label{category_p_g_t_s_connection_07_misc_accessors_08_a730509f6710de6bca942950a0075b209}
+Initial commands after making the connecting \begin{DoxySeeAlso}{See also}
+send\+Finished\+Connecting\+Message\+:reconnect\+: 
+\end{DoxySeeAlso}
+\hypertarget{category_p_g_t_s_connection_07_misc_accessors_08_a74e9db46d80376853bada84e2ec370ff}{}\index{P\+G\+T\+S\+Connection(\+Misc\+Accessors)@{P\+G\+T\+S\+Connection(\+Misc\+Accessors)}!pg\+Connection@{pg\+Connection}}
+\index{pg\+Connection@{pg\+Connection}!P\+G\+T\+S\+Connection(\+Misc\+Accessors)@{P\+G\+T\+S\+Connection(\+Misc\+Accessors)}}
+\subsubsection[{pg\+Connection}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (P\+Gconn $\ast$) pg\+Connection 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+}\label{category_p_g_t_s_connection_07_misc_accessors_08_a74e9db46d80376853bada84e2ec370ff}
+The connection object from libpq 
+
+Extends class \hyperlink{interface_p_g_t_s_connection_ad108477786f1061133b1acb7bf10b3b5}{P\+G\+T\+S\+Connection}.
+
+\hypertarget{category_p_g_t_s_connection_07_misc_accessors_08_abbc8c5d8c7f6656395e2a7d261f4e1ac}{}\index{P\+G\+T\+S\+Connection(\+Misc\+Accessors)@{P\+G\+T\+S\+Connection(\+Misc\+Accessors)}!reconnects\+Automatically@{reconnects\+Automatically}}
+\index{reconnects\+Automatically@{reconnects\+Automatically}!P\+G\+T\+S\+Connection(\+Misc\+Accessors)@{P\+G\+T\+S\+Connection(\+Misc\+Accessors)}}
+\subsubsection[{reconnects\+Automatically}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (B\+O\+O\+L) reconnects\+Automatically 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+\hspace{0.3cm}{\ttfamily [implementation]}}\label{category_p_g_t_s_connection_07_misc_accessors_08_abbc8c5d8c7f6656395e2a7d261f4e1ac}
+Reset connection automatically \hypertarget{category_p_g_t_s_connection_07_misc_accessors_08_aae94caf61241aca0a02175a5f024d282}{}\index{P\+G\+T\+S\+Connection(\+Misc\+Accessors)@{P\+G\+T\+S\+Connection(\+Misc\+Accessors)}!set\+Connection\+Dictionary\+:@{set\+Connection\+Dictionary\+:}}
+\index{set\+Connection\+Dictionary\+:@{set\+Connection\+Dictionary\+:}!P\+G\+T\+S\+Connection(\+Misc\+Accessors)@{P\+G\+T\+S\+Connection(\+Misc\+Accessors)}}
+\subsubsection[{set\+Connection\+Dictionary\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (void) set\+Connection\+Dictionary\+: 
+\begin{DoxyParamCaption}
+\item[{(N\+S\+Dictionary $\ast$)}]{user\+Dict}
+\end{DoxyParamCaption}
+}\label{category_p_g_t_s_connection_07_misc_accessors_08_aae94caf61241aca0a02175a5f024d282}
+\begin{DoxySeeAlso}{See also}
+P\+G\+T\+S\+Constants.\+h for keys 
+\end{DoxySeeAlso}
+
+
+Extends class \hyperlink{interface_p_g_t_s_connection_aae94caf61241aca0a02175a5f024d282}{P\+G\+T\+S\+Connection}.
+
+\hypertarget{category_p_g_t_s_connection_07_misc_accessors_08_a9498870ef37387d3d26dc40f5364bdbb}{}\index{P\+G\+T\+S\+Connection(\+Misc\+Accessors)@{P\+G\+T\+S\+Connection(\+Misc\+Accessors)}!set\+Connection\+String\+:@{set\+Connection\+String\+:}}
+\index{set\+Connection\+String\+:@{set\+Connection\+String\+:}!P\+G\+T\+S\+Connection(\+Misc\+Accessors)@{P\+G\+T\+S\+Connection(\+Misc\+Accessors)}}
+\subsubsection[{set\+Connection\+String\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (void) set\+Connection\+String\+: 
+\begin{DoxyParamCaption}
+\item[{(N\+S\+String $\ast$)}]{a\+String}
+\end{DoxyParamCaption}
+}\label{category_p_g_t_s_connection_07_misc_accessors_08_a9498870ef37387d3d26dc40f5364bdbb}
+Set the connection string directly 
+
+Extends class \hyperlink{interface_p_g_t_s_connection_a9498870ef37387d3d26dc40f5364bdbb}{P\+G\+T\+S\+Connection}.
+
+\hypertarget{category_p_g_t_s_connection_07_misc_accessors_08_a34a225a33c9a2ae107fdcc21303b7371}{}\index{P\+G\+T\+S\+Connection(\+Misc\+Accessors)@{P\+G\+T\+S\+Connection(\+Misc\+Accessors)}!set\+Connection\+U\+R\+L\+:@{set\+Connection\+U\+R\+L\+:}}
+\index{set\+Connection\+U\+R\+L\+:@{set\+Connection\+U\+R\+L\+:}!P\+G\+T\+S\+Connection(\+Misc\+Accessors)@{P\+G\+T\+S\+Connection(\+Misc\+Accessors)}}
+\subsubsection[{set\+Connection\+U\+R\+L\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (B\+O\+O\+L) set\+Connection\+U\+R\+L\+: 
+\begin{DoxyParamCaption}
+\item[{(N\+S\+U\+R\+L $\ast$)}]{url}
+\end{DoxyParamCaption}
+}\label{category_p_g_t_s_connection_07_misc_accessors_08_a34a225a33c9a2ae107fdcc21303b7371}
+Connection variables. 
+
+Extends class \hyperlink{interface_p_g_t_s_connection_a34a225a33c9a2ae107fdcc21303b7371}{P\+G\+T\+S\+Connection}.
+
+\hypertarget{category_p_g_t_s_connection_07_misc_accessors_08_abffc8fbb7c1b51a6fff0e52673589671}{}\index{P\+G\+T\+S\+Connection(\+Misc\+Accessors)@{P\+G\+T\+S\+Connection(\+Misc\+Accessors)}!set\+Database\+Info\+:@{set\+Database\+Info\+:}}
+\index{set\+Database\+Info\+:@{set\+Database\+Info\+:}!P\+G\+T\+S\+Connection(\+Misc\+Accessors)@{P\+G\+T\+S\+Connection(\+Misc\+Accessors)}}
+\subsubsection[{set\+Database\+Info\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (void) set\+Database\+Info\+: 
+\begin{DoxyParamCaption}
+\item[{(P\+G\+T\+S\+Database\+Info $\ast$)}]{an\+Object}
+\end{DoxyParamCaption}
+}\label{category_p_g_t_s_connection_07_misc_accessors_08_abffc8fbb7c1b51a6fff0e52673589671}
+Make a weak reference to the given object 
+
+Extends class \hyperlink{interface_p_g_t_s_connection_abffc8fbb7c1b51a6fff0e52673589671}{P\+G\+T\+S\+Connection}.
+
+\hypertarget{category_p_g_t_s_connection_07_misc_accessors_08_affcfc72eb15f19ee4e1952c26dc5c932}{}\index{P\+G\+T\+S\+Connection(\+Misc\+Accessors)@{P\+G\+T\+S\+Connection(\+Misc\+Accessors)}!set\+Overlooks\+Failed\+Queries\+:@{set\+Overlooks\+Failed\+Queries\+:}}
+\index{set\+Overlooks\+Failed\+Queries\+:@{set\+Overlooks\+Failed\+Queries\+:}!P\+G\+T\+S\+Connection(\+Misc\+Accessors)@{P\+G\+T\+S\+Connection(\+Misc\+Accessors)}}
+\subsubsection[{set\+Overlooks\+Failed\+Queries\+:}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (void) set\+Overlooks\+Failed\+Queries\+: 
+\begin{DoxyParamCaption}
+\item[{(B\+O\+O\+L)}]{a\+Bool}
+\end{DoxyParamCaption}
+}\label{category_p_g_t_s_connection_07_misc_accessors_08_affcfc72eb15f19ee4e1952c26dc5c932}
+Set the framework to call P\+G\+T\+S\+Connection\+:received\+Result\+Set\+: instead of P\+G\+T\+S\+Connection\+:received\+Error\+: 
+
+Extends class \hyperlink{interface_p_g_t_s_connection_affcfc72eb15f19ee4e1952c26dc5c932}{P\+G\+T\+S\+Connection}.
+
+\hypertarget{category_p_g_t_s_connection_07_misc_accessors_08_abaf1ed2f2f5eb4bbfbe0e0e10bedcce8}{}\index{P\+G\+T\+S\+Connection(\+Misc\+Accessors)@{P\+G\+T\+S\+Connection(\+Misc\+Accessors)}!status@{status}}
+\index{status@{status}!P\+G\+T\+S\+Connection(\+Misc\+Accessors)@{P\+G\+T\+S\+Connection(\+Misc\+Accessors)}}
+\subsubsection[{status}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (Conn\+Status\+Type) status 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+}\label{category_p_g_t_s_connection_07_misc_accessors_08_abaf1ed2f2f5eb4bbfbe0e0e10bedcce8}
+Connection status 
+
+Extends class \hyperlink{interface_p_g_t_s_connection_abaf1ed2f2f5eb4bbfbe0e0e10bedcce8}{P\+G\+T\+S\+Connection}.
+
+\hypertarget{category_p_g_t_s_connection_07_misc_accessors_08_ac337237c5b175d6107048ab770106533}{}\index{P\+G\+T\+S\+Connection(\+Misc\+Accessors)@{P\+G\+T\+S\+Connection(\+Misc\+Accessors)}!timeout@{timeout}}
+\index{timeout@{timeout}!P\+G\+T\+S\+Connection(\+Misc\+Accessors)@{P\+G\+T\+S\+Connection(\+Misc\+Accessors)}}
+\subsubsection[{timeout}]{\setlength{\rightskip}{0pt plus 5cm}-\/ (struct timeval) timeout 
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+}\label{category_p_g_t_s_connection_07_misc_accessors_08_ac337237c5b175d6107048ab770106533}
+Connection timeout 
+
+The documentation for this category was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+P\+G\+T\+S\+Connection-\/old.\+h\item 
+P\+G\+T\+S\+Connection-\/old.\+m\end{DoxyCompactItemize}

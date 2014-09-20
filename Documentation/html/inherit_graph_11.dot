@@ -1,0 +1,7 @@
+digraph "Graphical Class Hierarchy"
+{
+  edge [fontname="LucidaGrande",fontsize="10",labelfontname="LucidaGrande",labelfontsize="10"];
+  node [fontname="LucidaGrande",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="BXObjectStatusToColorTransformer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$interface_b_x_object_status_to_color_transformer.html",tooltip="Transforms an object status to a colour. "];
+}
