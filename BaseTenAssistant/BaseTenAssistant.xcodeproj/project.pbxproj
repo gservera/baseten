@@ -125,6 +125,13 @@
 			remoteGlobalIDString = 535444870D634D9C002A6C47;
 			remoteInfo = "BaseTenAppKit + GC";
 		};
+		9995558419CD6A2500983352 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5388DCD20E23AE22006CDBD8 /* BaseTen.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 997B110D19BD124200CB345E;
+			remoteInfo = "BaseTen Framework Tests";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -393,6 +400,7 @@
 			children = (
 				5388DCDB0E23AE22006CDBD8 /* BaseTen.framework */,
 				531282030E51EA9100207E91 /* libBaseTen.a */,
+				9995558519CD6A2500983352 /* BaseTen Framework Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -509,6 +517,13 @@
 			fileType = wrapper.framework;
 			path = BaseTenAppKit.framework;
 			remoteRef = 53F749970E362E62003C2E55 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9995558519CD6A2500983352 /* BaseTen Framework Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "BaseTen Framework Tests.xctest";
+			remoteRef = 9995558419CD6A2500983352 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -702,6 +717,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 538DF67710373E5400F33B72 /* debug.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				COMBINE_HIDPI_IMAGES = YES;
 			};
 			name = Debug;
@@ -710,6 +726,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 538DF67610373E5400F33B72 /* release.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				COMBINE_HIDPI_IMAGES = YES;
 			};
 			name = Release;

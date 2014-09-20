@@ -1,0 +1,11 @@
+#!/bin/sh
+BASETEN_PROJECT_DIR="$PROJECT_DIR"/../
+
+ICON_FOLDER_PATH="$PROJECT_DIR/BaseTenPaletteIcon"
+
+if [ ! -e "$ICON_FOLDER_PATH" ]
+then
+	ditto -xk "$PROJECT_DIR"/BaseTenPaletteIcon.zip "$ICON_FOLDER_PATH" "$PROJECT_DIR"
+fi
+sh "$BASETEN_PROJECT_DIR"/Tools/set_icon.sh "$ICON_FOLDER_PATH" "$TARGET_BUILD_DIR"/"$WRAPPER_NAME"
+

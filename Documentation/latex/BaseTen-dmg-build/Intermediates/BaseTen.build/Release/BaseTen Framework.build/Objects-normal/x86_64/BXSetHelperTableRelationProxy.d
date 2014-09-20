@@ -1,0 +1,24 @@
+dependencies: \
+  /Users/guille/Developer/baseten/Sources/BXSetHelperTableRelationProxy.m \
+  /Users/guille/Developer/baseten/Sources/BXSetHelperTableRelationProxy.h \
+  /Users/guille/Developer/baseten/Sources/BXSetRelationProxy.h \
+  /Users/guille/Developer/baseten/Sources/BXSetProxy.h \
+  /Users/guille/Developer/baseten/Sources/BXContainerProxy.h \
+  /Users/guille/Developer/baseten/Sources/BXDatabaseObjectID.h \
+  /Users/guille/Developer/baseten/Sources/BXConstants.h \
+  /Users/guille/Developer/baseten/Sources/BXExport.h \
+  /Users/guille/Developer/baseten/Sources/BXDatabaseObjectIDPrivate.h \
+  /Users/guille/Developer/baseten/Sources/BXDatabaseObject.h \
+  /Users/guille/Developer/baseten/Sources/BXDatabaseContext.h \
+  /Users/guille/Developer/baseten/Sources/BXDatabaseContextDelegateProtocol.h \
+  /Users/guille/Developer/baseten/Sources/BXRelationshipDescriptionPrivate.h \
+  /Users/guille/Developer/baseten/Sources/BXRelationshipDescription.h \
+  /Users/guille/Developer/baseten/Sources/BXPropertyDescription.h \
+  /Users/guille/Developer/baseten/Sources/BXAbstractDescription.h \
+  /Users/guille/Developer/baseten/Sources/BXPGRelationAliasMapper.h \
+  /Users/guille/Developer/baseten/Sources/BXLogger.h \
+  /Users/guille/Developer/baseten/Sources/BXManyToManyRelationshipDescription.h \
+  /Users/guille/Developer/baseten/Sources/BXForeignKey.h \
+  /Users/guille/Developer/baseten/Sources/BXEntityDescription.h \
+  /Users/guille/Developer/baseten/Sources/BXEnumerate.h \
+  /Users/guille/Developer/baseten/Sources/NSArray+BaseTenAdditions.h

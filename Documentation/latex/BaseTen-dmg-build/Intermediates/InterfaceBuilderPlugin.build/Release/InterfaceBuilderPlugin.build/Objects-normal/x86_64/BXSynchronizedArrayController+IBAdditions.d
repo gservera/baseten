@@ -1,0 +1,29 @@
+dependencies: \
+  /Users/guille/Developer/baseten/InterfaceBuilderPlugin/Sources/BXSynchronizedArrayController+IBAdditions.m \
+  /Users/guille/Developer/baseten/InterfaceBuilderPlugin/Sources/BXSynchronizedArrayController+IBAdditions.h \
+  /Users/guille/Developer/baseten/Documentation/latex/BaseTen-dmg-build/Release/BaseTen.framework/Headers/BaseTen.h \
+  /Users/guille/Developer/baseten/Documentation/latex/BaseTen-dmg-build/Release/BaseTen.framework/Headers/BXConstants.h \
+  /Users/guille/Developer/baseten/Documentation/latex/BaseTen-dmg-build/Release/BaseTen.framework/Headers/BXExport.h \
+  /Users/guille/Developer/baseten/Documentation/latex/BaseTen-dmg-build/Release/BaseTen.framework/Headers/BXDatabaseContext.h \
+  /Users/guille/Developer/baseten/Documentation/latex/BaseTen-dmg-build/Release/BaseTen.framework/Headers/BXDatabaseContextDelegateProtocol.h \
+  /Users/guille/Developer/baseten/Documentation/latex/BaseTen-dmg-build/Release/BaseTen.framework/Headers/BXDatabaseObjectModel.h \
+  /Users/guille/Developer/baseten/Documentation/latex/BaseTen-dmg-build/Release/BaseTen.framework/Headers/BXDatabaseObjectModelStorage.h \
+  /Users/guille/Developer/baseten/Documentation/latex/BaseTen-dmg-build/Release/BaseTen.framework/Headers/BXDatabaseObject.h \
+  /Users/guille/Developer/baseten/Documentation/latex/BaseTen-dmg-build/Release/BaseTen.framework/Headers/BXDatabaseObjectID.h \
+  /Users/guille/Developer/baseten/Documentation/latex/BaseTen-dmg-build/Release/BaseTen.framework/Headers/BXEntityDescription.h \
+  /Users/guille/Developer/baseten/Documentation/latex/BaseTen-dmg-build/Release/BaseTen.framework/Headers/BXAbstractDescription.h \
+  /Users/guille/Developer/baseten/Documentation/latex/BaseTen-dmg-build/Release/BaseTen.framework/Headers/BXAttributeDescription.h \
+  /Users/guille/Developer/baseten/Documentation/latex/BaseTen-dmg-build/Release/BaseTen.framework/Headers/BXPropertyDescription.h \
+  /Users/guille/Developer/baseten/Documentation/latex/BaseTen-dmg-build/Release/BaseTen.framework/Headers/BXRelationshipDescription.h \
+  /Users/guille/Developer/baseten/Documentation/latex/BaseTen-dmg-build/Release/BaseTen.framework/Headers/BXException.h \
+  /Users/guille/Developer/baseten/Documentation/latex/BaseTen-dmg-build/Release/BaseTen.framework/Headers/BXContainerProxy.h \
+  /Users/guille/Developer/baseten/Documentation/latex/BaseTen-dmg-build/Release/BaseTen.framework/Headers/BXVerbatimExpressionValue.h \
+  /Users/guille/Developer/baseten/Documentation/latex/BaseTen-dmg-build/Release/BaseTen.framework/Headers/BXExpressionValue.h \
+  /Users/guille/Developer/baseten/Documentation/latex/BaseTen-dmg-build/Release/BaseTenAppKit.framework/Headers/BaseTenAppKit.h \
+  /Users/guille/Developer/baseten/Documentation/latex/BaseTen-dmg-build/Release/BaseTenAppKit.framework/Headers/BXSynchronizedArrayController.h \
+  /Users/guille/Developer/baseten/Documentation/latex/BaseTen-dmg-build/Release/BaseTenAppKit.framework/Headers/BXControllerProtocol.h \
+  /Users/guille/Developer/baseten/Documentation/latex/BaseTen-dmg-build/Release/BaseTenAppKit.framework/Headers/BXObjectStatusToColorTransformer.h \
+  /Users/guille/Developer/baseten/Documentation/latex/BaseTen-dmg-build/Release/BaseTenAppKit.framework/Headers/BXAttributeValuePredicateEditorRowTemplateFactory.h \
+  /Users/guille/Developer/baseten/Documentation/latex/BaseTen-dmg-build/Release/BaseTenAppKit.framework/Headers/BXMultipleChoicePredicateEditorRowTemplateFactory.h \
+  /Users/guille/Developer/baseten/InterfaceBuilderPlugin/Sources/BXSynchronizedArrayControllerInspector.h \
+  /Users/guille/Developer/baseten/InterfaceBuilderPlugin/Sources/BXIBPlugin.h

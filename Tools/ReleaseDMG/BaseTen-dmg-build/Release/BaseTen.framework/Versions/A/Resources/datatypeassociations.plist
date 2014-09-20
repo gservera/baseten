@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bit</key>
+	<string>NSString</string>
+	<key>bool</key>
+	<string>PGTSBool</string>
+	<key>bytea</key>
+	<string>NSData</string>
+	<key>char</key>
+	<string>NSString</string>
+	<key>date</key>
+	<string>PGTSDate</string>
+	<key>float4</key>
+	<string>PGTSFloat</string>
+	<key>float8</key>
+	<string>PGTSDouble</string>
+	<key>int2</key>
+	<string>NSNumber</string>
+	<key>int4</key>
+	<string>NSNumber</string>
+	<key>int8</key>
+	<string>NSNumber</string>
+	<key>name</key>
+	<string>NSString</string>
+	<key>numeric</key>
+	<string>NSDecimalNumber</string>
+	<key>oid</key>
+	<string>NSNumber</string>
+	<key>point</key>
+	<string>PGTSPoint</string>
+	<key>text</key>
+	<string>NSString</string>
+	<key>timestamp</key>
+	<string>PGTSTimestamp</string>
+	<key>timestamptz</key>
+	<string>PGTSTimestamp</string>
+	<key>time</key>
+	<string>PGTSTime</string>
+	<key>timetz</key>
+	<string>PGTSTime</string>
+	<key>varbit</key>
+	<string>NSString</string>
+	<key>varchar</key>
+	<string>NSString</string>
+    <key>bpchar</key>
+    <string>NSString</string>
+    <key>int2vector</key>
+    <string>NSArray</string>
+    <key>aclitem</key>
+    <string>PGTSACLItem</string>
+    <key>uuid</key>
+    <string>NSString</string>
+    <key>xml</key>
+    <string>NSXMLDocument</string>
+</dict>
+</plist>

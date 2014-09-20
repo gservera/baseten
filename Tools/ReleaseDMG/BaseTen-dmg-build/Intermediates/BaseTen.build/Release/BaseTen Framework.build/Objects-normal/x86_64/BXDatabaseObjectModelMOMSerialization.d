@@ -1,0 +1,20 @@
+dependencies: \
+  /Users/guille/Developer/baseten/Sources/BXDatabaseObjectModelMOMSerialization.mm \
+  /Users/guille/Developer/baseten/Sources/BXDatabaseObjectModelMOMSerialization.h \
+  /Users/guille/Developer/baseten/Sources/BXConstants.h \
+  /Users/guille/Developer/baseten/Sources/BXExport.h \
+  /Users/guille/Developer/baseten/Sources/BXDatabaseObjectModel.h \
+  /Users/guille/Developer/baseten/Sources/BXEnumerate.h \
+  /Users/guille/Developer/baseten/Sources/BXEntityDescription.h \
+  /Users/guille/Developer/baseten/Sources/BXAbstractDescription.h \
+  /Users/guille/Developer/baseten/Sources/BXAttributeDescription.h \
+  /Users/guille/Developer/baseten/Sources/BXPropertyDescription.h \
+  /Users/guille/Developer/baseten/Sources/BXRelationshipDescription.h \
+  /Users/guille/Developer/baseten/Sources/BXRelationshipDescriptionPrivate.h \
+  /Users/guille/Developer/baseten/Sources/BXPGRelationAliasMapper.h \
+  /Users/guille/Developer/baseten/Sources/BXLogger.h \
+  /Users/guille/Developer/baseten/Sources/BXForeignKey.h \
+  /Users/guille/Developer/baseten/Sources/BXHOM.h \
+  /Users/guille/Developer/baseten/Sources/BXCollectionFunctions.h \
+  /Users/guille/Developer/baseten/Sources/BXValueGetter.h \
+  /Users/guille/Developer/baseten/Sources/NSValue+BaseTenAdditions.h
