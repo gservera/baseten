@@ -37,4 +37,5 @@
 							key: (NSString *) key;
 - (BXRelationshipDescription *) relationship;
 - (void) setRelationship: (BXRelationshipDescription *) relationship;
+- (id) BXInitWithArray: (NSMutableArray *) anArray NS_RETURNS_RETAINED;
 @end

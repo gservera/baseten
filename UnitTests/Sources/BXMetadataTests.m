@@ -38,7 +38,7 @@
 	NSDictionary* connectionDictionary = [self connectionDictionary];
 	PGTSConnection* connection = [[[PGTSConnection alloc] init] autorelease];
 	BOOL status = [connection connectSync: connectionDictionary];
-	STAssertTrue (status, [[connection connectionError] description]);
+	XCTAssertTrue (status,@"%@", [[connection connectionError] description]);
 	
 	mDatabaseDescription = (id) [[connection databaseDescription] retain];
 	MKCAssertEqualObjects ([mDatabaseDescription class], [BXPGDatabaseDescription class]);

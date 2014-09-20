@@ -89,7 +89,7 @@
     NSArray* res = [mContext executeFetchForEntity: manyEntity
                                     withPredicate: [NSPredicate predicateWithFormat: @"id = 1"]
                                             error: &error];
-    STAssertNotNil (res, [error description]);
+    XCTAssertNotNil (res, @"%@",[error description]);
     MKCAssertTrue (1 == [res count]);
     BXDatabaseObject* foreignObject = [res objectAtIndex: 0];
     MKCAssertTrue ([[foreignObject objectID] entity] == manyEntity);
@@ -97,7 +97,7 @@
     res = [mContext executeFetchForEntity: oneEntity
 						   withPredicate: [NSPredicate predicateWithFormat: @"id = 2"]
 								   error: &error];
-    STAssertNotNil (res, [error description]);
+    XCTAssertNotNil (res, @"%@",[error description]);
     MKCAssertTrue (1 == [res count]);
     BXDatabaseObject* object = [res objectAtIndex: 0];
     MKCAssertTrue ([[object objectID] entity] == oneEntity);
@@ -115,10 +115,10 @@
     NSError* error = nil;
         
     BXDatabaseObject* object = [mContext createObjectForEntity: oneEntity withFieldValues: nil error: &error];
-    STAssertNotNil (object, [error description]);
+    XCTAssertNotNil (object, @"%@",[error description]);
 	//If the set proxy wasn't created earlier, here it will be. This might be useful for debugging.
 	NSString *relationshipName = [[manyEntity name] stringByAppendingString: @"Set"];
-    STAssertTrue (0 == [[object valueForKey: relationshipName] count], [[object valueForKey: relationshipName] description]);
+    XCTAssertTrue (0 == [[object valueForKey: relationshipName] count], @"%@",[[object valueForKey: relationshipName] description]);
     MKCAssertTrue ([[object objectID] entity] == oneEntity);
     
     const int count = 2;
@@ -126,7 +126,7 @@
     for (int i = 0; i < count; i++)
     {
         BXDatabaseObject* foreignObject = [mContext createObjectForEntity: manyEntity withFieldValues: nil error: &error];
-        STAssertNotNil (foreignObject, [error description]);
+        XCTAssertNotNil (foreignObject, @"%@",[error description]);
         MKCAssertTrue ([[foreignObject objectID] entity] == manyEntity);
         [foreignObjects addObject: foreignObject];
     }
@@ -145,7 +145,7 @@
     //Change a reference in entity1 and entity2
     
     NSError* error = nil;
-	STAssertTrue ([mContext connectSync: &error], [error description]);
+	XCTAssertTrue ([mContext connectSync: &error], @"%@",[error description]);
 	
     MKCAssertFalse ([[[entity1 relationshipsByName] objectForKey: [entity2 name]] isToMany]);
     MKCAssertFalse ([[[entity2 relationshipsByName] objectForKey: [entity1 name]] isToMany]);
@@ -153,7 +153,7 @@
     NSArray* res = [mContext executeFetchForEntity: entity1
                                     withPredicate: [NSPredicate predicateWithFormat: @"id = 1"]
                                             error: &error];
-    STAssertNotNil (res, [error description]);
+    XCTAssertNotNil (res, @"%@",[error description]);
     MKCAssertTrue (1 == [res count]);
     BXDatabaseObject* object = [res objectAtIndex: 0];
     MKCAssertTrue ([[object objectID] entity] == entity1);
@@ -161,7 +161,7 @@
     res = [mContext executeFetchForEntity: entity2
                            withPredicate: [NSPredicate predicateWithFormat: @"id = 1"]
                                    error: &error];
-    STAssertNotNil (res, [error description]);
+    XCTAssertNotNil (res, @"%@",[error description]);
     MKCAssertTrue (1 == [res count]);
     BXDatabaseObject* foreignObject1 = [res objectAtIndex: 0];
     MKCAssertTrue ([[foreignObject1 objectID] entity] == entity2);
@@ -189,7 +189,7 @@
                                     withPredicate: [NSPredicate predicateWithFormat: @"id = 1"]
                                             error: &error];
     
-    STAssertNotNil (res, [error description]);
+    XCTAssertNotNil (res, @"%@",[error description]);
     return [res objectAtIndex: 0];
 }
 
@@ -265,7 +265,7 @@
     NSArray* res = [mContext executeFetchForEntity: mTest1
                                     withPredicate: predicate
                                             error: &error];
-    STAssertNotNil (res, [error description]);
+    XCTAssertNotNil (res, @"%@",[error description]);
     MKCAssertTrue (1 == [res count]);
     BXDatabaseObject* object = [res objectAtIndex: 0];
     //Create a self-updating container to see if it interferes with object creation.
@@ -275,7 +275,7 @@
 							[object primitiveValueForKey: @"id"], @"fkt1id",
 							@"test", @"value",
 							nil];
-    STAssertNotNil ([mContext createObjectForEntity: mTest2 withFieldValues: values error: &error], [error description]);
+    XCTAssertNotNil ([mContext createObjectForEntity: mTest2 withFieldValues: values error: &error], @"%@",[error description]);
     
     collection = nil;
     [mContext rollback];

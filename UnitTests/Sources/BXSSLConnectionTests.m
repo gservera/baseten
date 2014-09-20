@@ -38,8 +38,8 @@
 
 - (void) tearDown
 {
-	STAssertFalse (kBXSSLModeUndefined == mSSLMode, @"SSL mode should've been set in the test.");
-	STAssertFalse (kBXCertificatePolicyUndefined == mCertificatePolicy, @"Certificate policy should've been set in the test.");
+	XCTAssertFalse (kBXSSLModeUndefined == mSSLMode, @"SSL mode should've been set in the test.");
+	XCTAssertFalse (kBXCertificatePolicyUndefined == mCertificatePolicy, @"Certificate policy should've been set in the test.");
 	[mContext disconnect];
     [mContext release];
 	[super tearDown];
@@ -67,7 +67,7 @@
 	
 	NSError* error = nil;
 	BOOL status = [mContext connectSync: &error];
-	STAssertTrue (status, [error description]);
+	XCTAssertTrue (status, @"%@",[error description]);
 	MKCAssertTrue ([mContext isSSLInUse]);
 }
 
@@ -79,7 +79,7 @@
 
 	NSError* error = nil;
 	BOOL status = [mContext connectSync: &error];
-	STAssertTrue (status, [error description]);
+	XCTAssertTrue (status,@"%@", [error description]);
 	MKCAssertTrue ([mContext isSSLInUse]);	
 }
 

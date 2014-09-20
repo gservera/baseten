@@ -30,7 +30,7 @@
  */
 @implementation BXSetProxy
 
-- (id) BXInitWithArray: (NSMutableArray *) anArray
+- (id) BXInitWithArray: (NSMutableArray *) anArray NS_RETURNS_RETAINED
 {
     if ((self = [super BXInitWithArray: anArray]))
     {

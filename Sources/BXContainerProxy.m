@@ -32,7 +32,7 @@
  */
 @implementation BXContainerProxy
 
-- (id) BXInitWithArray: (NSMutableArray *) anArray
+- (id) BXInitWithArray: (NSMutableArray *) anArray NS_RETURNS_RETAINED
 {
     mIsMutable = YES;
     mChanging = NO;
@@ -258,7 +258,7 @@
 		[mOwner didChangeValueForKey: key];
 	}
 	
-	BXLogDebug (@"Count after operation:\t%lu", [mContainer count]);
+	BXLogDebug (@"Count after operation:\t%lu", (unsigned long)[mContainer count]);
 }
 
 - (void) handleAddedObjects: (NSArray *) objectArray

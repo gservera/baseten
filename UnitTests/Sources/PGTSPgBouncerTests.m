@@ -17,7 +17,7 @@
 // limitations under the License.
 //
 #import "MKCSenTestCaseAdditions.h"
-#import <BaseTen/postgresql/libpq-fe.h>
+#import <BaseTen/libpq-fe.h>
 
 
 @implementation PGTSPgBouncerTests
@@ -50,7 +50,7 @@
 	PQclear(res);
 	
 	size_t length = strlen(sessionid);
-	STAssertTrue(32 == length,
+	XCTAssertTrue(32 == length,
 				 @"Expected sessionID's length to be 32 bytes; got %u (%s) instead.",
 				 length, sessionid);
 	

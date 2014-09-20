@@ -32,7 +32,7 @@
 	BXDatabaseObject* object = [[mContext executeFetchForEntity: entity 
 											 withPredicate: [NSPredicate predicateWithFormat: @"id == 1"]
 													 error: &error] objectAtIndex: 0];
-	STAssertNotNil (object, [error description]);
+	XCTAssertNotNil (object, @"%@",[error description]);
 	
 	BXDatabaseObjectID* objectID = [object objectID];
 	NSURL* uri = [objectID URIRepresentation];
@@ -59,7 +59,7 @@
 	MKCAssertNotNil (anId);
 	
 	NSError* error = nil;
-	STAssertTrue ([mContext connectIfNeeded: &error], [error description]);
+	XCTAssertTrue ([mContext connectIfNeeded: &error],@"%@", [error description]);
 	
 	BXDatabaseObject* object = [mContext objectWithID: anId error: &error];
 	MKCAssertNil (object);
@@ -75,10 +75,10 @@
 	MKCAssertNotNil (anId);
 	
 	NSError* error = nil;
-	STAssertTrue ([mContext connectIfNeeded: &error], [error description]);
+	XCTAssertTrue ([mContext connectIfNeeded: &error],@"%@", [error description]);
 	
 	BXDatabaseObject* object = [mContext objectWithID: anId error: &error];
-	STAssertNotNil (object, [error description]);
+	XCTAssertNotNil (object, @"%@",[error description]);
 }
 
 - (void) testObjectIDFromAnotherContext
@@ -96,15 +96,15 @@
 	id objectArray = [ctx2 executeFetchForEntity: entity 
 						  		   withPredicate: [NSPredicate predicateWithFormat: @"id == 1"]
 								 		   error: &error];
-	STAssertNotNil (objectArray, [error description]);
+	XCTAssertNotNil (objectArray,@"%@", [error description]);
 	
 	BXDatabaseObjectID* anId = (id) [[objectArray objectAtIndex: 0] objectID];
 	MKCAssertNotNil (anId);
 	
-	STAssertTrue ([mContext connectIfNeeded: &error], [error description]);
+	XCTAssertTrue ([mContext connectIfNeeded: &error],@"%@", [error description]);
 	
 	BXDatabaseObject* anObject = [mContext objectWithID: anId error: &error];
-	STAssertNotNil (anObject, [error description]);
+	XCTAssertNotNil (anObject,@"%@", [error description]);
 	
 	[ctx2 disconnect];
 }

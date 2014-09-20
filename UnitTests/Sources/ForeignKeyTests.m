@@ -84,7 +84,7 @@
         NSArray* res = [mContext executeFetchForEntity: manyEntity
                                         withPredicate: predicate
                                                 error: &error];
-        STAssertNotNil (res, [error description]);
+        XCTAssertNotNil (res, @"%@",[error description]);
         MKCAssertTrue (1 == [res count]);
     
         BXDatabaseObject* object = [res objectAtIndex: 0];
@@ -130,7 +130,7 @@
     NSArray* res = [mContext executeFetchForEntity: oneEntity
                                     withPredicate: predicate
                                             error: &error];
-    STAssertNotNil (res, [error description]);
+    XCTAssertNotNil (res, @"%@",[error description]);
     MKCAssertTrue (1 == [res count]);
     BXDatabaseObject* object = [res objectAtIndex: 0];
 
@@ -145,7 +145,7 @@
     MKCAssertTrue ([rel isToMany]);
         
     NSSet* foreignObjects = [rel targetForObject: object error: &error];
-    STAssertNotNil (foreignObjects, [error description]);
+    XCTAssertNotNil (foreignObjects, @"%@",[error description]);
     MKCAssertTrue (2 == [foreignObjects count]);
     NSArray* values = [foreignObjects valueForKey: @"value"];
     MKCAssertTrue ([values containsObject: @"21"]);
@@ -178,7 +178,7 @@
 {
     NSError* error = nil;
 	
-	STAssertTrue ([mContext connectIfNeeded: &error], [error description]);
+	XCTAssertTrue ([mContext connectIfNeeded: &error], @"%@",[error description]);
 	
     BXRelationshipDescription* foobar = [[entity1 relationshipsByName] objectForKey: [entity2 name]];
     MKCAssertNotNil (foobar);
@@ -188,7 +188,7 @@
     NSArray* res = [mContext executeFetchForEntity: entity1 
                                     withPredicate: [NSPredicate predicateWithFormat: @"1 <= id && id <= 2"]
                                             error: &error];
-    STAssertNotNil (res, [error description]);
+    XCTAssertNotNil (res, @"%@",[error description]);
     MKCAssertTrue (2 == [res count]);
     for (int i = 0; i < 2; i++)
     {
@@ -196,11 +196,11 @@
         
         BXDatabaseObject* foreignObject  = [object primitiveValueForKey: [entity2 name]];
         BXDatabaseObject* foreignObject2 = [foobar targetForObject: object error: &error];
-        STAssertNotNil (foreignObject2, [error description]);
+        XCTAssertNotNil (foreignObject2, @"%@",[error description]);
         
         BXDatabaseObject* object2 = [foreignObject primitiveValueForKey: [entity1 name]];
         BXDatabaseObject* object3 = [[foobar inverseRelationship] targetForObject: foreignObject error: &error];
-        STAssertNotNil (object3, [error description]);
+        XCTAssertNotNil (object3, @"%@",[error description]);
         
         MKCAssertTrue ([[foreignObject  objectID] entity] == entity2);
         MKCAssertTrue ([[foreignObject2 objectID] entity] == entity2);
@@ -226,7 +226,7 @@
     res = [mContext executeFetchForEntity: entity2
                            withPredicate: [NSPredicate predicateWithFormat: @"id = 3"]
                                    error: &error];
-    STAssertNotNil (res, [error description]);
+    XCTAssertNotNil (res,@"%@", [error description]);
     MKCAssertTrue (1 == [res count]);
     BXDatabaseObject* object = [res objectAtIndex: 0];
     MKCAssertNil ([object valueForKey: [entity1 name]]);
@@ -247,7 +247,7 @@
 {
     NSError* error = nil;
     NSArray* res = [mContext executeFetchForEntity: entity1 withPredicate: nil error: &error];
-    STAssertNotNil (res, [error description]);
+    XCTAssertNotNil (res, @"%@",[error description]);
     MKCAssertTrue (4 == [res count]);
     
     NSSet* expected1 = [NSSet setWithObjects: @"a1", @"b1", @"c1", nil];
@@ -312,7 +312,7 @@
 	NSArray* res = [mContext executeFetchForEntity: entity
 									withPredicate: [NSPredicate predicateWithFormat: @"id = 1"]
 											error: &error];
-	STAssertNotNil (res, [error description]);
+	XCTAssertNotNil (res, @"%@",[error description]);
 	BXDatabaseObject* object = [res objectAtIndex: 0];
 	NSSet* helperObjects = [object primitiveValueForKey: @"mtmrel1Set"];
 	MKCAssertTrue (3 == [helperObjects count]);

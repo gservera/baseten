@@ -25,4 +25,5 @@
 @interface BXSetHelperTableRelationProxy : BXSetRelationProxy 
 {
 }
+- (id) BXInitWithArray: (NSMutableArray *) anArray NS_RETURNS_RETAINED;
 @end

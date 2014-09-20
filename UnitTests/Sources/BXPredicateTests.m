@@ -25,6 +25,7 @@
 #import <BaseTen/BXPGQueryBuilder.h>
 #import <BaseTen/BXPredicateVisitor.h>
 #import <BaseTen/BXAttributeDescriptionPrivate.h>
+
 #import <OCMock/OCMock.h>
 
 

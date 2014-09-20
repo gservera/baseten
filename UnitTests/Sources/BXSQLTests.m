@@ -37,7 +37,7 @@
 	BOOL retval = NO;
 	NSString* query = @"SELECT baseten.is_enabled (id) FROM baseten.relation WHERE nspname = 'public' AND relname = 'test'";
 	PGTSResultSet* res = [connection executeQuery: query];
-	STAssertTrue ([res querySucceeded], [[res error] description]);
+	XCTAssertTrue ([res querySucceeded], @"%@",[[res error] description]);
 	[res advanceRow];
 	retval = [[res valueForKey: @"is_enabled"] boolValue];
 	return retval;
@@ -46,7 +46,7 @@
 - (void) testDisableEnable
 {
 	NSError* error = nil;
-	STAssertTrue ([mContext connectSync: &error], [error description]);
+	XCTAssertTrue ([mContext connectSync: &error], @"%@",[error description]);
 	
 	BXPGTransactionHandler* handler = [(BXPGInterface *) [mContext databaseInterface] transactionHandler];
 	PGTSConnection* connection = [handler connection];
@@ -57,7 +57,7 @@
 	NSString* query = nil;
 	
 	res = [connection executeQuery: @"BEGIN"];
-	STAssertTrue ([res querySucceeded], [[res error] description]);
+	XCTAssertTrue ([res querySucceeded], @"%@",[[res error] description]);
 	
 	MKCAssertTrue ([self checkEnablingForTest: connection]);
 	
@@ -67,8 +67,7 @@
 	@" INNER JOIN pg_namespace n ON (n.oid = c.relnamespace) "
 	@" WHERE n.nspname = 'public' AND c.relname = 'test'";
 	res = [connection executeQuery: query];
-	STAssertTrue ([res querySucceeded], [[res error] description]);
-	
+	XCTAssertTrue ([res querySucceeded], @"%@",[[res error] description]);
 	MKCAssertFalse ([self checkEnablingForTest: connection]);
 	
 	query = 
@@ -77,18 +76,18 @@
 	@" INNER JOIN pg_namespace n ON (n.oid = c.relnamespace) "
 	@" WHERE n.nspname = 'public' AND c.relname = 'test'";
 	res = [connection executeQuery: query];
-	STAssertTrue ([res querySucceeded], [[res error] description]);
+	XCTAssertTrue ([res querySucceeded], @"%@",[[res error] description]);
 
 	MKCAssertTrue ([self checkEnablingForTest: connection]);
 	
 	res = [connection executeQuery: @"ROLLBACK"];
-	STAssertTrue ([res querySucceeded], [[res error] description]);
+	XCTAssertTrue ([res querySucceeded], @"%@",[[res error] description]);
 }
 
 - (void) testPrune
 {
 	NSError* error = nil;
-	STAssertTrue ([mContext connectSync: &error], [error description]);
+	XCTAssertTrue ([mContext connectSync: &error], @"%@",[error description]);
 	
 	BXPGTransactionHandler* handler = [(BXPGInterface *) [mContext databaseInterface] transactionHandler];
 	PGTSConnection* connection = [handler connection];
@@ -100,17 +99,17 @@
 
 	query = @"SELECT baseten.prune ()";
 	res = [connection executeQuery: query];
-	STAssertTrue ([res querySucceeded], [[res error] description]);
+	XCTAssertTrue ([res querySucceeded], @"%@",[[res error] description]);
 	
 	query = @"SELECT COUNT (baseten_modification_id) FROM baseten.modification";
 	res = [connection executeQuery: query];
-	STAssertTrue ([res querySucceeded], [[res error] description]);
+	XCTAssertTrue ([res querySucceeded], @"%@",[[res error] description]);
 	[res advanceRow];
 	MKCAssertTrue (0 == [[res valueForKey: @"count"] integerValue]);
 	
 	query = @"SELECT COUNT (baseten_lock_id) FROM baseten.lock";
 	res = [connection executeQuery: query];
-	STAssertTrue ([res querySucceeded], [[res error] description]);
+	XCTAssertTrue ([res querySucceeded], @"%@",[[res error] description]);
 	[res advanceRow];
 	MKCAssertTrue (0 == [[res valueForKey: @"count"] integerValue]);	
 }

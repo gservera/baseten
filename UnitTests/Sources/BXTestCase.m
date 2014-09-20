@@ -17,7 +17,7 @@
 // limitations under the License.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 #import <BaseTen/BaseTen.h>
 #import <BaseTen/PGTSConstants.h>
 #import "BXTestCase.h"
@@ -33,7 +33,7 @@ int d_eq (double a, double b)
 
 
 
-@interface SenTestCase (UndocumentedMethods)
+@interface XCTestCase (UndocumentedMethods)
 - (void) logException:(NSException *) anException;
 @end
 

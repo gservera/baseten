@@ -32,6 +32,10 @@
 #import <BaseTen/BXContainerProxy.h>
 #import <BaseTen/BXVerbatimExpressionValue.h>
 
+// Modules
+#import <BaseTen/BXExport.h>
+#import <BaseTen/BXVerbatimExpressionValue.h>
+
 /*
  * Helpful breakpoints:
  *

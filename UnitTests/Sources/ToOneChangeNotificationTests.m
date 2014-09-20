@@ -17,7 +17,7 @@
 // limitations under the License.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 #import <BaseTen/BaseTen.h>
 #import <BaseTen/BXAttributeDescriptionPrivate.h>
 #import "ToOneChangeNotificationTests.h"
@@ -79,7 +79,7 @@ static NSString* kObservingContext = @"ToOneChangeNotificationTestsObservingCont
 		else if (mB2 == object)
 			mReceivedForB2++;
 		else
-			STAssertTrue (NO, @"Got a strange KVO notification.");
+			XCTAssertTrue (NO, @"Got a strange KVO notification.");
 	}
 	else 
 	{

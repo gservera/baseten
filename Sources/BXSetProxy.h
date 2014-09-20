@@ -27,4 +27,5 @@
 
 - (NSUInteger) countForObject: (id) anObject;
 - (id) countedSet;
+- (id) BXInitWithArray: (NSMutableArray *) anArray NS_RETURNS_RETAINED;
 @end

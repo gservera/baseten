@@ -32,7 +32,7 @@
 	NSDictionary* connectionDictionary = [self connectionDictionary];
 	mConnection = [[PGTSConnection alloc] init];
 	BOOL status = [mConnection connectSync: connectionDictionary];
-	STAssertTrue (status, [[mConnection connectionError] description]);	
+	XCTAssertTrue (status, @"%@",[[mConnection connectionError] description]);
 }
 
 - (void) tearDown

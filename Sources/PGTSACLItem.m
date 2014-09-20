@@ -118,7 +118,7 @@
     //Parse the privileges
     enum PGTSACLItemPrivilege userPrivileges = kPGTSPrivilegeNone;
     enum PGTSACLItemPrivilege grantOption = kPGTSPrivilegeNone;
-    for (unsigned int i = 0, length = strlen (privileges); i < length; i++)
+    for (unsigned int i = 0, length = (unsigned int)strlen (privileges); i < length; i++)
     {
         switch (privileges [i])
         {

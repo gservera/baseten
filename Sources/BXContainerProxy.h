@@ -36,7 +36,7 @@
     BOOL mChanging;
 }
 
-- (id) BXInitWithArray: (NSMutableArray *) anArray;
+- (id) BXInitWithArray: (NSMutableArray *) anArray NS_RETURNS_RETAINED;
 - (void) filterObjectsForUpdate: (NSArray *) objects 
                           added: (NSMutableArray **) added 
                         removed: (NSMutableArray **) removed;

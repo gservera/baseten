@@ -60,7 +60,7 @@
 	NSDictionary* connectionDictionary = [self connectionDictionary];
 	mConnection = [[PGTSConnection alloc] init];
 	BOOL status = [mConnection connectSync: connectionDictionary];
-	STAssertTrue (status, [[mConnection connectionError] description]);
+	XCTAssertTrue (status, @"%@",[[mConnection connectionError] description]);
 	
 	[mConnection setDelegate: self];
 }	
@@ -76,10 +76,10 @@
 {
 	PGTSResultSet* res = nil;
 	res = [mConnection executeQuery: @"LISTEN test_notification"];
-	STAssertTrue ([res querySucceeded], [[res error] description]);
+	XCTAssertTrue ([res querySucceeded], @"%@",[[res error] description]);
 	
 	res = [mConnection executeQuery: @"NOTIFY test_notification"];
-	STAssertTrue ([res querySucceeded], [[res error] description]);
+	XCTAssertTrue ([res querySucceeded], @"%@",[[res error] description]);
 
 	MKCAssertTrue (mGotNotification);
 }

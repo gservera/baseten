@@ -45,7 +45,7 @@
 {
 	for (NSInteger i = 0; i < 300; i++)
 	{
-		NSLog (@"Attempt %d, count %d, expected %d", i, mExpectedCount, count);
+		NSLog (@"Attempt %ld, count %ld, expected %d", (long)i, (long)mExpectedCount, count);
 		if (count == mExpectedCount)
 			break;
 		
@@ -114,7 +114,7 @@
 
 - (void) unexpected: (NSNotification *) n
 {
-	STAssertTrue (NO, @"Expected connection not to have been made.");
+	XCTAssertTrue (NO, @"Expected connection not to have been made.");
 }
 
 
@@ -129,6 +129,6 @@
 	[self waitForConnectionAttempts: 2];
 	[mContext connectAsync];
 	[self waitForConnectionAttempts: 3];
-	STAssertTrue (3 == mExpectedCount, @"Expected 3 connection attempts while there were %d.", mExpectedCount);
+	XCTAssertTrue (3 == mExpectedCount, @"Expected 3 connection attempts while there were %d.", mExpectedCount);
 }
 @end

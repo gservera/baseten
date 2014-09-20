@@ -78,7 +78,7 @@
 		533C1A6F11E227D100C11E86 /* BXPGSQLExpressionValueType.m in Sources */ = {isa = PBXBuildFile; fileRef = 533C1A6D11E227D100C11E86 /* BXPGSQLExpressionValueType.m */; };
 		533C1D3111E243D300C11E86 /* BXVerbatimExpressionValue.h in Headers */ = {isa = PBXBuildFile; fileRef = 533C1D2F11E243D300C11E86 /* BXVerbatimExpressionValue.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		533C1D3211E243D300C11E86 /* BXVerbatimExpressionValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 533C1D3011E243D300C11E86 /* BXVerbatimExpressionValue.m */; };
-		533C1D7811E2478300C11E86 /* BXExpressionValue.h in Headers */ = {isa = PBXBuildFile; fileRef = 533C1D7711E2478300C11E86 /* BXExpressionValue.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		533C1D7811E2478300C11E86 /* BXExpressionValue.h in Headers */ = {isa = PBXBuildFile; fileRef = 533C1D7711E2478300C11E86 /* BXExpressionValue.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		533F88410F35482000041C02 /* BXForeignKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 536892570F30B9E800AAC65D /* BXForeignKey.m */; };
 		534369C811AFEF8700ADD6C1 /* BXCollectionFunctions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 534369C711AFEF8700ADD6C1 /* BXCollectionFunctions.mm */; };
 		5348B7110F575A3C00B2655E /* BXKeyPathParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 53680C0D0E59922C00A53B26 /* BXKeyPathParser.m */; };
@@ -178,7 +178,7 @@
 		5354440C0D634A47002A6C47 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 531266E40B68F9CA00637EDA /* Security.framework */; };
 		5354F7DE0F00417400422613 /* BXURLEncoding.h in Headers */ = {isa = PBXBuildFile; fileRef = 5354F7DC0F00417400422613 /* BXURLEncoding.h */; };
 		5354F7DF0F00417400422613 /* BXURLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 5354F7DD0F00417400422613 /* BXURLEncoding.m */; };
-		5354F87B0F004A6600422613 /* BXExport.h in Headers */ = {isa = PBXBuildFile; fileRef = 5354F87A0F004A6600422613 /* BXExport.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		5354F87B0F004A6600422613 /* BXExport.h in Headers */ = {isa = PBXBuildFile; fileRef = 5354F87A0F004A6600422613 /* BXExport.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5354F91E0F00511100422613 /* PGTSDeleteRule.h in Headers */ = {isa = PBXBuildFile; fileRef = 5354F91C0F00511100422613 /* PGTSDeleteRule.h */; };
 		5354F91F0F00511100422613 /* PGTSDeleteRule.m in Sources */ = {isa = PBXBuildFile; fileRef = 5354F91D0F00511100422613 /* PGTSDeleteRule.m */; };
 		5356277D0E6E7D1F002EA3FD /* BXPGInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 530132E209D460230037C485 /* BXPGInterface.m */; };
@@ -607,11 +607,25 @@
 		9923A6D519B9DFBA00302A93 /* settings.h in Headers */ = {isa = PBXBuildFile; fileRef = 9923A6CA19B9DFBA00302A93 /* settings.h */; };
 		9923A6D619B9DFBA00302A93 /* stringutils.h in Headers */ = {isa = PBXBuildFile; fileRef = 9923A6CB19B9DFBA00302A93 /* stringutils.h */; };
 		9923A6D719B9DFBA00302A93 /* variables.h in Headers */ = {isa = PBXBuildFile; fileRef = 9923A6CC19B9DFBA00302A93 /* variables.h */; };
-		9923A6EC19B9FD3400302A93 /* libpq.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9935D9D719B9D50E0041FFB0 /* libpq.a */; };
 		9923A6EE19B9FD5A00302A93 /* libcommonCrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9923A6ED19B9FD5A00302A93 /* libcommonCrypto.dylib */; };
+		99293ED919C265BB00917C99 /* NSPredicate+BaseTenAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 99293ED819C265BB00917C99 /* NSPredicate+BaseTenAdditionsTests.m */; };
+		99293EDC19C2663000917C99 /* BXPredicateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 99293EDB19C2663000917C99 /* BXPredicateTests.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		99293EDE19C2680500917C99 /* BXHostResolverTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 99293EDD19C2680500917C99 /* BXHostResolverTests.m */; };
+		99293EE019C268D200917C99 /* BXDatabaseContextTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 99293EDF19C268D200917C99 /* BXDatabaseContextTests.m */; };
+		992A084519C4839600A9D4D5 /* BXDatabaseTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 992A084419C4839600A9D4D5 /* BXDatabaseTestCase.m */; };
+		992A084919C485AD00A9D4D5 /* BXConnectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 992A084819C485AD00A9D4D5 /* BXConnectionTests.m */; };
+		992A084B19C48F8800A9D4D5 /* BXSSLConnectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 992A084A19C48F8800A9D4D5 /* BXSSLConnectionTests.m */; };
 		9954EE7319B9D57E00B29D98 /* libpcre.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9954EE7219B9D57E00B29D98 /* libpcre.dylib */; };
-		9954EE7619B9D61400B29D98 /* libpq.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9935D9D719B9D50E0041FFB0 /* libpq.a */; };
 		995F8D9519B9DC1D00DBB2CE /* pcre.h in Headers */ = {isa = PBXBuildFile; fileRef = 995F8D9419B9DC1D00DBB2CE /* pcre.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		997B111919BD139600CB345E /* PGTSValueTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 997B111819BD139600CB345E /* PGTSValueTests.m */; };
+		997B111C19BD15E200CB345E /* BaseTen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 535444130D634A47002A6C47 /* BaseTen.framework */; };
+		997B111E19BD177900CB345E /* BXKeyPathComponentTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 997B111D19BD177900CB345E /* BXKeyPathComponentTest.m */; };
+		997B112019BD197800CB345E /* NSArray+BaseTenAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 997B111F19BD197800CB345E /* NSArray+BaseTenAdditionsTests.m */; };
+		997B112419BE2C2300CB345E /* OCMock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 997B112219BE2B7900CB345E /* OCMock.framework */; };
+		997B112719BE2CFB00CB345E /* PGTSInvocationRecorderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 997B112619BE2CFB00CB345E /* PGTSInvocationRecorderTests.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		997B112919BE344300CB345E /* BXHOMTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 997B112819BE344300CB345E /* BXHOMTests.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		997B112F19BF662E00CB345E /* BXDelegateProxyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 997B112E19BF662E00CB345E /* BXDelegateProxyTests.m */; };
+		998877B719CD543F00272827 /* libpq.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 998877B219CD542400272827 /* libpq.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -724,26 +738,40 @@
 			remoteGlobalIDString = 53BD79F70E092ABC009CAFE6;
 			remoteInfo = Documentation;
 		};
-		9935D9D619B9D50E0041FFB0 /* PBXContainerItemProxy */ = {
+		997B111A19BD15DC00CB345E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 9935D9D119B9D50E0041FFB0 /* libpq.xcodeproj */;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 535443BB0D634A47002A6C47;
+			remoteInfo = "BaseTen Framework";
+		};
+		998877B119CD542400272827 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 998877AC19CD542400272827 /* libpq.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 4B4C4CB115040B7500840750;
 			remoteInfo = libpq;
 		};
-		9935D9D819B9D50E0041FFB0 /* PBXContainerItemProxy */ = {
+		998877B319CD542400272827 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 9935D9D119B9D50E0041FFB0 /* libpq.xcodeproj */;
+			containerPortal = 998877AC19CD542400272827 /* libpq.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 4B4C4CC115040B7500840750;
 			remoteInfo = libpqTests;
 		};
-		9954EE7419B9D60A00B29D98 /* PBXContainerItemProxy */ = {
+		998877B519CD543600272827 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 9935D9D119B9D50E0041FFB0 /* libpq.xcodeproj */;
+			containerPortal = 998877AC19CD542400272827 /* libpq.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 4B4C4CB015040B7500840750;
 			remoteInfo = libpq;
+		};
+		9988786B19CD5EC200272827 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 998877AC19CD542400272827 /* libpq.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9988786919CD5D7C00272827;
+			remoteInfo = "libpq-iOS";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -1110,9 +1138,26 @@
 		9923A6DF19B9F67200302A93 /* pqexpbuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pqexpbuffer.h; sourceTree = "<group>"; };
 		9923A6E019B9F67200302A93 /* prompt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = prompt.h; sourceTree = "<group>"; };
 		9923A6ED19B9FD5A00302A93 /* libcommonCrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcommonCrypto.dylib; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.0.sdk/usr/lib/system/libcommonCrypto.dylib; sourceTree = DEVELOPER_DIR; };
-		9935D9D119B9D50E0041FFB0 /* libpq.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libpq.xcodeproj; path = ../libpq/libpq.xcodeproj; sourceTree = "<group>"; };
+		99293ED819C265BB00917C99 /* NSPredicate+BaseTenAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSPredicate+BaseTenAdditionsTests.m"; sourceTree = "<group>"; };
+		99293EDB19C2663000917C99 /* BXPredicateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BXPredicateTests.m; sourceTree = "<group>"; };
+		99293EDD19C2680500917C99 /* BXHostResolverTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BXHostResolverTests.m; sourceTree = "<group>"; };
+		99293EDF19C268D200917C99 /* BXDatabaseContextTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BXDatabaseContextTests.m; sourceTree = "<group>"; };
+		992A084319C4839600A9D4D5 /* BXDatabaseTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXDatabaseTestCase.h; path = ../UnitTests/Sources/BXDatabaseTestCase.h; sourceTree = "<group>"; };
+		992A084419C4839600A9D4D5 /* BXDatabaseTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BXDatabaseTestCase.m; path = ../UnitTests/Sources/BXDatabaseTestCase.m; sourceTree = "<group>"; };
+		992A084819C485AD00A9D4D5 /* BXConnectionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BXConnectionTests.m; sourceTree = "<group>"; };
+		992A084A19C48F8800A9D4D5 /* BXSSLConnectionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BXSSLConnectionTests.m; sourceTree = "<group>"; };
 		9954EE7219B9D57E00B29D98 /* libpcre.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpcre.dylib; path = usr/lib/libpcre.dylib; sourceTree = SDKROOT; };
 		995F8D9419B9DC1D00DBB2CE /* pcre.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcre.h; sourceTree = "<group>"; };
+		997B110D19BD124200CB345E /* BaseTen Framework Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "BaseTen Framework Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		997B111019BD124300CB345E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		997B111819BD139600CB345E /* PGTSValueTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGTSValueTests.m; sourceTree = "<group>"; };
+		997B111D19BD177900CB345E /* BXKeyPathComponentTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BXKeyPathComponentTest.m; sourceTree = "<group>"; };
+		997B111F19BD197800CB345E /* NSArray+BaseTenAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+BaseTenAdditionsTests.m"; sourceTree = "<group>"; };
+		997B112219BE2B7900CB345E /* OCMock.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OCMock.framework; path = /Library/Frameworks/OCMock.framework; sourceTree = "<absolute>"; };
+		997B112619BE2CFB00CB345E /* PGTSInvocationRecorderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGTSInvocationRecorderTests.m; sourceTree = "<group>"; };
+		997B112819BE344300CB345E /* BXHOMTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BXHOMTests.m; sourceTree = "<group>"; };
+		997B112E19BF662E00CB345E /* BXDelegateProxyTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BXDelegateProxyTests.m; sourceTree = "<group>"; };
+		998877AC19CD542400272827 /* libpq.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libpq.xcodeproj; path = Contrib/libpq/libpq.xcodeproj; sourceTree = "<group>"; };
 		D2F7E79907B2D74100F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -1122,7 +1167,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9923A6EE19B9FD5A00302A93 /* libcommonCrypto.dylib in Frameworks */,
-				9923A6EC19B9FD3400302A93 /* libpq.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1130,7 +1174,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9954EE7619B9D61400B29D98 /* libpq.a in Frameworks */,
+				998877B719CD543F00272827 /* libpq.a in Frameworks */,
 				9954EE7319B9D57E00B29D98 /* libpcre.dylib in Frameworks */,
 				5354440A0D634A47002A6C47 /* libcrypto.dylib in Frameworks */,
 				5354440B0D634A47002A6C47 /* libssl.dylib in Frameworks */,
@@ -1145,6 +1189,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		997B110A19BD124200CB345E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				997B111C19BD15E200CB345E /* BaseTen.framework in Frameworks */,
+				997B112419BE2C2300CB345E /* OCMock.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -1153,6 +1206,7 @@
 			children = (
 				535444130D634A47002A6C47 /* BaseTen.framework */,
 				534EE22F0E53213300B079B0 /* libBaseTen.a */,
+				997B110D19BD124200CB345E /* BaseTen Framework Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1167,6 +1221,7 @@
 				089C1665FE841158C02AAC07 /* Resources */,
 				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
 				5362DBC30FDF336E003CF2AB /* Examples */,
+				997B110E19BD124300CB345E /* BaseTen Framework Tests */,
 				034768DFFF38A50411DB9C8B /* Products */,
 			);
 			name = BXDatabase;
@@ -1175,7 +1230,7 @@
 		0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				9935D9D119B9D50E0041FFB0 /* libpq.xcodeproj */,
+				998877AC19CD542400272827 /* libpq.xcodeproj */,
 				9923A6D919B9DFC000302A93 /* Headers */,
 				9954EE7219B9D57E00B29D98 /* libpcre.dylib */,
 				53DBE8010B666C3B00C3D20A /* libcrypto.dylib */,
@@ -1878,16 +1933,80 @@
 				9923A6CB19B9DFBA00302A93 /* stringutils.h */,
 				9923A6CC19B9DFBA00302A93 /* variables.h */,
 			);
-			name = Headers;
+			path = Headers;
 			sourceTree = "<group>";
 		};
-		9935D9D219B9D50E0041FFB0 /* Products */ = {
+		99293EE119C26A4B00917C99 /* Tests not requiring a connection */ = {
 			isa = PBXGroup;
 			children = (
-				9935D9D719B9D50E0041FFB0 /* libpq.a */,
-				9935D9D919B9D50E0041FFB0 /* libpqTests.xctest */,
+				997B112619BE2CFB00CB345E /* PGTSInvocationRecorderTests.m */,
+				997B112819BE344300CB345E /* BXHOMTests.m */,
+				997B112E19BF662E00CB345E /* BXDelegateProxyTests.m */,
+				99293ED819C265BB00917C99 /* NSPredicate+BaseTenAdditionsTests.m */,
+				997B111F19BD197800CB345E /* NSArray+BaseTenAdditionsTests.m */,
+				997B111819BD139600CB345E /* PGTSValueTests.m */,
+				997B111D19BD177900CB345E /* BXKeyPathComponentTest.m */,
+				99293EDB19C2663000917C99 /* BXPredicateTests.m */,
+				99293EDD19C2680500917C99 /* BXHostResolverTests.m */,
+				99293EDF19C268D200917C99 /* BXDatabaseContextTests.m */,
+			);
+			name = "Tests not requiring a connection";
+			sourceTree = "<group>";
+		};
+		992A084619C4856000A9D4D5 /* Tests requiring a connection */ = {
+			isa = PBXGroup;
+			children = (
+				992A084719C4858500A9D4D5 /* BaseTen */,
+			);
+			name = "Tests requiring a connection";
+			sourceTree = "<group>";
+		};
+		992A084719C4858500A9D4D5 /* BaseTen */ = {
+			isa = PBXGroup;
+			children = (
+				992A084819C485AD00A9D4D5 /* BXConnectionTests.m */,
+				992A084A19C48F8800A9D4D5 /* BXSSLConnectionTests.m */,
+			);
+			name = BaseTen;
+			sourceTree = "<group>";
+		};
+		997B110E19BD124300CB345E /* BaseTen Framework Tests */ = {
+			isa = PBXGroup;
+			children = (
+				992A084319C4839600A9D4D5 /* BXDatabaseTestCase.h */,
+				992A084419C4839600A9D4D5 /* BXDatabaseTestCase.m */,
+				99293EE119C26A4B00917C99 /* Tests not requiring a connection */,
+				992A084619C4856000A9D4D5 /* Tests requiring a connection */,
+				9988786D19CD602600272827 /* Frameworks */,
+				997B110F19BD124300CB345E /* Supporting Files */,
+			);
+			path = "BaseTen Framework Tests";
+			sourceTree = "<group>";
+		};
+		997B110F19BD124300CB345E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				997B111019BD124300CB345E /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		998877AD19CD542400272827 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				998877B219CD542400272827 /* libpq.a */,
+				9988786C19CD5EC200272827 /* liblibpq copy.a */,
+				998877B419CD542400272827 /* libpqTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		9988786D19CD602600272827 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				997B112219BE2B7900CB345E /* OCMock.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1921,6 +2040,8 @@
 				535443DB0D634A47002A6C47 /* BXPGCertificateVerificationDelegate.h in Headers */,
 				535443DC0D634A47002A6C47 /* BXConnectionSetupManagerProtocol.h in Headers */,
 				535443DD0D634A47002A6C47 /* BXPropertyDescriptionPrivate.h in Headers */,
+				5354F87B0F004A6600422613 /* BXExport.h in Headers */,
+				533C1D7811E2478300C11E86 /* BXExpressionValue.h in Headers */,
 				535443DE0D634A47002A6C47 /* BXDatabaseObjectPrivate.h in Headers */,
 				535443DF0D634A47002A6C47 /* BXConstantsPrivate.h in Headers */,
 				9923A6D119B9DFBA00302A93 /* pg_config_ext.h in Headers */,
@@ -2018,7 +2139,6 @@
 				53937B670EFD097700510DBD /* PGTSInvocationRecorder.h in Headers */,
 				536C9D600EFD94D10041422F /* BXEnumerate.h in Headers */,
 				5354F7DE0F00417400422613 /* BXURLEncoding.h in Headers */,
-				5354F87B0F004A6600422613 /* BXExport.h in Headers */,
 				5354F91E0F00511100422613 /* PGTSDeleteRule.h in Headers */,
 				535661D20F025DD800920008 /* NSURL+BaseTenAdditions.h in Headers */,
 				535661D30F025DD800920008 /* NSArray+BaseTenAdditions.h in Headers */,
@@ -2074,7 +2194,6 @@
 				53950AC711CFD6840049F36C /* BXValueGetter.h in Headers */,
 				533C1A6E11E227D100C11E86 /* BXPGSQLExpressionValueType.h in Headers */,
 				533C1D3111E243D300C11E86 /* BXVerbatimExpressionValue.h in Headers */,
-				533C1D7811E2478300C11E86 /* BXExpressionValue.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2212,7 +2331,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 534EE2460E5321B100B079B0 /* Build configuration list for PBXNativeTarget "BaseTen for iPhone" */;
 			buildPhases = (
-				5385786E11920F5A00426CEA /* Copy PostgreSQL Headers */,
 				534EE22C0E53213300B079B0 /* Sources */,
 				534EE22D0E53213300B079B0 /* Frameworks */,
 				538579DC119219E600426CEA /* Headers */,
@@ -2242,12 +2360,30 @@
 				53F5B8170E32B97C000F527B /* PBXBuildRule */,
 			);
 			dependencies = (
-				9954EE7519B9D60A00B29D98 /* PBXTargetDependency */,
+				998877B619CD543600272827 /* PBXTargetDependency */,
 			);
 			name = "BaseTen Framework";
 			productName = "BXDatabase Static";
 			productReference = 535444130D634A47002A6C47 /* BaseTen.framework */;
 			productType = "com.apple.product-type.framework";
+		};
+		997B110C19BD124200CB345E /* BaseTen Framework Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 997B111319BD124300CB345E /* Build configuration list for PBXNativeTarget "BaseTen Framework Tests" */;
+			buildPhases = (
+				997B110919BD124200CB345E /* Sources */,
+				997B110A19BD124200CB345E /* Frameworks */,
+				997B110B19BD124200CB345E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				997B111B19BD15DC00CB345E /* PBXTargetDependency */,
+			);
+			name = "BaseTen Framework Tests";
+			productName = "BaseTen Framework Tests";
+			productReference = 997B110D19BD124200CB345E /* BaseTen Framework Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -2256,6 +2392,11 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0600;
+				TargetAttributes = {
+					997B110C19BD124200CB345E = {
+						CreatedOnToolsVersion = 6.0;
+					};
+				};
 			};
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "BaseTen" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -2289,8 +2430,8 @@
 					ProjectRef = 5362DBAE0FDF3348003CF2AB /* Introspection.xcodeproj */;
 				},
 				{
-					ProductGroup = 9935D9D219B9D50E0041FFB0 /* Products */;
-					ProjectRef = 9935D9D119B9D50E0041FFB0 /* libpq.xcodeproj */;
+					ProductGroup = 998877AD19CD542400272827 /* Products */;
+					ProjectRef = 998877AC19CD542400272827 /* libpq.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -2300,6 +2441,7 @@
 				534EE22E0E53213300B079B0 /* BaseTen for iPhone */,
 				53BD79F70E092ABC009CAFE6 /* Documentation */,
 				5362DB910FDF32D2003CF2AB /* Examples */,
+				997B110C19BD124200CB345E /* BaseTen Framework Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -2340,18 +2482,25 @@
 			remoteRef = 5362DBC10FDF3357003CF2AB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		9935D9D719B9D50E0041FFB0 /* libpq.a */ = {
+		998877B219CD542400272827 /* libpq.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libpq.a;
-			remoteRef = 9935D9D619B9D50E0041FFB0 /* PBXContainerItemProxy */;
+			remoteRef = 998877B119CD542400272827 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		9935D9D919B9D50E0041FFB0 /* libpqTests.xctest */ = {
+		998877B419CD542400272827 /* libpqTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = libpqTests.xctest;
-			remoteRef = 9935D9D819B9D50E0041FFB0 /* PBXContainerItemProxy */;
+			remoteRef = 998877B319CD542400272827 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9988786C19CD5EC200272827 /* liblibpq copy.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "liblibpq copy.a";
+			remoteRef = 9988786B19CD5EC200272827 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -2364,6 +2513,13 @@
 				535443EC0D634A47002A6C47 /* datatypeassociations.plist in Resources */,
 				535443ED0D634A47002A6C47 /* BaseTen.icns in Resources */,
 				534A14AF0F0FBBE6002A9F68 /* BaseTenModifications.sql.m4 in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		997B110B19BD124200CB345E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2383,21 +2539,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "ICON_FOLDER_PATH=\"$PROJECT_DIR/Resources/BaseTenFrameworkIcon\"\n\nif [ ! -e \"$ICON_FOLDER_PATH\" ]\nthen\n\tditto -xk \"$PROJECT_DIR\"/Resources/BaseTenFrameworkIcon.zip \"$ICON_FOLDER_PATH\" \"$PROJECT_DIR\"/Resources\nfi\nsh \"$PROJECT_DIR\"/Tools/set_icon.sh \"$ICON_FOLDER_PATH\" \"$TARGET_BUILD_DIR\"/\"$WRAPPER_NAME\"\n";
-			showEnvVarsInLog = 0;
-		};
-		5385786E11920F5A00426CEA /* Copy PostgreSQL Headers */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy PostgreSQL Headers";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "source \"$PROJECT_DIR\"/Tools/PostgreSQL/copy-postgresql-headers.sh";
 			showEnvVarsInLog = 0;
 		};
 		53BD79F60E092ABC009CAFE6 /* Run doxygen */ = {
@@ -2696,6 +2837,26 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		997B110919BD124200CB345E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				992A084519C4839600A9D4D5 /* BXDatabaseTestCase.m in Sources */,
+				997B112019BD197800CB345E /* NSArray+BaseTenAdditionsTests.m in Sources */,
+				992A084B19C48F8800A9D4D5 /* BXSSLConnectionTests.m in Sources */,
+				997B112719BE2CFB00CB345E /* PGTSInvocationRecorderTests.m in Sources */,
+				99293EDE19C2680500917C99 /* BXHostResolverTests.m in Sources */,
+				997B111E19BD177900CB345E /* BXKeyPathComponentTest.m in Sources */,
+				99293EDC19C2663000917C99 /* BXPredicateTests.m in Sources */,
+				997B111919BD139600CB345E /* PGTSValueTests.m in Sources */,
+				99293EE019C268D200917C99 /* BXDatabaseContextTests.m in Sources */,
+				99293ED919C265BB00917C99 /* NSPredicate+BaseTenAdditionsTests.m in Sources */,
+				997B112919BE344300CB345E /* BXHOMTests.m in Sources */,
+				997B112F19BF662E00CB345E /* BXDelegateProxyTests.m in Sources */,
+				992A084919C485AD00A9D4D5 /* BXConnectionTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -2734,10 +2895,15 @@
 			target = 53BD79F70E092ABC009CAFE6 /* Documentation */;
 			targetProxy = 53BD7A000E092BD5009CAFE6 /* PBXContainerItemProxy */;
 		};
-		9954EE7519B9D60A00B29D98 /* PBXTargetDependency */ = {
+		997B111B19BD15DC00CB345E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 535443BB0D634A47002A6C47 /* BaseTen Framework */;
+			targetProxy = 997B111A19BD15DC00CB345E /* PBXContainerItemProxy */;
+		};
+		998877B619CD543600272827 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = libpq;
-			targetProxy = 9954EE7419B9D60A00B29D98 /* PBXContainerItemProxy */;
+			targetProxy = 998877B519CD543600272827 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -2772,14 +2938,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(BUILT_PRODUCTS_DIR)",
-					"$(BUILT_PRODUCTS_DIR)/BaseTen-PostgreSQL/openssl/include",
+					"$(SRCROOT)/Contrib/libpq/include/openssl",
 					"$(BUILT_PRODUCTS_DIR)/BaseTen-PostgreSQL/$(CURRENT_ARCH)/include",
 					"$(BUILT_PRODUCTS_DIR)/BaseTen-PostgreSQL/$(CURRENT_ARCH)/include/internal",
 					"$(BUILT_PRODUCTS_DIR)/BaseTen-PostgreSQL/$(CURRENT_ARCH)/include/server",
@@ -2806,14 +2971,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(BUILT_PRODUCTS_DIR)",
-					"$(BUILT_PRODUCTS_DIR)/BaseTen-PostgreSQL/openssl/include",
+					"$(SRCROOT)/Contrib/libpq/include/openssl",
 					"$(BUILT_PRODUCTS_DIR)/BaseTen-PostgreSQL/$(CURRENT_ARCH)/include",
 					"$(BUILT_PRODUCTS_DIR)/BaseTen-PostgreSQL/$(CURRENT_ARCH)/include/internal",
 					"$(BUILT_PRODUCTS_DIR)/BaseTen-PostgreSQL/$(CURRENT_ARCH)/include/server",
@@ -2841,13 +3005,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 535444210D634A98002A6C47 /* debug.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
 				MACOSX_DEPLOYMENT_TARGET_i386 = 10.8;
-				MACOSX_DEPLOYMENT_TARGET_ppc = 10.8;
-				MACOSX_DEPLOYMENT_TARGET_ppc64 = 10.8;
 				MACOSX_DEPLOYMENT_TARGET_x86_64 = 10.8;
-				SDKROOT_i386 = "$(DEVELOPER_SDK_DIR)/MacOSX10.10.sdk";
-				SDKROOT_x86_64 = "$(DEVELOPER_SDK_DIR)/MacOSX10.10.sdk";
 			};
 			name = Debug;
 		};
@@ -2855,13 +3017,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 535444230D634A98002A6C47 /* release.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
 				MACOSX_DEPLOYMENT_TARGET_i386 = 10.8;
-				MACOSX_DEPLOYMENT_TARGET_ppc = 10.8;
-				MACOSX_DEPLOYMENT_TARGET_ppc64 = 10.8;
 				MACOSX_DEPLOYMENT_TARGET_x86_64 = 10.8;
-				SDKROOT_i386 = "$(DEVELOPER_SDK_DIR)/MacOSX10.10.sdk";
-				SDKROOT_x86_64 = "$(DEVELOPER_SDK_DIR)/MacOSX10.10.sdk";
 			};
 			name = Release;
 		};
@@ -2932,13 +3092,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 98A6CD650F45C8420029B2C4 /* coverage.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
 				MACOSX_DEPLOYMENT_TARGET_i386 = 10.8;
-				MACOSX_DEPLOYMENT_TARGET_ppc = 10.8;
-				MACOSX_DEPLOYMENT_TARGET_ppc64 = 10.8;
 				MACOSX_DEPLOYMENT_TARGET_x86_64 = 10.8;
-				SDKROOT_i386 = "$(DEVELOPER_SDK_DIR)/MacOSX10.10.sdk";
-				SDKROOT_x86_64 = "$(DEVELOPER_SDK_DIR)/MacOSX10.10.sdk";
 			};
 			name = Coverage;
 		};
@@ -2946,14 +3104,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(BUILT_PRODUCTS_DIR)",
-					"$(BUILT_PRODUCTS_DIR)/BaseTen-PostgreSQL/openssl/include",
+					"$(SRCROOT)/Contrib/libpq/include/openssl",
 					"$(BUILT_PRODUCTS_DIR)/BaseTen-PostgreSQL/$(CURRENT_ARCH)/include",
 					"$(BUILT_PRODUCTS_DIR)/BaseTen-PostgreSQL/$(CURRENT_ARCH)/include/internal",
 					"$(BUILT_PRODUCTS_DIR)/BaseTen-PostgreSQL/$(CURRENT_ARCH)/include/server",
@@ -2982,6 +3139,134 @@
 				PRODUCT_NAME = Documentation;
 			};
 			name = Coverage;
+		};
+		997B111419BD124300CB345E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "BaseTen Framework Tests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks /Library/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		997B111519BD124300CB345E /* Coverage */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "BaseTen Framework Tests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks /Library/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Coverage;
+		};
+		997B111619BD124300CB345E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "BaseTen Framework Tests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks /Library/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
@@ -3042,6 +3327,16 @@
 				53BD79F80E092ABD009CAFE6 /* Debug */,
 				98A6CD6E0F45C8600029B2C4 /* Coverage */,
 				53BD79F90E092ABD009CAFE6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		997B111319BD124300CB345E /* Build configuration list for PBXNativeTarget "BaseTen Framework Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				997B111419BD124300CB345E /* Debug */,
+				997B111519BD124300CB345E /* Coverage */,
+				997B111619BD124300CB345E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

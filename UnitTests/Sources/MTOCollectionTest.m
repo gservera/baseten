@@ -60,7 +60,7 @@
     NSArray* res = [mContext executeFetchForEntity: oneEntity
 									 withPredicate: nil 
 											 error: &error];
-    STAssertNotNil (res, [error description]);
+    XCTAssertNotNil (res, @"%@",[error description]);
     MKCAssertTrue (2 == [res count]);
     
     //Get an object from the result
@@ -83,7 +83,7 @@
 	NSArray *res2 = [mContext executeFetchForEntity: manyEntity
 									  withPredicate: nil 
 											  error: &error];
-    STAssertNotNil (res2, [error description]);
+    XCTAssertNotNil (res2, @"%@",[error description]);
     NSSet* objects2 = [NSSet setWithArray: res2];
     MKCAssertTrue (3 == [objects2 count]);
     
@@ -114,7 +114,7 @@
     //Execute a fetch
     NSArray* res = [mContext executeFetchForEntity: oneEntity
                                     withPredicate: nil error: &error];
-    STAssertNotNil (res, [error description]);
+    XCTAssertNotNil (res, @"%@",[error description]);
     MKCAssertTrue (2 == [res count]);
     
     //Get an object from the result
@@ -139,7 +139,7 @@
 	NSArray *res2 = [mContext executeFetchForEntity: manyEntity
 									  withPredicate: nil 
 											  error: &error];
-    STAssertNotNil (res2, [error description]);
+    XCTAssertNotNil (res2, @"%@",[error description]);
     NSSet* objects2 = [NSSet setWithArray: res2];
     MKCAssertTrue (3 == [objects2 count]);
     

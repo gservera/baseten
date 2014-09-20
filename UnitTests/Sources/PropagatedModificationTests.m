@@ -58,11 +58,11 @@
     
     NSError* error = nil;
     NSArray* res = [context executeFetchForEntity: entity withPredicate: predicate error: &error];
-    STAssertNotNil (res, [error description]);
+    XCTAssertNotNil (res, [error description]);
     MKCAssertTrue (1 == [res count]);
     
     NSArray* res2 = [context executeFetchForEntity: viewEntity withPredicate: predicate error: &error];
-    STAssertNotNil (res2, [error description]);
+    XCTAssertNotNil (res2, [error description]);
     MKCAssertTrue (1 == [res2 count]);
     
     BXDatabaseObject* object = [res objectAtIndex: 0];

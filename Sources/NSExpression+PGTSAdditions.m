@@ -48,7 +48,10 @@
 			retval = [visitor visitVariableExpression: self];
 			break;
 #if defined (TARGET_OS_IPHONE) && TARGET_OS_IPHONE
-		case 10: //NSKeyPathSpecifierExpression
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wswitch"
+        case 10://NSKeyPathSpecifierExpression:
+#pragma clang diagnostic pop
 #endif
 		case NSKeyPathExpressionType:
 			retval = [visitor visitKeyPathExpression: self];
@@ -142,7 +145,7 @@ AddParameter (id parameter, NSMutableDictionary* context)
 		int count = index + 1;
 		BXAssertValueReturn ([parameters count] == count, nil,
 							 @"Expected count to be %lu, was %d.\n\tparameter:\t%@ \n\tcontext:\t%@", 
-							 [parameters count], count, parameter, context);
+							 (unsigned long)[parameters count], count, parameter, context);
 		retval = [NSString stringWithFormat: @"$%d", count];
 	}
 	return retval;

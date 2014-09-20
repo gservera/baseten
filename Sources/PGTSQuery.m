@@ -218,13 +218,13 @@ CopyParameterString (int nParams, char const * const * const values, int const *
 				
 				paramTypes   [i] = InvalidOid;
 				paramValues  [i] = value;
-				paramLengths [i] = (isBinary ? length : 0);
+				paramLengths [i] = (isBinary ? (int)length : 0);
 				paramFormats [i] = isBinary;
 			}
 			
 			if (BASETEN_POSTGRESQL_SEND_QUERY_ENABLED ())
 			{
-				char *params = CopyParameterString (nParams, paramValues, paramFormats);
+				char *params = CopyParameterString ((int)nParams, paramValues, paramFormats);
 				char *query = strdup ([mQuery UTF8String] ?: "");
 				BASETEN_POSTGRESQL_SEND_QUERY (connection, retval, query, params);
 				free (query);
@@ -233,7 +233,7 @@ CopyParameterString (int nParams, char const * const * const values, int const *
 			
 			if (nParams)
 			{
-				retval = PQsendQueryParams ([connection pgConnection], [mQuery UTF8String], nParams, paramTypes,
+				retval = PQsendQueryParams ([connection pgConnection], [mQuery UTF8String], (int)nParams, paramTypes,
 											paramValues, paramLengths, paramFormats, 0);
 			}
 			else

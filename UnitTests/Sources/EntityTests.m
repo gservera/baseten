@@ -39,7 +39,7 @@
 	NSError* error = nil;
 	NSString* schemaName = @"public";
 	NSString* entityName = @"aNonExistentTable";
-	STAssertTrue ([mContext connectIfNeeded: &error], [error description]);
+	XCTAssertTrue ([mContext connectIfNeeded: &error], @"%@",[error description]);
 	BXEntityDescription* entity = [[mContext databaseObjectModel] entityForTable: entityName inSchema: schemaName];
 	MKCAssertNil (entity);
 }
@@ -47,7 +47,7 @@
 - (void) test3Validation
 {
 	NSError* error = nil;
-	STAssertTrue ([mContext connectIfNeeded: &error], [error description]);
+	XCTAssertTrue ([mContext connectIfNeeded: &error], @"%@",[error description]);
 	//This entity has fields only some of which are primary key.
 	BXEntityDescription* entity = [[mContext databaseObjectModel] entityForTable: @"mtmtest2" inSchema: @"Fkeytest"];
 	MKCAssertNotNil (entity);
@@ -136,7 +136,7 @@
 - (void) test7ViewPkey
 {
 	NSError *error = nil;
-	STAssertTrue ([mContext connectIfNeeded: &error], [error description]);
+	XCTAssertTrue ([mContext connectIfNeeded: &error], @"%@",[error description]);
 	
 	BXEntityDescription* entity = [[mContext databaseObjectModel] entityForTable: @"test_v"];
 	MKCAssertNotNil (entity);

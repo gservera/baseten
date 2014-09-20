@@ -164,7 +164,7 @@
 						  @"ALTER TABLE \"test_schema\".\"b\" ADD CONSTRAINT \"ba__ab\"   FOREIGN KEY (\"ba_id\") REFERENCES \"test_schema\".\"a\" (id)   ON DELETE SET NULL ON UPDATE CASCADE;",
 						  nil];
 						  
-	STAssertTrue ([expected1 isEqual: statements] || [expected2 isEqual: statements],
+	XCTAssertTrue ([expected1 isEqual: statements] || [expected2 isEqual: statements],
 				  @"Expected statements to equal one of the following."
 				  @"statements: %@\nexpected1: %@\nexpected2: %@",
 				  statements, expected1, expected2);
@@ -203,7 +203,7 @@
 											   @"CREATE TABLE \"test_schema\".\"User\" (id SERIAL) ;",
 											   @"ALTER TABLE \"test_schema\".\"User\" ADD PRIMARY KEY (id);",
 											   nil];
-		STAssertTrue (0 == [expectedCreationStatements count] % 2, 
+		XCTAssertTrue (0 == [expectedCreationStatements count] % 2, 
 					  @"There should be an equal number of expected creation statements in the test.");
 		
 		NSEnumerator* e = [expectedCreationStatements objectEnumerator];

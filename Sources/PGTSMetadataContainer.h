@@ -19,7 +19,7 @@
 
 
 #import <Foundation/Foundation.h>
-#import <PGTSOids.h>
+#import "PGTSOids.h"
 
 
 @class PGTSDatabaseDescription;

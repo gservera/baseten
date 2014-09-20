@@ -22,7 +22,7 @@
 #import <Foundation/Foundation.h>
 
 #import "BXModificationTests.h"
-#import "MKCSenTestCaseAdditions.h";
+#import "MKCSenTestCaseAdditions.h"
 
 
 @implementation BXModificationTests
@@ -45,7 +45,7 @@
     NSArray* res = [mContext executeFetchForEntity: pkeytest
                                     withPredicate: [NSPredicate predicateWithFormat: @"Id = 1"]
                                             error: &error];
-    STAssertNotNil (res, [error description]);
+    XCTAssertNotNil (res, @"%@",[error description]);
     
     MKCAssertTrue (1 == [res count]);
     BXDatabaseObject* object = [res objectAtIndex: 0];
@@ -59,7 +59,7 @@
     res = [[mContext executeFetchForEntity: pkeytest withPredicate: nil error: &error]
         sortedArrayUsingDescriptors: [NSArray arrayWithObject: 
             [[[NSSortDescriptor alloc] initWithKey: @"Id" ascending: YES] autorelease]]];
-    STAssertNotNil (res, [error description]);
+    XCTAssertNotNil (res, @"%@",[error description]);
 
     MKCAssertTrue (3 == [res count]);
     for (int i = 0; i < 3; i++)
@@ -84,7 +84,7 @@
     NSArray* res = [mContext executeFetchForEntity: updatetest withPredicate: nil
                                   returningFaults: NO error: &error];
     NSArray* originalResult = res;
-    STAssertNotNil (res, [error description]);
+    XCTAssertNotNil (res, @"%@",[error description]);
     MKCAssertTrue (5 == [res count]);
     MKCAssertTrue (5 == [[NSSet setWithArray: [res valueForKey: @"value1"]] count]);
 
@@ -96,21 +96,21 @@
 
     //First update just one object
 	id value1Attr = [[updatetest attributesByName] objectForKey: @"value1"];
-    STAssertNotNil ([mContext executeUpdateObject: nil
+    XCTAssertNotNil ([mContext executeUpdateObject: nil
 										   entity: updatetest 
 										predicate: predicate
 								   withDictionary: [NSDictionary dictionaryWithObject: number forKey: value1Attr]
-											error: &error], [error description]);
+											error: &error], @"%@",[error description]);
     MKCAssertEqualObjects (number, [object valueForKey: @"value1"]);
     MKCAssertTrue (5 == [[NSSet setWithArray: [res valueForKey: @"value1"]] count]);
     
     //Then update multiple objects
     number = [NSNumber numberWithInt: 2];
-    STAssertNotNil ([mContext executeUpdateObject: nil
+    XCTAssertNotNil ([mContext executeUpdateObject: nil
 										   entity: updatetest 
 										predicate: nil
 								   withDictionary: [NSDictionary dictionaryWithObject: number forKey: value1Attr]
-											error: &error], [error description]);
+											error: &error], @"%@",[error description]);
 	
     NSArray* values = [res valueForKey: @"value1"];
     MKCAssertTrue (1 == [[NSSet setWithArray: values] count]);
@@ -120,18 +120,18 @@
     number = [NSNumber numberWithInt: -1];
 	id idattr = [[updatetest attributesByName] objectForKey: @"id"];
     MKCAssertTrue (5 == [[NSSet setWithArray: [res valueForKey: @"id"]] count]);
-    STAssertNotNil ([mContext executeUpdateObject: object
+    XCTAssertNotNil ([mContext executeUpdateObject: object
 										   entity: updatetest
 										predicate: predicate
 								   withDictionary: [NSDictionary dictionaryWithObject: number forKey: idattr]
-											error: &error], [error description]);
+											error: &error], @"%@",[error description]);
 	
     MKCAssertTrue (5 == [[NSSet setWithArray: [res valueForKey: @"id"]] count]);
     MKCAssertEqualObjects ([object valueForKey: @"id"], number);
     
     //Then delete an object
     predicate = [NSPredicate predicateWithFormat: @"id = -1"];
-    STAssertTrue ([mContext executeDeleteFromEntity: updatetest withPredicate: predicate error: &error], [error description]);
+    XCTAssertTrue ([mContext executeDeleteFromEntity: updatetest withPredicate: predicate error: &error], @"%@",[error description]);
     res = [mContext executeFetchForEntity: updatetest withPredicate: nil
                          returningFaults: NO error: &error];
     MKCAssertTrue (4 == [res count]);
@@ -140,7 +140,7 @@
     MKCAssertTrue (0 == [res count]);
     
     //Finally delete all objects
-    STAssertTrue ([mContext executeDeleteFromEntity: updatetest withPredicate: nil error: &error], [error description]);
+    XCTAssertTrue ([mContext executeDeleteFromEntity: updatetest withPredicate: nil error: &error], @"%@",[error description]);
     res = [mContext executeFetchForEntity: updatetest withPredicate: nil
                          returningFaults: NO error: &error];
     MKCAssertTrue (0 == [res count]);
@@ -162,7 +162,7 @@
 							 returningFaults: NO 
 						 updateAutomatically: YES 
 									   error: &error];
-    STAssertNotNil (res, [error description]);
+    XCTAssertNotNil (res, @"%@",[error description]);
 	[res setOwner: self];
 	[res setKey: @"collection"];
 	
@@ -178,17 +178,17 @@
     MKCAssertNotNil (context2);
     
     BXDatabaseObject* object = [context2 createObjectForEntity: entity withFieldValues: nil error: &error];
-    STAssertNotNil (object, [error description]);
+    XCTAssertNotNil (object, @"%@",[error description]);
     
     //Commit the modification so we can see some results.
-    STAssertTrue ([context2 save: &error], [error description]);
+    XCTAssertTrue ([context2 save: &error], @"%@",[error description]);
 	[[NSRunLoop currentRunLoop] runUntilDate: [NSDate dateWithTimeIntervalSinceNow: 1.0]];
     MKCAssertEquals ([array count], count + 1);
     
-    STAssertTrue ([context2 executeDeleteObject: object error: &error], [error description]);
+    XCTAssertTrue ([context2 executeDeleteObject: object error: &error], @"%@",[error description]);
     
     //Again, commit.
-    STAssertTrue ([context2 save: &error], [error description]);    
+    XCTAssertTrue ([context2 save: &error], @"%@",[error description]);
 	[[NSRunLoop currentRunLoop] runUntilDate: [NSDate dateWithTimeIntervalSinceNow: 1.0]];
     MKCAssertEquals (count, [array count]);
 	
@@ -213,12 +213,12 @@
 		[context2 setAutocommits: YES];
 		MKCAssertNotNil (context2);
 		
-		STAssertTrue ([context2 connectSync: &error], [error description]);
+		XCTAssertTrue ([context2 connectSync: &error], @"%@",[error description]);
 		
 		object2 = [[context2 executeFetchForEntity: entity
 									 withPredicate: [NSPredicate predicateWithFormat: @"7 == id"]
 											 error: &error] lastObject];
-		STAssertNotNil (object2, [error description]);
+		XCTAssertNotNil (object2, @"%@",[error description]);
 		
 		[object2 setPrimitiveValue: [NSNumber numberWithInteger: 9] forKey: @"b"];
 		MKCAssertEqualObjects ([object2 primitiveValueForKey: @"b"], [NSNumber numberWithInteger: 9]);
@@ -228,7 +228,7 @@
 		object1 = [[mContext executeFetchForEntity: entity 
 									 withPredicate: [NSPredicate predicateWithFormat: @"7 == id"]
 											 error: &error] lastObject];
-		STAssertNotNil (object1, [error description]);
+		XCTAssertNotNil (object1, @"%@",[error description]);
 		MKCAssertEqualObjects ([object1 primitiveValueForKey: @"b"], [NSNumber numberWithInteger: 9]);
 	}
 	

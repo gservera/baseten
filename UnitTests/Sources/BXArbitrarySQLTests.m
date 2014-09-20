@@ -36,11 +36,11 @@ __strong static NSString *kKVOCtx = @"BXArbitrarySQLTestsKVOObservingContext";
 	{
 		NSDictionary* connectionDictionary = [self connectionDictionary];
 		mConnection = [[PGTSConnection alloc] init];
-		STAssertTrue ([mConnection connectSync: connectionDictionary], [[mConnection connectionError] description]);	
+		XCTAssertTrue ([mConnection connectSync: connectionDictionary], @"%@",[[mConnection connectionError] description]);
 		
 		PGTSResultSet *res = nil;
 		MKCAssertNotNil ((res = [mConnection executeQuery: @"UPDATE test SET value = null"]));
-		STAssertTrue ([res querySucceeded], [[res error] description]);
+		XCTAssertTrue ([res querySucceeded], @"%@",[[res error] description]);
 	}
 	
 	{
@@ -49,7 +49,7 @@ __strong static NSString *kKVOCtx = @"BXArbitrarySQLTestsKVOObservingContext";
 		
 		NSError *error = nil;
 		NSArray *res = [mContext executeFetchForEntity: mEntity withPredicate: nil error: &error];
-		STAssertNotNil (res, [error description]);
+		XCTAssertNotNil (res, @"%@",[error description]);
 		
 		BXEnumerate (currentObject, e, [res objectEnumerator])
 		{
@@ -115,7 +115,7 @@ __strong static NSString *kKVOCtx = @"BXArbitrarySQLTestsKVOObservingContext";
 	
 	PGTSResultSet *res = nil;
 	MKCAssertNotNil ((res = [mConnection executeQuery: @"UPDATE test SET value = null"]));
-	STAssertTrue ([res querySucceeded], [[res error] description]);
+	XCTAssertTrue ([res querySucceeded], @"%@",[[res error] description]);
 	
 	[mConnection release];
 	[mEntity release];
@@ -132,7 +132,7 @@ __strong static NSString *kKVOCtx = @"BXArbitrarySQLTestsKVOObservingContext";
 {	
 	PGTSResultSet *res = nil;
 	MKCAssertNotNil ((res = [mConnection executeQuery: @"UPDATE test SET value = $1 WHERE id != 4" parameters: @"test"]));
-	STAssertTrue ([res querySucceeded], [[res error] description]);
+	XCTAssertTrue ([res querySucceeded], @"%@",[[res error] description]);
 	
 	[[NSRunLoop currentRunLoop] runUntilDate: [NSDate dateWithTimeIntervalSinceNow: 1.0]];
 	[mMock verify];
@@ -151,7 +151,7 @@ __strong static NSString *kKVOCtx = @"BXArbitrarySQLTestsKVOObservingContext";
 	{
 		PGTSResultSet *res = nil;
 		MKCAssertNotNil ((res = [mConnection executeQuery: queries [i]]));
-		STAssertTrue ([res querySucceeded], @"Error when executing '%@': %@", queries [i], [[res error] description]);
+		XCTAssertTrue ([res querySucceeded], @"Error when executing '%@': %@", queries [i], [[res error] description]);
 	}
 	
 	[[NSRunLoop currentRunLoop] runUntilDate: [NSDate dateWithTimeIntervalSinceNow: 1.0]];

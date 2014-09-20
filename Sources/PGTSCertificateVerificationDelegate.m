@@ -106,13 +106,13 @@ __strong static id <PGTSCertificateVerificationDelegate> gDefaultCertDelegate = 
 			const CSSM_OID* currentOidPtr = NULL;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-			const CSSM_OID* oidPtrs [] = {&CSSMOID_APPLE_TP_SSL, &CSSMOID_APPLE_TP_REVOCATION_CRL};
+			const CFTypeRef oidPtrs [] = {kSecPolicyAppleSSL, kSecPolicyAppleRevocation};
 #pragma clang diagnostic pop
 			for (int i = 0, count = BXArraySize (oidPtrs); i < count; i++)
 			{
 				currentOidPtr = oidPtrs [i];
-                
-				SecPolicyRef policy = SecPolicyCreateWithOID(currentOidPtr);
+                CFStringRef oid = (CFStringRef)currentOidPtr;
+				SecPolicyRef policy = SecPolicyCreateWithOID(oid);
                 if (policy == NULL) {
                     CFArrayRemoveAllValues(policies);
                     break;

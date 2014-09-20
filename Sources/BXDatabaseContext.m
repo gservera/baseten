@@ -3069,6 +3069,8 @@ AddKeychainAttribute (SecItemAttr tag, void* value, UInt32 length, NSMutableData
 															password: password]];
             SecKeychainItemFreeAttributesAndData (returnedAttributes, passwordData);
             rval = YES;
+        } else if ((0 == returnedAttributes->count) && (passwordData != NULL)) {
+            SecKeychainItemFreeAttributesAndData(returnedAttributes, passwordData);
         }
     }    
     return rval;

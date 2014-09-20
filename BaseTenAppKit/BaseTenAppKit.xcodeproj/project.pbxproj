@@ -79,6 +79,13 @@
 			remoteGlobalIDString = 53DC77960E51B6580015691A;
 			remoteInfo = "BaseTen for iPhone";
 		};
+		9952B84419C99D8500240A0B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 537E48D10A14BFE800A22080 /* BaseTen.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 997B110D19BD124200CB345E;
+			remoteInfo = "BaseTen Framework Tests";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -298,6 +305,7 @@
 			children = (
 				5354443E0D634CA4002A6C47 /* BaseTen.framework */,
 				53906EE50E51CFF700D837EA /* libBaseTen.a */,
+				9952B84519C99D8500240A0B /* BaseTen Framework Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -401,6 +409,13 @@
 			fileType = archive.ar;
 			path = libBaseTen.a;
 			remoteRef = 53906EE40E51CFF700D837EA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9952B84519C99D8500240A0B /* BaseTen Framework Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "BaseTen Framework Tests.xctest";
+			remoteRef = 9952B84419C99D8500240A0B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -560,7 +575,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 535444490D634D63002A6C47 /* debug.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
 			};
 			name = Debug;
 		};
@@ -568,7 +585,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5354444B0D634D63002A6C47 /* release.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
 			};
 			name = Release;
 		};

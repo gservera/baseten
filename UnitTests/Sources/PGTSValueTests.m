@@ -105,7 +105,7 @@
 	
 	NSTimeInterval interval = [date timeIntervalSinceReferenceDate];
 	NSTimeInterval expected = 36125.00067;
-	STAssertTrue (d_eq (expected, interval), @"Expected %f to equal %f.", expected, interval);
+	XCTAssertTrue (d_eq (expected, interval), @"Expected %f to equal %f.", expected, interval);
 }
 
 - (void) testTimeWithTimeZone

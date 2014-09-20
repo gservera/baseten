@@ -31,7 +31,7 @@
 	NSDictionary* connectionDictionary = [self connectionDictionary];
 	mConnection = [[PGTSConnection alloc] init];
 	BOOL status = [mConnection connectSync: connectionDictionary];
-	STAssertTrue (status, [[mConnection connectionError] description]);	
+	XCTAssertTrue (status, @"%@",[[mConnection connectionError] description]);
 }
 
 - (void) tearDown
@@ -44,7 +44,7 @@
 - (void) testInt2
 {
 	PGTSResultSet* res = [mConnection executeQuery: @"SELECT * FROM int2_test"];
-	STAssertTrue ([res querySucceeded], [[res error] description]);
+	XCTAssertTrue ([res querySucceeded], @"%@",[[res error] description]);
 	
 	[res advanceRow];
 	NSNumber* value = [res valueForKey: @"value"];
@@ -58,7 +58,7 @@
 - (void) testInt4
 {
 	PGTSResultSet* res = [mConnection executeQuery: @"SELECT * FROM int4_test"];
-	STAssertTrue ([res querySucceeded], [[res error] description]);
+	XCTAssertTrue ([res querySucceeded], @"%@",[[res error] description]);
 	
 	[res advanceRow];
 	NSNumber* value = [res valueForKey: @"value"];
@@ -72,7 +72,7 @@
 - (void) testInt8
 {
 	PGTSResultSet* res = [mConnection executeQuery: @"SELECT * FROM int8_test"];
-	STAssertTrue ([res querySucceeded], [[res error] description]);
+	XCTAssertTrue ([res querySucceeded], @"%@",[[res error] description]);
 	
 	[res advanceRow];
 	NSNumber* value = [res valueForKey: @"value"];
@@ -86,7 +86,7 @@
 - (void) testText
 {
 	PGTSResultSet* res = [mConnection executeQuery: @"SELECT * FROM text_test"];
-	STAssertTrue ([res querySucceeded], [[res error] description]);
+	XCTAssertTrue ([res querySucceeded], @"%@",[[res error] description]);
 	
 	[res advanceRow];
 	NSString* value = [res valueForKey: @"value"];
@@ -99,7 +99,7 @@
 - (void) testPoint
 {
 	PGTSResultSet* res = [mConnection executeQuery: @"SELECT * FROM point_test"];
-	STAssertTrue ([res querySucceeded], [[res error] description]);
+	XCTAssertTrue ([res querySucceeded], @"%@",[[res error] description]);
 	
 	[res advanceRow];
 	NSValue* value = [res valueForKey: @"value"];
@@ -122,7 +122,7 @@ f_eq (float a, float b)
 	MKCAssertTrue (4 == sizeof (float));
 	
 	PGTSResultSet* res = [mConnection executeQuery: @"SELECT * FROM float4_test"];
-	STAssertTrue ([res querySucceeded], [[res error] description]);
+	XCTAssertTrue ([res querySucceeded], @"%@",[[res error] description]);
 	
 	[res advanceRow];
 	NSNumber* value = [res valueForKey: @"value"];
@@ -137,7 +137,7 @@ f_eq (float a, float b)
 	MKCAssertTrue (8 == sizeof (double));
 	
 	PGTSResultSet* res = [mConnection executeQuery: @"SELECT * FROM float8_test"];
-	STAssertTrue ([res querySucceeded], [[res error] description]);
+	XCTAssertTrue ([res querySucceeded], @"%@",[[res error] description]);
 	
 	[res advanceRow];
 	NSNumber* value = [res valueForKey: @"value"];
@@ -150,7 +150,7 @@ f_eq (float a, float b)
 - (void) testXMLDocument
 {
 	PGTSResultSet* res = [mConnection executeQuery: @"SELECT * FROM xml_document_test"];
-	STAssertTrue ([res querySucceeded], [[res error] description]);
+	XCTAssertTrue ([res querySucceeded], @"%@",[[res error] description]);
 	
 	while (([res advanceRow]))
 	{
@@ -163,7 +163,7 @@ f_eq (float a, float b)
 - (void) testXMLFragment
 {
 	PGTSResultSet* res = [mConnection executeQuery: @"SELECT * FROM xml_fragment_test"];
-	STAssertTrue ([res querySucceeded], [[res error] description]);
+	XCTAssertTrue ([res querySucceeded], @"%@",[[res error] description]);
 	
 	while (([res advanceRow]))
 	{

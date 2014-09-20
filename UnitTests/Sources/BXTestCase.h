@@ -18,13 +18,13 @@
 //
 
 #import <BaseTen/BaseTen.h>
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
 
 extern int d_eq (double a, double b);
 
 
-@interface BXTestCase : SenTestCase <BXDatabaseContextDelegate>
+@interface BXTestCase : XCTestCase <BXDatabaseContextDelegate>
 {
 	NSAutoreleasePool *mPool;
 }

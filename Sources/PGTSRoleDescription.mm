@@ -47,10 +47,11 @@ using namespace BaseTen;
 - (void) setMembers: (NSArray *) roles
 {
 	NSMutableDictionary *membersByOid = [[NSMutableDictionary alloc] initWithCapacity: [roles count]];
-	for (PGTSRoleDescription *role in roles)
+    for (PGTSRoleDescription *role in roles) {
 		InsertConditionally (membersByOid, [role oid], role);
-	
+    }
 	[mMembersByOid release];
 	mMembersByOid = [membersByOid copy];
+    [membersByOid release]; //? A
 }
 @end

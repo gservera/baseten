@@ -89,6 +89,7 @@ using namespace BaseTen;
 		retval = [[descriptionClass alloc] init];
 		[retval setOid: oid];
 		Insert (mTablesByOid, oid, retval);
+        [retval release]; //? added
 	}
 	return retval;
 }
@@ -241,7 +242,7 @@ using namespace BaseTen;
 			//The type description of Oid might not be cached yet.
 			char* oidString = PQgetvalue ([res PGresult], [res currentRow], 0);
 			long oid = strtol (oidString, NULL, 10);
-			[typeDesc setOid: oid];
+			[typeDesc setOid:(Oid)oid];
 			
 			[typeDesc setName: [res valueForKey: @"typname"]];
 			[typeDesc setElementOid: [[res valueForKey: @"typelem"] PGTSOidValue]];

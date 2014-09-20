@@ -36,6 +36,11 @@
  */
 //FIXME: this needs to be changed to use set mutation -style KVO notifications.
 @implementation BXSetHelperTableRelationProxy
+
+- (id) BXInitWithArray: (NSMutableArray *) anArray NS_RETURNS_RETAINED {
+    return [super BXInitWithArray:anArray];
+}
+
 - (void) fetchedForEntity: (BXEntityDescription *) entity predicate: (NSPredicate *) predicate
 {
 }

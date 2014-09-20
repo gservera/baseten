@@ -40,7 +40,7 @@
     MKCAssertNotNil (entity);
     
     BXDatabaseObject* object = [mContext createObjectForEntity: entity withFieldValues: nil error: &error];
-    STAssertNotNil (object, [error description]);
+    XCTAssertNotNil (object, @"%@",[error description]);
     [mContext rollback];
 }
 
@@ -52,7 +52,7 @@
 	NSError* error = nil;
 	NSDictionary* values = [NSDictionary dictionaryWithObject: @"test" forKey: @"value"];
 	BXDatabaseObject* object = [mContext createObjectForEntity: entity withFieldValues: values error: &error];
-	STAssertNotNil (object, [error description]);
+	XCTAssertNotNil (object, @"%@",[error description]);
 	
 	MKCAssertFalse ([object isFaultKey: @"value"]);
 	MKCAssertTrue ([[object valueForKey: @"value"] isEqual: [values valueForKey: @"value"]]);
@@ -70,7 +70,7 @@
 	NSError* error = nil;
 	NSDictionary* values = [NSDictionary dictionaryWithObject: precomposed forKey: @"value"];
 	BXDatabaseObject* object = [mContext createObjectForEntity: entity withFieldValues: values error: &error];
-	STAssertNotNil (object, [error description]);
+	XCTAssertNotNil (object, @"%@",[error description]);
 	
 	MKCAssertFalse ([object isFaultKey: @"value"]);
 	MKCAssertTrue ([[object valueForKey: @"value"] isEqual: decomposed]);
@@ -89,7 +89,7 @@
     MKCAssertEqualObjects (objectClass, [entity databaseObjectClass]);
     
     BXDatabaseObject* object = [mContext createObjectForEntity: entity withFieldValues: nil error: &error];
-    STAssertNotNil (object, [error description]);
+    XCTAssertNotNil (object, @"%@",[error description]);
 	
     MKCAssertTrue ([object isKindOfClass: objectClass]);    
     [mContext rollback];
@@ -108,14 +108,14 @@
 	NSError* error = nil;
 	NSPredicate* predicate = [NSPredicate predicateWithFormat: @"id == 2"];
 	NSArray* res = [mContext executeFetchForEntity: test1 withPredicate: predicate error: &error];
-	STAssertNotNil (res, [error description]);
+	XCTAssertNotNil (res, @"%@",[error description]);
 	
 	BXDatabaseObject* target = [res lastObject];
 	MKCAssertNotNil (target);
 	
 	NSDictionary* values = [NSDictionary dictionaryWithObject: target forKey: @"test1"];
 	BXDatabaseObject* newObject = [mContext createObjectForEntity: test2 withFieldValues: values error: &error];
-	STAssertNotNil (newObject, [error description]);
+	XCTAssertNotNil (newObject, @"%@",[error description]);
 	
 	MKCAssertTrue ([newObject primitiveValueForKey: @"test1"] == target);
 	MKCAssertTrue ([[target primitiveValueForKey: @"test2Set"] containsObject: newObject]);

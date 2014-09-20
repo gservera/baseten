@@ -22,26 +22,26 @@
     Adds also a macro to run the current runloop in default mode until some condition becomes FALSE or timeout occurs.
 */
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
 #define MKC_ASSERT_DESCRIPTION @"Assertion failed"
 
-#define MKCAssertNil(a1) STAssertNil(a1, MKC_ASSERT_DESCRIPTION)
-#define MKCAssertNotNil(a1) STAssertNotNil(a1, MKC_ASSERT_DESCRIPTION)
-#define MKCAssertTrue(expression) STAssertTrue(expression, MKC_ASSERT_DESCRIPTION)
-#define MKCAssertFalse(expression) STAssertFalse(expression, MKC_ASSERT_DESCRIPTION)
-#define MKCAssertEqualObjects(a1, a2) STAssertEqualObjects(a1, a2, MKC_ASSERT_DESCRIPTION)
-#define MKCAssertEquals(a1, a2) STAssertEquals(a1, a2, MKC_ASSERT_DESCRIPTION)
-#define MKCAssertEqualsWithAccuracy(left, right, accuracy) STAssertEqualsWithAccuracy(left, right, accuracy, MKC_ASSERT_DESCRIPTION)
-#define MKCAssertThrows(expression) STAssertThrows(expression, MKC_ASSERT_DESCRIPTION)
-#define MKCAssertThrowsSpecific(expression, specificException) STAssertThrowsSpecific(expression, specificException, MKC_ASSERT_DESCRIPTION)
-#define MKCAssertThrowsSpecificNamed(expr, specificException, aName) STAssertThrowsSpecificNamed(expr, specificException, aName, MKC_ASSERT_DESCRIPTION)
-#define MKCAssertNoThrow(expression) STAssertNoThrow(expression, MKC_ASSERT_DESCRIPTION)
-#define MKCAssertNoThrowSpecific(expression, specificException) STAssertNoThrowSpecific(expression, specificException, MKC_ASSERT_DESCRIPTION)
-#define MKCAssertNoThrowSpecificNamed(expr, specificException, aName) STAssertNoThrowSpecificNamed(expr, specificException, aName, MKC_ASSERT_DESCRIPTION)
-#define MKCFail() STFail(MKC_ASSERT_DESCRIPTION)
-#define MKCAssertTrueNoThrow(expression) STAssertTrueNoThrow(expression, MKC_ASSERT_DESCRIPTION)
-#define MKCAssertFalseNoThrow(expression) STAssertFalseNoThrow(expression, MKC_ASSERT_DESCRIPTION)
+#define MKCAssertNil(a1) XCTAssertNil(a1, MKC_ASSERT_DESCRIPTION)
+#define MKCAssertNotNil(a1) XCTAssertNotNil(a1, MKC_ASSERT_DESCRIPTION)
+#define MKCAssertTrue(expression) XCTAssertTrue(expression, MKC_ASSERT_DESCRIPTION)
+#define MKCAssertFalse(expression) XCTAssertFalse(expression, MKC_ASSERT_DESCRIPTION)
+#define MKCAssertEqualObjects(a1, a2) XCTAssertEqualObjects(a1, a2, MKC_ASSERT_DESCRIPTION)
+#define MKCAssertEquals(a1, a2) XCTAssertEqual(a1, a2, MKC_ASSERT_DESCRIPTION)
+#define MKCAssertEqualsWithAccuracy(left, right, accuracy) XCTAssertEqualsWithAccuracy(left, right, accuracy, MKC_ASSERT_DESCRIPTION)
+#define MKCAssertThrows(expression) XCTAssertThrows(expression, MKC_ASSERT_DESCRIPTION)
+#define MKCAssertThrowsSpecific(expression, specificException) XCTAssertThrowsSpecific(expression, specificException, MKC_ASSERT_DESCRIPTION)
+#define MKCAssertThrowsSpecificNamed(expr, specificException, aName) XCTAssertThrowsSpecificNamed(expr, specificException, aName, MKC_ASSERT_DESCRIPTION)
+#define MKCAssertNoThrow(expression) XCTAssertNoThrow(expression, MKC_ASSERT_DESCRIPTION)
+#define MKCAssertNoThrowSpecific(expression, specificException) XCTAssertNoThrowSpecific(expression, specificException, MKC_ASSERT_DESCRIPTION)
+#define MKCAssertNoThrowSpecificNamed(expr, specificException, aName) XCTAssertNoThrowSpecificNamed(expr, specificException, aName, MKC_ASSERT_DESCRIPTION)
+#define MKCFail() XCTFail(MKC_ASSERT_DESCRIPTION)
+#define MKCAssertTrueNoThrow(expression) XCTAssertTrueNoThrow(expression, MKC_ASSERT_DESCRIPTION)
+#define MKCAssertFalseNoThrow(expression) XCTAssertFalseNoThrow(expression, MKC_ASSERT_DESCRIPTION)
 
 #define MKCRunLoopRunWithConditionAndTimeout(loopCondition, timeoutInSeconds) \
 { \

@@ -19,7 +19,6 @@
 
 #import "BXDatabaseObjectModelMOMSerialization.h"
 #import <CoreData/CoreData.h>
-#import <tr1/unordered_map>
 #import "BXDatabaseObjectModel.h"
 #import "BXEnumerate.h"
 #import "BXEntityDescription.h"

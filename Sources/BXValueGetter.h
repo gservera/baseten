@@ -93,7 +93,7 @@ namespace BaseTen {
 				//if (std::numeric_limits <T>::min () <= i && i <= std::numeric_limits <T>::max ())
 				{
 					retval = YES;
-					*outValue = i;
+					*outValue = (int)i;
 				}
 				else
 				{

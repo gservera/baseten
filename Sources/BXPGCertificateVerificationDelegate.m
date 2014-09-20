@@ -37,6 +37,12 @@ static BOOL CertArrayCompare (CFArrayRef a1, CFArrayRef a2) {
             CFDataRef data2 = SecCertificateCopyData(c2);
             
             if ((data1 == NULL) || (data2 == NULL)) {
+                if (data2 != NULL) {
+                    CFRelease(data2);
+                }
+                if (data1 != NULL) {
+                    CFRelease(data1);
+                }
                 return NO;
             }
             

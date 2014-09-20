@@ -248,12 +248,10 @@ NoticeReceiver (void *connectionPtr, PGresult const *notice)
 			NSData* plist = [NSData dataWithContentsOfFile: path];
 			BXAssertValueReturn (plist, nil, @"datatypeassociations.plist was not found (looked from %@).", path);
 			
-			NSString* error = nil;
-			NSMutableDictionary *PGTypes = [[[NSPropertyListSerialization propertyListFromData: plist 
-																			  mutabilityOption: NSPropertyListImmutable
-																						format: NULL 
-																			  errorDescription: &error] mutableCopy] autorelease];
-			BXAssertValueReturn (PGTypes, nil, @"Error creating PGTSDeserializationDictionary: %@ (file: %@)", error, path);
+			NSError* error = nil;
+			NSMutableDictionary *PGTypes = [[[NSPropertyListSerialization propertyListWithData:plist options:NSPropertyListImmutable format:NULL error:&error] mutableCopy] autorelease];
+            
+			BXAssertValueReturn (PGTypes, nil, @"Error creating PGTSDeserializationDictionary: %@ (file: %@)", [error localizedDescription], path);
 			
 			NSArray* keys = [PGTypes allKeys];
 			BXEnumerate (key, e, [keys objectEnumerator])
@@ -533,7 +531,7 @@ NoticeReceiver (void *connectionPtr, PGresult const *notice)
 
 	if ([notifications count])
 	{
-		BXLogInfo (@"Received %lu notifications.", [notifications count]);
+		BXLogInfo (@"Received %lu notifications.", (unsigned long)[notifications count]);
 		id <PGTSConnectionDelegate> delegate = [self delegate];
 		for (PGTSNotification *notification in notifications)
 			[delegate PGTSConnection: self gotNotification: notification];
@@ -874,7 +872,7 @@ ParameterCount (NSString* query)
 																  callback: callback
 															parameterArray: parameters
 																  userInfo: userInfo];
-	int retval = [desc identifier];
+	int retval = (int)[desc identifier];
 	[self _sendOrEnqueueQuery: desc];
 	return retval;
 }
