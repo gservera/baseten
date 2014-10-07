@@ -35,6 +35,7 @@ static struct bx_regular_expression_st gTimeExp = {};
 
 __strong static NSDateComponents* gDefaultComponents = nil;
 __strong static NSTimeZone* gDefaultTimeZone = nil;
+__strong static NSCalendar* __gregorianCalendar;
 
 
 static void
@@ -110,8 +111,10 @@ CopyDate (struct bx_regular_expression_st *re, const char *subject, int *ovector
 	//NSGregorianCalendar works as the Julian calendar when appropriate.
 	//Not sure if Postgres does, though. Time zone needs to be set always, because
 	//NSCalendar defaults to the current time zone.
-	NSCalendar* calendar = [[[NSCalendar alloc] initWithCalendarIdentifier: NSGregorianCalendar] autorelease];
-	
+    if (!__gregorianCalendar) {
+        __gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier: NSGregorianCalendar];
+    }
+    
 	long tzOffset = 0;
 	
 	if (0 < pcre_copy_named_substring (re->re_expression, subject, ovector, status, "tzh", buffer, BXArraySize (buffer)))
@@ -132,7 +135,7 @@ CopyDate (struct bx_regular_expression_st *re, const char *subject, int *ovector
 	NSTimeZone* tz = gDefaultTimeZone;
 	if (tzOffset)
 		tz = [NSTimeZone timeZoneForSecondsFromGMT: tzOffset];
-	[calendar setTimeZone: tz];
+	[__gregorianCalendar setTimeZone: tz];
 	
 	NSDateComponents* components = [[[NSDateComponents alloc] init] autorelease];
 	[components setEra: era];
@@ -143,7 +146,7 @@ CopyDate (struct bx_regular_expression_st *re, const char *subject, int *ovector
 	[components setMinute: minutes];
 	[components setSecond: seconds];
 	
-	retval = [calendar dateFromComponents: components];
+	retval = [__gregorianCalendar dateFromComponents: components];
 	if (0 < pcre_copy_named_substring (re->re_expression, subject, ovector, status, "frac", buffer, BXArraySize (buffer)))
 	{
 		double fraction = strtod (buffer, NULL);
