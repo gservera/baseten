@@ -5,8 +5,8 @@
 
 struct lineptr
 {
-	unsigned char *ptr;
-	int			width;
+    unsigned char *ptr;
+    int			width;
 };
 
 extern unsigned char *mbvalidate(unsigned char *pwcs, int encoding);
@@ -16,3 +16,4 @@ extern void pg_wcssize(const unsigned char *pwcs, size_t len, int encoding,
                        int *width, int *height, int *format_size);
 
 #endif   /* MBPRINT_H */
+ 

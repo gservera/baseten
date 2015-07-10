@@ -22,60 +22,40 @@
 #import <BaseTen/BaseTen.h>
 #import <BaseTen/BXKeyPathParser.h>
 
-
-
 @interface BXRelationshipKeyPathValue : NSObject
-{
-	NSString *mKeyPath;
-	NSComparisonPredicateModifier mModifier;
-}
+
+- (instancetype)initWithKeyPath:(NSString*)kP modifier:(NSComparisonPredicateModifier)mod;
+
 @property (readonly, nonatomic) NSString *keyPath;
 @property (readonly, nonatomic) NSComparisonPredicateModifier modifier;
-- (id) initWithKeyPath: (NSString *) keyPath
-			  modifier: (NSComparisonPredicateModifier) modifier;
 @end
-
-
 
 @implementation BXRelationshipKeyPathValue
-@synthesize keyPath = mKeyPath;
-@synthesize modifier = mModifier;
 
-- (id) initWithKeyPath: (NSString *) keyPath modifier: (NSComparisonPredicateModifier) modifier
-{
-	if ((self = [super init]))
-	{
-		mKeyPath = [keyPath copy];
-		mModifier = modifier;
-	}
-	return self;
+- (instancetype)initWithKeyPath:(NSString*)kP modifier:(NSComparisonPredicateModifier)mod {
+    self = [super init];
+    if (self) {
+        _keyPath = [kP copy];
+        _modifier = mod;
+    }
+    return self;
 }
 
-
-- (void) dealloc
-{
-	[mKeyPath release];
-	[super dealloc];
-}
 @end
-
 
 
 @implementation BXMultipleChoicePredicateEditorRowTemplateFactory
 // Needs to be a subclass of BXMultipleChoicePredicateEditorRowTemplate.
-- (Class) rowTemplateClass
-{
+- (Class) rowTemplateClass {
 	return [BXMultipleChoicePredicateEditorRowTemplate class];
 }
 
-
-- (NSArray *) multipleChoiceTemplatesWithDisplayNames: (NSArray *) displayNames
-						 andOptionDisplayNameKeyPaths: (NSArray *) displayNameKeyPaths
-							  forRelationshipKeyPaths: (NSArray *) keyPaths
-								  inEntityDescription: (BXEntityDescription *) originalEntity
-									  databaseContext: (BXDatabaseContext *) ctx
-												error: (NSError **) error
-{
+- (NSArray *) multipleChoiceTemplatesWithDisplayNames:(NSArray *)displayNames
+						 andOptionDisplayNameKeyPaths:(NSArray *)displayNameKeyPaths
+							  forRelationshipKeyPaths:(NSArray *)keyPaths
+								  inEntityDescription:(BXEntityDescription *)originalEntity
+									  databaseContext:(BXDatabaseContext *)ctx
+												error:(NSError **)error {
 	// Fetch all objects from the entity at the relationship key path end.
 	// For each object just the corresponding display name key path for the display name.
 	
@@ -84,8 +64,7 @@
 	NSDictionary *optionDisplayNameKeyPathsByRelKeyPath = [NSDictionary dictionaryWithObjects: displayNameKeyPaths forKeys: keyPaths];
 	NSMutableDictionary *sortedKeyPaths = [NSMutableDictionary dictionary];
 	
-	for (NSString *keyPath in keyPaths)
-	{
+	for (NSString *keyPath in keyPaths) {
 		BXEntityDescription *currentEntity = originalEntity;
 		NSComparisonPredicateModifier modifier = NSDirectPredicateModifier;
 		NSArray *components = BXKeyPathComponents (keyPath);
@@ -122,7 +101,6 @@
 		
 		BXRelationshipKeyPathValue *val = [[BXRelationshipKeyPathValue alloc] initWithKeyPath: keyPath modifier: modifier];
 		[keyPaths addObject: val];
-		[val release];
 	}
 	
 	NSMutableArray *templates = [NSMutableArray array];
@@ -134,8 +112,9 @@
 						updateAutomatically: YES 
 									  error: error];
 		
-		if (! res)
-			goto bail;
+        if (! res) {
+            return retval;
+        }
 		
 		for (BXRelationshipKeyPathValue *val in [sortedKeyPaths objectForKey: entity])
 		{
@@ -153,13 +132,8 @@
 																		 modifier: modifier];
 			
 			[templates addObject: rowTemplate];
-			[rowTemplate release];			
 		}
 	}
-	
-	retval = [[templates copy] autorelease];
-	
-bail:
-	return retval;
+    return [templates copy];;
 }
 @end

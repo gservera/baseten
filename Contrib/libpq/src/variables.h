@@ -1,7 +1,7 @@
 /*
  * psql - the PostgreSQL interactive terminal
  *
- * Copyright (c) 2000-2013, PostgreSQL Global Development Group
+ * Copyright (c) 2000-2014, PostgreSQL Global Development Group
  *
  * src/bin/psql/variables.h
  */
@@ -24,10 +24,10 @@ typedef void (*VariableAssignHook) (const char *newval);
 
 struct _variable
 {
-	char	   *name;
-	char	   *value;
-	VariableAssignHook assign_hook;
-	struct _variable *next;
+    char	   *name;
+    char	   *value;
+    VariableAssignHook assign_hook;
+    struct _variable *next;
 };
 
 typedef struct _variable *VariableSpace;
@@ -35,16 +35,16 @@ typedef struct _variable *VariableSpace;
 VariableSpace CreateVariableSpace(void);
 const char *GetVariable(VariableSpace space, const char *name);
 
-bool		ParseVariableBool(const char *val);
+bool		ParseVariableBool(const char *value, const char *name);
 int ParseVariableNum(const char *val,
-				 int defaultval,
-				 int faultval,
-				 bool allowtrail);
+                     int defaultval,
+                     int faultval,
+                     bool allowtrail);
 int GetVariableNum(VariableSpace space,
-			   const char *name,
-			   int defaultval,
-			   int faultval,
-			   bool allowtrail);
+                   const char *name,
+                   int defaultval,
+                   int faultval,
+                   bool allowtrail);
 
 void		PrintVariables(VariableSpace space);
 

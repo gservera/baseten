@@ -58,7 +58,6 @@
 - (void) goBeforeFirstRowWithValue: (id) value forKey: (NSString *) columnName;
 - (int) count;
 - (unsigned long long) numberOfRowsAffectedByCommand;
-- (BOOL) advanceRow;
 - (NSInteger) identifier;
 - (void) setIdentifier: (NSInteger) anIdentifier;
 - (NSError *) error;

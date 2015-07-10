@@ -19,7 +19,7 @@
 
 #import <Foundation/Foundation.h>
 #import <Security/Security.h>
-#import <BaseTen/BXOpenSSLCompatibility.h>
+#import <openssl/ssl.h>
 #import <BaseTen/PGTSCertificateVerificationDelegateProtocol.h>
 
 

@@ -19,95 +19,51 @@
 
 #import "BXConnectionViewController.h"
 
-
 @implementation BXConnectionViewController
-+ (NSNib *) nibInstance
-{
-	[NSException raise: NSInternalInconsistencyException format: @"This is an abstract class."];
+
++ (NSNib *)nibInstance {
+	[NSException raise:NSInternalInconsistencyException format:@"This is an abstract class."];
 	return nil;
 }
 
-- (id) init
-{
-	if ((self = [super init]) && [[[self class] nibInstance] instantiateWithOwner: self topLevelObjects: NULL])
-	{
+- (instancetype)init {
+    self = [super init];
+	if (self && [[[self class] nibInstance] instantiateWithOwner:self topLevelObjects:NULL]) {
 		mViewSize = [mView frame].size;
 	}
 	return self;
 }
 
-- (void) dealloc
-{
-	[mView release];
-	[mOtherButton release];
-	[mCancelButton release];
-	[mConnectButton release];
-	[mProgressIndicator release];
-	[super dealloc];
-}
-
-- (NSView *) view
-{
+- (NSView *)view {
 	return mView;
 }
 
-- (NSSize) viewSize
-{
+- (NSSize)viewSize {
 	return mViewSize;
 }
 
-- (NSResponder *) initialFirstResponder
-{
+- (NSResponder *)initialFirstResponder {
 	return mInitialFirstResponder;
 }
 
-- (NSString *) host
-{
+- (NSString *)host {
 	return nil;
 }
 
-- (NSInteger) port
-{
+- (NSInteger)port {
 	return -1;
 }
 
-- (void) setCanCancel: (BOOL) aBool
-{
-	mCanCancel = aBool;
+- (IBAction)otherButtonClicked:(id)sender {
+	[_delegate connectionViewControllerOtherButtonClicked: self];
 }
 
-- (void) setConnecting: (BOOL) aBool
-{
-	mConnecting = aBool;
+- (IBAction)cancelButtonClicked:(id)sender {
+	[_delegate connectionViewControllerCancelButtonClicked:self];
 }
 
-- (BOOL) isConnecting
-{
-	return mConnecting;
+- (IBAction)connectButtonClicked:(id)sender {
+	[_delegate connectionViewControllerConnectButtonClicked:self];
 }
 
-- (BOOL) canCancel
-{
-	return mCanCancel;
-}
-
-- (void) setDelegate: (id <BXConnectionViewControllerDelegate>) object
-{
-	mDelegate = object;
-}
-
-- (IBAction) otherButtonClicked: (id) sender
-{
-	[mDelegate connectionViewControllerOtherButtonClicked: self];
-}
-
-- (IBAction) cancelButtonClicked: (id) sender
-{
-	[mDelegate connectionViewControllerCancelButtonClicked: self];
-}
-
-- (IBAction) connectButtonClicked: (id) sender
-{
-	[mDelegate connectionViewControllerConnectButtonClicked: self];
-}
 @end

@@ -45,13 +45,7 @@
 - (FILE *) PGTSConnectionTraceFile: (PGTSConnection *) connection;
 - (void) PGTSConnection: (PGTSConnection *) connection networkStatusChanged: (SCNetworkConnectionFlags) newFlags;
 
-//Optional section of the protocol either as an interface or @optional.
-#if __MAC_OS_X_VERSION_10_5 <= __MAC_OS_X_VERSION_MAX_ALLOWED
 @optional
-#else
-@end
-@interface NSObject (PGTSConnectionDelegate)
-#endif
 - (void) PGTSConnection: (PGTSConnection *) connection sentQueryString: (const char *) queryString;
 - (void) PGTSConnection: (PGTSConnection *) connection sentQuery: (PGTSQuery *) query;
 - (void) PGTSConnection: (PGTSConnection *) connection receivedResultSet: (PGTSResultSet *) res;
@@ -85,8 +79,7 @@ enum PGTSConnectionError
 	BOOL mDidDisconnectOnSleep;
 	volatile BOOL mLogsQueries;
 }
-- (id) init;
-- (void) dealloc;
+
 - (void) connectAsync: (NSDictionary *) connectionDictionary;
 - (BOOL) connectSync: (NSDictionary *) connectionDictionary;
 - (void) resetAsync;

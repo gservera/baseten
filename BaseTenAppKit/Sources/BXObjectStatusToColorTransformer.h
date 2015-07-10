@@ -17,11 +17,14 @@
 // limitations under the License.
 //
 
-#import <Cocoa/Cocoa.h>
+@import Cocoa;
 
-
+/**
+ * \brief Transforms an object status to a colour.
+ *
+ * Presently, grey corresponds to a locked object and red to a deleted object.
+ * \ingroup value_transformers
+ */
 @interface BXObjectStatusToColorTransformer : NSValueTransformer 
-{
-}
 
 @end

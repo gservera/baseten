@@ -17,64 +17,38 @@
 // limitations under the License.
 //
 
-#import <Cocoa/Cocoa.h>
-#import <BaseTenAppKit/BXPanel.h>
+@import Cocoa;
 
 @class BXDatabaseContext;
 
-
-@protocol BXAuthenticationPanelDelegate <NSObject>
+@protocol BXAuthenticationPanelDelegate <NSWindowDelegate>
 - (void) authenticationPanelCancel: (id) panel;
 - (void) authenticationPanelEndPanel: (id) panel;
 - (void) authenticationPanel: (id) panel gotUsername: (NSString *) username password: (NSString *) password;
 @end
 
-
-@interface BXAuthenticationPanel : BXPanel 
-{	
-	//Retained
-	NSString*							mUsername;
-	NSString*							mPassword;
-	NSString*							mMessage;
-	NSString*							mAddress;
-	
+@interface BXAuthenticationPanel : NSPanel {
     //Top-level objects
     IBOutlet NSView*                	mPasswordAuthenticationView;
-    
     IBOutlet NSTextFieldCell*       	mUsernameField;
     IBOutlet NSSecureTextFieldCell*		mPasswordField;
     IBOutlet NSButton*              	mRememberInKeychainButton;
 	IBOutlet NSTextField*				mMessageTextField;
     IBOutlet NSMatrix*              	mCredentialFieldMatrix;
 	IBOutlet NSProgressIndicator*		mProgressIndicator;
-
-	id <BXAuthenticationPanelDelegate>	mDelegate;
-
-    BOOL                            	mIsAuthenticating;
-	BOOL								mShouldStorePasswordInKeychain;
 	BOOL								mMessageFieldHasContent;
 }
 
-+ (id) authenticationPanel;
++ (instancetype)authenticationPanel;
+- (IBAction)authenticate:(id)sender;
+- (IBAction)cancelAuthentication:(id)sender;
 
-- (BOOL) shouldStorePasswordInKeychain;
-- (void) setShouldStorePasswordInKeychain: (BOOL) aBool;
-- (NSString *) username;
-- (void) setUsername: (NSString *) aString;
-- (NSString *) password;
-- (void) setPassword: (NSString *) aString;
-- (NSString *) message;
-- (void) setMessage: (NSString *) aString;
-- (NSString *) address;
-- (void) setAddress: (NSString *) aString;
-- (BOOL) isAuthenticating;
-- (void) setAuthenticating: (BOOL) aBool;
-- (id <BXAuthenticationPanelDelegate>) delegate;
-- (void) setDelegate: (id <BXAuthenticationPanelDelegate>) object;
+@property (nonatomic, strong) NSString * address;
+@property (nonatomic, strong) NSString * username;
+@property (nonatomic, strong) NSString * password;
+@property (nonatomic, strong) NSString * message;
+@property (nonatomic, assign) BOOL shouldStorePasswordInKeychain;
+@property (nonatomic, assign, getter=isAuthenticating) BOOL authenticating;
+@property (weak) id <BXAuthenticationPanelDelegate> delegate;
 @end
 
-
-@interface BXAuthenticationPanel (IBActions)
-- (IBAction) authenticate: (id) sender;
-- (IBAction) cancelAuthentication: (id) sender;
-@end

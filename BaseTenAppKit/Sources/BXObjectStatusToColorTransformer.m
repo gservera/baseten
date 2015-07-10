@@ -20,33 +20,22 @@
 #import "BXObjectStatusToColorTransformer.h"
 #import <BaseTen/BXDatabaseObject.h>
 
-
-/**
- * \brief Transforms an object status to a colour.
- *
- * Presently, grey corresponds to a locked object and red to a deleted object.
- * \ingroup value_transformers
- */
 @implementation BXObjectStatusToColorTransformer
 
-+ (Class) transformedValueClass
-{
++ (Class)transformedValueClass {
     return [NSColor class];
 }
 
-+ (BOOL) allowsReverseTransformation
-{
++ (BOOL)allowsReverseTransformation {
     return NO;
 }
 
-- (id) transformedValue: (NSValue *) objectStatus
-{
+- (id)transformedValue:(NSValue *)objectStatus {
     id retval = nil;
     enum BXObjectLockStatus status = kBXObjectNoLockStatus;
     [objectStatus getValue: &status];
     
-    switch (status)
-    {
+    switch (status) {
         case kBXObjectLockedStatus:
             retval = [NSColor grayColor];
             break;
@@ -57,7 +46,6 @@
         default:
             retval = [NSColor blackColor];
     }
-    
     return retval;
 }
 

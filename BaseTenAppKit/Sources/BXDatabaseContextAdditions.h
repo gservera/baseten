@@ -17,7 +17,7 @@
 // limitations under the License.
 //
 
-#import <BaseTen/BaseTen.h>
+#import <BaseTen/BXDatabaseContext.h>
 
 @class NSWindow;
 

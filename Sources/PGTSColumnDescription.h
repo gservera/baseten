@@ -40,7 +40,6 @@
 - (PGTSTypeDescription *) type;
 
 - (NSInteger) index;
-- (PGTSTypeDescription *) type;
 - (NSString *) defaultValue;
 - (BOOL) isNotNull;
 - (BOOL) isInherited;

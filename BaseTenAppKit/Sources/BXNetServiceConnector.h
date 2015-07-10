@@ -17,8 +17,7 @@
 // limitations under the License.
 //
 
-
-#import <Cocoa/Cocoa.h>
+@import Cocoa;
 #import <BaseTen/BaseTen.h>
 #import <BaseTen/BXHostResolver.h>
 #import <BaseTen/BXConnectionSetupManagerProtocol.h>
@@ -62,8 +61,7 @@ enum BXNSConnectorCurrentPanel
 
 @interface BXNetServiceConnector : NSObject <BXConnector, BXHostPanelDelegate, BXAuthenticationPanelDelegate, BXHostResolverDelegate>
 {
-	NSWindow* mModalWindow; //Weak
-	BXDatabaseContext* mContext; //Weak
+	__weak BXDatabaseContext* mContext;
 	BXNSConnectorImplementation <BXNSConnectorImplementation> *mConnectorImpl;
 	BXHostResolver *mHostResolver;
 	
@@ -71,10 +69,11 @@ enum BXNSConnectorCurrentPanel
 	BXAuthenticationPanel* mAuthenticationPanel;
 	enum BXNSConnectorCurrentPanel mCurrentPanel;
 	
-	NSString* mHostName;
 	NSInteger mPort;
 }
-- (NSWindow *) modalWindow;
+
 - (void) recoveredFromConnectionError: (BOOL) didRecover;
 - (void) endConnectionAttempt;
+
+@property (nonatomic, unsafe_unretained) NSWindow * modalWindow;
 @end

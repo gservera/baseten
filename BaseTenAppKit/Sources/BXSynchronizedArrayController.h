@@ -17,60 +17,65 @@
 // limitations under the License.
 //
 
-#import <Cocoa/Cocoa.h>
+@import Cocoa;
 #import <BaseTenAppKit/BXControllerProtocol.h>
 
 @class BXDatabaseContext;
 @class BXEntityDescription;
 
 
-@interface BXSynchronizedArrayController : NSArrayController
+@interface BXSynchronizedArrayController : NSArrayController <NSCoding>
 {
-	/** \brief The database context. */
-	IBOutlet BXDatabaseContext* databaseContext;
 	/** \brief An NSWindow to which sheets are attached. */
     IBOutlet NSWindow* modalWindow;
-        
-    BXEntityDescription* mEntityDescription; //Weak
-	id mBXContent;
-	NSString* mContentBindingKey;
     
-    //For the IB Palette
-    NSString* mSchemaName;
-    NSString* mTableName;
-    NSString* mDBObjectClassName;
-
-    BOOL mFetchesAutomatically;
+	id mBXContent;
+    
     BOOL mChanging;
 	BOOL mShouldAddToContent;
-	BOOL mLocksRowsOnBeginEditing;
 }
 
-- (NSString *) schemaName;
-- (void) setSchemaName: (NSString *) aSchemaName;
-- (NSString *) tableName;
-- (void) setTableName: (NSString *) aTableName;
-- (NSString *) databaseObjectClassName;
-- (void) setDatabaseObjectClassName: (NSString *) aDBObjectClassName;
-
-- (BXDatabaseContext *) databaseContext;
-- (void) setDatabaseContext: (BXDatabaseContext *) ctx;
-- (BXEntityDescription *) entityDescription;
-- (void) setEntityDescription: (BXEntityDescription *) desc;
-- (BOOL) fetchesAutomatically;
-- (void) setFetchesAutomatically: (BOOL) aBool;
-- (BOOL) locksRowsOnBeginEditing;
-- (void) setLocksRowsOnBeginEditing: (BOOL) aBool;
 - (NSArray *) selectedObjectIDs;
 
 - (void) setBXContent: (id) anObject;
 - (id) createObject: (NSError **) outError;
 - (NSDictionary *) valuesForBoundRelationship;
 
-- (BOOL) fetchesOnConnect DEPRECATED_ATTRIBUTE;
-- (void) setFetchesOnConnect: (BOOL) aBool DEPRECATED_ATTRIBUTE;
+/** The entity used by this `BXSynchronizedArrayController`. */
+@property (nonatomic, weak) BXEntityDescription *entityDescription;
+/** The database context. */
+@property (nonatomic, strong) IBOutlet BXDatabaseContext *databaseContext;
+/** The database object class name for this controller. */
+@property (nonatomic, copy) NSString *databaseObjectClassName;
+/** The database object table name for this controller. */
+@property (nonatomic, copy) NSString *tableName;
+/** The database object schema name for this controller. */
+@property (nonatomic, copy) NSString *schemaName;
+
+/**
+ * Whether the receiver begins a transaction for each editing session.
+ *
+ * Sets whether the receiver asks its database context to begin a transaction
+ * to lock the corresponding row when each editing session begins. Regardless of
+ * the context setting for sending lock notifications, other BaseTen clients will
+ * always be notified. When editing ends, the transaction will end as well. This
+ * is determined from calls to -objectDidBeginEditing: and -objectDidEndEditing:
+ * declared in NSEditor protocol. The default is YES.
+ * \see BXDatabaseContext::setSendsLockQueries:
+ */
+@property (nonatomic, assign) BOOL locksRowsOnBeginEditing;
+
+/**
+ * \brief Set whether this controller fetches automatically.
+ *
+ * This causes the content to be fetched automatically
+ * when the array controller receives a connection notification or
+ * the array controller's database context is set and is already
+ * connected.
+ * \note Controllers the content of which is bound to other
+ *       BXSynchronizedArrayControllers should not fetch on connect.
+ * \see #setDatabaseContext:
+ */
+@property (nonatomic, assign) BOOL fetchesAutomatically;
 @end
 
-
-@interface BXSynchronizedArrayController (NSCoding) <NSCoding>
-@end

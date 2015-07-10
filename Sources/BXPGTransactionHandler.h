@@ -57,7 +57,7 @@ BX_EXPORT NSString* kBXPGCallbackSelectorStringKey;
 	NSMutableDictionary* mDatabaseIdentifiers;
 	
 	NSUInteger mSavepointIndex;
-	NSError** mSyncErrorPtr;
+	NSError * __autoreleasing * mSyncErrorPtr;
 	BOOL mAsync;
 	BOOL mConnectionSucceeded;
 	

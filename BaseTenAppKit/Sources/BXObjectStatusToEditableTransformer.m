@@ -20,32 +20,21 @@
 #import "BXObjectStatusToEditableTransformer.h"
 #import <BaseTen/BXDatabaseObject.h>
 
-/**
- * \brief Transforms and object's status into a boolean indicating, whether it's editable or not.
- *
- * If object has been edited or deleted in another transaction, it won't be editable.
- * \ingroup value_transformers
- */
 @implementation BXObjectStatusToEditableTransformer
 
-+ (Class) transformedValueClass
-{
++ (Class)transformedValueClass {
     return [NSNumber class];
 }
 
-+ (BOOL) allowsReverseTransformation
-{
++ (BOOL)allowsReverseTransformation {
     return NO;
 }
 
-- (id) transformedValue: (NSValue *) objectStatus
-{
+- (id)transformedValue:(NSValue *)objectStatus {
     BOOL isEditable = NO;
     enum BXObjectLockStatus status = kBXObjectNoLockStatus;
-    [objectStatus getValue: &status];
-    
-    switch (status)
-    {
+    [objectStatus getValue:&status];
+    switch (status) {
         case kBXObjectNoLockStatus:
             isEditable = YES;
         case kBXObjectLockedStatus:
@@ -53,8 +42,7 @@
         default:
             break;
     }
-    
-    return [NSNumber numberWithBool: isEditable];
+    return [NSNumber numberWithBool:isEditable];
 }
 
 @end

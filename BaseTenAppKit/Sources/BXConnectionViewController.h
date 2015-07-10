@@ -18,18 +18,15 @@
 //
 
 @class BXConnectionViewController;
-
+@import Cocoa;
 
 @protocol BXConnectionViewControllerDelegate <NSObject>
-- (void) connectionViewControllerOtherButtonClicked: (BXConnectionViewController *) controller;
-- (void) connectionViewControllerCancelButtonClicked: (BXConnectionViewController *) controller;
-- (void) connectionViewControllerConnectButtonClicked: (BXConnectionViewController *) controller;
+- (void)connectionViewControllerOtherButtonClicked:(BXConnectionViewController *)controller;
+- (void)connectionViewControllerCancelButtonClicked:(BXConnectionViewController *)controller;
+- (void)connectionViewControllerConnectButtonClicked:(BXConnectionViewController *)controller;
 @end
 
-
-@interface BXConnectionViewController : NSObject
-{
-	id <BXConnectionViewControllerDelegate> mDelegate; //Weak
+@interface BXConnectionViewController : NSObject {
 	IBOutlet NSView* mView;
 	IBOutlet NSButton* mOtherButton;
 	IBOutlet NSButtonCell* mCancelButton;
@@ -37,23 +34,18 @@
 	IBOutlet NSProgressIndicator* mProgressIndicator;
 	IBOutlet NSResponder* mInitialFirstResponder;
 	NSSize mViewSize;
-	BOOL mConnecting;
-	BOOL mCanCancel;
 }
-- (NSView *) view;
-- (NSSize) viewSize;
-- (NSResponder *) initialFirstResponder;
 
-- (NSString *) host;
-- (NSInteger) port;
+- (NSView *)view;
+- (NSSize)viewSize;
+- (NSResponder *)initialFirstResponder;
+- (NSString *)host;
+- (NSInteger)port;
+- (IBAction)otherButtonClicked:(id)sender;
+- (IBAction)cancelButtonClicked:(id)sender;
+- (IBAction)connectButtonClicked:(id)sender;
 
-- (void) setDelegate: (id <BXConnectionViewControllerDelegate>) object;
-- (void) setCanCancel: (BOOL) aBool;
-- (BOOL) canCancel;
-- (void) setConnecting: (BOOL) aBool;
-- (BOOL) isConnecting;
-
-- (IBAction) otherButtonClicked: (id) sender;
-- (IBAction) cancelButtonClicked: (id) sender;
-- (IBAction) connectButtonClicked: (id) sender;
+@property (nonatomic, assign, getter=isConnecting) BOOL connecting;
+@property (nonatomic, assign) BOOL canCancel;
+@property (nonatomic, weak) id <BXConnectionViewControllerDelegate> delegate;
 @end

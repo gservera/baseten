@@ -17,20 +17,18 @@
 // limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 @class BXEntityDescription;
 @class BXDatabaseContext;
 
-
 @interface BXMultipleChoicePredicateEditorRowTemplateFactory : NSObject
-{
-}
-- (NSArray *) multipleChoiceTemplatesWithDisplayNames: (NSArray *) displayNames
-						 andOptionDisplayNameKeyPaths: (NSArray *) displayNameKeyPaths
-							  forRelationshipKeyPaths: (NSArray *) keyPaths
-								  inEntityDescription: (BXEntityDescription *) originalEntity
-									  databaseContext: (BXDatabaseContext *) ctx
-												error: (NSError **) error;
 
-- (Class) rowTemplateClass;
+- (NSArray*)multipleChoiceTemplatesWithDisplayNames:(NSArray*) displayNames
+                       andOptionDisplayNameKeyPaths: (NSArray *) displayNameKeyPaths
+                            forRelationshipKeyPaths: (NSArray *) keyPaths
+                                inEntityDescription: (BXEntityDescription *) originalEntity
+                                    databaseContext:(BXDatabaseContext *) ctx
+                                              error:(NSError **)err;
+
+- (Class)rowTemplateClass;
 @end

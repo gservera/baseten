@@ -20,7 +20,7 @@
 #import "BXDatabaseContextAdditions.h"
 #import "BXNetServiceConnector.h"
 #import <Cocoa/Cocoa.h>
-#import <BaseTen/BXDatabaseContextPrivate.h>
+#import "BXDatabaseContextPrivateARC.h"
 #import <BaseTen/BXDelegateProxy.h>
 #import <BaseTen/BXInterface.h>
 #import <SecurityInterface/SFCertificateTrustPanel.h>
@@ -63,7 +63,7 @@
 	else
 	{
 		NSInteger status = [panel runModalForTrust: trust message: nil];
-		[self certificateTrustSheetDidEnd: nil returnCode: status contextInfo: trust];
+		[self certificateTrustSheetDidEnd: nil returnCode:(int)status contextInfo: trust];
 	}
 }
 

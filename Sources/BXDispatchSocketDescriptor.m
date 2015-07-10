@@ -17,7 +17,6 @@
 // limitations under the License.
 //
 
-#if defined(MAC_OS_X_VERSION_10_6) && MAC_OS_X_VERSION_10_6 <= MAC_OS_X_VERSION_MAX_ALLOWED
 
 #import "BXDispatchSocketDescriptor.h"
 #import "BXSocketDescriptorPrivate.h"
@@ -132,4 +131,3 @@
 }
 @end
 
-#endif

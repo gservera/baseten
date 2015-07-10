@@ -79,6 +79,12 @@ DictionaryKeys (NSMapTable *dict)
 	[super finalize];
 }
 
+- (void)dealloc {
+    if (mRunLoop)
+        CFRunLoopStop (mRunLoop);
+    [super dealloc];
+}
+
 
 - (CFRunLoopRef) runLoop
 {

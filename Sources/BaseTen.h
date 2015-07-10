@@ -35,6 +35,9 @@
 // Modules
 #import <BaseTen/BXExport.h>
 #import <BaseTen/BXVerbatimExpressionValue.h>
+#import <BaseTen/BXConnectionSetupManagerProtocol.h>
+#import <BaseTen/BXInterface.h>
+#import <BaseTen/BXForeignKey.h>
 
 /*
  * Helpful breakpoints:

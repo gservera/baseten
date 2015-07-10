@@ -19,7 +19,7 @@
 
 #import <OCMock/OCMock.h>
 
-@interface BXPredicateTests : XCTestCase {
+@interface BXPredicateTests : XCTestCase <BXDatabaseContextDelegate> {
     BXPGQueryBuilder* mQueryBuilder;
     PGTSConnection* mConnection;
 }

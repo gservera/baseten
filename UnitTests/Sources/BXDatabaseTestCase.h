@@ -17,3 +17,7 @@
 @property (readonly) NSURL * databaseURI;
 @property (readonly) NSDictionary * connectionDictionary;
 @end
+
+@interface BXDatabaseObject (UnitTestAdditions)
+- (id) resolveNoncachedRelationshipNamed: (NSString *) aName;
+@end

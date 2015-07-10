@@ -47,7 +47,7 @@
     [resolver setDelegate: (id <BXHostResolverDelegate>) mock];
     [resolver resolveHost: nodename];
     
-    SInt32 status = CFRunLoopRunInMode (kCFRunLoopDefaultMode, 5.0, FALSE);
+    SInt32 status = CFRunLoopRunInMode (kCFRunLoopDefaultMode, 3.0, FALSE);
     status = 0;
     [mock verify];
 }

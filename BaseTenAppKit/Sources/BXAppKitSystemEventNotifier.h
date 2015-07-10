@@ -21,6 +21,5 @@
 
 
 @interface BXAppKitSystemEventNotifier : BXSystemEventNotifier
-{
-}
+
 @end

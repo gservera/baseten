@@ -22,40 +22,25 @@
 
 
 @implementation BXConnectByHostnameViewController
+
 __strong static NSNib* gNib = nil;
 
-+ (void) initialize
-{
-	static BOOL tooLate = NO;
-	if (! tooLate)
-	{
-		tooLate = YES;
-		gNib = [[NSNib alloc] initWithNibNamed: @"ConnectByHostnameView" bundle: [NSBundle bundleForClass: self]];
-	}
++ (void)initialize {
+    if (self == [BXConnectByHostnameViewController class]) {
+        gNib = [[NSNib alloc] initWithNibNamed:@"ConnectByHostnameView"
+                                        bundle:[NSBundle bundleForClass:self]];
+    }
 }
 
-+ (NSNib *) nibInstance
-{
++ (NSNib *)nibInstance {
 	return gNib;
 }
 
-- (void) dealloc
-{
-	[mAddress release];
-	[super dealloc];
+- (void)setHost:(NSString *)host {
+    if (mAddress != host) {
+        mAddress = host;
+    }
 }
 
-- (NSString *) host
-{
-	return mAddress;
-}
-
-- (void) setHost: (NSString *) string
-{
-	if (mAddress != string)
-	{
-		[mAddress release];
-		mAddress = [string retain];
-	}
-}
+@synthesize host = mAddress;
 @end

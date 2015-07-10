@@ -390,18 +390,6 @@ bail:
     return nil;
 }
 
-#if 0
-- (BXDatabaseObjectID *) partialKeyForView: (BXEntityDescription *) view
-{
-    BXAssertValueReturn ([view isView], nil, @"Expected given entity (%@) to be a view.", view);
-    
-    NSArray* keys = [view primaryKeyFields];
-    NSArray* myKeys = [[self entity] correspondingProperties: keys];
-    NSArray* values = [self objectsForKeys: myKeys];
-    return [[self class] IDWithEntity: view primaryKeyFields: [NSDictionary dictionaryWithObjects: values forKeys: keys]];
-}
-#endif
-
 - (void) setStatus: (BXObjectDeletionStatus) status forObjectRegisteredInContext: (BXDatabaseContext *) context
 {
 	[[context registeredObjectWithID: self] setDeleted: status];

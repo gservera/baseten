@@ -19,15 +19,7 @@
 
 #import <Foundation/Foundation.h>
 
-
-@interface PGTSNotification : NSObject 
-{
-	NSString* mNotificationName;
-	int mBackendPID;
-}
-
-- (void) setNotificationName: (NSString *) aName;
-- (void) setBackendPID: (int) aPid;
-- (NSString *) notificationName;
-- (int) backendPID;
+@interface PGTSNotification : NSObject
+@property (nonatomic, copy) NSString *notificationName;
+@property (nonatomic,assign) int backendPID;
 @end

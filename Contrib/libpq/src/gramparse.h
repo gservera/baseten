@@ -8,7 +8,7 @@
  * outside the core parser should be in parser.h.
  *
  *
- * Portions Copyright (c) 1996-2013, PostgreSQL Global Development Group
+ * Portions Copyright (c) 1996-2014, PostgreSQL Global Development Group
  * Portions Copyright (c) 1994, Regents of the University of California
  *
  * src/include/parser/gramparse.h
@@ -29,28 +29,28 @@
 #include "gram.h"
 
 /*
- * The YY_EXTRA data that a flex scanner allows us to pass around.	Private
+ * The YY_EXTRA data that a flex scanner allows us to pass around.  Private
  * state needed for raw parsing/lexing goes here.
  */
 typedef struct base_yy_extra_type
 {
-	/*
-	 * Fields used by the core scanner.
-	 */
-	core_yy_extra_type core_yy_extra;
+    /*
+     * Fields used by the core scanner.
+     */
+    core_yy_extra_type core_yy_extra;
     
-	/*
-	 * State variables for base_yylex().
-	 */
-	bool		have_lookahead; /* is lookahead info valid? */
-	int			lookahead_token;	/* one-token lookahead */
-	core_YYSTYPE lookahead_yylval;		/* yylval for lookahead token */
-	YYLTYPE		lookahead_yylloc;		/* yylloc for lookahead token */
+    /*
+     * State variables for base_yylex().
+     */
+    bool		have_lookahead; /* is lookahead info valid? */
+    int			lookahead_token;	/* one-token lookahead */
+    core_YYSTYPE lookahead_yylval;		/* yylval for lookahead token */
+    YYLTYPE		lookahead_yylloc;		/* yylloc for lookahead token */
     
-	/*
-	 * State variables that belong to the grammar.
-	 */
-	List	   *parsetree;		/* final parse result is delivered here */
+    /*
+     * State variables that belong to the grammar.
+     */
+    List	   *parsetree;		/* final parse result is delivered here */
 } base_yy_extra_type;
 
 /*

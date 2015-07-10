@@ -21,33 +21,10 @@
 
 
 @implementation PGTSNotification
-- (void) dealloc
-{
-	[mNotificationName release];
+
+- (void)dealloc {
+	[_notificationName release];
 	[super dealloc];
 }
 
-- (void) setNotificationName: (NSString *) aName
-{
-	if (aName != mNotificationName)
-	{
-		[mNotificationName release];
-		mNotificationName = [aName copy];
-	}
-}
-
-- (void) setBackendPID: (int) aPid;
-{
-	mBackendPID = aPid;
-}
-
-- (NSString *) notificationName;
-{
-	return mNotificationName;
-}
-
-- (int) backendPID
-{
-	return mBackendPID;
-}
 @end

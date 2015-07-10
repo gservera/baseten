@@ -27,107 +27,75 @@
 __strong static NSString* kNSKVOContext = @"kBXHostPanelNSKVOContext";
 __strong static NSNib* gNib = nil;
 
-+ (void) initialize
-{
-	static BOOL tooLate = NO;
-	if (! tooLate)
-	{
-		tooLate = YES;
-		gNib = [[NSNib alloc] initWithNibNamed: @"MessageView" bundle: [NSBundle bundleForClass: self]];
-	}
++ (void)initialize {
+    if (self == [BXHostPanel class]) {
+        gNib = [[NSNib alloc] initWithNibNamed:@"MessageView"
+                                        bundle:[NSBundle bundleForClass:self]];
+    }
 }
 
-+ (id) hostPanel
-{
-	BXHostPanel* retval = [[[self alloc] initWithContentRect: NSZeroRect styleMask: NSTitledWindowMask | NSResizableWindowMask
-													 backing: NSBackingStoreBuffered defer: YES] autorelease];	
-	return retval;
++ (instancetype)hostPanel {
+    BXHostPanel *p = [[self alloc] initWithContentRect:NSZeroRect
+                                             styleMask:NSTitledWindowMask|NSResizableWindowMask
+                                               backing:NSBackingStoreBuffered
+                                                 defer:YES];
+    return p;
 }
 
-- (id) initWithContentRect: (NSRect) contentRect styleMask: (NSUInteger) styleMask
-				   backing: (NSBackingStoreType) bufferingType defer: (BOOL) deferCreation
-{
-	if ((self = [super initWithContentRect: contentRect styleMask: styleMask backing: bufferingType defer: deferCreation]))
-	{
-		[gNib instantiateWithOwner: self topLevelObjects: NULL];
-		mMessageViewSize = [mMessageView frame].size;
-		
-		mByHostnameViewController = [[BXConnectByHostnameViewController alloc] init];
-		mUsingBonjourViewController = [[BXConnectUsingBonjourViewController alloc] init];
-		
-		[mByHostnameViewController setDelegate: self];
-		[mUsingBonjourViewController setDelegate: self];
-		[mByHostnameViewController setCanCancel: YES];
-		[mUsingBonjourViewController setCanCancel: YES];
-
-		mCurrentController = mUsingBonjourViewController;
-		NSView* content = [mUsingBonjourViewController view];	
-		NSSize containerSize = [mUsingBonjourViewController viewSize];
-		containerSize.height += 10.0;
-		[self setContentSize: containerSize];
-		
-		NSRect containerFrame = NSZeroRect;
-		containerFrame.size = containerSize;
-		NSView* container = [[[NSView alloc] initWithFrame: containerFrame] autorelease];
-		
-		[container addSubview: content];
-		[self setContentView: container];
-		[self makeFirstResponder: [mUsingBonjourViewController initialFirstResponder]];
-		
-		NSRect frame = NSZeroRect;
-		frame.size = containerSize;
-		[self setMinSize: [self frameRectForContentRect: frame].size];
-		
-		[self addObserver: self forKeyPath: @"message" options: 0 context: kNSKVOContext];
-	}
-	return self;
+- (instancetype)initWithContentRect:(NSRect)contentRect
+                          styleMask:(NSUInteger)aStyle
+                            backing:(NSBackingStoreType)b
+                              defer:(BOOL)flag {
+    self = [super initWithContentRect:contentRect styleMask:aStyle backing:b defer:flag];
+    if (self) {
+        [gNib instantiateWithOwner:self topLevelObjects: NULL];
+        mMessageViewSize = [mMessageView frame].size;
+        
+        mByHostnameViewController = [[BXConnectByHostnameViewController alloc] init];
+        mUsingBonjourViewController = [[BXConnectUsingBonjourViewController alloc] init];
+        
+        [mByHostnameViewController setDelegate: self];
+        [mUsingBonjourViewController setDelegate: self];
+        [mByHostnameViewController setCanCancel: YES];
+        [mUsingBonjourViewController setCanCancel: YES];
+        
+        mCurrentController = mUsingBonjourViewController;
+        NSView* content = [mUsingBonjourViewController view];
+        NSSize containerSize = [mUsingBonjourViewController viewSize];
+        containerSize.height += 10.0;
+        [self setContentSize: containerSize];
+        
+        NSRect containerFrame = NSZeroRect;
+        containerFrame.size = containerSize;
+        NSView* container = [[NSView alloc] initWithFrame: containerFrame];
+        
+        [container addSubview: content];
+        [self setContentView: container];
+        [self makeFirstResponder: [mUsingBonjourViewController initialFirstResponder]];
+        
+        NSRect frame = NSZeroRect;
+        frame.size = containerSize;
+        [self setMinSize: [self frameRectForContentRect: frame].size];
+        self.hidesOnDeactivate = NO;
+    }
+    return self;
 }
 
-- (void) dealloc
-{
-	[mByHostnameViewController release];
-	[mUsingBonjourViewController release];
-	[mMessageView release];
-	[mMessage release];
-	[super dealloc];
-}
-
-- (void) becomeKeyWindow
-{
+- (void)becomeKeyWindow {
 	[super becomeKeyWindow];
 	[mUsingBonjourViewController startDiscovery];
 }
 
-- (void) becomeMainWindow
-{
+- (void)becomeMainWindow {
 	[super becomeMainWindow];
 	[mUsingBonjourViewController startDiscovery];
 }
 
-- (void) endConnecting
-{
+- (void)endConnecting {
 	[mCurrentController setConnecting: NO];
-	if ([self isVisible])
+    if ([self isVisible]) {
 		[self makeFirstResponder: [mCurrentController initialFirstResponder]];
-}
-
-- (NSString *) message
-{
-	return mMessage;
-}
-
-- (void) setMessage: (NSString *) string
-{
-	if (mMessage != string)
-	{
-		[mMessage release];
-		mMessage = [string retain];
-	}
-}
-
-- (void) setDelegate: (id <BXHostPanelDelegate>) object
-{
-	mDelegate = object;
+    }
 }
 
 - (void) connectionViewControllerOtherButtonClicked: (BXConnectionViewController *) controller
@@ -162,87 +130,76 @@ __strong static NSNib* gNib = nil;
 	[self makeFirstResponder: [mCurrentController initialFirstResponder]];
 }
 
-- (void) connectionViewControllerCancelButtonClicked: (BXConnectionViewController *) controller
-{
-	if ([controller isConnecting])
-	{
+- (void)connectionViewControllerCancelButtonClicked:(BXConnectionViewController *)controller {
+	if ([controller isConnecting]) {
 		[controller setConnecting: NO];		
-		[mDelegate hostPanelCancel: self];
-	}
-	else
-	{
-		[mDelegate hostPanelEndPanel: self];
-		[self setMessage: nil];
+		[_delegate hostPanelCancel: self];
+	} else {
+		[_delegate hostPanelEndPanel: self];
+        self.message = nil;
 		[mUsingBonjourViewController stopDiscovery];
 	}
 }
 
-- (void) connectionViewControllerConnectButtonClicked: (BXConnectionViewController *) controller
-{
+- (void)connectionViewControllerConnectButtonClicked:(BXConnectionViewController*)controller {
 	[controller setConnecting: YES];
-	[mDelegate hostPanel: self connectToHost: [controller host] port: [controller port]];
+	[_delegate hostPanel:self connectToHost:controller.host port:controller.port];
 }
 
-- (NSSize) windowWillResize: (NSWindow *) window toSize: (NSSize) proposedFrameSize
-{
-	if (mCurrentController == mByHostnameViewController)
-	{
+- (NSSize)windowWillResize:(NSWindow *)window toSize:(NSSize)proposedFrameSize {
+	if (mCurrentController == mByHostnameViewController) {
 		NSSize oldSize = [window frame].size;
 		proposedFrameSize.height = oldSize.height;
 	}
 	return proposedFrameSize;
 }
 
-- (void) observeValueForKeyPath: (NSString *) keyPath ofObject: (id) object change: (NSDictionary *) change context: (void *) context
-{
-    if (kNSKVOContext == context) 
-	{
-		NSView* content = [mCurrentController view];
-		BOOL hasMessageView = [[[self contentView] subviews] containsObject: mMessageView];
-		BOOL isVisible = [self isVisible];
-		if (mMessage && !hasMessageView)
-		{
-			NSUInteger mask = [content autoresizingMask];
-			[content setAutoresizingMask: NSViewNotSizable];
-			
-			NSRect frame = [self frame];
-			frame.size.height += mMessageViewSize.height;
-			frame.origin.y -= mMessageViewSize.height;
-			
-			[self setFrame: frame display: isVisible animate: isVisible];
-			
-			NSRect contentFrame = [content frame];
-			NSPoint origin = contentFrame.origin;
-			origin.y += contentFrame.size.height;
-			[mMessageView setFrameOrigin: origin];
-			[[self contentView] addSubview: mMessageView];
-			
-			[content setAutoresizingMask: mask];
-			
-			NSSize minSize = [mCurrentController viewSize];
-			minSize.height += mMessageViewSize.height;
-			[self setMinSize: minSize];
-		}
-		else if (!mMessage && hasMessageView)
-		{
-			[mMessageView removeFromSuperview];
-
-			NSUInteger mask = [content autoresizingMask];
-			[content setAutoresizingMask: NSViewNotSizable];
-			
-			NSRect frame = [self frame];
-			frame.size.height -= mMessageViewSize.height;
-			frame.origin.y += mMessageViewSize.height;
-			
-			[self setFrame: frame display: isVisible animate: isVisible];
-			[content setAutoresizingMask: mask];
-			
-			[self setMinSize: [mCurrentController viewSize]];
-		}
-	}
-	else 
-	{
-		[super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
-	}
+- (void)setMessage:(NSString *)string {
+    _message = string;
+    
+    NSView* content = [mCurrentController view];
+    BOOL hasMessageView = [[[self contentView] subviews] containsObject: mMessageView];
+    BOOL isVisible = [self isVisible];
+    if (_message && !hasMessageView)
+    {
+        NSUInteger mask = [content autoresizingMask];
+        [content setAutoresizingMask: NSViewNotSizable];
+        
+        NSRect frame = [self frame];
+        frame.size.height += mMessageViewSize.height;
+        frame.origin.y -= mMessageViewSize.height;
+        
+        [self setFrame: frame display: isVisible animate: isVisible];
+        
+        NSRect contentFrame = [content frame];
+        NSPoint origin = contentFrame.origin;
+        origin.y += contentFrame.size.height;
+        [mMessageView setFrameOrigin: origin];
+        [[self contentView] addSubview: mMessageView];
+        
+        [content setAutoresizingMask: mask];
+        
+        NSSize minSize = [mCurrentController viewSize];
+        minSize.height += mMessageViewSize.height;
+        [self setMinSize: minSize];
+    }
+    else if (!_message && hasMessageView)
+    {
+        [mMessageView removeFromSuperview];
+        
+        NSUInteger mask = [content autoresizingMask];
+        [content setAutoresizingMask: NSViewNotSizable];
+        
+        NSRect frame = [self frame];
+        frame.size.height -= mMessageViewSize.height;
+        frame.origin.y += mMessageViewSize.height;
+        
+        [self setFrame: frame display: isVisible animate: isVisible];
+        [content setAutoresizingMask: mask];
+        
+        [self setMinSize: [mCurrentController viewSize]];
+    }
 }
+
+@dynamic delegate;
 @end

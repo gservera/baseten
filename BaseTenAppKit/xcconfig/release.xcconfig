@@ -1,5 +1,0 @@
-#include "../../common-xcconfig/release.xcconfig"
-#include "../../common-xcconfig/MacOSX10.8-gcc.xcconfig"
-#include "common.xcconfig"
-
-INSTALL_PATH = @executable_path/../Frameworks

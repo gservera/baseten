@@ -18,7 +18,7 @@
 //
 
 #import <BaseTen/BaseTen.h>
-#import <BaseTen/BXDatabaseContextPrivate.h>
+#import "BXDatabaseContextPrivateARC.h"
 #import "BXControllerProtocol.h"
 #import "NSController+BXAppKitAdditions.h"
 

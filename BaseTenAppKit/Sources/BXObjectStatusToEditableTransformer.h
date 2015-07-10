@@ -17,11 +17,14 @@
 // limitations under the License.
 //
 
-#import <Cocoa/Cocoa.h>
+@import Cocoa;
 
-
-@interface BXObjectStatusToEditableTransformer : NSValueTransformer {
-
-}
+/**
+ * \brief Transforms and object's status into a boolean indicating, whether it's editable or not.
+ *
+ * If object has been edited or deleted in another transaction, it won't be editable.
+ * \ingroup value_transformers
+ */
+@interface BXObjectStatusToEditableTransformer : NSValueTransformer
 
 @end

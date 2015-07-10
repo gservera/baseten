@@ -21,24 +21,21 @@
 
 
 @implementation BXAttributeValuePredicateEditorRowTemplate
-- (NSArray *) rightExpressions
-{
+
+- (NSArray *)rightExpressions {
 	id retval = nil;
-	if ([self rightExpressionAttributeType] == NSBooleanAttributeType)
-		retval = [NSArray arrayWithObject: [NSExpression expressionForConstantValue: [NSNumber numberWithBool: NO]]];
-	else
-		retval = [super rightExpressions];
+    if ([self rightExpressionAttributeType] == NSBooleanAttributeType) {
+		retval = @[[NSExpression expressionForConstantValue:@NO]];
+    } else {
+        retval = [super rightExpressions];
+    }
 	return retval;
 }
 
-
-- (NSArray *) templateViews
-{
+- (NSArray *)templateViews {
 	id retval = [super templateViews];
-	if ([self rightExpressionAttributeType] == NSBooleanAttributeType)
-	{
-		retval = [[retval mutableCopy] autorelease];
-		
+	if ([self rightExpressionAttributeType] == NSBooleanAttributeType) {
+		retval = [retval mutableCopy];
 		[retval removeObjectAtIndex: 2];
 		NSPopUpButton* button = [retval objectAtIndex: 1];
 		[[button itemAtIndex: 0] setTitle: @"is false"]; // FIXME: localization.
@@ -46,4 +43,5 @@
 	}
 	return retval;
 }
+
 @end

@@ -234,8 +234,7 @@ HostCallback (CFHostRef theHost, CFHostInfoType typeInfo, const CFStreamError *e
 		{
 			// The given address was numeric but isn't reachable. Since SCNetworkReachability
 			// doesn't provide us with good error messages, we settle with a generic one.
-			if (NULL != &kCFStreamErrorDomainSystemConfiguration)
-				mHostError.domain = kCFStreamErrorDomainSystemConfiguration;
+			mHostError.domain = kCFStreamErrorDomainSystemConfiguration;
 			[mDelegate hostResolverDidFail: self error: [self _errorForStreamError: &mHostError]];
 		}
 	}
@@ -290,7 +289,7 @@ HostCallback (CFHostRef theHost, CFHostInfoType typeInfo, const CFStreamError *e
 
 		const char* reason = NULL;
 		NSString* messageFormat = nil; //FIXME: localization.
-		if (NULL != &kCFStreamErrorDomainNetDB && streamError->domain == kCFStreamErrorDomainNetDB)
+		if (streamError->domain == kCFStreamErrorDomainNetDB)
 		{
 			reason = (gai_strerror (streamError->error)); //FIXME: check that this returns locale-specific strings.
 			if (reason)
@@ -298,7 +297,7 @@ HostCallback (CFHostRef theHost, CFHostInfoType typeInfo, const CFStreamError *e
 			else
 				messageFormat = @"The server %@ wasn't found.";
 		}
-		else if (NULL != &kCFStreamErrorDomainSystemConfiguration && streamError->domain == kCFStreamErrorDomainSystemConfiguration)
+		else if (streamError->domain == kCFStreamErrorDomainSystemConfiguration)
 		{
 			messageFormat = @"The server %@ wasn't found. Network might be unreachable.";
 		}

@@ -31,7 +31,7 @@ namespace BaseTen {
 		template <typename T>
     
         struct NumberType {
-			static CFNumberType const numberType = 0;
+			static CFNumberType const numberType = (CFNumberType)0;
 		};
 		
 		template <bool> class Signedness {};
@@ -120,7 +120,7 @@ namespace BaseTen {
 			
 			if ([value BXGetValue: &f length: sizeof (fpType) numberType: NumberType <fpType>::numberType encoding: @encode (fpType)])
 			{
-				if (abs (f) <= std::numeric_limits <T>::max ())
+                if (fabs(f) <= std::numeric_limits <T>::max ())
 				{
 					retval = YES;
 					*outValue = f;

@@ -4,7 +4,7 @@
  *	  POSTGRES error reporting/logging definitions.
  *
  *
- * Portions Copyright (c) 1996-2013, PostgreSQL Global Development Group
+ * Portions Copyright (c) 1996-2014, PostgreSQL Global Development Group
  * Portions Copyright (c) 1994, Regents of the University of California
  *
  * src/include/utils/elog.h
@@ -18,28 +18,28 @@
 
 /* Error level codes */
 #define DEBUG5		10			/* Debugging messages, in categories of
-* decreasing detail. */
+								 * decreasing detail. */
 #define DEBUG4		11
 #define DEBUG3		12
 #define DEBUG2		13
 #define DEBUG1		14			/* used by GUC debug_* variables */
 #define LOG			15			/* Server operational messages; sent only to
-* server log by default. */
+								 * server log by default. */
 #define COMMERROR	16			/* Client communication problems; same as LOG
-* for server reporting, but never sent to
-* client. */
+								 * for server reporting, but never sent to
+								 * client. */
 #define INFO		17			/* Messages specifically requested by user (eg
-* VACUUM VERBOSE output); always sent to
-* client regardless of client_min_messages,
-* but by default not sent to server log. */
+								 * VACUUM VERBOSE output); always sent to
+								 * client regardless of client_min_messages,
+								 * but by default not sent to server log. */
 #define NOTICE		18			/* Helpful messages to users about query
-* operation; sent to client and server log by
-* default. */
+								 * operation; sent to client and server log by
+								 * default. */
 #define WARNING		19			/* Warnings.  NOTICE is for expected messages
-* like implicit sequence creation by SERIAL.
-* WARNING is for unexpected messages. */
+								 * like implicit sequence creation by SERIAL.
+								 * WARNING is for unexpected messages. */
 #define ERROR		20			/* user error - abort transaction; return to
-* known state */
+								 * known state */
 /* Save ERROR value in PGERROR so it can be restored when Win32 includes
  * modify it.  We have to use a constant rather than ERROR because macros
  * are expanded only when referenced outside macros.
@@ -50,7 +50,7 @@
 #define FATAL		21			/* fatal error - abort process */
 #define PANIC		22			/* take down the other backends with me */
 
-/* #define DEBUG DEBUG1 */	/* Backward compatibility with pre-7.3 */
+ /* #define DEBUG DEBUG1 */	/* Backward compatibility with pre-7.3 */
 
 
 /* macros for representing SQLSTATE strings compactly */
@@ -58,8 +58,8 @@
 #define PGUNSIXBIT(val) (((val) & 0x3F) + '0')
 
 #define MAKE_SQLSTATE(ch1,ch2,ch3,ch4,ch5)	\
-(PGSIXBIT(ch1) + (PGSIXBIT(ch2) << 6) + (PGSIXBIT(ch3) << 12) + \
-(PGSIXBIT(ch4) << 18) + (PGSIXBIT(ch5) << 24))
+	(PGSIXBIT(ch1) + (PGSIXBIT(ch2) << 6) + (PGSIXBIT(ch3) << 12) + \
+	 (PGSIXBIT(ch4) << 18) + (PGSIXBIT(ch5) << 24))
 
 /* These macros depend on the fact that '0' becomes a zero in SIXBIT */
 #define ERRCODE_TO_CATEGORY(ec)  ((ec) & ((1 << 12) - 1))
@@ -89,13 +89,13 @@
  *				 ... other errxxx() fields as needed ...));
  *
  * The error level is required, and so is a primary error message (errmsg
- * or errmsg_internal).  All else is optional.	errcode() defaults to
+ * or errmsg_internal).  All else is optional.  errcode() defaults to
  * ERRCODE_INTERNAL_ERROR if elevel is ERROR or more, ERRCODE_WARNING
  * if elevel is WARNING, or ERRCODE_SUCCESSFUL_COMPLETION if elevel is
  * NOTICE or below.
  *
  * ereport_domain() allows a message domain to be specified, for modules that
- * wish to use a different message catalog from the backend's.	To avoid having
+ * wish to use a different message catalog from the backend's.  To avoid having
  * one copy of the default text domain per .o file, we define it as NULL here
  * and have errstart insert the default text domain.  Modules can either use
  * ereport_domain() directly, or preferably they can override the TEXTDOMAIN
@@ -112,30 +112,30 @@
  */
 #ifdef HAVE__BUILTIN_CONSTANT_P
 #define ereport_domain(elevel, domain, rest)	\
-do { \
-if (errstart(elevel, __FILE__, __LINE__, PG_FUNCNAME_MACRO, domain)) \
-errfinish rest; \
-if (__builtin_constant_p(elevel) && (elevel) >= ERROR) \
-pg_unreachable(); \
-} while(0)
+	do { \
+		if (errstart(elevel, __FILE__, __LINE__, PG_FUNCNAME_MACRO, domain)) \
+			errfinish rest; \
+		if (__builtin_constant_p(elevel) && (elevel) >= ERROR) \
+			pg_unreachable(); \
+	} while(0)
 #else							/* !HAVE__BUILTIN_CONSTANT_P */
 #define ereport_domain(elevel, domain, rest)	\
-do { \
-const int elevel_ = (elevel); \
-if (errstart(elevel_, __FILE__, __LINE__, PG_FUNCNAME_MACRO, domain)) \
-errfinish rest; \
-if (elevel_ >= ERROR) \
-pg_unreachable(); \
-} while(0)
+	do { \
+		const int elevel_ = (elevel); \
+		if (errstart(elevel_, __FILE__, __LINE__, PG_FUNCNAME_MACRO, domain)) \
+			errfinish rest; \
+		if (elevel_ >= ERROR) \
+			pg_unreachable(); \
+	} while(0)
 #endif   /* HAVE__BUILTIN_CONSTANT_P */
 
 #define ereport(elevel, rest)	\
-ereport_domain(elevel, TEXTDOMAIN, rest)
+	ereport_domain(elevel, TEXTDOMAIN, rest)
 
 #define TEXTDOMAIN NULL
 
 extern bool errstart(int elevel, const char *filename, int lineno,
-                     const char *funcname, const char *domain);
+		 const char *funcname, const char *domain);
 extern void errfinish(int dummy,...);
 
 extern int	errcode(int sqlerrcode);
@@ -146,53 +146,61 @@ extern int	errcode_for_socket_access(void);
 extern int
 errmsg(const char *fmt,...)
 /* This extension allows gcc to check the format string for consistency with
- the supplied arguments. */
+   the supplied arguments. */
 __attribute__((format(PG_PRINTF_ATTRIBUTE, 1, 2)));
 
 extern int
 errmsg_internal(const char *fmt,...)
 /* This extension allows gcc to check the format string for consistency with
- the supplied arguments. */
+   the supplied arguments. */
 __attribute__((format(PG_PRINTF_ATTRIBUTE, 1, 2)));
 
 extern int
 errmsg_plural(const char *fmt_singular, const char *fmt_plural,
 			  unsigned long n,...)
 /* This extension allows gcc to check the format string for consistency with
- the supplied arguments. */
+   the supplied arguments. */
 __attribute__((format(PG_PRINTF_ATTRIBUTE, 1, 4)))
 __attribute__((format(PG_PRINTF_ATTRIBUTE, 2, 4)));
 
 extern int
 errdetail(const char *fmt,...)
 /* This extension allows gcc to check the format string for consistency with
- the supplied arguments. */
+   the supplied arguments. */
 __attribute__((format(PG_PRINTF_ATTRIBUTE, 1, 2)));
 
 extern int
 errdetail_internal(const char *fmt,...)
 /* This extension allows gcc to check the format string for consistency with
- the supplied arguments. */
+   the supplied arguments. */
 __attribute__((format(PG_PRINTF_ATTRIBUTE, 1, 2)));
 
 extern int
 errdetail_log(const char *fmt,...)
 /* This extension allows gcc to check the format string for consistency with
- the supplied arguments. */
+   the supplied arguments. */
 __attribute__((format(PG_PRINTF_ATTRIBUTE, 1, 2)));
+
+extern int
+errdetail_log_plural(const char *fmt_singular, const char *fmt_plural,
+					 unsigned long n,...)
+/* This extension allows gcc to check the format string for consistency with
+   the supplied arguments. */
+__attribute__((format(PG_PRINTF_ATTRIBUTE, 1, 4)))
+__attribute__((format(PG_PRINTF_ATTRIBUTE, 2, 4)));
 
 extern int
 errdetail_plural(const char *fmt_singular, const char *fmt_plural,
 				 unsigned long n,...)
 /* This extension allows gcc to check the format string for consistency with
- the supplied arguments. */
+   the supplied arguments. */
 __attribute__((format(PG_PRINTF_ATTRIBUTE, 1, 4)))
 __attribute__((format(PG_PRINTF_ATTRIBUTE, 2, 4)));
 
 extern int
 errhint(const char *fmt,...)
 /* This extension allows gcc to check the format string for consistency with
- the supplied arguments. */
+   the supplied arguments. */
 __attribute__((format(PG_PRINTF_ATTRIBUTE, 1, 2)));
 
 /*
@@ -209,7 +217,7 @@ extern int	set_errcontext_domain(const char *domain);
 extern int
 errcontext_msg(const char *fmt,...)
 /* This extension allows gcc to check the format string for consistency with
- the supplied arguments. */
+   the supplied arguments. */
 __attribute__((format(PG_PRINTF_ATTRIBUTE, 1, 2)));
 
 extern int	errhidestmt(bool hide_stmt);
@@ -241,34 +249,34 @@ extern int	getinternalerrposition(void);
  */
 #ifdef HAVE__BUILTIN_CONSTANT_P
 #define elog(elevel, ...)  \
-do { \
-elog_start(__FILE__, __LINE__, PG_FUNCNAME_MACRO); \
-elog_finish(elevel, __VA_ARGS__); \
-if (__builtin_constant_p(elevel) && (elevel) >= ERROR) \
-pg_unreachable(); \
-} while(0)
+	do { \
+		elog_start(__FILE__, __LINE__, PG_FUNCNAME_MACRO); \
+		elog_finish(elevel, __VA_ARGS__); \
+		if (__builtin_constant_p(elevel) && (elevel) >= ERROR) \
+			pg_unreachable(); \
+	} while(0)
 #else							/* !HAVE__BUILTIN_CONSTANT_P */
 #define elog(elevel, ...)  \
-do { \
-int		elevel_; \
-elog_start(__FILE__, __LINE__, PG_FUNCNAME_MACRO); \
-elevel_ = (elevel); \
-elog_finish(elevel_, __VA_ARGS__); \
-if (elevel_ >= ERROR) \
-pg_unreachable(); \
-} while(0)
+	do { \
+		int		elevel_; \
+		elog_start(__FILE__, __LINE__, PG_FUNCNAME_MACRO); \
+		elevel_ = (elevel); \
+		elog_finish(elevel_, __VA_ARGS__); \
+		if (elevel_ >= ERROR) \
+			pg_unreachable(); \
+	} while(0)
 #endif   /* HAVE__BUILTIN_CONSTANT_P */
 #else							/* !HAVE__VA_ARGS */
 #define elog  \
-elog_start(__FILE__, __LINE__, PG_FUNCNAME_MACRO), \
-elog_finish
+	elog_start(__FILE__, __LINE__, PG_FUNCNAME_MACRO), \
+	elog_finish
 #endif   /* HAVE__VA_ARGS */
 
 extern void elog_start(const char *filename, int lineno, const char *funcname);
 extern void
 elog_finish(int elevel, const char *fmt,...)
 /* This extension allows gcc to check the format string for consistency with
- the supplied arguments. */
+   the supplied arguments. */
 __attribute__((format(PG_PRINTF_ATTRIBUTE, 2, 3)));
 
 
@@ -278,7 +286,7 @@ extern void pre_format_elog_string(int errnumber, const char *domain);
 extern char *
 format_elog_string(const char *fmt,...)
 /* This extension allows gcc to check the format string for consistency with
- the supplied arguments. */
+   the supplied arguments. */
 __attribute__((format(PG_PRINTF_ATTRIBUTE, 1, 2)));
 
 
@@ -326,26 +334,26 @@ extern PGDLLIMPORT ErrorContextCallback *error_context_stack;
  *----------
  */
 #define PG_TRY()  \
-do { \
-sigjmp_buf *save_exception_stack = PG_exception_stack; \
-ErrorContextCallback *save_context_stack = error_context_stack; \
-sigjmp_buf local_sigjmp_buf; \
-if (sigsetjmp(local_sigjmp_buf, 0) == 0) \
-{ \
-PG_exception_stack = &local_sigjmp_buf
+	do { \
+		sigjmp_buf *save_exception_stack = PG_exception_stack; \
+		ErrorContextCallback *save_context_stack = error_context_stack; \
+		sigjmp_buf local_sigjmp_buf; \
+		if (sigsetjmp(local_sigjmp_buf, 0) == 0) \
+		{ \
+			PG_exception_stack = &local_sigjmp_buf
 
 #define PG_CATCH()	\
-} \
-else \
-{ \
-PG_exception_stack = save_exception_stack; \
-error_context_stack = save_context_stack
+		} \
+		else \
+		{ \
+			PG_exception_stack = save_exception_stack; \
+			error_context_stack = save_context_stack
 
 #define PG_END_TRY()  \
-} \
-PG_exception_stack = save_exception_stack; \
-error_context_stack = save_context_stack; \
-} while (0)
+		} \
+		PG_exception_stack = save_exception_stack; \
+		error_context_stack = save_context_stack; \
+	} while (0)
 
 /*
  * gcc understands __attribute__((noreturn)); for other compilers, insert
@@ -353,10 +361,10 @@ error_context_stack = save_context_stack; \
  */
 #ifdef __GNUC__
 #define PG_RE_THROW()  \
-pg_re_throw()
+	pg_re_throw()
 #else
 #define PG_RE_THROW()  \
-(pg_re_throw(), pg_unreachable())
+	(pg_re_throw(), pg_unreachable())
 #endif
 
 extern PGDLLIMPORT sigjmp_buf *PG_exception_stack;
@@ -397,6 +405,9 @@ typedef struct ErrorData
 	int			internalpos;	/* cursor index into internalquery */
 	char	   *internalquery;	/* text of internally-generated query */
 	int			saved_errno;	/* errno at entry */
+
+	/* context containing associated non-constant strings */
+	struct MemoryContextData *assoc_context;
 } ErrorData;
 
 extern void EmitErrorReport(void);
@@ -405,6 +416,8 @@ extern void FreeErrorData(ErrorData *edata);
 extern void FlushErrorState(void);
 extern void ReThrowError(ErrorData *edata) __attribute__((noreturn));
 extern void pg_re_throw(void) __attribute__((noreturn));
+
+extern char *GetErrorContextStack(void);
 
 /* Hook for intercepting messages before they are sent to the server log */
 typedef void (*emit_log_hook_type) (ErrorData *edata);
@@ -448,7 +461,7 @@ extern void set_syslog_parameters(const char *ident, int facility);
 extern void
 write_stderr(const char *fmt,...)
 /* This extension allows gcc to check the format string for consistency with
- the supplied arguments. */
+   the supplied arguments. */
 __attribute__((format(PG_PRINTF_ATTRIBUTE, 1, 2)));
 
 #endif   /* ELOG_H */

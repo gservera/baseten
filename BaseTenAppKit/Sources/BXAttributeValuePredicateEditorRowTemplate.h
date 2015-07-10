@@ -19,8 +19,5 @@
 
 #import <Cocoa/Cocoa.h>
 
-
 @interface BXAttributeValuePredicateEditorRowTemplate : NSPredicateEditorRowTemplate
-{
-}
 @end

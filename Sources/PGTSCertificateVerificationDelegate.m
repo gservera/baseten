@@ -20,7 +20,7 @@
 #import "PGTSCertificateVerificationDelegate.h"
 #import "BXSafetyMacros.h"
 #import <Security/Security.h>
-#import "BXOpenSSLCompatibility.h"
+#import <openssl/ssl.h>
 #import "BXArraySize.h"
 
 

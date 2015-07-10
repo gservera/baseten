@@ -1,7 +1,7 @@
 /*
  * psql - the PostgreSQL interactive terminal
  *
- * Copyright (c) 2000-2013, PostgreSQL Global Development Group
+ * Copyright (c) 2000-2014, PostgreSQL Global Development Group
  *
  * src/bin/psql/prompt.h
  */
@@ -10,14 +10,14 @@
 
 typedef enum _promptStatus
 {
-	PROMPT_READY,
-	PROMPT_CONTINUE,
-	PROMPT_COMMENT,
-	PROMPT_SINGLEQUOTE,
-	PROMPT_DOUBLEQUOTE,
-	PROMPT_DOLLARQUOTE,
-	PROMPT_PAREN,
-	PROMPT_COPY
+    PROMPT_READY,
+    PROMPT_CONTINUE,
+    PROMPT_COMMENT,
+    PROMPT_SINGLEQUOTE,
+    PROMPT_DOUBLEQUOTE,
+    PROMPT_DOLLARQUOTE,
+    PROMPT_PAREN,
+    PROMPT_COPY
 } promptStatus_t;
 
 char	   *get_prompt(promptStatus_t status);

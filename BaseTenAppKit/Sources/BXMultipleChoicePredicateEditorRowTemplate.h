@@ -22,7 +22,7 @@
 @class BXDatabaseContext;
 
 
-@interface BXMultipleChoicePredicateEditorRowTemplate : NSPredicateEditorRowTemplate
+@interface BXMultipleChoicePredicateEditorRowTemplate : NSPredicateEditorRowTemplate <NSCopying>
 {
 	id mOptions;
 	NSArray *mRightExpressions;

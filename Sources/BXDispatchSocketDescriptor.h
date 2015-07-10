@@ -19,9 +19,6 @@
 
 #import <BaseTen/BXSocketDescriptor.h>
 
-
-#if defined(MAC_OS_X_VERSION_10_6) && MAC_OS_X_VERSION_10_6 <= MAC_OS_X_VERSION_MAX_ALLOWED
-
 @interface BXDispatchSocketDescriptor : BXSocketDescriptor
 {
 	dispatch_queue_t mQueue;
@@ -30,4 +27,3 @@
 }
 @end
 
-#endif

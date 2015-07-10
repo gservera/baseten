@@ -25,7 +25,7 @@
 #import <sys/time.h>
 
 
-enum BXLogLevel BXLogLevel = kBXLogLevelWarning;
+enum BXLogLevel BXLogLevel = kBXLogLevelDebug;
 static BOOL stAbortOnAssertionFailure = NO;
 // If the log file will be larger than this amount of bytes then it'll be truncated
 static const unsigned long long kLogFileMaxSize = 1024 * 1024;

@@ -68,17 +68,8 @@ using namespace BaseTen;
 	return self;
 }
 
-
-- (void) dealloc
-{
-	[mOperators release];
-	[super dealloc];
-}
-
-
-- (id) copyWithZone: (NSZone *) zone
-{
-	return [self retain];
+- (id)copyWithZone:(NSZone *)zone {
+    return self;
 }
 
 
@@ -287,11 +278,9 @@ using namespace BaseTen;
 			{
 				keyPaths = [[NSMutableArray alloc] init];
 				[sortedKeyPaths setObject: keyPaths forKey: sortKey];
-				[keyPaths release];
 			}
 			[keyPaths addObject: keyPath];
-			[sortKey release];
-		}		
+		}
 	}
 	
 	NSMutableArray *templates = [NSMutableArray arrayWithCapacity: [sortedKeyPaths count]];
@@ -303,11 +292,11 @@ using namespace BaseTen;
 			[expressions addObject: [NSExpression expressionForKeyPath: keyPath]];
 		
 		NSPredicateEditorRowTemplate *rowTemplate = nil;
-		rowTemplate = [[[[self rowTemplateClass] alloc] initWithLeftExpressions: expressions
+		rowTemplate = [[[self rowTemplateClass] alloc] initWithLeftExpressions: expressions
 												   rightExpressionAttributeType: [sortKey attributeType]
 																	   modifier: [sortKey modifier]
 																	  operators: [sortKey operators]
-																		options: [sortKey options]] autorelease];
+																		options: [sortKey options]];
 		
 		for (NSMenuItem *item in [[[rowTemplate templateViews] objectAtIndex: 0] itemArray])
 		{
@@ -318,6 +307,6 @@ using namespace BaseTen;
 		[templates addObject: rowTemplate];
 	}
 	
-	return [[templates copy] autorelease];
+	return [templates copy];
 }
 @end

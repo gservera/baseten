@@ -19,39 +19,30 @@
 
 #import "BXAppKitSystemEventNotifier.h"
 #import <BaseTen/BXValidationLock.h>
-#import <AppKit/AppKit.h>
 
-
+@import AppKit;
 
 @implementation BXAppKitSystemEventNotifier
-- (void) _applicationWillTerminate: (NSNotification *) notification
-{
+
+- (void)_applicationWillTerminate:(NSNotification *)notification {
 	[self processWillExit];
 }
 
-
-- (void) _workspaceWillSleep: (NSNotification *) notification
-{
+- (void)_workspaceWillSleep:(NSNotification *)notification {
 	[self systemWillSleep];
 }
 
-
-- (void) _workspaceDidWake: (NSNotification *) notification
-{
+- (void)_workspaceDidWake:(NSNotification *)notification {
 	[self systemDidWake];
 }
 
-
-+ (id) copyNotifier
-{
++ (id)copyNotifier {
 	return [[self alloc] init];
 }
 
-
-- (id) init
-{
-	if ((self = [super init]))
-	{
+- (instancetype)init {
+    self = [super init];
+	if (self) {
 		NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
 		[nc addObserver: self 
 			   selector: @selector (_applicationWillTerminate:)
@@ -72,13 +63,10 @@
 }
 
 
-- (void) dealloc
-{
+- (void)dealloc {
 	[self invalidate];
-	
 	[[NSNotificationCenter defaultCenter] removeObserver: self];
 	[[[NSWorkspace sharedWorkspace] notificationCenter] removeObserver: self];
-	
-	[super dealloc];
 }
+
 @end

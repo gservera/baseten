@@ -6,7 +6,7 @@
  * NOTE: for historical reasons, this does not correspond to pqcomm.c.
  * pqcomm.c's routines are declared in libpq.h.
  *
- * Portions Copyright (c) 1996-2013, PostgreSQL Global Development Group
+ * Portions Copyright (c) 1996-2014, PostgreSQL Global Development Group
  * Portions Copyright (c) 1994, Regents of the University of California
  *
  * src/include/libpq/pqcomm.h
@@ -43,12 +43,12 @@
 
 struct sockaddr_storage
 {
-	union
-	{
-		struct sockaddr sa;		/* get the system-dependent fields */
-		int64		ss_align;	/* ensures struct is properly aligned */
-		char		ss_pad[128];	/* ensures struct has desired size */
-	}			ss_stuff;
+    union
+    {
+        struct sockaddr sa;		/* get the system-dependent fields */
+        int64		ss_align;	/* ensures struct is properly aligned */
+        char		ss_pad[128];	/* ensures struct has desired size */
+    }			ss_stuff;
 };
 
 #define ss_family	ss_stuff.sa.sa_family
@@ -61,21 +61,21 @@ struct sockaddr_storage
 
 typedef struct
 {
-	struct sockaddr_storage addr;
-	ACCEPT_TYPE_ARG3 salen;
+    struct sockaddr_storage addr;
+    ACCEPT_TYPE_ARG3 salen;
 } SockAddr;
 
 /* Configure the UNIX socket location for the well known port. */
 
 #define UNIXSOCK_PATH(path, port, sockdir) \
-		snprintf(path, sizeof(path), "%s/.s.PGSQL.%d", \
-				((sockdir) && *(sockdir) != '\0') ? (sockdir) : \
-				DEFAULT_PGSOCKET_DIR, \
-				(port))
+snprintf(path, sizeof(path), "%s/.s.PGSQL.%d", \
+((sockdir) && *(sockdir) != '\0') ? (sockdir) : \
+DEFAULT_PGSOCKET_DIR, \
+(port))
 
 /*
  * The maximum workable length of a socket path is what will fit into
- * struct sockaddr_un.	This is usually only 100 or so bytes :-(.
+ * struct sockaddr_un.  This is usually only 100 or so bytes :-(.
  *
  * For consistency, always pass a MAXPGPATH-sized buffer to UNIXSOCK_PATH(),
  * then complain if the resulting string is >= UNIXSOCK_PATH_BUFLEN bytes.
@@ -140,20 +140,20 @@ typedef uint32 PacketLen;
 
 typedef struct StartupPacket
 {
-	ProtocolVersion protoVersion;		/* Protocol version */
-	char		database[SM_DATABASE];	/* Database name */
-	/* Db_user_namespace appends dbname */
-	char		user[SM_USER];	/* User name */
-	char		options[SM_OPTIONS];	/* Optional additional args */
-	char		unused[SM_UNUSED];		/* Unused */
-	char		tty[SM_TTY];	/* Tty for debug output */
+    ProtocolVersion protoVersion;		/* Protocol version */
+    char		database[SM_DATABASE];	/* Database name */
+    /* Db_user_namespace appends dbname */
+    char		user[SM_USER];	/* User name */
+    char		options[SM_OPTIONS];	/* Optional additional args */
+    char		unused[SM_UNUSED];		/* Unused */
+    char		tty[SM_TTY];	/* Tty for debug output */
 } StartupPacket;
 
 extern bool Db_user_namespace;
 
 /*
  * In protocol 3.0 and later, the startup packet length is not fixed, but
- * we set an arbitrary limit on it anyway.	This is just to prevent simple
+ * we set an arbitrary limit on it anyway.  This is just to prevent simple
  * denial-of-service attacks via sending enough data to run the server
  * out of memory.
  */
@@ -164,7 +164,7 @@ extern bool Db_user_namespace;
 
 #define AUTH_REQ_OK			0	/* User is authenticated  */
 #define AUTH_REQ_KRB4		1	/* Kerberos V4. Not supported any more. */
-#define AUTH_REQ_KRB5		2	/* Kerberos V5 */
+#define AUTH_REQ_KRB5		2	/* Kerberos V5. Not supported any more. */
 #define AUTH_REQ_PASSWORD	3	/* Password */
 #define AUTH_REQ_CRYPT		4	/* crypt password. Not supported any more. */
 #define AUTH_REQ_MD5		5	/* md5 password */
@@ -188,10 +188,10 @@ typedef uint32 AuthRequest;
 
 typedef struct CancelRequestPacket
 {
-	/* Note that each field is stored in network byte order! */
-	MsgType		cancelRequestCode;		/* code to identify a cancel request */
-	uint32		backendPID;		/* PID of client's backend */
-	uint32		cancelAuthCode; /* secret key to authorize cancel */
+    /* Note that each field is stored in network byte order! */
+    MsgType		cancelRequestCode;		/* code to identify a cancel request */
+    uint32		backendPID;		/* PID of client's backend */
+    uint32		cancelAuthCode; /* secret key to authorize cancel */
 } CancelRequestPacket;
 
 

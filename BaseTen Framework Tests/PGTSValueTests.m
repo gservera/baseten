@@ -11,7 +11,7 @@
 #import <BaseTen/PGTSFoundationObjects.h>
 #import <BaseTen/PGTSDates.h>
 
-int d_eq (double a, double b)
+int dx_eq (double a, double b)
 {
     double aa = fabs (a);
     double bb = fabs (b);
@@ -106,7 +106,7 @@ int d_eq (double a, double b)
     
     NSTimeInterval interval = [date timeIntervalSinceReferenceDate];
     NSTimeInterval expected = 36125.00067;
-    XCTAssertTrue (d_eq (expected, interval), @"Expected %f to equal %f.", expected, interval);
+    XCTAssertTrue (dx_eq (expected, interval), @"Expected %f to equal %f.", expected, interval);
 }
 
 - (void) testTimeWithTimeZone

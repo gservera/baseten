@@ -17,11 +17,7 @@
 // limitations under the License.
 //
 
-#if defined (__ppc__) && __ppc__
-#include <BaseTen/postgresql/ppc/ecpg_config.h>
-#elif defined (__ppc64__) && __ppc64__
-#include <BaseTen/postgresql/ppc64/ecpg_config.h>
-#elif defined (__i386__) && __i386__
+#if defined (__i386__) && __i386__
 #include <BaseTen/postgresql/i386/ecpg_config.h>
 #elif defined (__x86_64__) && __x86_64__
 #include <BaseTen/postgresql/x86_64/ecpg_config.h>

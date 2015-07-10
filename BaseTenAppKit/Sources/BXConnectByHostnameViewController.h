@@ -17,12 +17,11 @@
 // limitations under the License.
 //
 
-#import <Cocoa/Cocoa.h>
+@import Cocoa;
+
 #import <BaseTenAppKit/BXConnectionViewController.h>
 
-
 @interface BXConnectByHostnameViewController : BXConnectionViewController
-{
-	NSString* mAddress;
-}
+
+@property (nonatomic, strong) NSString * host;
 @end

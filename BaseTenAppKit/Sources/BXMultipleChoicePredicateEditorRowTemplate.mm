@@ -23,7 +23,7 @@
 #import <BaseTen/BXCollectionFunctions.h>
 #import <BaseTen/BXArraySize.h>
 
-static NSString * const kKVOCtx = @"BXMultipleChoicePredicateEditorRowTemplateKeyValueObservingContext";
+static void * kKVOCtx = &kKVOCtx;
 using namespace BaseTen;
 
 
@@ -93,17 +93,6 @@ using namespace BaseTen;
 	return self;
 }
 
-
-- (void) dealloc
-{
-	[mOptions release];
-	[mRightExpressions release];
-	[mDisplayName release];
-	[mOptionDisplayNameKeyPath release];
-	[super dealloc];
-}
-
-
 - (double) matchForPredicate: (NSPredicate *) inPredicate
 {
 	double retval = 0.0;
@@ -166,7 +155,6 @@ using namespace BaseTen;
 			[currentItem setTitle: [[currentExp constantValue] valueForKeyPath: mOptionDisplayNameKeyPath]];
 			[currentItem setRepresentedObject: currentExp];
 			[optionsMenu addItem: currentItem];
-			[currentItem release];
 		}
 	}
 	else
@@ -179,7 +167,6 @@ using namespace BaseTen;
 		[noValuesItem setTitle: @"No values"]; // FIXME: localization.
 		[noValuesItem setRepresentedObject: exp];
 		[optionsMenu addItem: noValuesItem];
-		[noValuesItem release];
 	}
 	
 	return retval;
@@ -197,28 +184,26 @@ using namespace BaseTen;
 	if (mOptions != options)
 	{
 		[self willChangeValueForKey: @"optionObjects"];
-		[mOptions release];
-		mOptions = [options retain];
+        mOptions = options;
 		[mOptions setKey: @"optionObjects"];
 		[mOptions setOwner: self];
 		[self didChangeValueForKey: @"optionObjects"];
 	}
 }
-@end
 
+#pragma mark - NSCopying
 
-
-@implementation BXMultipleChoicePredicateEditorRowTemplate (NSCopying)
 - (id) copyWithZone: (NSZone *) zone
 {
-	BXMultipleChoicePredicateEditorRowTemplate *retval = [super copyWithZone: zone];
-	Expect ([retval isKindOfClass: [self class]]);
-	
-	[retval setDisplayName: mDisplayName];
-	[retval setOptionDisplayNameKeyPath: mOptionDisplayNameKeyPath];
-	[retval setOptionObjects: mOptions];
-	[retval addObserver: retval forKeyPath: @"optionObjects" options: NSKeyValueObservingOptionInitial context: kKVOCtx];
-	
-	return retval;
+    BXMultipleChoicePredicateEditorRowTemplate *retval = [super copyWithZone: zone];
+    Expect ([retval isKindOfClass: [self class]]);
+    
+    [retval setDisplayName: mDisplayName];
+    [retval setOptionDisplayNameKeyPath: mOptionDisplayNameKeyPath];
+    [retval setOptionObjects: mOptions];
+    [retval addObserver: retval forKeyPath: @"optionObjects" options: NSKeyValueObservingOptionInitial context: kKVOCtx];
+    
+    return retval;
 }
 @end
+

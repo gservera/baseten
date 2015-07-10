@@ -35,7 +35,8 @@
 	NSString* name = [self name];
 	NSEntityDescription* superentity = [self superentity];
 	//-attributesByName would return only attribute descriptions, but we need an ordered collection.
-	NSArray* properties = [self properties];
+    //FIXED: Sorting
+	NSArray* properties = [[self properties] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]]];
     NSMutableArray* attributeDefs = [NSMutableArray arrayWithCapacity: 1 + [properties count]];
     if (YES == addSerialIDColumn)
         [attributeDefs addObject: @"id SERIAL"];
@@ -50,7 +51,8 @@
 			continue;
 		
 		//Superentities' attributes won't be repeated here.
-		if (! [[currentProperty entity] isEqual: self])
+        //FIX: OLD CODE DIDN'T SEEM TO WORK, ENTITY ON PROPERTY IS SET TO SELF INSTEAD OF SUPER
+		if ([superentity propertiesByName][[currentProperty name]] != nil)
 			continue;
 		
 		NSError* attrError = nil;

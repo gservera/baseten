@@ -23,7 +23,7 @@
 #import "BXAuthenticationPanel.h"
 #import "BXDatabaseContextAdditions.h"
 #import <BaseTen/BaseTen.h>
-#import <BaseTen/BXDatabaseContextPrivate.h>
+#import "BXDatabaseContextPrivateARC.h"
 #import <BaseTen/NSURL+BaseTenAdditions.h>
 #import <BaseTen/BXLogger.h>
 #import <BaseTen/BXHostResolver.h>
@@ -31,13 +31,12 @@
 
 @interface BXNetServiceConnector ()
 - (void) _endConnecting: (NSNotification *) notification;
+@property (nonatomic, copy) NSString * hostName;
 @end
 
 
 
 @interface BXWindowModalNSConnectorImplementation : BXNSConnectorImplementation <BXNSConnectorImplementation>
-{
-}
 @end
 
 
@@ -51,9 +50,7 @@
 
 
 
-static NSInvocation*
-MakeInvocation (const id target, const SEL selector)
-{
+static NSInvocation* MakeInvocation (const id target, const SEL selector) {
 	NSMethodSignature* sig = [target methodSignatureForSelector: selector];
 	NSInvocation* invocation = [NSInvocation invocationWithMethodSignature: sig];
 	[invocation setSelector: selector];
@@ -61,13 +58,11 @@ MakeInvocation (const id target, const SEL selector)
 	return invocation;	
 }
 
-
-
 @implementation BXNSConnectorImplementation
-- (id) initWithConnector: (BXNetServiceConnector *) connector
-{
-	if ((self = [super init]))
-	{
+
+- (instancetype)initWithConnector:(BXNetServiceConnector *)connector {
+    self = [super init];
+	if (self) {
 		mConnector = connector;
 	}
 	return self;
@@ -282,10 +277,10 @@ MakeInvocation (const id target, const SEL selector)
  * \ingroup baseten_appkit
  */
 @implementation BXNetServiceConnector
-- (id) init
-{
-	if ((self = [super init]))
-	{
+
+- (instancetype)init {
+    self = [super init];
+	if (self) {
 		mHostResolver = [[BXHostResolver alloc] init];
 		[mHostResolver setDelegate: self];
 	}
@@ -293,45 +288,26 @@ MakeInvocation (const id target, const SEL selector)
 }
 
 
-- (void) dealloc
-{	
-	[mHostPanel release];
-	[mAuthenticationPanel release];
-	[mConnectorImpl release];
-	[mHostResolver cancelResolution];
-	[mHostResolver release];
-	[super dealloc];
+- (void)dealloc {
+    [mHostResolver cancelResolution];
 }
 
-
-- (void) finalize
-{
-	[mHostResolver cancelResolution];
-	[super finalize];
-}
-
-
-- (BXHostPanel *) hostPanel
-{
-	if (! mHostPanel)
-	{
-		mHostPanel = [[BXHostPanel hostPanel] retain];
+- (BXHostPanel *)hostPanel {
+	if (! mHostPanel) {
+		mHostPanel = [BXHostPanel hostPanel];
 		[mHostPanel setDelegate: self];
 	}
-	
 	return mHostPanel;
 }
 
 
-- (BXAuthenticationPanel *) authenticationPanel
-{
-	if (! mAuthenticationPanel)
-	{
-		mAuthenticationPanel = [[BXAuthenticationPanel authenticationPanel] retain];
+- (BXAuthenticationPanel *) authenticationPanel {
+	if (! mAuthenticationPanel) {
+		mAuthenticationPanel = [BXAuthenticationPanel authenticationPanel];
 		[mAuthenticationPanel setDelegate: self];
 	}
 	
-	[mAuthenticationPanel setAddress: mHostName];
+	[mAuthenticationPanel setAddress:_hostName];
 	return mAuthenticationPanel;
 }
 
@@ -382,29 +358,6 @@ MakeInvocation (const id target, const SEL selector)
 	}
 }
 
-
-- (NSWindow *) modalWindow
-{
-	return mModalWindow;
-}
-
-
-- (void) setModalWindow: (NSWindow *) window
-{
-	mModalWindow = window;
-}
-
-
-- (void) setHostName: (NSString *) string
-{
-	if (mHostName != string)
-	{
-		[mHostName release];
-		mHostName = [string retain];
-	}
-}
-
-
 #pragma mark Start here
 - (IBAction) connect: (id) sender
 {	
@@ -412,13 +365,11 @@ MakeInvocation (const id target, const SEL selector)
 	mCurrentPanel = kBXNSConnectorNoPanel;
 	[mContext setStoresURICredentials: NO];
 	
-	if (mConnectorImpl)
-	{
-		[mConnectorImpl release];
+	if (mConnectorImpl){
 		mConnectorImpl = nil;
 	}
 	
-	if (mModalWindow)
+	if (_modalWindow)
 		mConnectorImpl = [[BXWindowModalNSConnectorImplementation alloc] initWithConnector: self];
 	else
 		mConnectorImpl = [[BXApplicationModalNSConnectorImplementation alloc] initWithConnector: self];
@@ -489,7 +440,7 @@ MakeInvocation (const id target, const SEL selector)
 	//Complete the database URI. If we're allowed to use the Keychain, try to fetch some credentials.
 	//If none are found, display the authentication panel. Otherwise connect.
 	NSURL* oldURI = [mContext databaseURI];
-	NSURL* newURI = [oldURI BXURIForHost: mHostName
+	NSURL* newURI = [oldURI BXURIForHost: _hostName
 									port: (-1 == mPort ? nil : [NSNumber numberWithInteger: mPort])
 								database: nil
 								username: nil
@@ -553,7 +504,7 @@ MakeInvocation (const id target, const SEL selector)
 - (void) databaseContext: (BXDatabaseContext *) context displayPanelForTrust: (SecTrustRef) trust
 {
 	[self endPanelUnless: kBXNSConnectorNoPanel];
-	[context displayPanelForTrust: trust modalWindow: mModalWindow];
+	[context displayPanelForTrust: trust modalWindow: _modalWindow];
 }
 
 

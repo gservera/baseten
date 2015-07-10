@@ -53,7 +53,7 @@
 @class NSEntityDescription;
 
 
-@interface BXDatabaseContext : NSObject
+@interface BXDatabaseContext : NSObject 
 {
     BXHiddenId <BXInterface>				mDatabaseInterface;
     NSURL*									mDatabaseURI;
@@ -80,19 +80,16 @@
 	BOOL									mDisplayingSheet;
 	BOOL									mRetryingConnection;
     BOOL									mRetainRegisteredObjects;
-	BOOL									mUsesKeychain;
 	BOOL									mShouldStoreURICredentials;
 	BOOL									mCanConnect;
 	BOOL									mDidDisconnect;
-	BOOL									mConnectsOnAwake;
 	BOOL									mSendsLockQueries;
 }
 
 + (BOOL) setInterfaceClass: (Class) aClass forScheme: (NSString *) scheme;
 + (Class) interfaceClassForScheme: (NSString *) scheme;
 
-+ (id) contextWithDatabaseURI: (NSURL *) uri;
-- (id) initWithDatabaseURI: (NSURL *) uri;
+- (instancetype)initWithDatabaseURI:(NSURL *)uri NS_DESIGNATED_INITIALIZER;
 - (void) setDatabaseURI: (NSURL *) uri;
 - (NSURL *) databaseURI;
 - (BOOL) isConnected;
@@ -126,15 +123,10 @@
 - (id <BXDatabaseContextDelegate>) delegate;
 - (void) setDelegate: (id <BXDatabaseContextDelegate>) anObject;
 
-- (BOOL) usesKeychain;
-- (void) setUsesKeychain: (BOOL) usesKeychain;
 - (BOOL) storesURICredentials;
 - (void) setStoresURICredentials: (BOOL) shouldStore;
 
 - (BOOL) canConnect;
-
-- (void) setConnectsOnAwake: (BOOL) flag;
-- (BOOL) connectsOnAwake;
 
 - (void) setSendsLockQueries: (BOOL) flag;
 - (BOOL) sendsLockQueries;
@@ -151,8 +143,16 @@
 
 - (BXDatabaseObjectModelStorage *) databaseObjectModelStorage;
 - (void) setDatabaseObjectModelStorage: (BXDatabaseObjectModelStorage *) storage;
+
+/** Whether connection is attempted on -awakeFromNib. Default is NO. */
+@property (nonatomic, assign) BOOL connectsOnAwake;
+
+/** Whether the default keychain is searched for database passwords. Default is YES. */
+@property (nonatomic, assign) BOOL usesKeychain;
 @end
 
+@interface BXDatabaseContext (NSCoding) <NSCoding>
+@end
 
 @interface BXDatabaseContext (Queries)
 - (id) objectWithID: (BXDatabaseObjectID *) anID error: (NSError **) error;
@@ -188,18 +188,6 @@
 - (NSArray *) objectIDsForEntity: (BXEntityDescription *) anEntity error: (NSError **) error;
 - (NSArray *) objectIDsForEntity: (BXEntityDescription *) anEntity predicate: (NSPredicate *) predicate error: (NSError **) error;
 
-- (BOOL) canGiveEntities BX_DEPRECATED_IN_1_8;
-- (BXEntityDescription *) entityForTable: (NSString *) tableName inSchema: (NSString *) schemaName error: (NSError **) error BX_DEPRECATED_IN_1_8;
-- (BXEntityDescription *) entityForTable: (NSString *) tableName error: (NSError **) error BX_DEPRECATED_IN_1_8;
-- (NSDictionary *) entitiesBySchemaAndName: (BOOL) reload error: (NSError **) error BX_DEPRECATED_IN_1_8;
-
-- (BOOL) entity: (NSEntityDescription *) entity existsInSchema: (NSString *) schemaName error: (NSError **) error BX_DEPRECATED_IN_1_8;
-- (BXEntityDescription *) matchingEntity: (NSEntityDescription *) entity inSchema: (NSString *) schemaName error: (NSError **) error BX_DEPRECATED_IN_1_8;
-@end
-
-
-@interface BXDatabaseContext (NSCoding) <NSCoding> 
-/* Only basic support for Interface Builder. */
 @end
 
 

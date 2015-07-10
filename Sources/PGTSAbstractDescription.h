@@ -19,7 +19,6 @@
 
 #import <Foundation/Foundation.h>
 
-
 @class PGTSDatabaseDescription;
 
 
@@ -28,7 +27,7 @@
     NSString* mName;
     NSUInteger mHash;
 }
-+ (BOOL) accessInstanceVariablesDirectly;
+
 - (NSString *) name;
 
 //Thread un-safe methods.

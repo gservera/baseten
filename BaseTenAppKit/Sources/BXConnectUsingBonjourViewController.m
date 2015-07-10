@@ -22,96 +22,71 @@
 
 
 @implementation BXConnectUsingBonjourViewController
+
 __strong static NSNib* gNib = nil;
 
-+ (void) initialize
-{
-	static BOOL tooLate = NO;
-	if (! tooLate)
-	{
-		tooLate = YES;
-		gNib = [[NSNib alloc] initWithNibNamed: @"ConnectUsingBonjourView" bundle: [NSBundle bundleForClass: self]];
-	}
++ (void)initialize {
+    if (self == [BXConnectUsingBonjourViewController class]) {
+        gNib = [[NSNib alloc] initWithNibNamed:@"ConnectUsingBonjourView"
+                                        bundle:[NSBundle bundleForClass:self]];
+    }
 }
 
-+ (NSNib *) nibInstance
-{
++ (NSNib *)nibInstance {
 	return gNib;
 }
 
-- (void) dealloc
-{
-	[mAddressTable release];
-	[mBonjourArrayController release];
-	[mNetServiceBrowser release];
-	[mNetServices release];
-	[super dealloc];
-}
-
-- (NSString *) host
-{
+- (NSString *)host {
 	return [[[mBonjourArrayController selectedObjects] lastObject] hostName];
 }
 
-- (NSInteger) port
-{
+- (NSInteger)port {
 	NSNetService *service = [[mBonjourArrayController selectedObjects] lastObject];
 	return [service port];
 }
 
-- (void) startDiscovery
-{	
-	if (! mDiscovering)
-	{
+- (void)startDiscovery {
+	if (!mDiscovering) {
 		mDiscovering = YES;
-		if (! mNetServiceBrowser)
-		{
+		if (!mNetServiceBrowser) {
 			mNetServiceBrowser = [[NSNetServiceBrowser alloc] init];
-			[mNetServiceBrowser setDelegate: self];
+			[mNetServiceBrowser setDelegate:self];
 		}
-		if (! mNetServices)
+        if (!mNetServices) {
 			mNetServices = [[NSMutableSet alloc] init];
-		
-		[mNetServiceBrowser searchForServicesOfType: @"_postgresql._tcp." inDomain: @""];
+        }
+		[mNetServiceBrowser searchForServicesOfType:@"_postgresql._tcp." inDomain: @""];
 	}
 }
 
-- (void) stopDiscovery
-{
-	if (mDiscovering)
-	{
+- (void)stopDiscovery {
+	if (mDiscovering) {
 		mDiscovering = NO;
 		[mNetServiceBrowser stop];
 		[mNetServices removeAllObjects];
 	}
 }
-@end
 
+#pragma mark - NSNetServiceBrowser Delegate
 
-
-@implementation BXConnectUsingBonjourViewController (NSNetServiceBrowserDelegate)
-- (void) netServiceBrowser: (NSNetServiceBrowser *) netServiceBrowser 
-			didFindService: (NSNetService *) netService moreComing: (BOOL) moreServicesComing
-{
-	if (! [mNetServices containsObject: netService])
-	{
-		[mNetServices addObject: netService];
-		[netService resolveWithTimeout: 10.0];
-		[netService setDelegate: self];
-	}
-}
-@end
-
-
-
-@implementation BXConnectUsingBonjourViewController (NSNetServiceDelegate)
-- (void) netServiceDidResolveAddress: (NSNetService *) netService
-{
-	[mBonjourArrayController addObject: netService];
+- (void)netServiceBrowser:(NSNetServiceBrowser *)netServiceBrowser
+           didFindService:(NSNetService *)netService
+               moreComing:(BOOL)moreServicesComing {
+    if (![mNetServices containsObject:netService]) {
+        [mNetServices addObject:netService];
+        [netService resolveWithTimeout:10.0];
+        [netService setDelegate:self];
+    }
 }
 
+#pragma mark - NSNetService Delegate
 
-- (void) netService: (NSNetService *) netService didNotResolve: (NSDictionary *) errorDict
-{
+- (void)netServiceDidResolveAddress:(NSNetService *)netService {
+    [mBonjourArrayController addObject: netService];
 }
+
+- (void)netService:(NSNetService *)netService didNotResolve:(NSDictionary *)errorDict {
+}
+
 @end
+

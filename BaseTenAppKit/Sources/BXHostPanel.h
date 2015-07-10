@@ -17,33 +17,32 @@
 // limitations under the License.
 //
 
-#import <Cocoa/Cocoa.h>
-#import <BaseTenAppKit/BXPanel.h>
+@import Cocoa;
 #import <BaseTenAppKit/BXConnectionViewController.h>
 @class BXConnectByHostnameViewController;
 @class BXConnectUsingBonjourViewController;
 
 
-@protocol BXHostPanelDelegate <NSObject>
+@protocol BXHostPanelDelegate <NSWindowDelegate>
 - (void) hostPanelCancel: (id) panel;
 - (void) hostPanelEndPanel: (id) panel;
 - (void) hostPanel: (id) panel connectToHost: (NSString *) host port: (NSInteger) port;
 @end
 
 
-@interface BXHostPanel : BXPanel <BXConnectionViewControllerDelegate>
-{
+@interface BXHostPanel : NSPanel <BXConnectionViewControllerDelegate> {
 	BXConnectByHostnameViewController* mByHostnameViewController;
 	BXConnectUsingBonjourViewController* mUsingBonjourViewController;
 	BXConnectionViewController* mCurrentController;
 	IBOutlet NSView* mMessageView;
 	NSSize mMessageViewSize;
-	NSString* mMessage;
-	id <BXHostPanelDelegate> mDelegate; //Weak
 	BOOL mConnecting;
 }
-+ (id) hostPanel;
++ (instancetype)hostPanel;
 - (void) setDelegate: (id <BXHostPanelDelegate>) object;
 - (void) setMessage: (NSString *) string;
 - (void) endConnecting;
+
+@property (nonatomic, strong) NSString * message;
+@property (weak) id <BXHostPanelDelegate> delegate;
 @end

@@ -192,8 +192,7 @@ ModTypeToObject (enum BXModificationType value)
     }
 }
 
-+ (BOOL) accessInstanceVariablesDirectly
-{
++ (BOOL)accessInstanceVariablesDirectly {
     return NO;
 }
 
@@ -218,28 +217,14 @@ ModTypeToObject (enum BXModificationType value)
     return [gInterfaceClassSchemes valueForKey: scheme];
 }
 
-/** \name Creating a database context */
-//@{
-/**
- * \brief A convenience method.
- * \param   uri     URI of the target database
- * \return          The database context
- * \throw   NSException named \em kBXUnsupportedDatabaseException in case the given URI cannot be handled.
- */
-+ (id) contextWithDatabaseURI: (NSURL *) uri
-{
-    return [[[self alloc] initWithDatabaseURI: uri] autorelease];
-}
-
 /**
  * \brief An initializer.
  *
  * The database URI has to be set afterwards.
  * \return          The database context
  */
-- (id) init
-{
-    return [self initWithDatabaseURI: nil];
+- (instancetype)init {
+    return [self initWithDatabaseURI:nil];
 }
 
 /**
@@ -248,18 +233,16 @@ ModTypeToObject (enum BXModificationType value)
  * \return          The database context
  * \throw           NSException named \em kBXUnsupportedDatabaseException in case the given URI cannot be handled.
  */
-- (id) initWithDatabaseURI: (NSURL *) uri
-{
-    if ((self = [super init]))
-    {
+- (instancetype)initWithDatabaseURI:(NSURL *)uri {
+    self = [super init];
+    if (self) {
         [self setDatabaseURI: uri];
         
         mDeallocating = NO;
         mRetainRegisteredObjects = NO;
 		mCanConnect = YES;
-		mConnectsOnAwake = NO;
 		mSendsLockQueries = YES;
-		mUsesKeychain = YES;
+		_usesKeychain = YES;
 		
 		mDelegateProxy = (id <BXDatabaseContextDelegate>)[[BXDelegateProxy alloc] initWithDelegateDefaultImplementation:
 						  [[[BXDatabaseContextDelegateDefaultImplementation alloc] init] autorelease]];
@@ -373,22 +356,6 @@ ModTypeToObject (enum BXModificationType value)
 - (NSURL *) databaseURI
 {
     return mDatabaseURI;
-}
-
-/**
- * \brief Whether connection is attempted on -awakeFromNib.
- */
-- (BOOL) connectsOnAwake
-{
-	return mConnectsOnAwake;
-}
-
-/**
- * \brief Set whether connection should be attempted on -awakeFromNib.
- */
-- (void) setConnectsOnAwake: (BOOL) aBool
-{
-	mConnectsOnAwake = aBool;
 }
 
 /**
@@ -827,24 +794,6 @@ ModTypeToObject (enum BXModificationType value)
 {
 	delegate = anObject;
 	[(BXDelegateProxy *) mDelegateProxy setDelegateForBXDelegateProxy: delegate];
-}
-
-/** \name Using the Keychain */
-//@{
-/**
- * \brief Whether the default keychain is searched for database passwords.
- */
-- (BOOL) usesKeychain
-{
-    return mUsesKeychain;
-}
-
-/**
- * \brief Set whether the default keychain should be searched for database passwords.
- */
-- (void) setUsesKeychain: (BOOL) usesKeychain
-{
-	mUsesKeychain = usesKeychain;
 }
 
 /** \brief Whether a known-to-work password will be stored into the default keychain. */
@@ -2177,77 +2126,6 @@ ModTypeToObject (enum BXModificationType value)
     return [[self executeFetchForEntity: anEntity withPredicate: predicate returningFaults: YES error: error] valueForKey: @"objectID"];
 }
 
-/** 
- * \brief Entity for a table in the given schema.
- * \note Unlike PostgreSQL, leaving \em schemaName unspecified does not cause the search path to be used but 
- *       instead will search the \em public schema.
- * \note Entities are associated with a database URI. Thus the database context needs an URI containing a host and 
- *       the database name before entities may be received.
- * \deprecated This method has been deprecated in BaseTen 1.8. BXDatabaseObjectModel should be used instead.
- */
-- (BXEntityDescription *) entityForTable: (NSString *) name inSchema: (NSString *) schemaName error: (NSError **) outError
-{
-	BXDeprecationLog ();
-	if (! schemaName) schemaName = @"public";
-	id retval = [mObjectModel entityForTable: name inSchema: schemaName];
-	if (! retval)
-		BXHandleError (outError, [BXDatabaseObjectModel errorForMissingEntity: name inSchema: schemaName]);
-	return retval;
-}
-
-/** 
- * \brief Entity for a table in the schema \em public
- * \note Entities are associated with a database URI. Thus the database context needs an URI containing a host and 
- *       the database name before entities may be received.
- * \deprecated This method has been deprecated in BaseTen 1.8. BXDatabaseObjectModel should be used instead.
- */
-- (BXEntityDescription *) entityForTable: (NSString *) name error: (NSError **) outError
-{
-	BXDeprecationLog ();
-	return [mObjectModel entityForTable: name inSchema: @"public"];
-}
-
-/**
- * \brief All entities found in the database.
- *
- * Entities in private and metadata schemata won't be included.
- * \param reload Whether the entity list should be reloaded.
- * \param outError If an error occurs, this pointer is set to an NSError instance. May be NULL.
- * \return An NSDicionary with NSStrings corresponding to schema names as keys and NSDictionarys as objects. 
- *         Each of them will have NSStrings corresponding to relation names as keys and BXEntityDescriptions
- *         as objects.
- * \deprecated This method has been deprecated in BaseTen 1.8. BXDatabaseObjectModel should be used instead.
- */
-- (NSDictionary *) entitiesBySchemaAndName: (BOOL) reload error: (NSError **) outError
-{
-	BXDeprecationLog ();
-	NSError* localError = nil;
-	NSDictionary* retval = [mObjectModel entitiesBySchemaAndName: self reload: reload error: &localError];
-	BXHandleError (outError, localError);
-	return retval;
-}
-
-
-- (BOOL) entity: (NSEntityDescription *) entity existsInSchema: (NSString *) schemaName error: (NSError **) error
-{
-	BXDeprecationLog ();
-	return [mObjectModel entity: entity existsInSchema: schemaName];
-}
-
-
-- (BXEntityDescription *) matchingEntity: (NSEntityDescription *) entity inSchema: (NSString *) schemaName error: (NSError **) error
-{
-	BXDeprecationLog ();
-	return [mObjectModel entityForTable: [entity name] inSchema: schemaName];
-}
-
-
-- (BOOL) canGiveEntities
-{
-	BXDeprecationLog ();
-	NSError* localError = nil;
-	return ([self checkDatabaseURI: &localError] && [mDatabaseURI host] && [mDatabaseURI path]);
-}
 @end
 
 
@@ -2256,7 +2134,7 @@ ModTypeToObject (enum BXModificationType value)
 {
     [encoder encodeObject: mDatabaseURI forKey: @"databaseURI"];
     [encoder encodeBool: mAutocommits forKey: @"autocommits"];
-	[encoder encodeBool: mConnectsOnAwake forKey: @"connectsOnAwake"];
+	[encoder encodeBool:_connectsOnAwake forKey:NSStringFromSelector(@selector(connectsOnAwake))];
 }
 
 - (id) initWithCoder: (NSCoder *) decoder
@@ -2265,7 +2143,7 @@ ModTypeToObject (enum BXModificationType value)
 	if (self) {
         [self setDatabaseURI: [decoder decodeObjectForKey: @"databaseURI"]];
         [self setAutocommits: [decoder decodeBoolForKey: @"autocommits"]];
-		[self setConnectsOnAwake: [decoder decodeBoolForKey: @"connectsOnAwake"]];
+		self.connectsOnAwake = [decoder decodeBoolForKey:NSStringFromSelector(@selector(connectsOnAwake))];
     }
     return self;
 }
@@ -2631,7 +2509,7 @@ bail:
 	if (nil == mUndoGroupingLevels)
 		mUndoGroupingLevels = [[NSMutableIndexSet alloc] init];
 	
-	if (mUsesKeychain && ![[mDatabaseURI password] length])
+	if (_usesKeychain && ![[mDatabaseURI password] length])
         [self fetchPasswordFromKeychain];	    
 }
 
@@ -2652,18 +2530,16 @@ bail:
     }	
 }
 
-- (void) faultKeys: (NSArray *) keys inObjectsWithIDs: (NSArray *) ids
-{
+- (void) faultKeys: (NSArray *) keys inObjectsWithIDs: (NSArray *) ids {
     BXEnumerate (currentObject, e, [[self registeredObjectsWithIDs: ids] objectEnumerator])
     {
-        if ([NSNull null] != currentObject)
-        {
-            if (nil == keys)
+        if ([NSNull null] != currentObject) {
+            if (nil == keys) {
                 [currentObject faultKey: nil];
-            else
-            {
-                BXEnumerate (currentKey, e, [keys objectEnumerator])
-                    [currentObject faultKey: currentKey];
+            } else {
+                for (id currentKey in keys) {
+                    [currentObject faultKey:currentKey];
+                }
             }
         }
     }

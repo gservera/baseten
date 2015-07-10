@@ -19,7 +19,7 @@
 
 #import <BaseTen/BaseTen.h>
 #import <BaseTen/BXEnumerate.h>
-#import <BaseTen/BXDatabaseContextPrivate.h>
+#import "BXDatabaseContextPrivateARC.h"
 #import <BaseTen/BXContainerProxy.h>
 #import <BaseTen/BXSetRelationProxy.h>
 #import <BaseTen/BXRelationshipDescriptionPrivate.h>
@@ -37,30 +37,27 @@
 
 @interface BXSynchronizedArrayController ()
 - (void) _endConnecting: (NSNotification *) notification;
+
+/** Key for binding to a to-many rel */
+@property (nonatomic, copy) NSString * contentBindingKey;
 @end
 
-
-
-
 @implementation NSObject (BXSynchronizedArrayControllerAdditions)
-- (BOOL) BXIsRelationshipProxy
-{
+- (BOOL)BXIsRelationshipProxy {
 	return NO;
 }
 @end
 
 
 @implementation NSProxy (BXSynchronizedArrayControllerAdditions)
-- (BOOL) BXIsRelationshipProxy
-{
+- (BOOL)BXIsRelationshipProxy {
 	return NO;
 }
 @end
 
 
 @implementation BXSetRelationProxy (BXSynchronizedArrayControllerAdditions)
-- (BOOL) BXIsRelationshipProxy
-{
+- (BOOL)BXIsRelationshipProxy {
 	return YES;
 }
 @end
@@ -76,107 +73,59 @@
  * \ingroup baseten_appkit
  */
 @implementation BXSynchronizedArrayController
-+ (void) initialize
-{
-	static BOOL tooLate = NO;
-	if (NO == tooLate)
-	{
-		tooLate = YES;
-        
+
++ (void)initialize {
+    if (self == [BXSynchronizedArrayController class]) {
         // Register the transformers with the names that we refer to them with
-        BXObjectStatusToColorTransformer* transformer = [[[BXObjectStatusToColorTransformer alloc] init] autorelease];
-        [NSValueTransformer setValueTransformer: transformer
-                                        forName: @"BXObjectStatusToColorTransformer"];
-        transformer = (id)[[[BXObjectStatusToEditableTransformer alloc] init] autorelease];
-        [NSValueTransformer setValueTransformer: transformer
-                                        forName: @"BXObjectStatusToEditableTransformer"];
-		
-		[self exposeBinding: @"databaseContext"];
-		[self exposeBinding: @"modalWindow"];
-		[self exposeBinding: @"selectedObjects"];
-        
-		[BXDatabaseContext loadedAppKitFramework];
-	}
+        id transformer = [[BXObjectStatusToColorTransformer alloc] init];
+        [NSValueTransformer setValueTransformer:transformer
+                                        forName:NSStringFromClass([transformer class])];
+        transformer = [[BXObjectStatusToEditableTransformer alloc] init];
+        [NSValueTransformer setValueTransformer:transformer
+                                        forName:NSStringFromClass([transformer class])];
+        [self exposeBinding:NSStringFromSelector(@selector(databaseContext))];
+        [self exposeBinding:NSStringFromSelector(@selector(modalWindow))];
+        [self exposeBinding:NSStringFromSelector(@selector(selectedObjects))];
+        [BXDatabaseContext loadedAppKitFramework];
+    }
 }
 
-- (id) initWithContent: (id) content
-{
-    if ((self = [super initWithContent: content]))
-    {
-        [self setAutomaticallyPreparesContent: NO];
-        [self setEditable: YES];
-        mFetchesAutomatically = NO;
+- (instancetype)initWithContent:(id)content {
+    self = [super initWithContent:content];
+    if (self) {
+        self.automaticallyPreparesContent = NO;
+        self.editable = NO;
+        self.fetchesAutomatically = NO;
         mChanging = NO;
 		mShouldAddToContent = YES;
-		mLocksRowsOnBeginEditing = YES;
+		self.locksRowsOnBeginEditing = YES;
     }
     return self;
 }
 
-- (void) awakeFromNib
-{
-	{
-		BXDatabaseContext* ctx = databaseContext;
-		databaseContext = nil;
-		[self setDatabaseContext: ctx];
-	}
-	
+- (void)awakeFromNib {
+    BXDatabaseContext *ctx = _databaseContext;
+    _databaseContext = nil;
+    self.databaseContext = ctx;
 	NSWindow* aWindow = [self BXWindow];
-	[databaseContext setUndoManager: [aWindow undoManager]];        
-
+	[_databaseContext setUndoManager: [aWindow undoManager]];
     [super awakeFromNib];
 }
 
-- (BXDatabaseContext *) BXDatabaseContext
-{
-    return databaseContext;
+- (BXDatabaseContext *)BXDatabaseContext {
+    return _databaseContext;
 }
 
-- (NSWindow *) BXWindow
-{
+- (NSWindow *)BXWindow {
     return modalWindow;
-}
-
-- (void) dealloc
-{
-    [databaseContext release];
-	[mSchemaName release];
-	[mTableName release];
-	[mDBObjectClassName release];
-	[mBXContent release];
-    [super dealloc];
-}
-
-/**
- * \brief The entity used with this array controller.
- */
-- (BXEntityDescription *) entityDescription
-{
-    return mEntityDescription;
-}
-
-/**
- * \brief Set the entity used with this array controller.
- */
-- (void) setEntityDescription: (BXEntityDescription *) desc
-{
-	mEntityDescription = desc;
-}
-
-/**
- * \brief The array controller's database context.
- */
-- (BXDatabaseContext *) databaseContext
-{
-    return databaseContext;
 }
 
 - (void) prepareEntity
 {
-	BXAssertVoidReturn (databaseContext, @"Expected databaseContext not to be nil. Was it set or bound in Interface Builder?");
+	BXAssertVoidReturn (_databaseContext, @"Expected databaseContext not to be nil. Was it set or bound in Interface Builder?");
 	
 	[self setEntityDescription: nil];
-	BXDatabaseObjectModel *objectModel = [databaseContext databaseObjectModel];
+	BXDatabaseObjectModel *objectModel = [_databaseContext databaseObjectModel];
 	BXEntityDescription* entityDescription = [objectModel entityForTable: [self tableName] inSchema: [self schemaName]];
 
 	if (entityDescription)
@@ -196,94 +145,38 @@
  */
 - (void) setDatabaseContext: (BXDatabaseContext *) ctx
 {
-    if (ctx != databaseContext)
+    if (ctx != _databaseContext)
     {
 		NSNotificationCenter* nc = [ctx notificationCenter];
 		//databaseContext may be nil here since we don't observe multiple contexts.
-		[nc removeObserver: self name: kBXConnectionSuccessfulNotification object: databaseContext];
-		[nc removeObserver: self name: kBXGotDatabaseURINotification object: databaseContext];
+		[nc removeObserver: self name: kBXConnectionSuccessfulNotification object: _databaseContext];
+		[nc removeObserver: self name: kBXGotDatabaseURINotification object: _databaseContext];
 		
-        [databaseContext release];
-        databaseContext = [ctx retain];
+        _databaseContext = ctx;
 		
-		if (databaseContext)
+		if (_databaseContext)
 		{
 			[self setEntityDescription: nil];
-			[[databaseContext notificationCenter] addObserver: self selector: @selector (_endConnecting:) name: kBXConnectionSuccessfulNotification object: databaseContext];
+			[[_databaseContext notificationCenter] addObserver: self selector: @selector (_endConnecting:) name: kBXConnectionSuccessfulNotification object: _databaseContext];
 			
-			if (mFetchesAutomatically && (mTableName || mEntityDescription) && [databaseContext isConnected])
+			if (_fetchesAutomatically && (_tableName || _entityDescription) && [_databaseContext isConnected])
 				[self fetch: nil];
 		}
     }
 }
 
-/**
- * \brief Whether this controller fetches automatically.
- */
-- (BOOL) fetchesAutomatically
-{
-    return mFetchesAutomatically;
-}
-
-- (BOOL) fetchesOnConnect
-{
-    return [self fetchesAutomatically];
-}
-
-/**
- * \brief Set whether this controller fetches automatically.
- *
- * This causes the content to be fetched automatically
- * when the array controller receives a connection notification or
- * the array controller's database context is set and is already 
- * connected.
- * \note Controllers the content of which is bound to other 
- *       BXSynchronizedArrayControllers should not fetch on connect.
- * \see #setDatabaseContext:
- */
-- (void) setFetchesAutomatically: (BOOL) aBool
-{
-	if (mFetchesAutomatically != aBool)
-	{
-		mFetchesAutomatically = aBool;
-		if (nil != databaseContext)
-		{
-			NSNotificationCenter* nc = [databaseContext notificationCenter];
-			if (mFetchesAutomatically)
-				[nc addObserver: self selector: @selector (_endConnecting:) name: kBXConnectionSuccessfulNotification object: databaseContext];
-			else
-				[nc removeObserver: self name: kBXConnectionSuccessfulNotification object: databaseContext];
+- (void)setFetchesAutomatically:(BOOL)aBool {
+	if (_fetchesAutomatically != aBool) {
+		_fetchesAutomatically = aBool;
+		if (nil != _databaseContext) {
+			NSNotificationCenter* nc = [_databaseContext notificationCenter];
+            if (_fetchesAutomatically) {
+				[nc addObserver: self selector: @selector (_endConnecting:) name: kBXConnectionSuccessfulNotification object: _databaseContext];
+            } else {
+				[nc removeObserver: self name: kBXConnectionSuccessfulNotification object: _databaseContext];
+            }
 		}
 	}
-}
-
-- (void) setFetchesOnConnect: (BOOL) aBool
-{
-	[self setFetchesAutomatically: aBool];
-}
-
-/**
- * \brief Whether the receiver begins a transaction for each editing session.
- */
-- (BOOL) locksRowsOnBeginEditing
-{
-	return mLocksRowsOnBeginEditing;
-}
-
-/**
- * \brief Set whether the receiver begins a transaction for each editing session.
- *
- * Sets whether the receiver asks its database context to begin a transaction
- * to lock the corresponding row when each editing session begins. Regardless of
- * the context setting for sending lock notifications, other BaseTen clients will
- * always be notified. When editing ends, the transaction will end as well. This 
- * is determined from calls to -objectDidBeginEditing: and -objectDidEndEditing: 
- * declared in NSEditor protocol. The default is YES.
- * \see BXDatabaseContext::setSendsLockQueries:
- */
-- (void) setLocksRowsOnBeginEditing: (BOOL) aBool
-{
-	mLocksRowsOnBeginEditing = aBool;
 }
 
 /**
@@ -293,81 +186,18 @@
  *        the context connects. If a class name has also been set, the controller will
  *        call NSClassFromString and set the entity's corresponding property.
  */
-//@{
-/**
- * \brief Database schema name for this controller.
- */
-- (NSString *) schemaName
-{
-    return mSchemaName; 
-}
 
-/**
- * \brief Set the database schema name for this controller.
- */
-- (void) setSchemaName: (NSString *) aSchemaName
-{
-    if (mSchemaName != aSchemaName) 
-	{
-        [mSchemaName release];
-        mSchemaName = [aSchemaName retain];
-    }
-}
-
-/**
- * \brief Database table name for this controller.
- */
-- (NSString *) tableName
-{
-    return mTableName; 
-}
-
-/**
- * \brief Set the database table name for this controller.
- */
-- (void) setTableName: (NSString *) aTableName
-{
-    if (mTableName != aTableName) 
-	{
-        [mTableName release];
-        mTableName = [aTableName retain];
-    }
-}
-
-/**
- * \brief Database object class name for this controller.
- */
-- (NSString *) databaseObjectClassName
-{
-    return mDBObjectClassName; 
-}
-
-/**
- * \brief Set the database object class name for this controller.
- */
-- (void) setDatabaseObjectClassName: (NSString *) aDBObjectClassName
-{
-    if (mDBObjectClassName != aDBObjectClassName) 
-	{
-        [mDBObjectClassName release];
-        mDBObjectClassName = [aDBObjectClassName retain];
-    }
-}
-//@}
-
-- (void) _endConnecting: (NSNotification *) notification
-{
-	if (! mEntityDescription)
+- (void)_endConnecting:(NSNotification *)notification {
+    if (! _entityDescription) {
 		[self prepareEntity];
-	
-	if (mFetchesAutomatically)
+    }
+    if (_fetchesAutomatically) {
 		[self fetch: nil];
+    }
 }
 
 //Patch by henning & #macdev 2008-01-30
-static BOOL 
-IsKindOfClass (id self, Class class) 
-{	
+static BOOL IsKindOfClass (id self, Class class) {
 	if (self == nil) 
 		return NO; 
 	else if ([self class] == class) 
@@ -384,8 +214,7 @@ IsKindOfClass (id self, Class class)
                    [anObject class]);
 	if (mBXContent != anObject)
 	{
-		[mBXContent release];
-		mBXContent = [anObject retain];
+        mBXContent = anObject;
 	}
 }
 
@@ -409,12 +238,12 @@ IsKindOfClass (id self, Class class)
  */
 - (id) createObject: (NSError **) outError
 {
-	if (! mEntityDescription)
+	if (!_entityDescription)
 		[self prepareEntity];
 	
 	NSDictionary* fieldValues = [self valuesForBoundRelationship];
 	mShouldAddToContent = (nil == fieldValues);
-	return [databaseContext createObjectForEntity: mEntityDescription
+	return [_databaseContext createObjectForEntity:_entityDescription
 								  withFieldValues: fieldValues error: outError];
 }
 
@@ -422,7 +251,7 @@ IsKindOfClass (id self, Class class)
 - (NSDictionary *) valuesForBoundRelationship
 {
 	NSDictionary* retval = nil;
-	if ([mContentBindingKey isEqualToString: @"contentSet"])
+	if ([_contentBindingKey isEqualToString: @"contentSet"])
 	{
 		//We only check contentSet, because relationships cannot be bound to any other key.
 		NSDictionary* bindingInfo = [self infoForBinding: @"contentSet"];
@@ -442,38 +271,27 @@ IsKindOfClass (id self, Class class)
 	return retval;
 }
 
-- (NSString *) contentBindingKey
-{
-	return mContentBindingKey;
-}
-
-- (void) setContentBindingKey: (NSString *) aKey
-{
-	if (aKey != mContentBindingKey)
-	{
-		[mContentBindingKey release];
-		mContentBindingKey = [aKey retain];
-		
-		if ([aKey length]) [self setFetchesAutomatically: NO];
+- (void)setContentBindingKey:(NSString *)aKey {
+	if (aKey != _contentBindingKey) {
+        _contentBindingKey = [aKey copy];
+        if (aKey.length > 0) {
+            self.fetchesAutomatically = NO;
+        }
 	}
 }
 
-
-+ (NSSet *) keyPathsForValuesAffectingSelectedObjectIDs
-{
-	return [NSSet setWithObject: @"selectedObjects"];
++ (NSSet *)keyPathsForValuesAffectingSelectedObjectIDs {
+	return [NSSet setWithObject:NSStringFromSelector(@selector(selectedObjects))];
 }
 
 /**
  * \brief The Object IDs of the selected objects.
  */
-- (NSArray *) selectedObjectIDs
-{
+- (NSArray *)selectedObjectIDs {
 	return (id) [[[self selectedObjects] BX_Collect] objectID];
 }
 
-
-#pragma mark OverriddenMethods
+#pragma mark Overridden Methods
 /**
  * \name Overridden methods
  * \brief Methods changed from NSArrayController's implementation.
@@ -484,11 +302,10 @@ IsKindOfClass (id self, Class class)
  *
  * managedObjectContext is removed from bindings exposed by the superclass.
  */
-- (NSArray *) exposedBindings
-{
-	NSMutableArray* retval = [[[super exposedBindings] mutableCopy] autorelease];
-	[retval removeObject: @"managedObjectContext"];
-	return retval;
+- (NSArray *)exposedBindings {
+	NSMutableArray* retval = [[super exposedBindings] mutableCopy];
+	[retval removeObject:NSStringFromSelector(@selector(managedObjectContext))];
+	return [retval copy];
 }
 
 - (void) bind: (NSString *) binding toObject: (id) observableObject
@@ -508,7 +325,7 @@ IsKindOfClass (id self, Class class)
 
 - (void) objectDidBeginEditing: (id) editor
 {
-	if (mLocksRowsOnBeginEditing)
+	if (_locksRowsOnBeginEditing)
 	{
 		//This is a bit bad. Since we have bound one of our own attributes to 
 		//one of our bindings, -commitEditing might get called recursively ad infinitum.
@@ -524,7 +341,7 @@ IsKindOfClass (id self, Class class)
 
 - (void) objectDidEndEditing: (id) editor
 {
-	if (mLocksRowsOnBeginEditing)
+	if (_locksRowsOnBeginEditing)
 	{
 		//See -objectDidBeginEditing:.
 		if (self != editor)
@@ -534,20 +351,6 @@ IsKindOfClass (id self, Class class)
 		}
 	}
 }
-
-#if 0
-/** \cond */
-- (BOOL) isEditable
-{
-    BOOL retval = [super isEditable];
-    if (YES == retval)
-    {
-        retval = [[[self selection] status] ];
-    }
-    return retval;
-}
-/** \endcond */
-#endif
 
 /**
  * \brief Perform a fetch.
@@ -577,7 +380,7 @@ IsKindOfClass (id self, Class class)
  */
 - (BOOL) fetchWithRequest: (NSFetchRequest *) fetchRequest merge: (BOOL) merge error: (NSError **) error
 {
-	if (! mEntityDescription)
+	if (! _entityDescription)
 		[self prepareEntity];
 	
     BOOL retval = NO;
@@ -589,7 +392,7 @@ IsKindOfClass (id self, Class class)
 	}
 	else
 	{
-		id result = [databaseContext executeFetchForEntity: mEntityDescription 
+		id result = [_databaseContext executeFetchForEntity: _entityDescription
 											 withPredicate: [self fetchPredicate]
 										   returningFaults: NO
 									   updateAutomatically: YES
@@ -620,12 +423,8 @@ IsKindOfClass (id self, Class class)
     mChanging = YES;
     NSError* error = nil;
 	id object = [self createObject: &error];
-    if (nil != error)
+    if (nil != error) {
         [self BXHandleError: error];
-    else
-    {    
-        //The returned object should have retain count of 1.
-        [object retain];
     }
     mChanging = NO;
     return object;
@@ -633,7 +432,7 @@ IsKindOfClass (id self, Class class)
 
 - (void) insertObject: (id) object atArrangedObjectIndex: (NSUInteger) index
 {
-	if (mShouldAddToContent && mContentBindingKey && ![self BXContent])
+	if (mShouldAddToContent && _contentBindingKey && ![self BXContent])
 	{
 		//Super's implementation selects inserted objects.
 		[super insertObject: object atArrangedObjectIndex: index];
@@ -645,22 +444,6 @@ IsKindOfClass (id self, Class class)
 		[self setSelectedObjects: [NSArray arrayWithObject: object]];
 	}
 	mShouldAddToContent = YES;
-	
-#if 0	
-	if (mShouldAddToContent && mContentBindingKey)
-	{
-		NSDictionary* bindingInfo = [self infoForBinding: mContentBindingKey];
-		if (nil != bindingInfo)
-		{
-			id observedObject = [bindingInfo objectForKey: NSObservedObjectKey];
-			id boundObject = [observedObject valueForKeyPath: [bindingInfo objectForKey: NSObservedKeyPathKey]];
-			if ([boundObject respondsToSelector: @selector (insertObject:atIndex:)])
-				[boundObject insertObject: object atIndex: index];
-			else
-				[boundObject addObject: object];
-		}
-	}
-#endif	
 }
 
 /**
@@ -687,94 +470,79 @@ IsKindOfClass (id self, Class class)
 		}
 		
 		NSPredicate* predicate = [NSCompoundPredicate orPredicateWithSubpredicates: predicates];
-		[databaseContext executeDeleteFromEntity: entity withPredicate: predicate error: &error];
+		[_databaseContext executeDeleteFromEntity: entity withPredicate: predicate error: &error];
 		if (nil != error)
 			[self BXHandleError: error];
 	}
 }
 
-- (NSString *) entityName
-{
+- (NSString *)entityName {
 	return nil;
 }
 
-- (void) setEntityName: (NSString *) name
-{
+- (void)setEntityName:(NSString *)name {
 }
 
-- (NSManagedObjectContext *) managedObjectContext
-{
-	return nil;
+- (Class)objectClass {
+	return [_entityDescription databaseObjectClass];
 }
 
-- (void) setManagedObjectContext: (NSManagedObjectContext*) ctx
-{
-}
-
-- (BOOL) usesLazyFetching
-{
-	return NO;
-}
-
-- (void) setUsesLazyFetching: (BOOL) enabled
-{
-}
-
-- (Class) objectClass
-{
-	return [mEntityDescription databaseObjectClass];
-}
-
-- (void) setObjectClass: (Class) cls
-{
-	if (! mEntityDescription)
+- (void)setObjectClass:(Class)cls {
+    if (! _entityDescription){
 		[self prepareEntity];
-	
-	[mEntityDescription setDatabaseObjectClass: cls];
+    }
+	[_entityDescription setDatabaseObjectClass: cls];
 }
-//@}
-@end
 
+- (BOOL)usesLazyFetching {
+    return NO;
+}
 
-@implementation BXSynchronizedArrayController (NSCoding)
-- (void) encodeWithCoder: (NSCoder *) encoder
-{
-	//Don't change fetchesOnConnect in strings, or users' nibs stop working.
-	
+- (void)setUsesLazyFetching:(BOOL)usesLazyFetching {
+}
+
+- (NSManagedObjectContext*)managedObjectContext {
+    return nil;
+}
+
+- (void)setManagedObjectContext:(NSManagedObjectContext*)ctx {
+}
+
+#pragma mark - NSCoding
+
+- (void)encodeWithCoder:(NSCoder *)encoder {
+    //Don't change fetchesOnConnect in strings, or users' nibs stop working.
     [super encodeWithCoder: encoder];
-    [encoder encodeBool: mFetchesAutomatically forKey: @"fetchesOnConnect"];
-	[encoder encodeBool: mLocksRowsOnBeginEditing forKey: @"locksRowsOnBeginEditing"];
-    
-    [encoder encodeObject: mTableName forKey: @"tableName"];
-    [encoder encodeObject: mSchemaName forKey: @"schemaName"];
-    [encoder encodeObject: mDBObjectClassName forKey: @"DBObjectClassName"];
-	[encoder encodeObject: mContentBindingKey forKey: @"contentBindingKey"];
+    [encoder encodeBool:_fetchesAutomatically forKey: @"fetchesOnConnect"];
+    [encoder encodeBool:_locksRowsOnBeginEditing forKey: @"locksRowsOnBeginEditing"];
+    [encoder encodeObject:_tableName forKey: @"tableName"];
+    [encoder encodeObject:_schemaName forKey: @"schemaName"];
+    [encoder encodeObject:_databaseObjectClassName forKey: @"DBObjectClassName"];
+    [encoder encodeObject:_contentBindingKey forKey: @"contentBindingKey"];
 }
 
-- (id) initWithCoder: (NSCoder *) decoder
-{
-    if ((self = [super initWithCoder: decoder]))
-    {
+- (id)initWithCoder:(NSCoder *)decoder {
+    self = [super initWithCoder:decoder];
+    if (self) {
         [self setAutomaticallyPreparesContent: NO];
         [self setEditable: YES];
-		
-		//Some reasonable default values for booleans to make existing nibs work.
-		
-		BOOL fetchOnConnect = NO;
-		if ([decoder containsValueForKey: @"fetchesOnConnect"])
-			fetchOnConnect = [decoder decodeBoolForKey: @"fetchesOnConnect"];
+        //Some reasonable default values for booleans to make existing nibs work.
+        BOOL fetchOnConnect = NO;
+        if ([decoder containsValueForKey: @"fetchesOnConnect"]) {
+            fetchOnConnect = [decoder decodeBoolForKey: @"fetchesOnConnect"];
+        }
         [self setFetchesAutomatically: fetchOnConnect];
-		
-		BOOL lockOnBeginEditing = YES;
-		if ([decoder containsValueForKey: @"locksRowsOnBeginEditing"])
-			lockOnBeginEditing = [decoder decodeBoolForKey: @"locksRowsOnBeginEditing"];
-		[self setLocksRowsOnBeginEditing: lockOnBeginEditing];
-        
-        [self setTableName:  [decoder decodeObjectForKey: @"tableName"]];
-        [self setSchemaName: [decoder decodeObjectForKey: @"schemaName"]];
-		[self setContentBindingKey: [decoder decodeObjectForKey: @"contentBindingKey"]];
-        [self setDatabaseObjectClassName: [decoder decodeObjectForKey: @"DBObjectClassName"]];
+        BOOL lockOnBeginEditing = YES;
+        if ([decoder containsValueForKey: @"locksRowsOnBeginEditing"]) {
+            lockOnBeginEditing = [decoder decodeBoolForKey: @"locksRowsOnBeginEditing"];
+        }
+        [self setLocksRowsOnBeginEditing: lockOnBeginEditing];
+        [self setTableName:[decoder decodeObjectForKey: @"tableName"]];
+        [self setSchemaName:[decoder decodeObjectForKey: @"schemaName"]];
+        [self setContentBindingKey:[decoder decodeObjectForKey: @"contentBindingKey"]];
+        [self setDatabaseObjectClassName:[decoder decodeObjectForKey: @"DBObjectClassName"]];
     }
     return self;
 }
+
 @end

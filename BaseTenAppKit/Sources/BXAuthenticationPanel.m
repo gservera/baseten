@@ -22,38 +22,30 @@
 
 
 __strong static NSNib* gAuthenticationViewNib = nil;
-__strong static NSString* kNSKVOContext = @"kBXAuthenticationPanelNSKVOContext";
 static const CGFloat kSizeDiff = 25.0;
 
-
-
 @implementation BXAuthenticationPanel
-+ (void) initialize
-{
-    [super initialize];
-    static BOOL tooLate = NO;
-    if (NO == tooLate)
-    {
-        tooLate = YES;
-        gAuthenticationViewNib = [[NSNib alloc] initWithNibNamed: @"AuthenticationView" 
-                                                          bundle: [NSBundle bundleForClass: self]];
+
++ (void)initialize {
+    if (self == [BXAuthenticationPanel class]) {
+        gAuthenticationViewNib = [[NSNib alloc] initWithNibNamed:@"AuthenticationView"
+                                                          bundle:[NSBundle bundleForClass:self]];
     }
 }
 
-
-+ (id) authenticationPanel
-{
-	return [[[self alloc] initWithContentRect: NSZeroRect styleMask: NSTitledWindowMask
-									  backing: NSBackingStoreBuffered defer: YES] autorelease];
++ (instancetype)authenticationPanel {
+	return [[self alloc] initWithContentRect:NSZeroRect
+                                   styleMask:NSTitledWindowMask
+                                     backing:NSBackingStoreBuffered
+                                       defer:YES];
 }
 
-
-- (id) initWithContentRect: (NSRect) contentRect styleMask: (NSUInteger) styleMask
-                   backing: (NSBackingStoreType) bufferingType defer: (BOOL) deferCreation
-{
-    if ((self = [super initWithContentRect: contentRect styleMask: styleMask 
-                                   backing: bufferingType defer: deferCreation]))
-    {
+- (instancetype)initWithContentRect:(NSRect)contentRect
+                          styleMask:(NSUInteger)aStyle
+                            backing:(NSBackingStoreType)b
+                              defer:(BOOL)flag {
+    self = [super initWithContentRect:contentRect styleMask:aStyle backing:b defer:flag];
+    if (self) {
         [gAuthenticationViewNib instantiateWithOwner: self topLevelObjects: NULL];
 		
 		NSRect contentFrame = [mPasswordAuthenticationView frame];
@@ -67,207 +59,64 @@ static const CGFloat kSizeDiff = 25.0;
 		 NSViewMinXMargin | NSViewMaxXMargin | NSViewWidthSizable |
 		 NSViewMinYMargin | NSViewMaxYMargin | NSViewHeightSizable];
 
-		[self addObserver: self forKeyPath: @"message" 
-				  options: NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew 
-				  context: kNSKVOContext];
+        self.hidesOnDeactivate = NO;
     }
     return self;
 }
 
-
-- (void) dealloc
-{
-    [mPasswordAuthenticationView release];
-	[mUsernameField release];
-	[mPasswordField release];
-	[mRememberInKeychainButton release];
-	[mMessageTextField release];
-	[mCredentialFieldMatrix release];
-	[mProgressIndicator release];
-	
-	[mUsername release];
-	[mPassword release];
-	[mMessage release];
-    [super dealloc];
+- (NSString *)username {
+    return (_username.length > 0)? _username : nil;
 }
 
-
-- (id <BXAuthenticationPanelDelegate>) delegate
-{
-	return mDelegate;
+- (NSString *)password {
+    return (_password.length > 0)? _password : nil;
 }
 
-
-- (void) setDelegate: (id <BXAuthenticationPanelDelegate>) object
-{
-	mDelegate = object;
+- (NSString *)address {
+    return (_address.length > 0)? _address : nil;
 }
 
-
-- (BOOL) isAuthenticating
-{
-    return mIsAuthenticating;
+- (NSString *)message {
+    return (_message.length > 0)? _message : nil;
 }
 
-
-- (void) setAuthenticating: (BOOL) aBool
-{
-	mIsAuthenticating = aBool;
-}
-
-
-- (BOOL) shouldStorePasswordInKeychain
-{
-	return mShouldStorePasswordInKeychain;
-}
-
-
-- (void) setShouldStorePasswordInKeychain: (BOOL) aBool
-{
-	mShouldStorePasswordInKeychain = aBool;
-}
-
-
-- (NSString *) username
-{
-	NSString* retval = mUsername;
-	if (0 == [retval length])
-		retval = nil;
-	return retval;
-}
-
-
-- (NSString *) password
-{
-	NSString* retval = mPassword;
-	if (0 == [retval length])
-		retval = nil;
-	return retval;
-}
-
-
-- (NSString *) message
-{
-	NSString* retval = mMessage;
-	if (0 == [retval length])
-		retval = nil;
-	return retval;
-}
-
-
-- (NSString *) address
-{
-	NSString *retval = mAddress;
-	if (0 == [retval length])
-		retval = nil;
-	return retval;
-}
-
-
-- (void) setUsername: (NSString *) aString
-{
-	if (mUsername != aString)
-	{
-		[mUsername release];
-		mUsername = [aString retain];
+- (void)setMessage:(NSString *)message {
+	if (self.message != message) {
+        id oldMessage = self.message;
+        _message = message;
+        BOOL isVisible = [self isVisible];
+        NSRect frame = [self frame];
+        
+        if (![oldMessage length] && [message length]) {
+            frame.size.height += kSizeDiff;
+            frame.origin.y -= kSizeDiff;
+        } else if ([oldMessage length] && ![message length]) {
+            frame.size.height -= kSizeDiff;
+            frame.origin.y += kSizeDiff;
+        }
+        [self setFrame: frame display: isVisible animate: isVisible];
 	}
 }
 
+#pragma mark - IBActions
 
-- (void) setPassword: (NSString *) aString
-{
-	if (mPassword != aString)
-	{
-		[mPassword release];
-		mPassword = [aString retain];
-	}
+- (IBAction)authenticate:(id)sender {
+    [_delegate authenticationPanel:self gotUsername:_username password:_password];
+    self.authenticating = YES;
+    self.password = nil;
 }
 
-
-- (void) setMessage: (NSString *) aString
-{
-	if (mMessage != aString)
-	{
-		[mMessage release];
-		mMessage = [aString retain];
-	}
+- (IBAction)cancelAuthentication:(id)sender { //For unlock focus
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (_authenticating) {
+            [_delegate authenticationPanelCancel:self];
+            self.authenticating = NO;
+        } else {
+            [_delegate authenticationPanelEndPanel:self];
+        }
+    });
 }
 
-
-- (void) setAddress: (NSString *) aString
-{
-	if (mAddress != aString)
-	{
-		[mAddress release];
-		mAddress = [aString retain];
-	}
-}
-
-
-- (void) observeValueForKeyPath: (NSString *) keyPath ofObject: (id) object change: (NSDictionary *) change context: (void *) context
-{
-    if (kNSKVOContext == context) 
-	{
-		BOOL isVisible = [self isVisible];
-		NSRect frame = [self frame];
-		id oldMessage = [change objectForKey: NSKeyValueChangeOldKey];
-		id newMessage = [change objectForKey: NSKeyValueChangeNewKey];
-		if ([NSNull null] == oldMessage)
-			oldMessage = nil;
-		if ([NSNull null] == newMessage)
-			newMessage = nil;
-				
-		if (![oldMessage length] && [newMessage length])
-		{
-			frame.size.height += kSizeDiff;
-			frame.origin.y -= kSizeDiff;
-		}
-		else if ([oldMessage length] && ![newMessage length])
-		{
-			frame.size.height -= kSizeDiff;
-			frame.origin.y += kSizeDiff;
-		}
-		
-		[self setFrame: frame display: isVisible animate: isVisible];
-	}
-	else 
-	{
-		[super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
-	}
-}
-@end
-
-
-
-@implementation BXAuthenticationPanel (IBActions)
-- (IBAction) authenticate: (id) sender
-{
-	[mDelegate authenticationPanel: self gotUsername: mUsername password: mPassword];
-	[self setAuthenticating: YES];
-	[self setPassword: nil];
-}
-
-
-- (void) cancelAuthentication2
-{
-	if (mIsAuthenticating)
-	{
-		[mDelegate authenticationPanelCancel: self];
-		[self setAuthenticating: NO];
-	}
-	else
-	{
-		[mDelegate authenticationPanelEndPanel: self];
-	}
-}
-
-
-- (IBAction) cancelAuthentication: (id) sender
-{
-	//This is required, if we don't want the cancel button to stay highlighted.
-	//Tested with NSButtons as well as a matrix of NSButtonCells.
-	NSRunLoop* rl = [NSRunLoop currentRunLoop];
-	NSArray* modes = [NSArray arrayWithObjects: NSDefaultRunLoopMode, NSModalPanelRunLoopMode, nil];
-	[rl performSelector: @selector (cancelAuthentication2) target: self argument: nil order: NSUIntegerMax modes: modes];
-}
+@synthesize message = _message;
+@dynamic delegate;
 @end

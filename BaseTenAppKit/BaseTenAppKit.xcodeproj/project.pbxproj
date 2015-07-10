@@ -53,40 +53,8 @@
 		53DB916511E0917F00313954 /* BXAttributeValuePredicateEditorRowTemplateFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 53DB916111E0917F00313954 /* BXAttributeValuePredicateEditorRowTemplateFactory.mm */; };
 		53DB916611E0917F00313954 /* BXMultipleChoicePredicateEditorRowTemplateFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 53DB916211E0917F00313954 /* BXMultipleChoicePredicateEditorRowTemplateFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		53DB916711E0917F00313954 /* BXMultipleChoicePredicateEditorRowTemplateFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 53DB916311E0917F00313954 /* BXMultipleChoicePredicateEditorRowTemplateFactory.m */; };
-		53ED303F0E1ACBA80095BE8B /* BaseTen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5354443E0D634CA4002A6C47 /* BaseTen.framework */; };
 		53F137CD0EB074C400D0F517 /* WaitForNetworkWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = 53F137CB0EB074C400D0F517 /* WaitForNetworkWindow.nib */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		5302CB600E360B1200587EAD /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 537E48D10A14BFE800A22080 /* BaseTen.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 535443BB0D634A47002A6C47;
-			remoteInfo = "BaseTen Framework + GC";
-		};
-		5354443D0D634CA4002A6C47 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 537E48D10A14BFE800A22080 /* BaseTen.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 535444130D634A47002A6C47;
-			remoteInfo = "BaseTen Framework + GC";
-		};
-		53906EE40E51CFF700D837EA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 537E48D10A14BFE800A22080 /* BaseTen.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 53DC77960E51B6580015691A;
-			remoteInfo = "BaseTen for iPhone";
-		};
-		9952B84419C99D8500240A0B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 537E48D10A14BFE800A22080 /* BaseTen.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 997B110D19BD124200CB345E;
-			remoteInfo = "BaseTen Framework Tests";
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -126,7 +94,6 @@
 		53726D840A30E4A30086BB60 /* BXObjectStatusToEditableTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BXObjectStatusToEditableTransformer.m; path = Sources/BXObjectStatusToEditableTransformer.m; sourceTree = "<group>"; };
 		537E484A0A14B7BA00A22080 /* BXSynchronizedArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BXSynchronizedArrayController.h; path = Sources/BXSynchronizedArrayController.h; sourceTree = "<group>"; };
 		537E484B0A14B7BA00A22080 /* BXSynchronizedArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BXSynchronizedArrayController.m; path = Sources/BXSynchronizedArrayController.m; sourceTree = "<group>"; };
-		537E48D10A14BFE800A22080 /* BaseTen.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BaseTen.xcodeproj; path = ../BaseTen.xcodeproj; sourceTree = SOURCE_ROOT; };
 		537E4A6D0A14C82200A22080 /* BaseTenAppKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BaseTenAppKit.h; path = Sources/BaseTenAppKit.h; sourceTree = "<group>"; };
 		539505FB11CFAC360049F36C /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		53AE2CB70B1721F2000E6EF1 /* BaseTen.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = BaseTen.icns; path = ../Resources/BaseTen.icns; sourceTree = SOURCE_ROOT; };
@@ -151,7 +118,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				535444820D634D9C002A6C47 /* SecurityInterface.framework in Frameworks */,
-				53ED303F0E1ACBA80095BE8B /* BaseTen.framework in Frameworks */,
 				539505FC11CFAC360049F36C /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -170,11 +136,7 @@
 		0867D691FE84028FC02AAC07 /* CocoaFramework */ = {
 			isa = PBXGroup;
 			children = (
-				08FB77AEFE84172EC02AAC07 /* Classes */,
-				32C88DFF0371C24200C91783 /* Other Sources */,
-				089C1665FE841158C02AAC07 /* Resources */,
-				2B8B5E3B0B20185100EF04F3 /* xcconfig */,
-				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
+				9916DF291B0F725800066D25 /* BaseTenAppKit */,
 				034768DFFF38A50411DB9C8B /* Products */,
 			);
 			name = CocoaFramework;
@@ -183,7 +145,6 @@
 		0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				537E48D10A14BFE800A22080 /* BaseTen.xcodeproj */,
 				539505FB11CFAC360049F36C /* Cocoa.framework */,
 				531650C30B72040700785454 /* SecurityInterface.framework */,
 			);
@@ -300,14 +261,16 @@
 			name = Transformers;
 			sourceTree = "<group>";
 		};
-		537E48D20A14BFE800A22080 /* Products */ = {
+		9916DF291B0F725800066D25 /* BaseTenAppKit */ = {
 			isa = PBXGroup;
 			children = (
-				5354443E0D634CA4002A6C47 /* BaseTen.framework */,
-				53906EE50E51CFF700D837EA /* libBaseTen.a */,
-				9952B84519C99D8500240A0B /* BaseTen Framework Tests.xctest */,
+				08FB77AEFE84172EC02AAC07 /* Classes */,
+				32C88DFF0371C24200C91783 /* Other Sources */,
+				089C1665FE841158C02AAC07 /* Resources */,
+				2B8B5E3B0B20185100EF04F3 /* xcconfig */,
+				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
 			);
-			name = Products;
+			name = BaseTenAppKit;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -357,7 +320,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				5302CB610E360B1200587EAD /* PBXTargetDependency */,
 			);
 			name = BaseTenAppKit;
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -383,42 +345,12 @@
 			mainGroup = 0867D691FE84028FC02AAC07 /* CocoaFramework */;
 			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 537E48D20A14BFE800A22080 /* Products */;
-					ProjectRef = 537E48D10A14BFE800A22080 /* BaseTen.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				535444570D634D9C002A6C47 /* BaseTenAppKit */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		5354443E0D634CA4002A6C47 /* BaseTen.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = BaseTen.framework;
-			remoteRef = 5354443D0D634CA4002A6C47 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		53906EE50E51CFF700D837EA /* libBaseTen.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libBaseTen.a;
-			remoteRef = 53906EE40E51CFF700D837EA /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		9952B84519C99D8500240A0B /* BaseTen Framework Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "BaseTen Framework Tests.xctest";
-			remoteRef = 9952B84419C99D8500240A0B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		5354446C0D634D9C002A6C47 /* Resources */ = {
@@ -497,14 +429,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		5302CB610E360B1200587EAD /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "BaseTen Framework + GC";
-			targetProxy = 5302CB600E360B1200587EAD /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		089C1666FE841158C02AAC07 /* InfoPlist.strings */ = {

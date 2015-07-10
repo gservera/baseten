@@ -8,6 +8,8 @@
 
 #import "BXDatabaseTestCase.h"
 #import <BaseTen/PGTSConstants.h>
+#import <BaseTen/BXRelationshipDescriptionPrivate.h>
+#import "BXSocketDescriptor.h"
 
 @implementation BXDatabaseTestCase
 
@@ -25,6 +27,14 @@
     XCTAssertFalse ([mContext autocommits]);
 }
 
+- (void)invokeTest {
+    NSLog(@"Running without GCD");
+    [BXSocketDescriptor setUsesGCD:NO];
+    [super invokeTest];
+    NSLog(@"Running with GCD");
+    [BXSocketDescriptor setUsesGCD:YES];
+    [super invokeTest];
+}
 
 - (void)tearDown {
     [mContext disconnect];
@@ -36,13 +46,13 @@
 #pragma mark - DB
 
 - (NSURL *)databaseURI {
-    return [NSURL URLWithString: @"pgsql://baseten_test_user@localhost/basetentest"];
+    return [NSURL URLWithString: @"pgsql://guillem@localhost/basetentest"];
 }
 
 
 - (NSDictionary *)connectionDictionary {
     return @{kPGTSHostKey : @"localhost",
-             kPGTSUserNameKey : @"baseten_test_user",
+             kPGTSUserNameKey : @"guillem",
              kPGTSDatabaseNameKey : @"basetentest",
              kPGTSSSLModeKey : @"disable"};
 }
@@ -51,4 +61,17 @@
     return kBXSSLModeDisable;
 }
 
+@end
+
+@implementation BXDatabaseObject (UnitTestAdditions)
+- (id) resolveNoncachedRelationshipNamed: (NSString *) aName
+{
+	NSError* error = nil;
+	//BXDatabaseObject caches related objects so for testing purposes we need to fetch using the relationship.
+	BXEntityDescription* entity = [[self objectID] entity];
+	BXRelationshipDescription* rel = [[entity relationshipsByName] objectForKey: aName];
+	id rval = [rel targetForObject: self error: &error];
+	NSAssert (nil == error, [error description]);
+	return rval;
+}
 @end

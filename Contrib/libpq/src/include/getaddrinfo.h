@@ -13,7 +13,7 @@
  * This code will also work on platforms where struct addrinfo is defined
  * in the system headers but no getaddrinfo() can be located.
  *
- * Copyright (c) 2003-2013, PostgreSQL Global Development Group
+ * Copyright (c) 2003-2014, PostgreSQL Global Development Group
  *
  * src/include/getaddrinfo.h
  *
@@ -82,6 +82,9 @@
 #ifndef NI_NUMERICSERV
 #define NI_NUMERICSERV	2
 #endif
+#ifndef NI_NAMEREQD
+#define NI_NAMEREQD		4
+#endif
 
 #ifndef NI_MAXHOST
 #define NI_MAXHOST	1025
@@ -96,14 +99,14 @@
 #ifndef WIN32
 struct addrinfo
 {
-	int			ai_flags;
-	int			ai_family;
-	int			ai_socktype;
-	int			ai_protocol;
-	size_t		ai_addrlen;
-	struct sockaddr *ai_addr;
-	char	   *ai_canonname;
-	struct addrinfo *ai_next;
+    int			ai_flags;
+    int			ai_family;
+    int			ai_socktype;
+    int			ai_protocol;
+    size_t		ai_addrlen;
+    struct sockaddr *ai_addr;
+    char	   *ai_canonname;
+    struct addrinfo *ai_next;
 };
 #else
 /*
@@ -113,14 +116,14 @@ struct addrinfo
  */
 struct addrinfo
 {
-	int			ai_flags;
-	int			ai_family;
-	int			ai_socktype;
-	int			ai_protocol;
-	size_t		ai_addrlen;
-	char	   *ai_canonname;
-	struct sockaddr *ai_addr;
-	struct addrinfo *ai_next;
+    int			ai_flags;
+    int			ai_family;
+    int			ai_socktype;
+    int			ai_protocol;
+    size_t		ai_addrlen;
+    char	   *ai_canonname;
+    struct sockaddr *ai_addr;
+    struct addrinfo *ai_next;
 };
 #endif
 #endif   /* HAVE_STRUCT_ADDRINFO */
@@ -150,12 +153,12 @@ struct addrinfo
 #define getnameinfo pg_getnameinfo
 
 extern int getaddrinfo(const char *node, const char *service,
-			const struct addrinfo * hints, struct addrinfo ** res);
+                       const struct addrinfo * hints, struct addrinfo ** res);
 extern void freeaddrinfo(struct addrinfo * res);
 extern const char *gai_strerror(int errcode);
 extern int getnameinfo(const struct sockaddr * sa, int salen,
-			char *node, int nodelen,
-			char *service, int servicelen, int flags);
+                       char *node, int nodelen,
+                       char *service, int servicelen, int flags);
 #endif   /* HAVE_GETADDRINFO */
 
 #endif   /* GETADDRINFO_H */

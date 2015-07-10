@@ -3,7 +3,7 @@
  * ip.c
  *	  IPv6-aware network access.
  *
- * Portions Copyright (c) 1996-2011, PostgreSQL Global Development Group
+ * Portions Copyright (c) 1996-2014, PostgreSQL Global Development Group
  * Portions Copyright (c) 1994, Regents of the University of California
  *
  *
@@ -36,24 +36,24 @@
 
 
 static int range_sockaddr_AF_INET(const struct sockaddr_in * addr,
-					   const struct sockaddr_in * netaddr,
-					   const struct sockaddr_in * netmask);
+                                  const struct sockaddr_in * netaddr,
+                                  const struct sockaddr_in * netmask);
 
 #ifdef HAVE_IPV6
 static int range_sockaddr_AF_INET6(const struct sockaddr_in6 * addr,
-						const struct sockaddr_in6 * netaddr,
-						const struct sockaddr_in6 * netmask);
+                                   const struct sockaddr_in6 * netaddr,
+                                   const struct sockaddr_in6 * netmask);
 #endif
 
 #ifdef	HAVE_UNIX_SOCKETS
 static int getaddrinfo_unix(const char *path,
-				 const struct addrinfo * hintsp,
-				 struct addrinfo ** result);
+                            const struct addrinfo * hintsp,
+                            struct addrinfo ** result);
 
 static int getnameinfo_unix(const struct sockaddr_un * sa, int salen,
-				 char *node, int nodelen,
-				 char *service, int servicelen,
-				 int flags);
+                            char *node, int nodelen,
+                            char *service, int servicelen,
+                            int flags);
 #endif
 
 
@@ -62,23 +62,23 @@ static int getnameinfo_unix(const struct sockaddr_un * sa, int salen,
  */
 int
 pg_getaddrinfo_all(const char *hostname, const char *servname,
-				   const struct addrinfo * hintp, struct addrinfo ** result)
+                   const struct addrinfo * hintp, struct addrinfo ** result)
 {
-	int			rc;
-
-	/* not all versions of getaddrinfo() zero *result on failure */
-	*result = NULL;
-
+    int			rc;
+    
+    /* not all versions of getaddrinfo() zero *result on failure */
+    *result = NULL;
+    
 #ifdef HAVE_UNIX_SOCKETS
-	if (hintp->ai_family == AF_UNIX)
-		return getaddrinfo_unix(servname, hintp, result);
+    if (hintp->ai_family == AF_UNIX)
+        return getaddrinfo_unix(servname, hintp, result);
 #endif
-
-	/* NULL has special meaning to getaddrinfo(). */
-	rc = getaddrinfo((!hostname || hostname[0] == '\0') ? NULL : hostname,
-					 servname, hintp, result);
-
-	return rc;
+    
+    /* NULL has special meaning to getaddrinfo(). */
+    rc = getaddrinfo((!hostname || hostname[0] == '\0') ? NULL : hostname,
+                     servname, hintp, result);
+    
+    return rc;
 }
 
 
@@ -95,25 +95,25 @@ void
 pg_freeaddrinfo_all(int hint_ai_family, struct addrinfo * ai)
 {
 #ifdef HAVE_UNIX_SOCKETS
-	if (hint_ai_family == AF_UNIX)
-	{
-		/* struct was built by getaddrinfo_unix (see pg_getaddrinfo_all) */
-		while (ai != NULL)
-		{
-			struct addrinfo *p = ai;
-
-			ai = ai->ai_next;
-			free(p->ai_addr);
-			free(p);
-		}
-	}
-	else
+    if (hint_ai_family == AF_UNIX)
+    {
+        /* struct was built by getaddrinfo_unix (see pg_getaddrinfo_all) */
+        while (ai != NULL)
+        {
+            struct addrinfo *p = ai;
+            
+            ai = ai->ai_next;
+            free(p->ai_addr);
+            free(p);
+        }
+    }
+    else
 #endif   /* HAVE_UNIX_SOCKETS */
-	{
-		/* struct was built by getaddrinfo() */
-		if (ai != NULL)
-			freeaddrinfo(ai);
-	}
+    {
+        /* struct was built by getaddrinfo() */
+        if (ai != NULL)
+            freeaddrinfo(ai);
+    }
 }
 
 
@@ -127,34 +127,34 @@ pg_freeaddrinfo_all(int hint_ai_family, struct addrinfo * ai)
  */
 int
 pg_getnameinfo_all(const struct sockaddr_storage * addr, int salen,
-				   char *node, int nodelen,
-				   char *service, int servicelen,
-				   int flags)
+                   char *node, int nodelen,
+                   char *service, int servicelen,
+                   int flags)
 {
-	int			rc;
-
+    int			rc;
+    
 #ifdef HAVE_UNIX_SOCKETS
-	if (addr && addr->ss_family == AF_UNIX)
-		rc = getnameinfo_unix((const struct sockaddr_un *) addr, salen,
-							  node, nodelen,
-							  service, servicelen,
-							  flags);
-	else
+    if (addr && addr->ss_family == AF_UNIX)
+        rc = getnameinfo_unix((const struct sockaddr_un *) addr, salen,
+                              node, nodelen,
+                              service, servicelen,
+                              flags);
+    else
 #endif
-		rc = getnameinfo((const struct sockaddr *) addr, salen,
-						 node, nodelen,
-						 service, servicelen,
-						 flags);
-
-	if (rc != 0)
-	{
-		if (node)
-			strlcpy(node, "???", nodelen);
-		if (service)
-			strlcpy(service, "???", servicelen);
-	}
-
-	return rc;
+        rc = getnameinfo((const struct sockaddr *) addr, salen,
+                         node, nodelen,
+                         service, servicelen,
+                         flags);
+    
+    if (rc != 0)
+    {
+        if (node)
+            strlcpy(node, "???", nodelen);
+        if (service)
+            strlcpy(service, "???", servicelen);
+    }
+    
+    return rc;
 }
 
 
@@ -170,65 +170,65 @@ pg_getnameinfo_all(const struct sockaddr_storage * addr, int salen,
  */
 static int
 getaddrinfo_unix(const char *path, const struct addrinfo * hintsp,
-				 struct addrinfo ** result)
+                 struct addrinfo ** result)
 {
-	struct addrinfo hints;
-	struct addrinfo *aip;
-	struct sockaddr_un *unp;
-
-	*result = NULL;
-
-	MemSet(&hints, 0, sizeof(hints));
-
-	if (strlen(path) >= sizeof(unp->sun_path))
-		return EAI_FAIL;
-
-	if (hintsp == NULL)
-	{
-		hints.ai_family = AF_UNIX;
-		hints.ai_socktype = SOCK_STREAM;
-	}
-	else
-		memcpy(&hints, hintsp, sizeof(hints));
-
-	if (hints.ai_socktype == 0)
-		hints.ai_socktype = SOCK_STREAM;
-
-	if (hints.ai_family != AF_UNIX)
-	{
-		/* shouldn't have been called */
-		return EAI_FAIL;
-	}
-
-	aip = calloc(1, sizeof(struct addrinfo));
-	if (aip == NULL)
-		return EAI_MEMORY;
-
-	unp = calloc(1, sizeof(struct sockaddr_un));
-	if (unp == NULL)
-	{
-		free(aip);
-		return EAI_MEMORY;
-	}
-
-	aip->ai_family = AF_UNIX;
-	aip->ai_socktype = hints.ai_socktype;
-	aip->ai_protocol = hints.ai_protocol;
-	aip->ai_next = NULL;
-	aip->ai_canonname = NULL;
-	*result = aip;
-
-	unp->sun_family = AF_UNIX;
-	aip->ai_addr = (struct sockaddr *) unp;
-	aip->ai_addrlen = sizeof(struct sockaddr_un);
-
-	strcpy(unp->sun_path, path);
-
+    struct addrinfo hints;
+    struct addrinfo *aip;
+    struct sockaddr_un *unp;
+    
+    *result = NULL;
+    
+    MemSet(&hints, 0, sizeof(hints));
+    
+    if (strlen(path) >= sizeof(unp->sun_path))
+        return EAI_FAIL;
+    
+    if (hintsp == NULL)
+    {
+        hints.ai_family = AF_UNIX;
+        hints.ai_socktype = SOCK_STREAM;
+    }
+    else
+        memcpy(&hints, hintsp, sizeof(hints));
+    
+    if (hints.ai_socktype == 0)
+        hints.ai_socktype = SOCK_STREAM;
+    
+    if (hints.ai_family != AF_UNIX)
+    {
+        /* shouldn't have been called */
+        return EAI_FAIL;
+    }
+    
+    aip = calloc(1, sizeof(struct addrinfo));
+    if (aip == NULL)
+        return EAI_MEMORY;
+    
+    unp = calloc(1, sizeof(struct sockaddr_un));
+    if (unp == NULL)
+    {
+        free(aip);
+        return EAI_MEMORY;
+    }
+    
+    aip->ai_family = AF_UNIX;
+    aip->ai_socktype = hints.ai_socktype;
+    aip->ai_protocol = hints.ai_protocol;
+    aip->ai_next = NULL;
+    aip->ai_canonname = NULL;
+    *result = aip;
+    
+    unp->sun_family = AF_UNIX;
+    aip->ai_addr = (struct sockaddr *) unp;
+    aip->ai_addrlen = sizeof(struct sockaddr_un);
+    
+    strcpy(unp->sun_path, path);
+    
 #ifdef HAVE_STRUCT_SOCKADDR_STORAGE_SS_LEN
-	unp->sun_len = sizeof(struct sockaddr_un);
+    unp->sun_len = sizeof(struct sockaddr_un);
 #endif
-
-	return 0;
+    
+    return 0;
 }
 
 /*
@@ -236,37 +236,32 @@ getaddrinfo_unix(const char *path, const struct addrinfo * hintsp,
  */
 static int
 getnameinfo_unix(const struct sockaddr_un * sa, int salen,
-				 char *node, int nodelen,
-				 char *service, int servicelen,
-				 int flags)
+                 char *node, int nodelen,
+                 char *service, int servicelen,
+                 int flags)
 {
-	int			ret = -1;
-
-	/* Invalid arguments. */
-	if (sa == NULL || sa->sun_family != AF_UNIX ||
-		(node == NULL && service == NULL))
-		return EAI_FAIL;
-
-	/* We don't support those. */
-	if ((node && !(flags & NI_NUMERICHOST))
-		|| (service && !(flags & NI_NUMERICSERV)))
-		return EAI_FAIL;
-
-	if (node)
-	{
-		ret = snprintf(node, nodelen, "%s", "[local]");
-		if (ret == -1 || ret > nodelen)
-			return EAI_MEMORY;
-	}
-
-	if (service)
-	{
-		ret = snprintf(service, servicelen, "%s", sa->sun_path);
-		if (ret == -1 || ret > servicelen)
-			return EAI_MEMORY;
-	}
-
-	return 0;
+    int			ret = -1;
+    
+    /* Invalid arguments. */
+    if (sa == NULL || sa->sun_family != AF_UNIX ||
+        (node == NULL && service == NULL))
+        return EAI_FAIL;
+    
+    if (node)
+    {
+        ret = snprintf(node, nodelen, "%s", "[local]");
+        if (ret == -1 || ret > nodelen)
+            return EAI_MEMORY;
+    }
+    
+    if (service)
+    {
+        ret = snprintf(service, servicelen, "%s", sa->sun_path);
+        if (ret == -1 || ret > servicelen)
+            return EAI_MEMORY;
+    }
+    
+    return 0;
 }
 #endif   /* HAVE_UNIX_SOCKETS */
 
@@ -279,33 +274,33 @@ getnameinfo_unix(const struct sockaddr_un * sa, int salen,
  */
 int
 pg_range_sockaddr(const struct sockaddr_storage * addr,
-				  const struct sockaddr_storage * netaddr,
-				  const struct sockaddr_storage * netmask)
+                  const struct sockaddr_storage * netaddr,
+                  const struct sockaddr_storage * netmask)
 {
-	if (addr->ss_family == AF_INET)
-		return range_sockaddr_AF_INET((struct sockaddr_in *) addr,
-									  (struct sockaddr_in *) netaddr,
-									  (struct sockaddr_in *) netmask);
+    if (addr->ss_family == AF_INET)
+        return range_sockaddr_AF_INET((const struct sockaddr_in *) addr,
+                                      (const struct sockaddr_in *) netaddr,
+                                      (const struct sockaddr_in *) netmask);
 #ifdef HAVE_IPV6
-	else if (addr->ss_family == AF_INET6)
-		return range_sockaddr_AF_INET6((struct sockaddr_in6 *) addr,
-									   (struct sockaddr_in6 *) netaddr,
-									   (struct sockaddr_in6 *) netmask);
+    else if (addr->ss_family == AF_INET6)
+        return range_sockaddr_AF_INET6((const struct sockaddr_in6 *) addr,
+                                       (const struct sockaddr_in6 *) netaddr,
+                                       (const struct sockaddr_in6 *) netmask);
 #endif
-	else
-		return 0;
+    else
+        return 0;
 }
 
 static int
 range_sockaddr_AF_INET(const struct sockaddr_in * addr,
-					   const struct sockaddr_in * netaddr,
-					   const struct sockaddr_in * netmask)
+                       const struct sockaddr_in * netaddr,
+                       const struct sockaddr_in * netmask)
 {
-	if (((addr->sin_addr.s_addr ^ netaddr->sin_addr.s_addr) &
-		 netmask->sin_addr.s_addr) == 0)
-		return 1;
-	else
-		return 0;
+    if (((addr->sin_addr.s_addr ^ netaddr->sin_addr.s_addr) &
+         netmask->sin_addr.s_addr) == 0)
+        return 1;
+    else
+        return 0;
 }
 
 
@@ -313,19 +308,19 @@ range_sockaddr_AF_INET(const struct sockaddr_in * addr,
 
 static int
 range_sockaddr_AF_INET6(const struct sockaddr_in6 * addr,
-						const struct sockaddr_in6 * netaddr,
-						const struct sockaddr_in6 * netmask)
+                        const struct sockaddr_in6 * netaddr,
+                        const struct sockaddr_in6 * netmask)
 {
-	int			i;
-
-	for (i = 0; i < 16; i++)
-	{
-		if (((addr->sin6_addr.s6_addr[i] ^ netaddr->sin6_addr.s6_addr[i]) &
-			 netmask->sin6_addr.s6_addr[i]) != 0)
-			return 0;
-	}
-
-	return 1;
+    int			i;
+    
+    for (i = 0; i < 16; i++)
+    {
+        if (((addr->sin6_addr.s6_addr[i] ^ netaddr->sin6_addr.s6_addr[i]) &
+             netmask->sin6_addr.s6_addr[i]) != 0)
+            return 0;
+    }
+    
+    return 1;
 }
 #endif   /* HAVE_IPV6 */
 
@@ -342,73 +337,73 @@ range_sockaddr_AF_INET6(const struct sockaddr_in6 * addr,
 int
 pg_sockaddr_cidr_mask(struct sockaddr_storage * mask, char *numbits, int family)
 {
-	long		bits;
-	char	   *endptr;
-
-	if (numbits == NULL)
-	{
-		bits = (family == AF_INET) ? 32 : 128;
-	}
-	else
-	{
-		bits = strtol(numbits, &endptr, 10);
-		if (*numbits == '\0' || *endptr != '\0')
-			return -1;
-	}
-
-	switch (family)
-	{
-		case AF_INET:
-			{
-				struct sockaddr_in mask4;
-				long		maskl;
-
-				if (bits < 0 || bits > 32)
-					return -1;
-				memset(&mask4, 0, sizeof(mask4));
-				/* avoid "x << 32", which is not portable */
-				if (bits > 0)
-					maskl = (0xffffffffUL << (32 - (int) bits))
-						& 0xffffffffUL;
-				else
-					maskl = 0;
-				mask4.sin_addr.s_addr = htonl(maskl);
-				memcpy(mask, &mask4, sizeof(mask4));
-				break;
-			}
-
+    long		bits;
+    char	   *endptr;
+    
+    if (numbits == NULL)
+    {
+        bits = (family == AF_INET) ? 32 : 128;
+    }
+    else
+    {
+        bits = strtol(numbits, &endptr, 10);
+        if (*numbits == '\0' || *endptr != '\0')
+            return -1;
+    }
+    
+    switch (family)
+    {
+        case AF_INET:
+        {
+            struct sockaddr_in mask4;
+            long		maskl;
+            
+            if (bits < 0 || bits > 32)
+                return -1;
+            memset(&mask4, 0, sizeof(mask4));
+            /* avoid "x << 32", which is not portable */
+            if (bits > 0)
+                maskl = (0xffffffffUL << (32 - (int) bits))
+                & 0xffffffffUL;
+            else
+                maskl = 0;
+            mask4.sin_addr.s_addr = htonl(maskl);
+            memcpy(mask, &mask4, sizeof(mask4));
+            break;
+        }
+            
 #ifdef HAVE_IPV6
-		case AF_INET6:
-			{
-				struct sockaddr_in6 mask6;
-				int			i;
-
-				if (bits < 0 || bits > 128)
-					return -1;
-				memset(&mask6, 0, sizeof(mask6));
-				for (i = 0; i < 16; i++)
-				{
-					if (bits <= 0)
-						mask6.sin6_addr.s6_addr[i] = 0;
-					else if (bits >= 8)
-						mask6.sin6_addr.s6_addr[i] = 0xff;
-					else
-					{
-						mask6.sin6_addr.s6_addr[i] =
-							(0xff << (8 - (int) bits)) & 0xff;
-					}
-					bits -= 8;
-				}
-				memcpy(mask, &mask6, sizeof(mask6));
-				break;
-			}
+        case AF_INET6:
+        {
+            struct sockaddr_in6 mask6;
+            int			i;
+            
+            if (bits < 0 || bits > 128)
+                return -1;
+            memset(&mask6, 0, sizeof(mask6));
+            for (i = 0; i < 16; i++)
+            {
+                if (bits <= 0)
+                    mask6.sin6_addr.s6_addr[i] = 0;
+                else if (bits >= 8)
+                    mask6.sin6_addr.s6_addr[i] = 0xff;
+                else
+                {
+                    mask6.sin6_addr.s6_addr[i] =
+                    (0xff << (8 - (int) bits)) & 0xff;
+                }
+                bits -= 8;
+            }
+            memcpy(mask, &mask6, sizeof(mask6));
+            break;
+        }
 #endif
-		default:
-			return -1;
-	}
-
-	mask->ss_family = family;
-	return 0;
+        default:
+            return -1;
+    }
+    
+    mask->ss_family = family;
+    return 0;
 }
 
 
@@ -425,25 +420,25 @@ pg_sockaddr_cidr_mask(struct sockaddr_storage * mask, char *numbits, int family)
 void
 pg_promote_v4_to_v6_addr(struct sockaddr_storage * addr)
 {
-	struct sockaddr_in addr4;
-	struct sockaddr_in6 addr6;
-	uint32		ip4addr;
-
-	memcpy(&addr4, addr, sizeof(addr4));
-	ip4addr = ntohl(addr4.sin_addr.s_addr);
-
-	memset(&addr6, 0, sizeof(addr6));
-
-	addr6.sin6_family = AF_INET6;
-
-	addr6.sin6_addr.s6_addr[10] = 0xff;
-	addr6.sin6_addr.s6_addr[11] = 0xff;
-	addr6.sin6_addr.s6_addr[12] = (ip4addr >> 24) & 0xFF;
-	addr6.sin6_addr.s6_addr[13] = (ip4addr >> 16) & 0xFF;
-	addr6.sin6_addr.s6_addr[14] = (ip4addr >> 8) & 0xFF;
-	addr6.sin6_addr.s6_addr[15] = (ip4addr) & 0xFF;
-
-	memcpy(addr, &addr6, sizeof(addr6));
+    struct sockaddr_in addr4;
+    struct sockaddr_in6 addr6;
+    uint32		ip4addr;
+    
+    memcpy(&addr4, addr, sizeof(addr4));
+    ip4addr = ntohl(addr4.sin_addr.s_addr);
+    
+    memset(&addr6, 0, sizeof(addr6));
+    
+    addr6.sin6_family = AF_INET6;
+    
+    addr6.sin6_addr.s6_addr[10] = 0xff;
+    addr6.sin6_addr.s6_addr[11] = 0xff;
+    addr6.sin6_addr.s6_addr[12] = (ip4addr >> 24) & 0xFF;
+    addr6.sin6_addr.s6_addr[13] = (ip4addr >> 16) & 0xFF;
+    addr6.sin6_addr.s6_addr[14] = (ip4addr >> 8) & 0xFF;
+    addr6.sin6_addr.s6_addr[15] = (ip4addr) & 0xFF;
+    
+    memcpy(addr, &addr6, sizeof(addr6));
 }
 
 /*
@@ -460,27 +455,27 @@ pg_promote_v4_to_v6_addr(struct sockaddr_storage * addr)
 void
 pg_promote_v4_to_v6_mask(struct sockaddr_storage * addr)
 {
-	struct sockaddr_in addr4;
-	struct sockaddr_in6 addr6;
-	uint32		ip4addr;
-	int			i;
-
-	memcpy(&addr4, addr, sizeof(addr4));
-	ip4addr = ntohl(addr4.sin_addr.s_addr);
-
-	memset(&addr6, 0, sizeof(addr6));
-
-	addr6.sin6_family = AF_INET6;
-
-	for (i = 0; i < 12; i++)
-		addr6.sin6_addr.s6_addr[i] = 0xff;
-
-	addr6.sin6_addr.s6_addr[12] = (ip4addr >> 24) & 0xFF;
-	addr6.sin6_addr.s6_addr[13] = (ip4addr >> 16) & 0xFF;
-	addr6.sin6_addr.s6_addr[14] = (ip4addr >> 8) & 0xFF;
-	addr6.sin6_addr.s6_addr[15] = (ip4addr) & 0xFF;
-
-	memcpy(addr, &addr6, sizeof(addr6));
+    struct sockaddr_in addr4;
+    struct sockaddr_in6 addr6;
+    uint32		ip4addr;
+    int			i;
+    
+    memcpy(&addr4, addr, sizeof(addr4));
+    ip4addr = ntohl(addr4.sin_addr.s_addr);
+    
+    memset(&addr6, 0, sizeof(addr6));
+    
+    addr6.sin6_family = AF_INET6;
+    
+    for (i = 0; i < 12; i++)
+        addr6.sin6_addr.s6_addr[i] = 0xff;
+    
+    addr6.sin6_addr.s6_addr[12] = (ip4addr >> 24) & 0xFF;
+    addr6.sin6_addr.s6_addr[13] = (ip4addr >> 16) & 0xFF;
+    addr6.sin6_addr.s6_addr[14] = (ip4addr >> 8) & 0xFF;
+    addr6.sin6_addr.s6_addr[15] = (ip4addr) & 0xFF;
+    
+    memcpy(addr, &addr6, sizeof(addr6));
 }
 #endif   /* HAVE_IPV6 */
 
@@ -491,42 +486,42 @@ pg_promote_v4_to_v6_mask(struct sockaddr_storage * addr)
  */
 static void
 run_ifaddr_callback(PgIfAddrCallback callback, void *cb_data,
-					struct sockaddr * addr, struct sockaddr * mask)
+                    struct sockaddr * addr, struct sockaddr * mask)
 {
-	struct sockaddr_storage fullmask;
-
-	if (!addr)
-		return;
-
-	/* Check that the mask is valid */
-	if (mask)
-	{
-		if (mask->sa_family != addr->sa_family)
-		{
-			mask = NULL;
-		}
-		else if (mask->sa_family == AF_INET)
-		{
-			if (((struct sockaddr_in *) mask)->sin_addr.s_addr == INADDR_ANY)
-				mask = NULL;
-		}
+    struct sockaddr_storage fullmask;
+    
+    if (!addr)
+        return;
+    
+    /* Check that the mask is valid */
+    if (mask)
+    {
+        if (mask->sa_family != addr->sa_family)
+        {
+            mask = NULL;
+        }
+        else if (mask->sa_family == AF_INET)
+        {
+            if (((struct sockaddr_in *) mask)->sin_addr.s_addr == INADDR_ANY)
+                mask = NULL;
+        }
 #ifdef HAVE_IPV6
-		else if (mask->sa_family == AF_INET6)
-		{
-			if (IN6_IS_ADDR_UNSPECIFIED(&((struct sockaddr_in6 *) mask)->sin6_addr))
-				mask = NULL;
-		}
+        else if (mask->sa_family == AF_INET6)
+        {
+            if (IN6_IS_ADDR_UNSPECIFIED(&((struct sockaddr_in6 *) mask)->sin6_addr))
+                mask = NULL;
+        }
 #endif
-	}
-
-	/* If mask is invalid, generate our own fully-set mask */
-	if (!mask)
-	{
-		pg_sockaddr_cidr_mask(&fullmask, NULL, addr->sa_family);
-		mask = (struct sockaddr *) & fullmask;
-	}
-
-	(*callback) (addr, mask, cb_data);
+    }
+    
+    /* If mask is invalid, generate our own fully-set mask */
+    if (!mask)
+    {
+        pg_sockaddr_cidr_mask(&fullmask, NULL, addr->sa_family);
+        mask = (struct sockaddr *) & fullmask;
+    }
+    
+    (*callback) (addr, mask, cb_data);
 }
 
 #ifdef WIN32
@@ -543,54 +538,54 @@ run_ifaddr_callback(PgIfAddrCallback callback, void *cb_data,
 int
 pg_foreach_ifaddr(PgIfAddrCallback callback, void *cb_data)
 {
-	INTERFACE_INFO *ptr,
-			   *ii = NULL;
-	unsigned long length,
+    INTERFACE_INFO *ptr,
+    *ii = NULL;
+    unsigned long length,
 				i;
-	unsigned long n_ii = 0;
-	SOCKET		sock;
-	int			error;
-
-	sock = WSASocket(AF_INET, SOCK_DGRAM, 0, 0, 0, 0);
-	if (sock == SOCKET_ERROR)
-		return -1;
-
-	while (n_ii < 1024)
-	{
-		n_ii += 64;
-		ptr = realloc(ii, sizeof(INTERFACE_INFO) * n_ii);
-		if (!ptr)
-		{
-			free(ii);
-			closesocket(sock);
-			errno = ENOMEM;
-			return -1;
-		}
-
-		ii = ptr;
-		if (WSAIoctl(sock, SIO_GET_INTERFACE_LIST, 0, 0,
-					 ii, n_ii * sizeof(INTERFACE_INFO),
-					 &length, 0, 0) == SOCKET_ERROR)
-		{
-			error = WSAGetLastError();
-			if (error == WSAEFAULT || error == WSAENOBUFS)
-				continue;		/* need to make the buffer bigger */
-			closesocket(sock);
-			free(ii);
-			return -1;
-		}
-
-		break;
-	}
-
-	for (i = 0; i < length / sizeof(INTERFACE_INFO); ++i)
-		run_ifaddr_callback(callback, cb_data,
-							(struct sockaddr *) & ii[i].iiAddress,
-							(struct sockaddr *) & ii[i].iiNetmask);
-
-	closesocket(sock);
-	free(ii);
-	return 0;
+    unsigned long n_ii = 0;
+    SOCKET		sock;
+    int			error;
+    
+    sock = WSASocket(AF_INET, SOCK_DGRAM, 0, 0, 0, 0);
+    if (sock == INVALID_SOCKET)
+        return -1;
+    
+    while (n_ii < 1024)
+    {
+        n_ii += 64;
+        ptr = realloc(ii, sizeof(INTERFACE_INFO) * n_ii);
+        if (!ptr)
+        {
+            free(ii);
+            closesocket(sock);
+            errno = ENOMEM;
+            return -1;
+        }
+        
+        ii = ptr;
+        if (WSAIoctl(sock, SIO_GET_INTERFACE_LIST, 0, 0,
+                     ii, n_ii * sizeof(INTERFACE_INFO),
+                     &length, 0, 0) == SOCKET_ERROR)
+        {
+            error = WSAGetLastError();
+            if (error == WSAEFAULT || error == WSAENOBUFS)
+                continue;		/* need to make the buffer bigger */
+            closesocket(sock);
+            free(ii);
+            return -1;
+        }
+        
+        break;
+    }
+    
+    for (i = 0; i < length / sizeof(INTERFACE_INFO); ++i)
+        run_ifaddr_callback(callback, cb_data,
+                            (struct sockaddr *) & ii[i].iiAddress,
+                            (struct sockaddr *) & ii[i].iiNetmask);
+    
+    closesocket(sock);
+    free(ii);
+    return 0;
 }
 #elif HAVE_GETIFADDRS			/* && !WIN32 */
 
@@ -608,18 +603,18 @@ pg_foreach_ifaddr(PgIfAddrCallback callback, void *cb_data)
 int
 pg_foreach_ifaddr(PgIfAddrCallback callback, void *cb_data)
 {
-	struct ifaddrs *ifa,
-			   *l;
-
-	if (getifaddrs(&ifa) < 0)
-		return -1;
-
-	for (l = ifa; l; l = l->ifa_next)
-		run_ifaddr_callback(callback, cb_data,
-							l->ifa_addr, l->ifa_netmask);
-
-	freeifaddrs(ifa);
-	return 0;
+    struct ifaddrs *ifa,
+    *l;
+    
+    if (getifaddrs(&ifa) < 0)
+        return -1;
+    
+    for (l = ifa; l; l = l->ifa_next)
+        run_ifaddr_callback(callback, cb_data,
+                            l->ifa_addr, l->ifa_netmask);
+    
+    freeifaddrs(ifa);
+    return 0;
 }
 #else							/* !HAVE_GETIFADDRS && !WIN32 */
 
@@ -657,97 +652,97 @@ pg_foreach_ifaddr(PgIfAddrCallback callback, void *cb_data)
 int
 pg_foreach_ifaddr(PgIfAddrCallback callback, void *cb_data)
 {
-	struct lifconf lifc;
-	struct lifreq *lifr,
+    struct lifconf lifc;
+    struct lifreq *lifr,
 				lmask;
-	struct sockaddr *addr,
-			   *mask;
-	char	   *ptr,
-			   *buffer = NULL;
-	size_t		n_buffer = 1024;
-	pgsocket	sock,
+    struct sockaddr *addr,
+    *mask;
+    char	   *ptr,
+    *buffer = NULL;
+    size_t		n_buffer = 1024;
+    pgsocket	sock,
 				fd;
-
+    
 #ifdef HAVE_IPV6
-	pgsocket	sock6;
+    pgsocket	sock6;
 #endif
-	int			i,
+    int			i,
 				total;
-
-	sock = socket(AF_INET, SOCK_DGRAM, 0);
-	if (sock == -1)
-		return -1;
-
-	while (n_buffer < 1024 * 100)
-	{
-		n_buffer += 1024;
-		ptr = realloc(buffer, n_buffer);
-		if (!ptr)
-		{
-			free(buffer);
-			close(sock);
-			errno = ENOMEM;
-			return -1;
-		}
-
-		memset(&lifc, 0, sizeof(lifc));
-		lifc.lifc_family = AF_UNSPEC;
-		lifc.lifc_buf = buffer = ptr;
-		lifc.lifc_len = n_buffer;
-
-		if (ioctl(sock, SIOCGLIFCONF, &lifc) < 0)
-		{
-			if (errno == EINVAL)
-				continue;
-			free(buffer);
-			close(sock);
-			return -1;
-		}
-
-		/*
-		 * Some Unixes try to return as much data as possible, with no
-		 * indication of whether enough space allocated. Don't believe we have
-		 * it all unless there's lots of slop.
-		 */
-		if (lifc.lifc_len < n_buffer - 1024)
-			break;
-	}
-
+    
+    sock = socket(AF_INET, SOCK_DGRAM, 0);
+    if (sock == PGINVALID_SOCKET)
+        return -1;
+    
+    while (n_buffer < 1024 * 100)
+    {
+        n_buffer += 1024;
+        ptr = realloc(buffer, n_buffer);
+        if (!ptr)
+        {
+            free(buffer);
+            close(sock);
+            errno = ENOMEM;
+            return -1;
+        }
+        
+        memset(&lifc, 0, sizeof(lifc));
+        lifc.lifc_family = AF_UNSPEC;
+        lifc.lifc_buf = buffer = ptr;
+        lifc.lifc_len = n_buffer;
+        
+        if (ioctl(sock, SIOCGLIFCONF, &lifc) < 0)
+        {
+            if (errno == EINVAL)
+                continue;
+            free(buffer);
+            close(sock);
+            return -1;
+        }
+        
+        /*
+         * Some Unixes try to return as much data as possible, with no
+         * indication of whether enough space allocated. Don't believe we have
+         * it all unless there's lots of slop.
+         */
+        if (lifc.lifc_len < n_buffer - 1024)
+            break;
+    }
+    
 #ifdef HAVE_IPV6
-	/* We'll need an IPv6 socket too for the SIOCGLIFNETMASK ioctls */
-	sock6 = socket(AF_INET6, SOCK_DGRAM, 0);
-	if (sock6 == -1)
-	{
-		free(buffer);
-		close(sock);
-		return -1;
-	}
+    /* We'll need an IPv6 socket too for the SIOCGLIFNETMASK ioctls */
+    sock6 = socket(AF_INET6, SOCK_DGRAM, 0);
+    if (sock6 == PGINVALID_SOCKET)
+    {
+        free(buffer);
+        close(sock);
+        return -1;
+    }
 #endif
-
-	total = lifc.lifc_len / sizeof(struct lifreq);
-	lifr = lifc.lifc_req;
-	for (i = 0; i < total; ++i)
-	{
-		addr = (struct sockaddr *) & lifr[i].lifr_addr;
-		memcpy(&lmask, &lifr[i], sizeof(struct lifreq));
+    
+    total = lifc.lifc_len / sizeof(struct lifreq);
+    lifr = lifc.lifc_req;
+    for (i = 0; i < total; ++i)
+    {
+        addr = (struct sockaddr *) & lifr[i].lifr_addr;
+        memcpy(&lmask, &lifr[i], sizeof(struct lifreq));
 #ifdef HAVE_IPV6
-		fd = (addr->sa_family == AF_INET6) ? sock6 : sock;
+        fd = (addr->sa_family == AF_INET6) ? sock6 : sock;
 #else
-		fd = sock;
+        fd = sock;
 #endif
-		if (ioctl(fd, SIOCGLIFNETMASK, &lmask) < 0)
-			mask = NULL;
-		else
-			mask = (struct sockaddr *) & lmask.lifr_addr;
-		run_ifaddr_callback(callback, cb_data, addr, mask);
-	}
-
-	free(buffer);
-	close(sock);
+        if (ioctl(fd, SIOCGLIFNETMASK, &lmask) < 0)
+            mask = NULL;
+        else
+            mask = (struct sockaddr *) & lmask.lifr_addr;
+        run_ifaddr_callback(callback, cb_data, addr, mask);
+    }
+    
+    free(buffer);
+    close(sock);
 #ifdef HAVE_IPV6
-	close(sock6);
+    close(sock6);
 #endif
-	return 0;
+    return 0;
 }
 #elif defined(SIOCGIFCONF)
 
@@ -765,14 +760,14 @@ pg_foreach_ifaddr(PgIfAddrCallback callback, void *cb_data)
 /* Calculate based on sockaddr.sa_len */
 #ifdef HAVE_STRUCT_SOCKADDR_SA_LEN
 #define _SIZEOF_ADDR_IFREQ(ifr) \
-		((ifr).ifr_addr.sa_len > sizeof(struct sockaddr) ? \
-		 (sizeof(struct ifreq) - sizeof(struct sockaddr) + \
-		  (ifr).ifr_addr.sa_len) : sizeof(struct ifreq))
+((ifr).ifr_addr.sa_len > sizeof(struct sockaddr) ? \
+(sizeof(struct ifreq) - sizeof(struct sockaddr) + \
+(ifr).ifr_addr.sa_len) : sizeof(struct ifreq))
 
 /* Padded ifreq structure, simple */
 #else
 #define _SIZEOF_ADDR_IFREQ(ifr) \
-	sizeof (struct ifreq)
+sizeof (struct ifreq)
 #endif
 #endif   /* !_SIZEOF_ADDR_IFREQ */
 
@@ -785,69 +780,69 @@ pg_foreach_ifaddr(PgIfAddrCallback callback, void *cb_data)
 int
 pg_foreach_ifaddr(PgIfAddrCallback callback, void *cb_data)
 {
-	struct ifconf ifc;
-	struct ifreq *ifr,
-			   *end,
+    struct ifconf ifc;
+    struct ifreq *ifr,
+    *end,
 				addr,
 				mask;
-	char	   *ptr,
-			   *buffer = NULL;
-	size_t		n_buffer = 1024;
-	int			sock;
-
-	sock = socket(AF_INET, SOCK_DGRAM, 0);
-	if (sock == -1)
-		return -1;
-
-	while (n_buffer < 1024 * 100)
-	{
-		n_buffer += 1024;
-		ptr = realloc(buffer, n_buffer);
-		if (!ptr)
-		{
-			free(buffer);
-			close(sock);
-			errno = ENOMEM;
-			return -1;
-		}
-
-		memset(&ifc, 0, sizeof(ifc));
-		ifc.ifc_buf = buffer = ptr;
-		ifc.ifc_len = n_buffer;
-
-		if (ioctl(sock, SIOCGIFCONF, &ifc) < 0)
-		{
-			if (errno == EINVAL)
-				continue;
-			free(buffer);
-			close(sock);
-			return -1;
-		}
-
-		/*
-		 * Some Unixes try to return as much data as possible, with no
-		 * indication of whether enough space allocated. Don't believe we have
-		 * it all unless there's lots of slop.
-		 */
-		if (ifc.ifc_len < n_buffer - 1024)
-			break;
-	}
-
-	end = (struct ifreq *) (buffer + ifc.ifc_len);
-	for (ifr = ifc.ifc_req; ifr < end;)
-	{
-		memcpy(&addr, ifr, sizeof(addr));
-		memcpy(&mask, ifr, sizeof(mask));
-		if (ioctl(sock, SIOCGIFADDR, &addr, sizeof(addr)) == 0 &&
-			ioctl(sock, SIOCGIFNETMASK, &mask, sizeof(mask)) == 0)
-			run_ifaddr_callback(callback, cb_data,
-								&addr.ifr_addr, &mask.ifr_addr);
-		ifr = (struct ifreq *) ((char *) ifr + _SIZEOF_ADDR_IFREQ(*ifr));
-	}
-
-	free(buffer);
-	close(sock);
-	return 0;
+    char	   *ptr,
+    *buffer = NULL;
+    size_t		n_buffer = 1024;
+    pgsocket	sock;
+    
+    sock = socket(AF_INET, SOCK_DGRAM, 0);
+    if (sock == PGINVALID_SOCKET)
+        return -1;
+    
+    while (n_buffer < 1024 * 100)
+    {
+        n_buffer += 1024;
+        ptr = realloc(buffer, n_buffer);
+        if (!ptr)
+        {
+            free(buffer);
+            close(sock);
+            errno = ENOMEM;
+            return -1;
+        }
+        
+        memset(&ifc, 0, sizeof(ifc));
+        ifc.ifc_buf = buffer = ptr;
+        ifc.ifc_len = n_buffer;
+        
+        if (ioctl(sock, SIOCGIFCONF, &ifc) < 0)
+        {
+            if (errno == EINVAL)
+                continue;
+            free(buffer);
+            close(sock);
+            return -1;
+        }
+        
+        /*
+         * Some Unixes try to return as much data as possible, with no
+         * indication of whether enough space allocated. Don't believe we have
+         * it all unless there's lots of slop.
+         */
+        if (ifc.ifc_len < n_buffer - 1024)
+            break;
+    }
+    
+    end = (struct ifreq *) (buffer + ifc.ifc_len);
+    for (ifr = ifc.ifc_req; ifr < end;)
+    {
+        memcpy(&addr, ifr, sizeof(addr));
+        memcpy(&mask, ifr, sizeof(mask));
+        if (ioctl(sock, SIOCGIFADDR, &addr, sizeof(addr)) == 0 &&
+            ioctl(sock, SIOCGIFNETMASK, &mask, sizeof(mask)) == 0)
+            run_ifaddr_callback(callback, cb_data,
+                                &addr.ifr_addr, &mask.ifr_addr);
+        ifr = (struct ifreq *) ((char *) ifr + _SIZEOF_ADDR_IFREQ(*ifr));
+    }
+    
+    free(buffer);
+    close(sock);
+    return 0;
 }
 #else							/* !defined(SIOCGIFCONF) */
 
@@ -861,36 +856,36 @@ pg_foreach_ifaddr(PgIfAddrCallback callback, void *cb_data)
 int
 pg_foreach_ifaddr(PgIfAddrCallback callback, void *cb_data)
 {
-	struct sockaddr_in addr;
-	struct sockaddr_storage mask;
-
+    struct sockaddr_in addr;
+    struct sockaddr_storage mask;
+    
 #ifdef HAVE_IPV6
-	struct sockaddr_in6 addr6;
+    struct sockaddr_in6 addr6;
 #endif
-
-	/* addr 127.0.0.1/8 */
-	memset(&addr, 0, sizeof(addr));
-	addr.sin_family = AF_INET;
-	addr.sin_addr.s_addr = ntohl(0x7f000001);
-	memset(&mask, 0, sizeof(mask));
-	pg_sockaddr_cidr_mask(&mask, "8", AF_INET);
-	run_ifaddr_callback(callback, cb_data,
-						(struct sockaddr *) & addr,
-						(struct sockaddr *) & mask);
-
+    
+    /* addr 127.0.0.1/8 */
+    memset(&addr, 0, sizeof(addr));
+    addr.sin_family = AF_INET;
+    addr.sin_addr.s_addr = ntohl(0x7f000001);
+    memset(&mask, 0, sizeof(mask));
+    pg_sockaddr_cidr_mask(&mask, "8", AF_INET);
+    run_ifaddr_callback(callback, cb_data,
+                        (struct sockaddr *) & addr,
+                        (struct sockaddr *) & mask);
+    
 #ifdef HAVE_IPV6
-	/* addr ::1/128 */
-	memset(&addr6, 0, sizeof(addr6));
-	addr6.sin6_family = AF_INET6;
-	addr6.sin6_addr.s6_addr[15] = 1;
-	memset(&mask, 0, sizeof(mask));
-	pg_sockaddr_cidr_mask(&mask, "128", AF_INET6);
-	run_ifaddr_callback(callback, cb_data,
-						(struct sockaddr *) & addr6,
-						(struct sockaddr *) & mask);
+    /* addr ::1/128 */
+    memset(&addr6, 0, sizeof(addr6));
+    addr6.sin6_family = AF_INET6;
+    addr6.sin6_addr.s6_addr[15] = 1;
+    memset(&mask, 0, sizeof(mask));
+    pg_sockaddr_cidr_mask(&mask, "128", AF_INET6);
+    run_ifaddr_callback(callback, cb_data,
+                        (struct sockaddr *) & addr6,
+                        (struct sockaddr *) & mask);
 #endif
-
-	return 0;
+    
+    return 0;
 }
 #endif   /* !defined(SIOCGIFCONF) */
 

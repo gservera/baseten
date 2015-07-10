@@ -17,11 +17,11 @@
 // limitations under the License.
 //
 
-#import <Cocoa/Cocoa.h>
+@import Cocoa;
 #import <BaseTenAppKit/BXConnectionViewController.h>
 
 
-@interface BXConnectUsingBonjourViewController : BXConnectionViewController
+@interface BXConnectUsingBonjourViewController : BXConnectionViewController <NSNetServiceDelegate, NSNetServiceBrowserDelegate>
 {
 	IBOutlet NSTableView* mAddressTable;
 	IBOutlet NSArrayController* mBonjourArrayController;
@@ -31,21 +31,8 @@
 	BOOL mDiscovering;
 }
 
-- (void) startDiscovery;
-- (void) stopDiscovery;
+- (void)startDiscovery;
+- (void)stopDiscovery;
 @end
 
 
-@interface BXConnectUsingBonjourViewController (NSNetServiceDelegate)
-#if defined(MAC_OS_X_VERSION_10_6) && MAC_OS_X_VERSION_10_6 <= MAC_OS_X_VERSION_MAX_ALLOWED
-<NSNetServiceDelegate>
-#endif
-@end
-
-
-
-@interface BXConnectUsingBonjourViewController (NSNetServiceBrowserDelegate)
-#if defined(MAC_OS_X_VERSION_10_6) && MAC_OS_X_VERSION_10_6 <= MAC_OS_X_VERSION_MAX_ALLOWED
-<NSNetServiceBrowserDelegate>
-#endif
-@end
