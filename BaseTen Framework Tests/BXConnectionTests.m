@@ -39,7 +39,7 @@
 }
 
 - (NSURL *)databaseURI {
-    return [NSURL URLWithString: @"pgsql://guillem@localhost/BaseTenTestDB"];
+    return [NSURL URLWithString: @"pgsql://baseten_test_user@localhost/basetentest"];
 }
 
 - (void) waitForConnectionAttempts: (NSInteger) count

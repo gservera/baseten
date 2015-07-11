@@ -246,9 +246,35 @@ error:
 /**
  * \brief Create Security certificates from OpenSSL certificates.
  * \return An array of SecCertificateRefs.
- 
+ */
 - (CFArrayRef) copyCertificateArrayFromOpenSSLCertificates: (X509_STORE_CTX *) x509_ctx
 {
+    CSSM_DATA certData;
+    CFMutableArrayRef retval = NULL;
+    
+    // Step 1: Convert the X509_STORE_CTX into a SecCertificate.
+    bzero(&certData, sizeof(certData));
+    certData.Length = i2d_X509(x509_ctx->cert, &(certData.Data));
+    if (certData.Length > 0)
+    {
+        NSData *certNSData = [[NSData alloc] initWithBytes:certData.Data length:certData.Length];
+        
+        SecCertificateRef cert = SecCertificateCreateWithData(NULL, (CFDataRef)certNSData);
+        
+        if (cert != NULL)
+        {
+            retval = CFArrayCreateMutable(NULL, 1, NULL);
+            CFArrayAppendValue(retval, cert);
+            
+            [certNSData release];
+            free(certData.Data);
+            return retval;
+        }
+        [certNSData release];
+        free(certData.Data);
+    }
+    return retval;
+    /*
 	CFMutableArrayRef certs = NULL;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
@@ -295,5 +321,6 @@ error:
 		CFRelease (certs);
 	}
 	return retval;
-}*/
+     */
+}
 @end

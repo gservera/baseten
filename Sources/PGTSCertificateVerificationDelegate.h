@@ -30,5 +30,5 @@
 
 + (id) defaultCertificateVerificationDelegate;
 - (SecTrustRef) copyTrustFromCertificates: (CFArrayRef) certificates;
-//- (CFArrayRef) copyCertificateArrayFromOpenSSLCertificates: (X509_STORE_CTX *) x509_ctx;
+- (CFArrayRef) copyCertificateArrayFromOpenSSLCertificates: (X509_STORE_CTX *) x509_ctx;
 @end
