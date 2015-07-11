@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		4B4C4CD215040B7500840750 /* libpqTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B4C4CD115040B7500840750 /* libpqTests.m */; };
-		4B4C4E0C1504295600840750 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B4C4E0A1504295600840750 /* libcrypto.a */; };
-		4B4C4E0D1504295600840750 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B4C4E0B1504295600840750 /* libssl.a */; };
 		4B5894F117EF99B90039A02A /* pg_config_ext.h in Headers */ = {isa = PBXBuildFile; fileRef = 4B5894F017EF99B90039A02A /* pg_config_ext.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4B91EF2716F2110F00CC836E /* libpq-fe.h in Headers */ = {isa = PBXBuildFile; fileRef = 4BBB04E316A91EE500CEE2AE /* libpq-fe.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4BA7590F17F043F100C26AD6 /* pqcomm.h in Headers */ = {isa = PBXBuildFile; fileRef = 4BA7590E17F043F100C26AD6 /* pqcomm.h */; };
@@ -179,6 +177,8 @@
 		9987E9D8196888EF005750C5 /* command.h in Headers */ = {isa = PBXBuildFile; fileRef = 9987E9B119688602005750C5 /* command.h */; };
 		9987E9D919688916005750C5 /* postgres.h in Headers */ = {isa = PBXBuildFile; fileRef = 997EB96019687ED200687FA4 /* postgres.h */; };
 		9987E9DA19688916005750C5 /* gramparse.h in Headers */ = {isa = PBXBuildFile; fileRef = 997EB96319687FEE00687FA4 /* gramparse.h */; };
+		9A114F8C1B51237900B02C85 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A114F8A1B51237900B02C85 /* libcrypto.a */; };
+		9A114F8D1B51237900B02C85 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A114F8B1B51237900B02C85 /* libssl.a */; };
 		9A827F511B495A6C00FCC50B /* psprintf.c in Sources */ = {isa = PBXBuildFile; fileRef = 9A827F501B495A6C00FCC50B /* psprintf.c */; };
 /* End PBXBuildFile section */
 
@@ -198,8 +198,6 @@
 		4B4C4CCC15040B7500840750 /* libpqTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "libpqTests-Info.plist"; sourceTree = "<group>"; };
 		4B4C4CD015040B7500840750 /* libpqTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = libpqTests.h; sourceTree = "<group>"; };
 		4B4C4CD115040B7500840750 /* libpqTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = libpqTests.m; sourceTree = "<group>"; };
-		4B4C4E0A1504295600840750 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = lib/libcrypto.a; sourceTree = "<group>"; };
-		4B4C4E0B1504295600840750 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = lib/libssl.a; sourceTree = "<group>"; };
 		4B5894F017EF99B90039A02A /* pg_config_ext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pg_config_ext.h; sourceTree = "<group>"; };
 		4BA7590E17F043F100C26AD6 /* pqcomm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pqcomm.h; sourceTree = "<group>"; };
 		4BA7591017F0441C00C26AD6 /* ip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ip.h; sourceTree = "<group>"; };
@@ -368,6 +366,8 @@
 		9987E9B41968868E005750C5 /* mbprint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mbprint.h; sourceTree = "<group>"; };
 		9987E9B6196886C8005750C5 /* pg_type.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pg_type.h; sourceTree = "<group>"; };
 		9987E9B8196886D7005750C5 /* genbki.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = genbki.h; sourceTree = "<group>"; };
+		9A114F8A1B51237900B02C85 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "../../../../../../../usr/local/ssl/macos-x86_64/lib/libcrypto.a"; sourceTree = "<group>"; };
+		9A114F8B1B51237900B02C85 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../../../../../../usr/local/ssl/macos-x86_64/lib/libssl.a"; sourceTree = "<group>"; };
 		9A827F501B495A6C00FCC50B /* psprintf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = psprintf.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -376,8 +376,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4B4C4E0C1504295600840750 /* libcrypto.a in Frameworks */,
-				4B4C4E0D1504295600840750 /* libssl.a in Frameworks */,
+				9A114F8C1B51237900B02C85 /* libcrypto.a in Frameworks */,
+				9A114F8D1B51237900B02C85 /* libssl.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -414,8 +414,8 @@
 		4B4C4CB315040B7500840750 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				4B4C4E0A1504295600840750 /* libcrypto.a */,
-				4B4C4E0B1504295600840750 /* libssl.a */,
+				9A114F8A1B51237900B02C85 /* libcrypto.a */,
+				9A114F8B1B51237900B02C85 /* libssl.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1131,10 +1131,11 @@
 				"HEADER_SEARCH_PATHS[arch=*]" = (
 					"\"$(SRCROOT)/include\"",
 					"\"$(SRCROOT)/src/include\"",
+					"\"/usr/local/ssl/macos-x86_64/include\"/**",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/lib\"",
+					"/usr/local/ssl/macos-x86_64/lib",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = pq;
@@ -1164,7 +1165,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = NO;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/lib\"",
+					"/usr/local/ssl/macos-x86_64/lib",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = pq;
