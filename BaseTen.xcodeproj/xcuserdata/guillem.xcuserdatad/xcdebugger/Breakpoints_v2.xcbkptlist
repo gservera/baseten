@@ -604,11 +604,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Sources/PGTSCertificateVerificationDelegate.m"
-            timestampString = "458306965.270989"
+            timestampString = "458321684.721193"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "155"
-            endingLineNumber = "155"
+            startingLineNumber = "160"
+            endingLineNumber = "160"
             landmarkName = "-PGTSAllowSSLForConnection:context:preverifyStatus:"
             landmarkType = "5">
          </BreakpointContent>
@@ -668,11 +668,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Sources/PGTSCertificateVerificationDelegate.m"
-            timestampString = "458307891.980595"
+            timestampString = "458321684.721193"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "252"
-            endingLineNumber = "252"
+            startingLineNumber = "257"
+            endingLineNumber = "257"
             landmarkName = "-copyCertificateArrayFromOpenSSLCertificates:"
             landmarkType = "5">
          </BreakpointContent>

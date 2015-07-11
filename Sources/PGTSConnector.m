@@ -48,7 +48,7 @@ PGTSCopyConnectionString (NSDictionary* connectionDict)
 
 
 #ifdef USE_SSL
-#import "BXOpenSSLCompatibility.h"
+#import <openssl/ssl.h>
 //This is thread safe because it's called in +initialize for the first time.
 //Afterwards, the static variable is only read.
 static int

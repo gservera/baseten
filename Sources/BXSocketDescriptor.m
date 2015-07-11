@@ -25,7 +25,7 @@
 #import <dispatch/dispatch.h>
 
 
-static volatile BOOL stUsesGCD = YES;
+static volatile BOOL stUsesGCD = NO;
 
 
 /** 

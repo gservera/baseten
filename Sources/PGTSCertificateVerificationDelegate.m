@@ -142,6 +142,11 @@ __strong static id <PGTSCertificateVerificationDelegate> gDefaultCertDelegate = 
 	return cert;
 }*/
 
+typedef struct ossl_data {
+    CSSM_SIZE Length; /* in bytes */
+    uint8 *Data;
+} OSSL_DATA;
+
 /**
  * \brief Verify an OpenSSL X.509 certificate.
  *
@@ -150,14 +155,14 @@ __strong static id <PGTSCertificateVerificationDelegate> gDefaultCertDelegate = 
  * might have signed it or the user could have stored the certificate earlier. The preverification result
  * is ignored because it rejects certificates from CAs unknown to OpenSSL. 
  */ 
-- (BOOL)PGTSAllowSSLForConnection:(PGTSConnection *)connection context:(X509_STORE_CTX *)x509_ctx preverifyStatus:(int)preverifyStatus {
+- (BOOL)PGTSAllowSSLForConnection:(PGTSConnection *)connection context:(void *)x509_ctx preverifyStatus:(int)preverifyStatus {
 	
-    CSSM_DATA certData;
+    OSSL_DATA certData;
     BOOL retval = NO;
     
     // Step 1: Convert the X509_STORE_CTX into a SecCertificate.
     bzero(&certData, sizeof(certData));
-    certData.Length = i2d_X509(x509_ctx->cert, &(certData.Data));
+    certData.Length = i2d_X509(((X509_STORE_CTX*)x509_ctx)->cert, &(certData.Data));
     if (certData.Length > 0)
     {
         NSData *certNSData = [[NSData alloc] initWithBytes:certData.Data length:certData.Length];
@@ -249,7 +254,7 @@ error:
  */
 - (CFArrayRef) copyCertificateArrayFromOpenSSLCertificates: (X509_STORE_CTX *) x509_ctx
 {
-    CSSM_DATA certData;
+    OSSL_DATA certData;
     CFMutableArrayRef retval = NULL;
     
     // Step 1: Convert the X509_STORE_CTX into a SecCertificate.

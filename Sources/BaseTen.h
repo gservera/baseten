@@ -30,7 +30,6 @@
 #import <BaseTen/BXRelationshipDescription.h>
 #import <BaseTen/BXException.h>
 #import <BaseTen/BXContainerProxy.h>
-#import <BaseTen/BXVerbatimExpressionValue.h>
 
 // Modules
 #import <BaseTen/BXExport.h>
@@ -38,6 +37,8 @@
 #import <BaseTen/BXConnectionSetupManagerProtocol.h>
 #import <BaseTen/BXInterface.h>
 #import <BaseTen/BXForeignKey.h>
+#import <BaseTen/BXObjectStatusInfo.h>
+#import <BaseTen/libpq-fe.h>
 
 /*
  * Helpful breakpoints:
