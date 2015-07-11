@@ -34,8 +34,7 @@ __strong static id <PGTSCertificateVerificationDelegate> gDefaultCertDelegate = 
  */
 @implementation PGTSCertificateVerificationDelegate
 
-+ (id) defaultCertificateVerificationDelegate
-{
++ (id) defaultCertificateVerificationDelegate {
 	if (! gDefaultCertDelegate)
 	{
 		@synchronized (self)
@@ -47,25 +46,11 @@ __strong static id <PGTSCertificateVerificationDelegate> gDefaultCertDelegate = 
 	return gDefaultCertDelegate;
 }
 
-- (id) init
-{
-	if ((self = [super init]))
-	{
-	}
-	return self;
-}
-
-- (void) dealloc
-{
+- (void)dealloc {
 	SafeCFRelease (mPolicies);
 	[super dealloc];
 }
 
-- (void) finalize
-{
-	SafeCFRelease (mPolicies);
-	[super finalize];
-}
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
@@ -135,7 +120,7 @@ __strong static id <PGTSCertificateVerificationDelegate> gDefaultCertDelegate = 
 /**
  * \brief Create a SecCertificateRef from an OpenSSL certificate.
  * \param bioOutput A memory buffer so we don't have to allocate one.
- */
+ *
 - (SecCertificateRef) copyCertificateFromX509: (X509 *) opensslCert bioOutput: (BIO *) bioOutput {
 	SecCertificateRef cert = NULL;
 	
@@ -155,7 +140,7 @@ __strong static id <PGTSCertificateVerificationDelegate> gDefaultCertDelegate = 
 		}
 	}
 	return cert;
-}
+}*/
 
 /**
  * \brief Verify an OpenSSL X.509 certificate.
@@ -165,9 +150,52 @@ __strong static id <PGTSCertificateVerificationDelegate> gDefaultCertDelegate = 
  * might have signed it or the user could have stored the certificate earlier. The preverification result
  * is ignored because it rejects certificates from CAs unknown to OpenSSL. 
  */ 
-- (BOOL) PGTSAllowSSLForConnection: (PGTSConnection *) connection context: (void *) x509_ctx preverifyStatus: (int) preverifyStatus
-{
-	BOOL retval = NO;
+- (BOOL)PGTSAllowSSLForConnection:(PGTSConnection *)connection context:(X509_STORE_CTX *)x509_ctx preverifyStatus:(int)preverifyStatus {
+	
+    CSSM_DATA certData;
+    BOOL retval = NO;
+    
+    // Step 1: Convert the X509_STORE_CTX into a SecCertificate.
+    bzero(&certData, sizeof(certData));
+    certData.Length = i2d_X509(x509_ctx->cert, &(certData.Data));
+    if (certData.Length > 0)
+    {
+        NSData *certNSData = [[NSData alloc] initWithBytes:certData.Data length:certData.Length];
+    
+        SecCertificateRef cert = SecCertificateCreateWithData(NULL, (CFDataRef)certNSData);
+        
+        if (cert != NULL)
+        {
+            SecTrustRef trust = NULL;
+            CFMutableArrayRef certificates = CFArrayCreateMutable(NULL, 1, NULL);
+            CFArrayAppendValue(certificates, cert);
+            trust = [self copyTrustFromCertificates:certificates];
+            if (trust != NULL) {
+                SecTrustResultType result = kSecTrustResultInvalid;
+                OSStatus status = SecTrustEvaluate (trust, &result);
+                if (noErr == status && kSecTrustResultProceed == result) {
+                    retval = YES;
+                }
+                SafeCFRelease (certificates);
+                SafeCFRelease (trust);
+                [certNSData release];
+                free(certData.Data);
+                return retval;
+            } else {
+                SafeCFRelease (certificates);
+                SafeCFRelease (trust);
+                [certNSData release];
+                free(certData.Data);
+                return NO;
+            }
+        }
+        [certNSData release];
+        free(certData.Data);
+    }
+    return retval;
+    
+    
+    /*BOOL retval = NO;
 	SecTrustResultType result = kSecTrustResultInvalid;	
 	CFArrayRef certificates = NULL;
 	SecTrustRef trust = NULL;
@@ -187,7 +215,7 @@ __strong static id <PGTSCertificateVerificationDelegate> gDefaultCertDelegate = 
 error:
 	SafeCFRelease (certificates);
 	SafeCFRelease (trust);
-	return retval;
+	return retval;*/
 }
 
 /**
@@ -213,10 +241,12 @@ error:
 	return trust;
 }
 
+
+
 /**
  * \brief Create Security certificates from OpenSSL certificates.
  * \return An array of SecCertificateRefs.
- */
+ 
 - (CFArrayRef) copyCertificateArrayFromOpenSSLCertificates: (X509_STORE_CTX *) x509_ctx
 {
 	CFMutableArrayRef certs = NULL;
@@ -265,5 +295,5 @@ error:
 		CFRelease (certs);
 	}
 	return retval;
-}
+}*/
 @end
